@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-size: 80%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+	width: 700px;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+  -->
+</style>
+    
+<head>
+   
+<title>ISSLAB2019</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LAB1 | ButtonLedSystem local (with Mock objects)</h1> 
+<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+
+<h2>REQUIREMENTS</h2>
+<div class="req">
+Design and build a <tt>ButtonLed software system</tt> (<em>BLS</em>) in which a <em>Led</em> <bc>starts/stops blinking </bc>
+each time a <em>Button</em> is pressed (by an human user).
+<br/>
+The system should run (at the moment) on a <i>single computational support</i>, e.g. a Conventional PC, a RaspberryPi or Arduino.
+</div>	    
+ 	
+	<h2>SET UP A WORKSPACE with IntelliJ IDEA</h2>
+     
+ 	<ol>
+	<li>In <i>IntelliJ IDEA Community Edition</i>  
+	<pre>new Project -> select Gradle -> Java & Kotlin(Java).
+	Set GroupId=issUnibo19, ArtifactId=it.unibo.bls19Local, Version=1.0 
+	Use auto-import, Use local gradle distribution</pre>
+	Wait until the configuration is terminated and add to the generated <a href="../build.gradle" target="code">build.gradle</a> 
+	the sentence <tt>id 'application'</tt> and <tt>mainClassName="TODO"</tt>.
+	<br/><br/>
+	<center><img src="./lab1prj.png" alt="gradlew" width="60%" height="60%"></center>
+	</li>
+	
+	</ol>
+	
+	<h2>BUILD A JAVA APPLICATION: The workspace</h2>
+	Let us structure a working directory of our Java project as follows:
+	<ul>
+	<li>The package <bc>it.unibo.bls.interfaces</bc> includes the definition of the interfaces introduced in the system.</li>
+	<li>The package <bc>it.unibo.bls.devices</bc> includes the implementation of the object interfaces related
+	to the devices (<em>Button</em> and <em>Led</em>). For each device, several different implementations can be introduced:
+	a <a href="https://en.wikipedia.org/wiki/Mock_object" target="web">Mock</a> device, a 'virtual' object implemented with a <tt>GUI</tt>, real devices controlled by <tt>Arduino/RaspberryPi</tt>, etc..</li>
+	<li>The package <bc>it.unibo.bls.listener</bc> includes the 'glue' between our input device 
+	(the <em>Button</em>) and the business logic (<em>Control</em>).</li>
+	<li>The package <bc>it.unibo.bls.applLogic</bc> includes the definition of the class that implements
+	the application logic.</li>
+	<li>The package <bc>it.unibo.bls.appl</bc> includes the <tt>Main</tt> program.</li>
+	<li>The <bc>test</bc> directory includes examples of <a href="https://en.wikipedia.org/wiki/Unit_testing" target="web">unit testing</a>
+	and of  <a href="https://en.wikipedia.org/wiki/Integration_testing" target="web">integration testing</a>.</li>
+	</ul>
+	
+	After our coding activiy, let us store the result into a proper 
+	<a href="https://git-scm.com/book/en/v1/Getting-Started-Git-Basics" target="web">GIT repository</a>
+	named <a href="https://github.com/anatali/iss2019Lab" target="web">iss2019Lab</a>.
+	
+	Note that in  <a href="../build.gradle" target="code">build.gradle</a>, we have set: <tt>mainClassName="it.unibo.bls.appl.MainBlsMockBase"</tt> 
+ 	</p>
+	
+	<h3>Running the system</h3>
+	Let us open a terminal and execute <bc>gradle run</bc>. The result is:
+	
+<pre>
+Led state=false
+	BlsApplicationLogic | doBlinkTheLed Thread STARTS looping ...
+	ButtonMock | simulateUserInteraction ...
+	ButtonMock | click num=1
+	BlsApplicationLogic | numOfCalls=1 doBlink=true
+Led state=true
+Led state=false
+Led state=true
+	ButtonMock | click num=2
+	BlsApplicationLogic | numOfCalls=2 doBlink=false
+	ButtonMock | click num=3
+	BlsApplicationLogic | numOfCalls=3 doBlink=true
+Led state=false
+Led state=true
+Led state=false
+Led state=true
+	ButtonMock | click num=4
+	BlsApplicationLogic | numOfCalls=4 doBlink=false
+</pre>
+	We note that:
+	<ul>
+	<li>The message <tt>Led state=  </tt> is written by the 
+	<a href="../src/main/java/it/unibo/bls/devices/mock/LedMock.java" target="code">Led</a> implemented as a 
+	<a href="https://en.wikipedia.org/wiki/Mock_object" target="web">Mock</a> object.</li>
+	<li>An indented message of the form <tt>  E | ... </tt> is written by the object <tt>E</tt> for testing purposes. 
+	It will be excluded from the final version of the system.
+	<li>The message <tt>ButtonMock | simulateUserInteraction ... </tt> and <tt>ButtonMock | click num= </tt> are written by 
+	the current implementation of the
+	<a href="../src/main/java/it/unibo/bls/devices/mock/ButtonMock.java" target="code">Button</a> as a observable 
+	<a href="https://en.wikipedia.org/wiki/Mock_object" target="web">Mock</a>object that implements the 
+	interface <a href="../src/main/java/it/unibo/bls/interfaces/IButtonObservable.java" target="code">IButtonObservable</a>.</li>
+	<li>The message <tt>BlsApplicationLogic | numOfCalls= </tt> is written by the control class
+	<a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a> that
+	handles the <tt>Led</tt> by means of  an internal Thread that works according to the current number of calls to <bc>execute</bc> .
+	</li>
+	</ul>
+	
+	<h3>Looking at the tests</h3>
+	<ul>
+	<li>Execute <bc>gradle test</bc> and look at 
+	<a href="../build/reports/tests/test/index.html" target="code">build/report/tests/test/index.html</a></li>
+	<li>Unit testing: <a href="../src/test/java/it/unibo/bls/components/TestLed.java" target="code">TestLed.java</a>,
+	<a href="../src/test/java/it/unibo/bls/components/TestButton.java" target="code">TestButton.java</a></li>
+	<li>Integration testing: <a href="../src/test/java/it/unibo/bls/integration/TestBlsMock.java" target="code">TestBlsMock.java</a> </li>
+	</ul>
+
+	<h3>Looking at the code</h3>
+	
+	Starting from the class <a href="../src/main/java/it/unibo/bls/appl/MainBlsMockBase.java" target="code">MainBlsMockBase</a>, 
+	that defines the main program, we read the code and understand that:
+	<ol>
+	<li>The software system is built by the operation <bc>createTheSystem</bc> that  first <bc>createTheComponents</bc> and afterwards it <bc>connectTheComponents</bc> to build a system.
+	The names of the methods help the reader in understanding the behavior.</li>
+	<li>Each component is created in its turn by calling operations (<bc>createLed</bc>, <bc>createButton</bc>) of a 
+	<a href="../src/main/java/it/unibo/bls/devices/DeviceFactory.java" target="code">DeviceFactory</a> that makes reference
+	to a set of <a href="../src/main/java/it/unibo/bls/devices/LedType.java" target="code">LedType</a> and
+	<a href="../src/main/java/it/unibo/bls/devices/ButtonType.java" target="code">ButtonType</a>.
+	</li>
+	<li>The application logic is implemented by the class 
+	<a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a> 
+	that implements the control part of the system. 
+	(<a href="../src/main/java/it/unibo/bls/interfaces/IControl.java" target="code">IControl.java</a> ) </li>
+	 
+	</ol>
+
+<h2>Inferring the logical architecture of the system</h2>
+	
+		After code inspection, we can outline the <em>basic principles</em> followed in the design of the system:
+		
+	<ul>
+		<li><em>Objects</em>: the software designer has worked in the conceptual space of 'classical' <i>object oriented software development</i>.</li>
+		<li><em>Design patterns</em>: the software designer makes alsoade reference to a set of <i>design patterns</i>, with
+		particulare reference to:
+			<ul>
+			<li>the <a href="https://en.wikipedia.org/wiki/Factory_method_pattern" target="web">Factory Pattern</a>
+			in order to create the components without exposing the instantiation logic;</li>
+			<li>the <a href="https://en.wikipedia.org/wiki/Observer_pattern">Observer Pattern</a> in order to acquire
+			input without <a href="https://en.wikipedia.org/wiki/Polling_(computer_science)">polling</a> 
+			the state of the <tt>Button</tt>.</li>
+			</ul> 
+		</li>
+		<li><em>Inversion of control</em>: the <tt>Button</tt> does not provide any interface that allows us to 
+		change its state from within the system. In fact
+		a <tt>Button</tt> is an input device that logically belong to a world external to the system. We could define an interface 
+		(e.g. <a href="../src/main/java/it/unibo/bls/interfaces/IButton.java" target="code">IButton</a>) to provide an operation to read 
+		the current state of the <tt>Button</tt>. However, the current design does exclude the idea of
+		<a href="https://en.wikipedia.org/wiki/Polling_(computer_science)">polling</a>, by adopting instead
+		the principle of <a href="https://en.wikipedia.org/wiki/Inversion_of_control">Inversion of control</a>, 
+		sometimes facetiously referred to as the <tt>"Hollywood Principle: Don't call us, we'll call you"</tt>.
+		</li>
+		<li><em>Observables</em>:  the <tt>Button</tt> is conceived as an object that implements the interface 
+		<a href="../src/main/java/it/unibo/bls/interfaces/IButtonObservable.java" target="code">IButtonObservable</a>, which extends
+		<a href="../src/main/java/it/unibo/bls/interfaces/IObservable.java" target="code">IObservable</a>. </li>
+		<li><em>Observers</em>: The <tt>Application logic</tt> is put in execution by a component 
+		(<a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>) 
+		that acts as an observer of the state of the <tt>Button</tt>, by implementing the interface 
+		<a href="../src/main/java/it/unibo/bls/interfaces/IApplListener.java" target="code">IApplListener</a> that extends 
+		<a href="../src/main/java/it/unibo/bls/interfaces/IObserver.java" target="code">IObserver</a> 
+		(a warpper of the built-in <tt>java.util.Observer</tt>).</li>
+		<li><em>Dependency injection</em>:The final software system is created by
+		<a href="../src/main/java/it/unibo/bls/appl/MainBlsMockBase.java" target="code">MainBlsMockBase.java</a> by dynamically 
+		'injecting' (see <a href="https://en.wikipedia.org/wiki/Dependency_injection">Dependency injection</a>) 
+		into an object a reference to some other object. More specifically (see <bc>createTheComponents</bc> ):
+			<ul>
+			<li>the <a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a> 
+			component is 'injected' into the <a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>; </li>
+			<li>the <a href="../src/main/java/it/unibo/bls/devices/mock/LedMock.java" target="code">Led</a> component is 'injected' 
+			into the <a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a> ;</li>
+			<li>the <a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>
+			is 'injected' (added) to the <a href="../src/main/java/it/unibo/bls/devices/mock/ButtonMock.java" target="code">Button</a>.</li>
+			</ul>
+		
+		</li>
+	</ul>
+
+	<h3>A model of the system</h3>
+	 
+	The logic architecture of the <tt>BLS</tt> can be summarized by the following <tt>UML</tt> interaction diagram:</p>
+	<center><img src="./bls0.png" alt="gradlew" width="60%" height="60%"></center>
+	
+	<h2>Concurrency aspects</h2>
+	<p>
+	In the system there are two <tt>Threads</tt> that run 'in paralllel': 
+	<ul>
+	<li>the <tt>Thread</tt> embedded in the 
+	<a href="../src/main/java/it/unibo/bls/devices/mock/ButtonMock.java" target="code">Button</a>. The method <bc>execute</bc>
+		is called by code running in this thread, each time the <tt>Button</tt> changes its state (is 'pressed'). 
+		The method <bc>execute</bc> increments the private integer variable <bc>numOfCalls</bc> of the class <tt>BlsApplicationLogic</tt>;</li>
+	<li>the <tt>Thread</tt> embedded in the 
+	<a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic</a>.
+	The methods of the <tt>Led</tt> are called by code running in thise thread when the integer variable <bc>numOfCalls</bc> is odd.</li>
+	</ul>
+ 	Thus, the two threads cooperate in achieving the system requirement, by working, respectively, as <tt>writer/reader</tt> of 
+	shared data. No particular synchronization problems arise.
+	</p>
+
+	<h2>Performance aspects</h2>
+	<p>
+	The <tt>Thread</tt> embedded in the 
+	<a href="../src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic</a> performs a 
+	'forever loop' that looks at the value of the integer variable <bc>numOfCalls</bc> <tt>4</tt> times a second.  
+	To avoid this 'polling' activity, we can replace <bc>doBlinkTheLed</bc> with <bc>doBlinkTheLedWaiting</bc> that blocks
+	the Thread of the <tt>BlsApplicationLogic</tt>  on a shared monitor.
+	</p>
+
+	<h2>From Mock devices to real devices</h2>
+	Let us replace now our initial Mock objects with more concrete devices, based on a <i>Graphical User Interface</i> (<tt>GUI</tt>) we:
+	<ol>
+	<li>Define a  <a href="../src/main/java/it/unibo/bls/devices/gui/LedAsGui.java" target="code">LedAsGui</a> 
+	and a <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a>	</li>
+	<li>Define a new system configuration program:
+	<a href="../src/main/java/it/unibo/bls/appl/MainBlsGuiBase.java" target="code">MainBlsGuiBase.java</a> 
+	</li>
+	
+	</ol>
+	In both cases we exploit object inheritance in order to resue the work already done and tested.
+	Since Java does not support multiple inheritance among classes, 
+	<a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a> is introduced
+	as a specialization of <bc>java.util.Observable</bc> that uses a 
+	<a href="../src/main/java/it/unibo/bls/devices/gui/ButtonBasic.java" target="code">ButtonBasic</a> object that builds the <tt>GUI</tt>.
+	 
+	
+
+
+       
+  
+</div>  
+
+</body>
+</html>

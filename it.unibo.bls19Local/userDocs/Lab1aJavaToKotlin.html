@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-size: 80%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+	width: 700px;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+  -->
+</style>
+    
+<head>
+   
+<title>ISSLAB2019</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LAB1a | ButtonLedSystem : from Java to Kotlin</h1> 
+<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+
+	
+	<h2>From Java to Kotlin</h2>
+	
+	<ol>
+	<li>Val and vars</li>
+	<li>Type inference</li>
+	<li>Basic types (Numbers, Booleans, Cars, Strings)</li>
+	<li>Arrays</li>
+	<li>Packages</li>
+	<li>Imports</li>
+	<li>String templates</li>	
+	<li>Ranges</li>
+	<li>Loops</li>
+	<li>Excpetion handling</li>
+	<li>Instantiating classes</li>
+	<li>Equality (referntial and structural)</li>
+	<li>This expression</li>
+	<li>Scope</li>
+	<li>Visibility modifiers (private, protected, internal)</li>
+	<li>Control flow as expressions</li>
+	<li>Null syntax</li>
+	<li>Type Cast (smart and explicit)</li>
+	<li>When expression</li>
+	<li>Function return</li>
+	<li>Tyoe hyerarchy</li>
+	<li>--------------------------- </li>
+	<li>Data classes</li>
+	<li>Enum classes</li>
+	<li>Static methods and companion objects</li>
+	<li>Interfaces</li>
+	<li>Inheritance</li>
+	<li>Visibility modifiers</li>
+	<li>Abstract classes</li>
+	<li>Polymorphism</li>
+	<li>Overriding rules</li>
+	<li>Inheritance versus composition</li>
+	<li>Class delegation</li>
+	<li>Sealed classes</li>
+	<li>--------------------------- </li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+	</ol>
+	
+	
+	For a quick overview, see <a href="https://blog.kotlin-academy.com/kotlin-cheat-sheet-1137588c75a">Kotlin Cheat Sheet</a>
+and <a href="http://kotlinlang.org/docs/reference/properties.html#getters-and-setters">Properties and Fields</a>.
+
+<h2>From Java to Kotlin : automatic conversion</h2>
+	<br/><br/>
+	With reference to the directory <tt>kotlin</tt>:
+	<ol>
+	<li>create the package <bc>it.unibo.bls.kotlin</bc></li>
+	<li>copy the code form the directory <tt>java</tt> into this new package</li>
+	<li>for each class, excute <bc>Convert Java file to kotlin file</bc></li>
+	</ol>
+
+	<h4>Interfaces</h4> 
+		<ul>
+		<li><pre>no ;</pre> </li>
+		<li><pre>interface  name  :  super | fun name( arg : ArgType )  |   fun name(): ReturnType </pre></li>
+	  	<li><pre>val</pre> </li>
+		</ul>
+ 	<h4>Utils</h4> 
+		<ul>
+		<li><pre>object Utils{ ..</pre> </li>
+ 		</ul>
+	
+	<h4>LedType</h4> 
+		<ul>
+		<li><pre>enum class LedType{ ... }</pre></li>
+ 		</ul>
+	<h4>DeviceFactory</h4> 
+		<ul>
+ 		<li> <pre>fun createLed(devType: LedType): ILed? { when (devType) { ... </pre></li>
+		</ul>
+ 	<h4>LedMock  ButtonMock</h4> 
+		<ul>
+ 		<li> <pre>class LedMock : ILed  |  private var state |  override fun turnOn   </pre></li>
+		<li> <pre> println(" ... click num=$i")</pre></li>
+		<li> <pre>companion object |  object : Thread() </pre></li>
+		</ul>
+	<h4>BlsApplicationLogic</h4> 
+		<ul>
+ 		<li> <pre>object : Thread(){ ...  </pre></li>
+		</ul>
+	<h4>MainBlsMockBase</h4> 
+		<ul>
+ 		<li> <pre>private constructor() { ...  |  @JvmStatic </pre></li>
+		<li> <pre>var led: ILed? = null   private set </pre></li>
+		<li> <pre>(applLogic as BlsApplicationLogic).setTheLed(led) </pre></li>
+		</ul>
+
+
+       
+  
+</div>  
+
+</body>
+</html>
