@@ -123,14 +123,15 @@ div.req{
 <a href="http://www.ingegneriarchitettura.unibo.it/it/corsi/insegnamenti/insegnamento/2017/412677" target="isslm">SITO WEB di Ateneo</a>
 -->    
 <h1>72939 - LAB0 | Start-up</h1> 
-<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+Ref: <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a>
+(Tools)
 </div>     
 
 <div class="body"> 
     <h2>START: GRADLE</h2>
     
     <ol>
-        <li>Download gradle (using <tt>zip</tt> or <tt>SDKMAN</tt>). Current version: 5.2.1</li>
+        <li>Download <tt>gradle</tt> (using <tt>zip</tt> or <tt>SDKMAN</tt>). Current version: <tt>5.2.1</tt>.</li>
         <li>Set <tt>GRADLE_HOME</tt> to the unpacked Gradle files and add <tt>GRADLE_HOME/bin</tt> to your <tt>PATH</tt> environment variable</li>
         <li>Create a work dir (e.g. <tt>issStart2019</tt>) and work in it</li>
         <li>Execute <bc>gradle wrapper</bc> 
@@ -162,7 +163,7 @@ Hello world.</pre>
 	<h2>FROM Java TO Kotlin USING IntelliJ IDEA</h2> 
 	<ol>
 		<li>Copy <tt>AppJava.java</tt> in a new class named <tt>AppKtFromJava.java</tt></li>
-		<li>Open the current working folder in as <i>IntelliJ IDEA Community Edition Projct</i></li>
+		<li>Open the current working folder (mpuse on it) as <tt>IntelliJ IDEA Community Edition Project</tt>.</li>
 		<li>Select <tt>AppJava.java</tt> and click on <i>Convert Java file to Kotlin file</i> (<tt>CTRL-ALT-SHIFT-K</tt>)
 		and compare the generated <a href="../src/main/java/issStart2019/AppKtFromJava.kt" target="code">AppKtFromJava.kt</a>
 		with the original <a href="../src/main/kotlin/issStart2019/App.kt" target="code">AppK.kt</a></li>
@@ -170,27 +171,36 @@ Hello world.</pre>
 		<li>Execute <bc>gradle run</bc> </li>
 	</ol>
 	
-	<h2>GIT</h2> 
+	<h2>GIT : starting </h2> 
 	There are many info sources; for example: <a href="https://www.youtube.com/watch?v=HVsySz-h9r4"  target="web">GIT Command Line Basic (video)c</a>
 	and <a href="https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html"  target="code">Basic Git commands</a>.
+	<ol>
 	<li>Execute <bc>git init</bc> in the dir <tt>issStart2019</tt>. </li>
 	<li>Execute <bc>git status</bc>.</li>
 	<li>Edit the file <a href="../.gitignore" target="code">.gitignore</a></li>
 	<li>Execute <bc>git log</bc>.</li>
 	<li>Execute <bc>git add -A</bc> and <bc>git status</bc>.</li>
-	<li>Excute <bc>git config --global user.name "Your Name"</bc>, <bc>git config --global user.email "Your Email"</bc> and <bc>git config --list</bc> </li>
+	<li>Execute <bc>git reset</bc> to undo staging.</li>
+	<li>Excute <bc>git config --global user.name "Your Name"</bc>, <bc>git config --global user.email "Your Email"</bc> </li>
+	<li>Execute <bc>git config --list</bc>.</li>
 	<li>Execute <bc>git commit -m "First"</bc> and <bc>git status</bc>.</li>
 	<li>Execute <bc>git log</bc>.</li>
-	<li>-----------------------------------------------------------------------------------------------------------------------</li>
-	<li>Execute <bc>git clone  https://github.com/anatali/iss2019Lab.git </bc></li>
-	<li>Execute <bc>git remote add origin https://github.com/anatali/iss2019Lab.git </bc> and <bc>git remote -v</bc></li>
-	<li>Execute <bc>git push origin master</bc></li>
-	<li>Execute <bc>git rm userDocs/issLab2019.html (--cached file1.txt)</bc>,<br/>
-		<bc>git commit -m "remove userDocs/issLab2019.html"</bc>, <bc>git push origin master</bc> </li>
-	<li><bc>git checkout master</bc>  <bc>git merge origin/master --allow-unrelated-histories</bc>   </li>
-	<ol>
+	<li>Execute <bc>git rm file.txt (--cached file.txt)</bc>  to delete (remove) files.</li>
+	<li>Execute <bc>git remote add origin https://github.com/... </bc> to connect to a remote <tt>GIT</tt>.</li>
+	<li>Execute <bc>git checkout master</bc>  <bc>git merge origin/master --allow-unrelated-histories</bc> if needed. </li>
+	<li>Execute <bc>git push origin master</bc> to update the remote <tt>GIT</tt> </li>
+	</ol>
 	
-	Software Lab for Course 72939 : Software Systems Engineering M - Antonio Natali - DISI - University of Bologna
+	<h2>GIT : clone the iss2019Lab</h2>
+	<ol>
+	<li>Open a new, <b>empty</b> directory (e.g. <bc>iss2019Lab</bc>) and work in it.</li>
+	<li>Execute <bc>git clone  https://github.com/anatali/iss2019Lab.git </bc></li>
+	<li>Execute <bc>git remote -v</bc>
+	<li>Use the files as a <u>read-only reference</u>: never change them</li>
+	<li>Execute <bc>git pull</bc> when needed</li>
+	</ol>
+	
+	
 </div>  
 
 </body>
