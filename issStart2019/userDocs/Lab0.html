@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-size: 80%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+	width: 700px;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+    
+  -->
+</style>
+    
+<head>
+   
+<title>ISSLAB2019</title></head>
+    
+<body>
+<div id="top">
+<!--    CESENA
+<h1>81614 - LABORATORIO DI SISTEMI SOFTWARE <font size="5"> : <a href="./LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> </h1>
+<a href="http://www.ingegneriarchitettura.unibo.it/it/corsi/insegnamenti/insegnamento/2017/412677" target="isslm">SITO WEB di Ateneo</a>
+-->    
+<h1>72939 - LAB0 | Start-up</h1> 
+<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+</div>     
+
+<div class="body"> 
+    <h2>START: GRADLE</h2>
+    
+    <ol>
+        <li>Download gradle (using <tt>zip</tt> or <tt>SDKMAN</tt>). Current version: 5.2.1</li>
+        <li>Set <tt>GRADLE_HOME</tt> to the unpacked Gradle files and add <tt>GRADLE_HOME/bin</tt> to your <tt>PATH</tt> environment variable</li>
+        <li>Create a work dir (e.g. <tt>issStart2019</tt>) and work in it</li>
+        <li>Execute <bc>gradle wrapper</bc> 
+		(see <a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="web">https://docs.gradle.org/current/userguide/gradle_wrapper.html</a>)</li>
+        <li>Execute <bc>gradlew init</bc> and select <tt>8</tt> (kotlin-application), <tt>1</tt> (groovy) 
+		   <center><img src="./gradlew.png" alt="gradlew" width="60%" height="60%"></center>
+		</li>
+		<li>Look at the generated file <a href="../src/main/kotlin/issStart2019/App.kt" target="code">AppK.kt</a>
+		<li>Execute <bc>gradle run</bc>. The resullt is:
+<pre>Task :run
+Hello world.</pre>
+		</li>
+    </ol>
+	    
+ 	
+	<h2>START: A JAVA APP</h2>
+	<ol>
+
+        <li>Add the folder <tt>src/main/java</tt> </li>
+       <li>Add the class <a href="../src/main/java/issStart2019/AppJava.java" target="code">AppJava.java</a> in             
+            <tt>src/main/java/issStart2019</tt> </li>
+		<li>In <a href="../build.gradle" target="code">build.gradle</a>, set <tt>mainClassName='issStart2019.AppJava'</tt></li>
+        <li>Execute <bc>gradle build</bc></li>
+        <li>Look at the directory <tt>build</tt>, and execute <bc>gradle run</bc>. The result is:
+		<pre>Hello world FROM JAVA.</pre>
+		</li>
+ 	</ol>
+    
+	<h2>FROM Java TO Kotlin USING IntelliJ IDEA</h2> 
+	<ol>
+		<li>Copy <tt>AppJava.java</tt> in a new class named <tt>AppKtFromJava.java</tt></li>
+		<li>Open the current working folder in as <i>IntelliJ IDEA Community Edition Projct</i></li>
+		<li>Select <tt>AppJava.java</tt> and click on <i>Convert Java file to Kotlin file</i> (<tt>CTRL-ALT-SHIFT-K</tt>)
+		and compare the generated <a href="../src/main/java/issStart2019/AppKtFromJava.kt" target="code">AppKtFromJava.kt</a>
+		with the original <a href="../src/main/kotlin/issStart2019/App.kt" target="code">AppK.kt</a></li>
+		<li>In <a href="../build.gradle" target="code">build.gradle</a>, set <tt>mainClassName='it.unibo.bls19.AppKtFromJava'</tt></li>
+		<li>Execute <bc>gradle run</bc> </li>
+	</ol>
+	
+	<h2>GIT</h2> 
+	There are many info sources; for example: <a href="https://www.youtube.com/watch?v=HVsySz-h9r4"  target="web">GIT Command Line Basic (video)c</a>
+	and <a href="https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html"  target="code">Basic Git commands</a>.
+	<li>Execute <bc>git init</bc> in the dir <tt>issStart2019</tt>. </li>
+	<li>Execute <bc>git status</bc>.</li>
+	<li>Edit the file <a href="../.gitignore" target="code">.gitignore</a></li>
+	<li>Execute <bc>git log</bc>.</li>
+	<li>Execute <bc>git add -A</bc> and <bc>git status</bc>.</li>
+	<li>Excute <bc>git config --global user.name "Your Name"</bc>, <bc>git config --global user.email "Your Email"</bc> and <bc>git config --list</bc> </li>
+	<li>Execute <bc>git commit -m "First"</bc> and <bc>git status</bc>.</li>
+	<li>Execute <bc>git log</bc>.</li>
+	<li>-----------------------------------------------------------------------------------------------------------------------</li>
+	<li>Execute <bc>git clone  https://github.com/anatali/iss2019Lab.git </bc></li>
+	<li>Execute <bc>git remote add origin https://github.com/anatali/iss2019Lab.git </bc> and <bc>git remote -v</bc></li>
+	<li>Execute <bc>git push origin master</bc></li>
+	<li>Execute <bc>git rm userDocs/issLab2019.html (--cached file1.txt)</bc>,<br/>
+		<bc>git commit -m "remove userDocs/issLab2019.html"</bc>, <bc>git push origin master</bc> </li>
+	<li><bc>git checkout master</bc>  <bc>git merge origin/master --allow-unrelated-histories</bc>   </li>
+	<ol>
+	
+	Software Lab for Course 72939 : Software Systems Engineering M - Antonio Natali - DISI - University of Bologna
+</div>  
+
+</body>
+</html>
