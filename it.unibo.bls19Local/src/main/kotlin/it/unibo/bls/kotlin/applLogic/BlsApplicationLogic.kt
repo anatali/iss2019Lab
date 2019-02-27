@@ -1,30 +1,40 @@
 package it.unibo.bls.kotlin.applLogic
 
-import it.unibo.bls.kotlin.interfaces.*
-import it.unibo.bls.kotlin.utils.Utils
+import it.unibo.bls.interfaces.IControlLed
+import it.unibo.bls.interfaces.ILed
+import it.unibo.bls.utils.Utils
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
-class BlsApplicationLogic : IControl {
+class BlsApplicationLogic : IControlLed {
     private var led: ILed? = null
     private var numOfCalls = 0
+    private var doBlink = false
+    private val channel = Channel<Boolean>()
 
-    fun setTheLed(led: ILed) {
+     override fun setControlled(led: ILed) {
         this.led = led
-        doBlinkTheLed()
+        GlobalScope.launch{
+            println("FOR COROUTINE | numOfThreads=${Thread.activeCount()} currentThread=${Thread.currentThread().name}")
+            doBlinkTheLedWaiting()
+        }
+    }
+
+     private suspend fun doBlinkTheLedWaiting() {
+         while (true) {
+             doBlink = channel.receive()        //See execute
+             if (doBlink) doBlinkTheLed()
+         }
     }
 
     private fun doBlinkTheLed() {
         GlobalScope.launch {
-            var numIter = 0
-            println("	BlsApplicationLogic coroutine | simulateLedBlinking ...")
-            while (true && numIter++ < 30) { //defensive programming
-                    //System.out.println("	BlsApplicationLogic |  " + (count % 2) );
-                if (numOfCalls % 2 != 0) { // odd
-                        switchTheLed()
-                }
+            while ( doBlink ) {
+                switchTheLed()
                 Utils.delay(250)
             }
+            println("	BlsApplicationLogicKt coroutine | doBlinkTheLed ENDS ...")
         }
     }
 
@@ -33,10 +43,14 @@ class BlsApplicationLogic : IControl {
         if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
     }
 
-    override//from IControl
+    override//from IControlLed
     fun execute(cmd: String) {
         numOfCalls++
-        println("	BlsApplicationLogic | numOfCalls=$numOfCalls")
+        doBlink = numOfCalls % 2 != 0
+        println("	BlsApplicationLogicKt | execute numOfCalls=$numOfCalls doBlink=$doBlink")
+        GlobalScope.launch {
+            channel.send(doBlink)
+        }
     }
 
     //Useful for testing

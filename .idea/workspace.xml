@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5764d080-d546-41ef-bde6-4e48d099d420" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/appl/MainBlsLedOnArduinoBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/appl/MainBlsLedOnArduinoBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/appl/MainBlsMockBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/appl/MainBlsMockBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/applLogic/BlsApplicationLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/devices/DeviceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/devices/DeviceFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/java/it/unibo/bls/utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/src/test/java/it/unibo/bls/integration/TestBlsMock.java" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/src/test/java/it/unibo/bls/integration/TestBlsMock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/it.unibo.bls19Local/userDocs/Lab2.html" beforeDir="false" afterPath="$PROJECT_DIR$/it.unibo.bls19Local/userDocs/Lab2.html" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="102" />
+    <option name="y" value="20" />
+    <option name="width" value="798" />
+    <option name="height" value="556" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="iss2019Lab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="iss2019Lab" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="iss2019Lab" type="b2602c69:ProjectViewProjectNode" />
+              <item name="iss2019Lab" type="462c0819:PsiDirectoryNode" />
+              <item name="it.unibo.bls19Local" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/it.unibo.bls19Local" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5764d080-d546-41ef-bde6-4e48d099d420" name="Default Changelist" comment="" />
+      <created>1551277327279</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1551277327279</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-6" y="-6" width="1293" height="703" extended-state="6" />
+    <layout>
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24939272" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

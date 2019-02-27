@@ -3,7 +3,7 @@ package it.unibo.bls.components;
 import static org.junit.Assert.*;
 import it.unibo.bls.interfaces.IApplListener;
 import it.unibo.bls.interfaces.IButtonObservable;
-import it.unibo.bls.interfaces.IControl;
+import it.unibo.bls.interfaces.IControlLed;
 import it.unibo.bls.listener.ButtonObserver;
 import it.unibo.bls.utils.Utils;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class TestButton {
    	@Test
 	public void testTheButtonMock(){
 		IButtonObservable button  = ButtonMock.createButton();
-		IControl applLogic        = new BlsApplicationLogic();
+		IControlLed applLogic        = new BlsApplicationLogic();
 		IApplListener buttonObs   = ButtonObserver.createButtonListener( );
 		buttonObs.setControl( applLogic );
 		button.addObserver( buttonObs );	//Starts

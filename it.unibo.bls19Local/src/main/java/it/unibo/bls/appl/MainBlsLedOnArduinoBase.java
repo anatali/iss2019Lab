@@ -14,6 +14,7 @@ public class MainBlsLedOnArduinoBase extends MainBlsMockBase{
 	}
 
  	public static void main(String[] args) {
-		createTheSystem();
+
+ 		createTheSystem();
  	}
 }
