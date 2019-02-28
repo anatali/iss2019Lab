@@ -1,0 +1,62 @@
+/* codeStyle */
+body {
+    font: 100% Lucida Sans;
+    margin: 20px;
+    line-height: 26px;
+}
+
+#h3 {
+    background-color: #f6d8f8;
+}
+
+#main {
+	font-family: monospace;
+    padding: 1px;
+    margin: 0 200px;
+}
+
+#sidebar {
+    font: 70% Lucida Sans;
+    background-color: rgb(169, 240, 224);
+    color: #171db7;
+    padding: 10px;
+    width: 100px;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    position: absolute;
+}
+#menutop {
+    border: 1px solid #d4d4d4;
+    background-color: #f7f1c2;
+    text-align: center;
+    padding: 1px;
+    font-size: 70%;
+    line-height: 14px;
+    margin: 0 10px;
+}
+#bottom {
+    text-align: center;
+    padding: 10px;
+    font-size: 70%;
+    line-height: 14px;
+    margin: 0 10px;
+}
+
+	pre {
+		font-size: 1.2em;
+		font-family: monospace;
+	}
+	pre + pre {
+		background: #ff9;
+		padding: 1em;
+	}
+	
+	pre {
+  	word-break: break-all; /* webkit */
+ 	 word-wrap: break-word;
+	white-space: pre;
+	white-space: -moz-pre-wrap; /* fennec */
+ 	 white-space: pre-wrap;
+	white-space: pre\9; /* IE7+ */
+	}
