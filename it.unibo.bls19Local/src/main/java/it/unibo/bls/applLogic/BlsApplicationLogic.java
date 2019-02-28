@@ -69,6 +69,4 @@ public class BlsApplicationLogic implements IControlLed { //Note: it is NOT an o
 			}
 		}.start();
 	}
-
-
 }

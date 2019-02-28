@@ -1,6 +1,6 @@
 /*
 =======================================
- bls19.ino
+ bls2019.ino
  project it.unibo.bls19Local
  Input from Pin 3 (Button)
  ARDUINO UNO
@@ -83,6 +83,5 @@ void sendButtonState(){
 void loop(){
   readAndExecCmd();
   sendButtonState();
-  //if( v > 0 ) digitalWrite( pinLed,  v );
   delay(250);
 }

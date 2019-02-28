@@ -7,3 +7,4 @@ public class DeviceConfig {
     public static int serialBaudrate = SerialPort.BAUDRATE_9600;
 
 }
+
