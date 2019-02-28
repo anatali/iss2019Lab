@@ -24,7 +24,7 @@ public class ButtonProxyArduino extends Observable implements IButtonObservable 
         super.addObserver(observer);
     }
     //called by lookAtInputFromSerial thread
-    public void update( String msg ){
+    public synchronized void update( String msg ){
          setChanged();
          notifyObservers( msg );
     }
@@ -33,11 +33,12 @@ public class ButtonProxyArduino extends Observable implements IButtonObservable 
             public void run(){
                 while( true ) {
                     String msg = conn.readData();  //blocking
-
-                    if( msg.contains("1") ) {  //is a click
+                    //System.out.println("    ButtonProxyArduino | lookAtInputFromSerial: " + msg);
+                    if( msg.contains("buttonstate(0)") ) {  //is a click //TODO: introduce a Message class
                         System.out.println("    ButtonProxyArduino | lookAtInputFromSerial: " + msg);
                         obj.update(msg);
                     }
+
                 }
             }
         }.start();

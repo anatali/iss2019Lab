@@ -16,7 +16,8 @@ public class DeviceFactory {
         switch( devType ) {
             case LedMockObj:   return new LedMock();
             case LedGuiObj:    return LedAsGui.createLed();
-            case LedOnArduino: return new LedProxyArduino( "COM5", SerialPort.BAUDRATE_9600 );
+            case LedOnArduino: return new LedProxyArduino(
+                    DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate );
             default: return null;
         }
     }
@@ -24,7 +25,8 @@ public class DeviceFactory {
         switch( devType ) {
             case ButtonMockObj: return new ButtonMock();
             case ButtonGuiObj: return  ButtonAsGui.createButton("CLICKME");
-            case ButtonOnArduino: return new ButtonProxyArduino("COM5", SerialPort.BAUDRATE_9600);
+            case ButtonOnArduino: return new ButtonProxyArduino(
+                    DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate );
             default: return null;
         }
     }

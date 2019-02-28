@@ -1,13 +1,12 @@
 package it.unibo.bls.listener;
 
 import it.unibo.bls.interfaces.IApplListener;
-import it.unibo.bls.interfaces.IControl;
+import it.unibo.bls.interfaces.IControlLed;
 
-import java.awt.event.ActionEvent;
 import java.util.Observable;
 
 public class ButtonObserver  implements IApplListener {
-private IControl controller;
+private IControlLed controller;
 	private int count   = 0;
 //Factory method
 	public static ButtonObserver createButtonListener(  ){
@@ -17,7 +16,7 @@ private IControl controller;
 	private ButtonObserver(  ){
 		super();
  	}
-	public void setControl( IControl ctrl ){
+	public void setControl( IControlLed ctrl ){
 		this.controller = ctrl;
 	}
 

@@ -8,6 +8,12 @@ import java.awt.event.WindowListener;
 
 public class Utils {
 
+	public static void showSystemInfo(){
+		System.out.println(
+			"AT START | num of threads="+ Thread.activeCount() +" currentThread=" + Thread.currentThread() );
+	}
+
+
 	public static Frame initFrame(int dx, int dy){
  		Frame frame         = new Frame();
  		BorderLayout layout = new BorderLayout();
