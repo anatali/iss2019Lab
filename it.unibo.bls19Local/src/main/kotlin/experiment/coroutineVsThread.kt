@@ -43,8 +43,8 @@ suspend fun launchCoroutines( n: Long ){
 fun main( ) = runBlocking {
     showSystemInfo()
     showAboutCoroutineInfo()
-    launchCoroutines( 10000L  )
-    launchTreads( 10000L )
+    launchCoroutines( 50000L  )
+    launchTreads( 50000L )
     //Utils.delay(3000)
 
   }

@@ -290,7 +290,7 @@ Led state=true
 
 	<h3>A model of the system</h3>
 	 
-	The logic architecture of the <tt>BLS</tt> can be summarized by the following <tt>UML</tt> interaction diagram:</p>
+	The logic architecture of the <tt>BLS</tt> can be summarized by the following <tt>UML-like</tt> interaction diagram:</p>
 	<center><img src="./bls0.png" alt="gradlew" width="60%" height="60%"></center>
 	
 	<h2>Concurrency aspects</h2>
@@ -325,7 +325,7 @@ Led state=true
 	<a href="../src/main/java/it/unibo/bls/appl/MainBlsMockBase.java" target="code">MainBlsMockBase</a>, we can radically
 	modify the internal behaviour of our software system, without changing its architecture.
 	<p>
-	If we comment the import marked <bc>//JAVA IMPL</bc> and uncomment that marked <bc>//KOTLIN IMPL</bc>,
+	If we comment the import marked <tt>//JAVA IMPL</tt> and uncomment that marked <tt>//KOTLIN IMPL</tt>,
 	the integration test  <a href="../src/test/java/it/unibo/bls/integration/TestBlsMock.java" target="code">TestBlsMock.java</a>
 	works well as before. 
 	</p><p>
@@ -338,7 +338,7 @@ Led state=true
 	There are two main aspects to be highlighted here:
 	<ul>
 	<li>The logical transition from objects to <a href="https://en.wikipedia.org/wiki/Message_passing">message-passing</a>
-	and <a href="https://en.wikipedia.org/wiki/Actor_model">actors</li>
+	and <a href="https://en.wikipedia.org/wiki/Actor_model">actors</a>.</li>
 	<li>The extreme efficiency of coroutine, in the context of a functional-programming style. For an example, see:  
 	<a href="../src/main/kotlin/experiment/coroutineVsThread.kt.kt" target="code">coroutineVsThread.kt</a>.
 	</ul>
