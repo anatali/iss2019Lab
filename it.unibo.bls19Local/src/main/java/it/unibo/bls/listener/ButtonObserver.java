@@ -12,18 +12,17 @@ private IControlLed controller;
 	public static ButtonObserver createButtonListener(  ){
 		return new ButtonObserver(   );
 	}
-
 	private ButtonObserver(  ){
 		super();
  	}
 	public void setControl( IControlLed ctrl ){
 		this.controller = ctrl;
 	}
-
 	public int getNumOfClicks(){
 		return count;
 	}
- 	@Override  //from IObserver -> Observer
+
+	@Override  //from IApplListener IObserver -> Observer
 	public void update( Observable source, Object state ){
 		count++;
 		//System.out.println("ButtonListener update | state=" + state + " controller=" + controller);

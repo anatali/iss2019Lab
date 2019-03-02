@@ -2,20 +2,20 @@ package it.unibo.blsFramework.models;
 
 import java.util.Observable;
 import it.unibo.bls.interfaces.IObserver;
-import it.unibo.blsFramework.interfaces.ILedObservable;
+import it.unibo.blsFramework.interfaces.ILedModel;
 
 /*
  * LedModel is an observable logical model of the led
  */
-public class LedModel extends Observable implements ILedObservable {
+public class LedModel extends Observable implements ILedModel {
 private boolean state = false;
 
 //Factory method
-public static ILedObservable createLed(){
+public static ILedModel createLed(){
 	return new LedModel();
 }
-public static ILedObservable createLed(IObserver observer){
-	ILedObservable led = new LedModel();
+public static ILedModel createLed(IObserver observer){
+	ILedModel led = new LedModel();
 	led.addObserver(observer);
 	return led;
 }
@@ -36,7 +36,7 @@ public boolean getState(){
 }
 
 protected void update() {
-	System.out.println(" LedModel update state=" + state );
+	//System.out.println("	LedModel | update state=" + state );
 	this.setChanged();
 	this.notifyObservers(""+state);		//Always a String
 }

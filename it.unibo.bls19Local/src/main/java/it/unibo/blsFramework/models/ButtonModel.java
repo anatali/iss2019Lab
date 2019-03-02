@@ -1,22 +1,17 @@
 package it.unibo.blsFramework.models;
 
 import java.util.Observable;
-
 import it.unibo.bls.interfaces.IApplListener;
 import it.unibo.bls.interfaces.IButtonObservable;
 import it.unibo.bls.interfaces.IObserver;
+import it.unibo.blsFramework.interfaces.IButtonModel;
 
-public class ButtonModel extends Observable implements IButtonObservable, IObserver {
+public class ButtonModel extends Observable implements IButtonModel {
 private boolean buttonState = false;
 private String btnName;
 private IApplListener buttonObserver;
 
 //Factory methods
-public static ButtonModel createButton( String btnName, IObserver obs ){
-	 ButtonModel button = new ButtonModel(btnName);
-	 button.addObserver(obs);
-	 return button;
-}
 public static ButtonModel createButton( String btnName ){
 	 ButtonModel button = new ButtonModel(btnName);
  	 return button;
@@ -33,7 +28,7 @@ public static ButtonModel createButton( String btnName ){
 	
 	@Override //for IObserver (called by the lower layer)
 	public void update(Observable source, Object value) {
-		System.out.println("ButtonModel updated"   );
+		//System.out.println("	ButtonModel | updated"   );
 		switchThestate();
 	}
 
