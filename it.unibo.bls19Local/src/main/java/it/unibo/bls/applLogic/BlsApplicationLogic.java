@@ -10,7 +10,7 @@ public class BlsApplicationLogic implements IControlLed { //Note: it is NOT an o
 	private boolean doBlink = false;
 	private final Object monitor = new Object();
 
-	public void setControlled( ILed led ){ //no controlled => no activity
+ 	public void setControlled( ILed led ){ //no controlled => no activity
 		this.led = led;
 		//doBlinkTheLed();
 		doBlinkTheLedWaiting();		//Avoid polling on doBlink (numOfCalls)

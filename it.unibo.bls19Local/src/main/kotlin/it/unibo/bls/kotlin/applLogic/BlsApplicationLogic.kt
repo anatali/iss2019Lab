@@ -1,22 +1,22 @@
 package it.unibo.bls.kotlin.applLogic
 
-import experiment.useful
-import it.unibo.bls.interfaces.IControlLed
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
+import it.unibo.blsFramework.interfaces.IAppLogic
+import it.unibo.blsFramework.interfaces.ILedModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
-open class BlsApplicationLogic : IControlLed {
+open class BlsApplicationLogic : IAppLogic {
     protected var led: ILed? = null
-    public var numCalls = 0
-    public var doBlink = false
-    public val channel = Channel<Boolean>()
+    protected var numCalls = 0
+    protected var doBlink = false
+    protected val channel = Channel<Boolean>()
 
-    protected var currentApplLogic : (arg : BlsApplicationLogic)-> Unit = ::builtInLogic
+    //protected var currentApplLogic : IApplLogic? = this //(arg : BlsApplicationLogic)-> Unit = ::builtInLogic
 
-    override fun setControlled(led: ILed) {
+    override fun setControlled(led: ILedModel) {
         this.led = led
         GlobalScope.launch{
             println("FOR COROUTINE | numOfThreads=${Thread.activeCount()} currentThread=${Thread.currentThread().name}")
@@ -27,6 +27,7 @@ open class BlsApplicationLogic : IControlLed {
      private suspend fun doBlinkTheLedWaiting() {
          while (true) {
              doBlink = channel.receive()        //See execute
+             println("	COROUTINE | received=$doBlink")
              if (doBlink) doBlinkTheLed()
          }
     }
@@ -41,30 +42,26 @@ open class BlsApplicationLogic : IControlLed {
         }
     }
 
-    private fun switchTheLed() {
+    protected fun switchTheLed() {
         if (led == null) return        //defensive programming
         if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
     }
 
-    override//from IControlLed
+    override//from
     fun execute(cmd: String) {
-        currentApplLogic( this )
-    }
-    open fun builtInLogic(arg : BlsApplicationLogic){
+        println("	BlsApplicationLogicKt | execute cmd=$cmd  ")
+        applLogic( )
+      }
+     open fun applLogic( ){
         numCalls++
         doBlink = numCalls % 2 != 0
-        println("	BlsStrategyAppLogic | execute numCalls=$numOfCalls doBlink=$doBlink")
+        println("	BlsApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
         GlobalScope.launch {
             channel.send(doBlink)
         }
     }
-
-    fun setApplLogic( f:(arg : BlsApplicationLogic)-> Unit ){
-        currentApplLogic = f
-    }
-
     //Useful for testing
      override fun getNumOfCalls(): Int {
-        return numOfCalls
+        return numCalls
     }
 }

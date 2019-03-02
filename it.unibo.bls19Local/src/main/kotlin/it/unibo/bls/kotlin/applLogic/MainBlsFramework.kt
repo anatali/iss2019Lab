@@ -1,14 +1,11 @@
 package it.unibo.bls.kotlin.applLogic
 
 import it.unibo.bls.devices.gui.ButtonAsGui
-import it.unibo.bls.interfaces.IApplListener
-import it.unibo.bls.interfaces.IControlLed
 import it.unibo.bls.interfaces.IObservable
 import it.unibo.bls.interfaces.IObserver
-import it.unibo.bls.listener.ButtonObserver
 import it.unibo.bls.utils.Utils
 import it.unibo.blsFramework.concreteDevices.gui.LedGui
-//import it.unibo.bls.kotlin.applLogic.IBlsFramework
+import it.unibo.blsFramework.interfaces.IAppLogic
 import it.unibo.blsFramework.interfaces.IButtonModel
 import it.unibo.blsFramework.interfaces.ILedModel
 import it.unibo.blsFramework.models.ButtonModel
@@ -18,18 +15,24 @@ import kotlinx.coroutines.launch
 
 
 class MyApplLogic : BlsApplicationLogic(){
-    fun myAppLogic( arg : BlsApplicationLogic ) : Unit{
+    override fun execute(  cmd: String  ) {
+        myapplLogic(   )
+    }
+     fun myapplLogic(   ) {
+        println("	myAppLogic | execute numOfCalls=$numCalls doBlink=$doBlink channel=$channel")
+        //super.applLogic()
+        switchTheLed()
+        /*
         numCalls++
         doBlink = numCalls % 2 != 0
-        println("	myAppLogic | execute numOfCalls=$numCalls doBlink=$doBlink")
+        println("	myAppLogic | execute numOfCalls=$numCalls doBlink=$doBlink  channel=$channel")
         GlobalScope.launch {
             channel.send(doBlink)
         }
+        */
     }
-
 }
 class MainBlsFramework protected constructor(private val cmdName: String) : IBlsFramework {
-
     /*
 	 * Selectors
 	 */
@@ -37,7 +40,7 @@ class MainBlsFramework protected constructor(private val cmdName: String) : IBls
         private set
     var buttonModel: IButtonModel? = null
         private set
-    private var applLogic: IControlLed? = null
+    private var applLogic: IAppLogic? = null
     protected var buttonObserver: IApplListener? = null
 
     var buttonConcrete: IObservable? = null
@@ -52,16 +55,17 @@ class MainBlsFramework protected constructor(private val cmdName: String) : IBls
     }
 
     protected fun createLogicalComponents() {
-        ledModel      = LedModel.createLed()
-        applLogic     = BlsApplicationLogic()
-        buttonModel   = ButtonModel.createButton(cmdName)
+        ledModel       = LedModel.createLed()
+        applLogic      = BlsApplicationLogic()
+        buttonModel    = ButtonModel.createButton(cmdName)
         buttonObserver = ButtonObserver.createButtonListener()
     }
 
     protected fun configureSystemArchitecture() {
-        applLogic!!.setControlled(ledModel)
-        buttonObserver!!.setControl(applLogic)
+        //applLogic!!.setControlled(ledModel!!)
+        //buttonObserver!!.setControl(applLogic!!)
         buttonModel!!.addObserver(buttonObserver)
+        setApplLogic(applLogic!!)
     }
 
     /*
@@ -80,12 +84,13 @@ class MainBlsFramework protected constructor(private val cmdName: String) : IBls
     }
 
     override//IBlsFramework
-    fun setApplLogic( f:(arg : BlsApplicationLogic )-> Unit  ){
-        (applLogic as BlsApplicationLogic)!!.setApplLogic( f )
+    fun setApplLogic( arg : IAppLogic){
+        arg.setControlled(ledModel!!)
+        buttonObserver!!.setControl(arg)
+        //applLogic?.setApplLogic( arg )
     }
 
     companion object {
-
         //Factory method
         fun createTheSystem(cmdName: String): MainBlsFramework {
             return MainBlsFramework(cmdName)
@@ -116,16 +121,7 @@ class MainBlsFramework protected constructor(private val cmdName: String) : IBls
 	*/
 
             //Inject the concrete GUI devices
-            blSystem.setApplLogic (
-                {
-                    it.numCalls++
-                    it.doBlink = it.numCalls % 2 != 0
-                    println("	myAppLogiccccccccccccccc | execute numOfCalls=${it.numCalls} doBlink=${it.doBlink}")
-                    GlobalScope.launch {
-                        it.channel.send(it.doBlink)
-                    }
-                }
-             )
+            blSystem.setApplLogic (  MyApplLogic() )
             blSystem.setConcreteLed(LedGui.createLed())
             blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"))
 

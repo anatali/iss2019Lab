@@ -258,29 +258,16 @@ The system should
 <pre>
 public static void main(String[] args) {
 		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
-	/*
-	//Inject the concrete MOCK devices
-		blSystem.setConcreteLed( LedMock.createLed() );
-		blSystem.setConcreteButton( ButtonMock.createButton() );
-
-	//Inject the concrete GUI devices
+	//Inject the concrete GUI devices		
 		blSystem.setConcreteLed( LedGui.createLed() );
 		blSystem.setConcreteButton( ButtonAsGui.createButton("ClickMe") );
 
-	//Inject the concrete Led Arduino devices
-		blSystem.setConcreteLed(LedProxy.createLed(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-		blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"));
-
-	//Inject the concrete Button Arduino devices
-		blSystem.setConcreteLed( LedGui.createLed() );
-		blSystem.setConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-	*/
-
-	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING TO A GUI LED AN ARDUINO LED
-		blSystem.setConcreteLed( LedGui.createLed() );
-		blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"));
-		Utils.delay(5000);
-		blSystem.setConcreteLed(LedProxy.createLed(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
+ 		Utils.delay(5000);
+		blSystem.setApplLogic (  new AnotherApplLogic() );
+		blSystem.setConcreteLed(LedProxy.createLed(
+			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate)
+		);
 	}
 </pre>
   
