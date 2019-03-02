@@ -108,6 +108,12 @@ div.req{
     padding: 15px;
     margin: 10px;
 }    
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
   -->
 </style>
     
@@ -129,19 +135,156 @@ Refactoring the <tt>BLS</tt> system introduced in <a href="Lab1.html" target="in
 </div>	    
  	
 	
-<h2>THE CONCEPT OF MODEL</h2>
+<h2>A SYSTEM BASED ON MODELS</h2>
+<p>
+The architecture of the <tt>BLS</tt> system introduced in <a href="Lab1.html" target="info">Lab1.html</a> includes components
+that represent, concrete devices, for example a
+<a href="../src/main/java/it/unibo/bls/devices/mock/LedMock.java" target="code">LedMock</a> or a
+ <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a>.
+<br/>
+ To enhance flexibility and reusability, a <a href="../src/main/java/it/unibo/bls/devices/DeviceFactory.java" target="code">DeviceFactory</a>
+ is introduced, that works with reference to a set of device types (
+ <a href="../src/main/java/it/unibo/bls/devices/LedType.java" target="code">LedType</a> and
+	<a href="../src/main/java/it/unibo/bls/devices/ButtonType.java" target="code">ButtonType</a>).
+</p><p>
+Let us now replace any specific device with a <em>device model</em> (for a quick introduction on the role of models in software, you can see 
+<a href="https://en.wikipedia.org/wiki/Conceptual_model_(computer_science)" target="web">Conceptual model</a> and
+<a href="https://en.wikipedia.org/wiki/Systems_modeling" target="web">Systems modeling</a>) that captures the relevant properties of the device, without
+any reference to its technological aspects.
+</p><p>
+Our definition of a model for the <tt>Led</tt> and for the <tt>Button</tt> is at the moment quite simple, since it is limited to capture
+the idea of a components with a <bc>state</bc>, represented as a <tt>boolean</tt> variable.
+</p><p>
+<center><img src="./blsLogicModels.png" alt="blsLogicModels" width="70%" height="70%"></center>
+</p><p>
+Our models for the <tt>Led</tt> and for the <tt>Button</tt> are defined so to be <em>observable</em>; moreover, the model of the <tt>Button</tt>
+is also defined as an <em>observer</em>.
+</p><p>
+<center><table style="width:70%">
+  <tr>
+    <th>Interfaces</th>
+    <th>Models</th> 
+    </tr>
+  <tr>
+    <td>
+<ul>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a></li>
+</ul>	
+	</td>
+    <td>
+<ul>
+<li><a href="../src/main/java/it/unibo/blsFramework/models/ButtonModel.java" target="code">ButtonModel</a> (<tt>boolean buttonState</tt>)</li>
+<li><a href="../src/main/java/it/unibo/blsFramework/models/LedModel.java" target="code">LedModel</a> (<tt>boolean ledState</tt>)</li>
+</ul>	
+	</td> 
+    </tr>
+ </table></center>
+ </p><p>
+ Our ideas can be summarized as follows:
 
 <ul>
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a></li>
+<li>The  model  of any <bc>input/sensor</bc> device (like a <tt>Button</tt>) should evolve according to information that arises from some
+concrete device, i.e. it should be an <em>Observer</em>.</li>
+<li>The model of any <bc>output/actuator</bc>  device (like a <tt>Led</tt>) should send information (when it changes)
+ to some concrete device without being obliged to know such a device in static way, i.e. it should be an <em>Observable</em>.</li>
+ <li>A <b>system</b> based on proper set of models can be designed, build and tested <em>once and for all</em>. Concrete devices can be
+ added (also in a dynamic way) as <i>observers</i> (if output devices) or as <i>observable</i> (if input devices). In other
+ words, we can build a reusable software <a href="https://en.wikipedia.org/wiki/Software_framework">framework</a>.</li>
+ <li>An <b>application built upon the framework</b> can be logically conceived as a software system composed of two main parts: 
+ a <em>logical, high-level</em> part (the framework) that does not change and a <em>technology-dependent, lower-level</em>  part 
+ that provides concrete components  to be 'injected' into the logical part.</li>
+</ul> 
 
-<li><a href="../src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/appl/MainBlsOOModel.java" target="code">MainBlsOOModel</a></li>
-<li></li>
-</ul>
+<center><img src="./blsLogicModelsAndConcrete.png" alt="blsLogicModelsAndConcrete" width="70%" height="70%"></center> 
+
+</p> 
+
  
-   
+ <h2>A BLS FRAMEWORK</h2>
+The internal organization of the main program of our <tt>BLS</tt> framework 
+(<a href="../src/main/java/it/unibo/blsFramework/appl/MainBlsFramework.java" target="code">MainBlsFramework</a>) is based on the 
+<em>basic steps</em> required to set-up any software system:
+
+<ul>
+<li><bc>createLogicalComponents</bc> : creates the objects that represents the components of the framework.</li>
+<li><bc>configureSystemArchitecture</bc> : 'injects' references to the components in order to create a local network
+of interrelated objects.</li>
+</li>
+</ul>
+<p>
+There are also (as required by the <a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a>
+interface) methods (<bc>setConcreteLed</bc> and <bc>setConcreteButton</bc>) to add device-objects to the system and
+selector methods (e.g. <bc>getLedModel</bc>, <bc>getButtonConcrete</bc>) to acquire a (reference to a) specific component.
+<br/>
+The framework has no explicit <bc>startTheSystem</bc> method, since in this case the computation will start as consequance
+of a state change in a  <tt>concrete Button</tt>.
+</p><p>
+ 
+ We can reuse several components already introduced in
+ <a href="Lab1.html" target="info">Lab1.html</a> and <a href="Lab2.html" target="info">Lab2.html</a>, in particular the
+ <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>,
+ the <a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>
+ and all the <tt>Button</tt> devices, since they are already <em>Observable</em>.
+ </p><p>
+ As regards the <tt>Led</tt>, we must now introduce each concrete devices as an <em>Observer</em> that implements the method <bc>update</bc>:
+<ul>
+<li><a href="../src/main/java/it/unibo/blsFramework/concreteDevices/gui/LedGui.java" target="code">LedGui</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/concreteDevices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a></li>
+</ul> 
+
+ <h2>THE NEW FEATURES</h2>
+The main result of our model-based re-factoring of the <tt>BLS</tt> system can be summarized as follows:
+
+<ul>
+<li>We can deploy the framework as a 'stand-alone', tested system (e.g. by providing an executable jar like ). </li>
+<li>We can build a <tt>BLS</tt> application by simply injecting in the framework some (new) specific, concrete device, without
+changing the  <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
+built-in in the framework.</li>
+<li>We can modify the application logic by overriding the <bc>execute</bc> method. </li>
+<li>We can dynamically extend the system by adding more concrete buttons and led.</li>
+</ul>
+
+
+ <h2>DYNAMIC EXTENSIONS</h2>
+Of course, the consequence of dynamic extensions must be carefully analyzed before allowing them, but in some
+applications can be appropriate and useful. For example, we could start a system by introducing a 
+<a href="../src/main/java/it/unibo/blsFramework/concreteDevices/gui/LedGui.java" target="code">LedGui</a> and
+after some time add a <a href="../src/main/java/it/unibo/blsFramework/concreteDevices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a>.
+
+The system should 
+
+<pre>
+public static void main(String[] args) {
+		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
+	/*
+	//Inject the concrete MOCK devices
+		blSystem.setConcreteLed( LedMock.createLed() );
+		blSystem.setConcreteButton( ButtonMock.createButton() );
+
+	//Inject the concrete GUI devices
+		blSystem.setConcreteLed( LedGui.createLed() );
+		blSystem.setConcreteButton( ButtonAsGui.createButton("ClickMe") );
+
+	//Inject the concrete Led Arduino devices
+		blSystem.setConcreteLed(LedProxy.createLed(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+		blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"));
+
+	//Inject the concrete Button Arduino devices
+		blSystem.setConcreteLed( LedGui.createLed() );
+		blSystem.setConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+	*/
+
+	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING TO A GUI LED AN ARDUINO LED
+		blSystem.setConcreteLed( LedGui.createLed() );
+		blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"));
+		Utils.delay(5000);
+		blSystem.setConcreteLed(LedProxy.createLed(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+	}
+</pre>
+  
+
 	
 </div>  
 

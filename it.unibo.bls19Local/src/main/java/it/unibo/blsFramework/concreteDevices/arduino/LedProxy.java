@@ -21,7 +21,7 @@ public class LedProxy implements IObserver  {
             e.printStackTrace();
         }
     }
-    @Override
+    @Override //IObserver
     public void update(Observable o, Object arg) {
         boolean state = arg.toString().equals("true");
         if( state ) turnOn(); else turnOff();

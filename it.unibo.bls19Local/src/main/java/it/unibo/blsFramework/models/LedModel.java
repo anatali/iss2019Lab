@@ -8,7 +8,7 @@ import it.unibo.blsFramework.interfaces.ILedModel;
  * LedModel is an observable logical model of the led
  */
 public class LedModel extends Observable implements ILedModel {
-private boolean state = false;
+private boolean ledState = false;
 
 //Factory method
 public static ILedModel createLed(){
@@ -22,23 +22,23 @@ public static ILedModel createLed(IObserver observer){
 
 @Override
 public void turnOn(){
-	state = true;
+	ledState = true;
 	update();
 }
 @Override
 public void turnOff() {
-	state = false;
+	ledState = false;
 	update();
 }
 @Override
 public boolean getState(){
-	return state;
+	return ledState;
 }
 
 protected void update() {
 	//System.out.println("	LedModel | update state=" + state );
 	this.setChanged();
-	this.notifyObservers(""+state);		//Always a String
+	this.notifyObservers(""+ledState);		//Always a String
 }
 
 @Override

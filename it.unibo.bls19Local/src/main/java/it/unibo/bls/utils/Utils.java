@@ -13,7 +13,6 @@ public class Utils {
 			"AT START | num of threads="+ Thread.activeCount() +" currentThread=" + Thread.currentThread() );
 	}
 
-
 	public static Frame initFrame(int dx, int dy){
  		Frame frame         = new Frame();
  		BorderLayout layout = new BorderLayout();

@@ -31,7 +31,7 @@ private final Dimension sizeOff = new Dimension(30,30);
 		p.validate();
 		frame.add(BorderLayout.CENTER,p);
   	}
-	@Override
+	@Override //IObserver
 	public void update(Observable o, Object arg) {
 		boolean state = arg.toString().equals("true");
 		if( state ) turnOn(); else turnOff();
