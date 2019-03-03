@@ -1,8 +1,7 @@
 package it.unibo.blsFramework.models;
 
 import java.util.Observable;
-import it.unibo.bls.interfaces.IApplListener;
-import it.unibo.bls.interfaces.IButtonObservable;
+
 import it.unibo.bls.interfaces.IObserver;
 import it.unibo.blsFramework.interfaces.IButtonModel;
 

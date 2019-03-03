@@ -2,7 +2,6 @@ package it.unibo.bls.integration;
 
 import static org.junit.Assert.assertTrue;
 import it.unibo.bls.appl.MainBlsMockBase;
-import it.unibo.bls.interfaces.IApplListener;
 import it.unibo.bls.interfaces.IControlLed;
 import it.unibo.bls.interfaces.ILed;
 import it.unibo.bls.utils.Utils;
@@ -21,7 +20,7 @@ private MainBlsMockBase sys;
 	public void testSystemLogic(){
  		ILed led                     = sys.getLed();
 		IApplListener listener       = sys.getButtonObserver();
-		IControlLed control             = sys.getApplLogic();
+		IControlLed control          = sys.getApplLogic();
 		Utils.delay(4000);
  		assertTrue( listener.getNumOfClicks()== control.getNumOfCalls()  );
 	}

@@ -1,7 +1,7 @@
 package it.unibo.bls.components;
 
 import static org.junit.Assert.*;
-import it.unibo.bls.interfaces.IApplListener;
+
 import it.unibo.bls.interfaces.IButtonObservable;
 import it.unibo.bls.interfaces.IControlLed;
 import it.unibo.bls.listener.ButtonObserver;

@@ -77,28 +77,35 @@ public class MainBlsFramework implements IBlsFramework {
 		buttonObserver.setControl( applLogic );
 	}
 
-	//public void setApplLogic( f:()-> Unit )
-	/*
+ 	/*
 	 * Selectors
 	 */
+	@Override
 	public ILedModel getLedModel() {
 		return ledmodel;
 	}
-
+	@Override
 	public IButtonModel getButtonModel() {
 		return buttonmodel;
 	}
-
+	@Override
 	public ILed getLedConcrete() {
 		return concreteLed;
 	}
-
+	@Override
 	public IObservable getButtonConcrete() {
 		return concreteButton;
 	}
-
+	@Override
+	public IAppLogic getApplLogic(){
+		return applLogic;
+	}
+	@Override
+	public IApplListener getButtonObserver(){
+		return  buttonObserver;
+	}
 	public static void main(String[] args) {
-		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
+		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLSFramework");
 	/*
 	//Inject the concrete MOCK devices
 		blSystem.setConcreteLed( LedMock.createLed() );
@@ -129,7 +136,7 @@ public class MainBlsFramework implements IBlsFramework {
 
 		Utils.delay(10000);
 		System.out.println(" ================== CHANGE CONTROL ================= ");
- 		blSystem.setApplLogic (  new AnotherApplLogic() );
+ 		//blSystem.setApplLogic (  new AnotherApplLogic() );
 
  	}
 }

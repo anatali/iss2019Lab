@@ -2,7 +2,6 @@ package it.unibo.bls.listener;
 
 import it.unibo.bls.interfaces.IApplListener;
 import it.unibo.bls.interfaces.IControlLed;
-
 import java.util.Observable;
 
 public class ButtonObserver  implements IApplListener {

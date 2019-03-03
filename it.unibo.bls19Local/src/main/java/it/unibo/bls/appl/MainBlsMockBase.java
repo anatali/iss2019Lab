@@ -8,6 +8,7 @@ import it.unibo.bls.interfaces.*;
 import it.unibo.bls.kotlin.applLogic.BlsApplicationLogic;	//KOTLIN IMPL
 import it.unibo.bls.listener.ButtonObserver;
 import it.unibo.bls.utils.Utils;
+import it.unibo.bls.interfaces.IApplListener;
 
 
 public class MainBlsMockBase  {
