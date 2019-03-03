@@ -22,18 +22,16 @@ private final Dimension sizeOff = new Dimension(30,30);
 		led.turnOff();
 		return led;
 	}
-
 	public static ILed createLed( Frame frame){
 		LedAsGui led = new LedAsGui(frame);
 		led.turnOff();
 		return led;
 	}
-
+	//Constructor
 	public void setTheFrane(Frame frame){
 		this.frame = frame;
 		configure( );
 	}
-
 	public LedAsGui( Frame frame ) {
 		super();
 		this.frame = frame;

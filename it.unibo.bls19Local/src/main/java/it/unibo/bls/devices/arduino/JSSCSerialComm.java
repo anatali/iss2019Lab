@@ -3,7 +3,9 @@ package it.unibo.bls.devices.arduino;
 import it.unibo.bls.utils.Utils;
 import jssc.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -18,6 +20,21 @@ public class JSSCSerialComm implements SerialPortEventListener {
     private Lock object;
     private String[] portNames;
     private boolean prefixEnded = false;
+/*
+We must set just one connection for PC-port
+*/
+    private static Map<String, JSSCSerialComm> curOpenPorts =
+                            new HashMap<String, JSSCSerialComm>();
+
+    public static JSSCSerialComm getSerialConn( String commPortName, int rate ) throws Exception{
+        if( curOpenPorts.containsKey(commPortName)) return  curOpenPorts.get(commPortName);
+        else{
+            JSSCSerialComm conn = new JSSCSerialComm( rate );
+            curOpenPorts.put(commPortName,conn);
+            conn.connect( commPortName );
+            return conn;
+        }
+    }
 
     public JSSCSerialComm( int rate ) {
         this.rate = rate;

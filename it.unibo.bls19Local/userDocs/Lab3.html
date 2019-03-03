@@ -197,7 +197,7 @@ concrete device, i.e. it should be an <em>Observer</em>.</li>
  that provides concrete components  to be 'injected' into the logical part.</li>
 </ul> 
 
-<center><img src="./blsLogicModelsAndConcrete.png" alt="blsLogicModelsAndConcrete" width="70%" height="70%"></center> 
+<center><img src="./blsLogicModelsAndConcrete.png" alt="blsLogicModelsAndConcrete" width="80%" height="80%"></center> 
 
 </p> 
 
@@ -215,52 +215,74 @@ of interrelated objects.</li>
 </ul>
 <p>
 There are also (as required by the <a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a>
-interface) methods (<bc>setConcreteLed</bc> and <bc>setConcreteButton</bc>) to add device-objects to the system and
-selector methods (e.g. <bc>getLedModel</bc>, <bc>getButtonConcrete</bc>) to acquire a (reference to a) specific component.
+interface) methods (<bc>setConcreteLed</bc> and <bc>setConcreteButton</bc>, <bc>addConcreteLed</bc>) to set/add device-objects to the system and
+selector methods (e.g. <bc>getLedModel</bc>, <bc>getButtonConcrete</bc>) to acquire a reference to the last specific component added to the system.
 <br/>
-The framework has no explicit <bc>startTheSystem</bc> method, since in this case the computation will start as consequance
+The framework has no explicit <tt>startTheSystem</tt> method, since in this case the computation will start as consequance
 of a state change in a  <tt>concrete Button</tt>.
 </p><p>
  
  We can reuse several components already introduced in
- <a href="Lab1.html" target="info">Lab1.html</a> and <a href="Lab2.html" target="info">Lab2.html</a>, in particular the
- <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>,
- the <a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>
- and all the <tt>Button</tt> devices, since they are already <em>Observable</em>.
- </p><p>
- As regards the <tt>Led</tt>, we must now introduce each concrete devices as an <em>Observer</em> that implements the method <bc>update</bc>:
-<ul>
-<li><a href="../src/main/java/it/unibo/blsFramework/concreteDevices/gui/LedGui.java" target="code">LedGui</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/concreteDevices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a></li>
-</ul> 
-
+ <a href="Lab1.html" target="info">Lab1.html</a> and <a href="Lab2.html" target="info">Lab2.html</a>, in particular: 
+ <ul>
+ <li>we can reuse the <a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>
+ and all the <tt>Button</tt> devices, since they are already <em>Observable</em>;</li>
+ <li>we can reuse our concrete <tt>Led</tt> devices. The only thing to do is to introduce a 
+ <a href="../src/main/java/it/unibo/blsFramework/concreteDevices/LedObserver.java" target="code">LedObserver</a>
+ as an <a href="https://en.wikipedia.org/wiki/Adapter_pattern">adapter</a> between the 
+<a href="../src/main/java/it/unibo/blsFramework/models/LedModel.java" target="code">LedModel</a> a concrete <tt>Led</tt>;</li>
+ <li>we can reuse the application logic 
+<a href="../src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic</a> 
+with little change, since it must make reference to a 
+<a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a> rather than  to a 
+<a href="../src/main/java/it/unibo/bls/interfaces/ILed.java" target="code">ILed</a>.</li>
+ 
+ </ul>
+ 
+ 
+ 
+ 
+ 
  <h2>THE NEW FEATURES</h2>
 The main result of our model-based re-factoring of the <tt>BLS</tt> system can be summarized as follows:
 
 <ul>
 <li>We can deploy the framework as a 'stand-alone', tested system (e.g. by providing an executable jar like ). </li>
-<li>We can build a <tt>BLS</tt> application by simply injecting in the framework some (new) specific, concrete device, without
-changing the  <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
-built-in in the framework.</li>
+<li>We can build a <tt>BLS</tt> application by simply injecting in the framework some (new) specific, concrete device.</li>
 <li>We can modify the application logic by overriding the <bc>execute</bc> method. </li>
 <li>We can dynamically extend the system by adding more concrete buttons and led.</li>
 </ul>
 
 
+, without
+changing the  <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
+built-in in the framework
+
+
  <h2>DYNAMIC EXTENSIONS</h2>
 Of course, the consequence of dynamic extensions must be carefully analyzed before allowing them, but in some
 applications can be appropriate and useful. For example, we could start a system by introducing a 
-<a href="../src/main/java/it/unibo/blsFramework/concreteDevices/gui/LedGui.java" target="code">LedGui</a> and
-after some time add a <a href="../src/main/java/it/unibo/blsFramework/concreteDevices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a>.
+<a href="../src/main/java/it/unibo/bls/devices/gui/LedAsGui.java" target="code">LedAsGui</a> and
+a <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a> 
+after some time add a <a href="../src/main/java/it/unibo/bls/devices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a>,
+a <a href="../src/main/java/it/unibo/bls/devices/arduino/ButtonProxy.java" target="code">ButtonProxy (Arduino)</a>
+and also  AnotherApplLogic .
 
-The system should 
+ 
 
 <pre>
 public static void main(String[] args) {
 		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
 	//Inject the concrete GUI devices		
-		blSystem.setConcreteLed( LedGui.createLed() );
-		blSystem.setConcreteButton( ButtonAsGui.createButton("ClickMe") );
+		blSystem.setConcreteLed( LedAsGui.createLed() );
+		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
+ 	Utils.delay(10000);	
+	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED / BUTTON
+        blSystem.addConcreteLed(LedProxyArduino.create(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+	       blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+		Utils.delay(10000);
+		System.out.println(" ================== CHANGE CONTROL ================= ");
+ 		blSystem.setApplLogic (  new AnotherApplLogic() );
 
 	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
  		Utils.delay(5000);

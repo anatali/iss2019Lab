@@ -48,10 +48,11 @@ void turnOff(){
 }
 void emitLedState(){
    //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-  Serial.println("msg( info, event, arduino, none, ledstate(" + String(on) + "), " + String(count++) + " )\n" );
+  //Serial.println("msg( info, event, arduino, none, ledstate(" + String(on) + "), " + String(count++) + " )\n" );
 }
 void emitButtonState(int v){
    //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
+   if( v == 0 )
   Serial.println("msg( info, event, arduino, none, buttonstate(" + String(v) + "), " + String(count++) + " )\n" );
 }
 void readAndExecCmd(){

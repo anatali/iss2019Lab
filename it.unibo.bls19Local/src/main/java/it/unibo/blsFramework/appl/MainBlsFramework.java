@@ -1,22 +1,19 @@
 package it.unibo.blsFramework.appl;
- 
-
+import it.unibo.bls.devices.DeviceConfig;
+import it.unibo.bls.devices.arduino.ButtonProxyArduino;
+import it.unibo.bls.devices.arduino.LedProxyArduino;
 import it.unibo.bls.devices.gui.ButtonAsGui;
 import it.unibo.bls.interfaces.*;
 import it.unibo.bls.utils.Utils;
 import it.unibo.blsFramework.applLogic.AnotherApplLogic;
-import it.unibo.blsFramework.applLogic.BlsApplicationLogic;
-import it.unibo.blsFramework.concreteDevices.arduino.LedProxy;
-import it.unibo.blsFramework.concreteDevices.gui.LedGui;
-import it.unibo.blsFramework.concreteDevices.mock.LedMock;
-import it.unibo.blsFramework.interfaces.IAppLogic;
-import it.unibo.blsFramework.interfaces.IBlsFramework;
-import it.unibo.blsFramework.interfaces.IButtonModel;
-import it.unibo.blsFramework.interfaces.ILedModel;
+import it.unibo.blsFramework.kotlin.applLogic.BlsApplicationLogic;
+import it.unibo.blsFramework.concreteDevices.LedObserver;
+import it.unibo.bls.devices.gui.LedAsGui;
+import it.unibo.blsFramework.interfaces.*;
+import it.unibo.blsFramework.interfaces.IApplListener;
 import it.unibo.blsFramework.listener.ButtonObserver;
 import it.unibo.blsFramework.models.ButtonModel;
 import it.unibo.blsFramework.models.LedModel;
-import it.unibo.blsFramework.interfaces.IApplListener;
 
 public class MainBlsFramework implements IBlsFramework {
 	private String cmdName;
@@ -24,9 +21,9 @@ public class MainBlsFramework implements IBlsFramework {
 	private IButtonModel buttonmodel;
 	private IAppLogic applLogic;
 	protected IApplListener buttonObserver;
-
+	protected ILedObserver ledObserver;
 	protected IObservable concreteButton = null;
-	protected IObserver concreteLed = null;
+	protected ILed concreteLed = null;
 
 	//Factory method
 	public static MainBlsFramework createTheSystem(String cmdName) {
@@ -42,35 +39,42 @@ public class MainBlsFramework implements IBlsFramework {
 
 	protected void createLogicalComponents() {
 		ledmodel       = LedModel.createLed();
+        buttonmodel    = ButtonModel.createButton(cmdName);
 		applLogic      = new BlsApplicationLogic();
-		buttonmodel    = ButtonModel.createButton(cmdName);
 		buttonObserver = ButtonObserver.createButtonListener();
+		ledObserver    = LedObserver.create();
 	}
 
 	protected void configureSystemArchitecture() {
-		//applLogic.setControlled(ledmodel);
-		//buttonObserver.setControl(applLogic);
 		buttonmodel.addObserver(buttonObserver);
-		setApplLogic(applLogic);
-	}
+        ledmodel.addObserver(ledObserver);
+        setApplLogic( applLogic );
+ 	}
 	/*
 	 * Setter methods
 	 */
 	@Override //IBlsFramework
-	public void setConcreteLed(IObserver led) {
-		concreteLed = led;
-		ledmodel.addObserver(concreteLed);
+	public void setConcreteLed(ILed led) {
+        concreteLed = led;
+		ledObserver.setLed(led) ;
 	}
-
+    @Override //IBlsFramework
+    public void addConcreteLed(ILed led) {
+        ILedObserver ledObs = LedObserver.create();
+        concreteLed = led;
+        ledObs.setLed(led);
+        ledmodel.addObserver( ledObs );
+    }
 	@Override //IBlsFramework
-	public void setConcreteButton(IObservable button) {
-		concreteButton = button;
-		concreteButton.addObserver(buttonmodel);  //STARTS
+	public void addConcreteButton(IObservable button) {
+		//concreteButton = button;            //for a single controller
+        button.addObserver(buttonmodel);  //STARTS
 	}
-
-	public void setApplLogic(  IAppLogic appLogic ){
-		appLogic.setControlled( ledmodel );
-		buttonObserver.setControl( appLogic );
+	public void setApplLogic( IAppLogic appLogic ){
+        applLogic.execute("stop");
+        applLogic = appLogic;
+        applLogic.setControlled( ledmodel );
+		buttonObserver.setControl( applLogic );
 	}
 
 	//public void setApplLogic( f:()-> Unit )
@@ -85,7 +89,7 @@ public class MainBlsFramework implements IBlsFramework {
 		return buttonmodel;
 	}
 
-	public IObserver getLedConcrete() {
+	public ILed getLedConcrete() {
 		return concreteLed;
 	}
 
@@ -118,11 +122,14 @@ public class MainBlsFramework implements IBlsFramework {
 
 	//Inject the concrete GUI devices
 
-		blSystem.setConcreteLed( LedGui.createLed() );
-		blSystem.setConcreteButton( ButtonAsGui.createButton("ClickMe") );
+		blSystem.setConcreteLed( LedAsGui.createLed() );
+        //blSystem.addConcreteLed(LedProxyArduino.create(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
+        //blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+
 		Utils.delay(10000);
-		blSystem.setApplLogic (  new AnotherApplLogic() );
-		//Utils.delay(10000);
-		//blSystem.setApplLogic (  new BlsApplicationLogic() );
-	}
+		System.out.println(" ================== CHANGE CONTROL ================= ");
+ 		blSystem.setApplLogic (  new AnotherApplLogic() );
+
+ 	}
 }

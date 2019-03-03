@@ -1,6 +1,5 @@
 package it.unibo.blsFramework.applLogic;
 
-
 import it.unibo.bls.interfaces.ILed;
 import it.unibo.bls.utils.Utils;
 import it.unibo.blsFramework.interfaces.IAppLogic;
@@ -8,28 +7,14 @@ import it.unibo.blsFramework.interfaces.ILedModel;
 
 public class BlsApplicationLogic implements IAppLogic { //Note: it is NOT an observer
 	private ILed led;
-	private int numOfCalls = 0;
-	private boolean doBlink = false;
-	private final Object monitor = new Object();
+	private int numOfCalls        = 0;
+	private boolean doBlink       = false;
+	private final Object monitor  = new Object();
+	private boolean stopped       = false;
 
  	public void setControlled( ILedModel led ){ //no controlled => no activity
 		this.led = led;
-		//doBlinkTheLed();
 		doBlinkTheLedWaiting();		//Avoid polling on doBlink (numOfCalls)
-	}
-	/*
-	NAIVE solution based on polling on numOfCalls
-	 */
-	private void doBlinkTheLed(){
-		new Thread(){
-			public void run(){
- 				System.out.println("	BlsApplicationLogic | doBlinkTheLed Thread STARTS looping ...");
-					while (true) {
-						if ( doBlink ) switchTheLed(); //else do nothing
-						Utils.delay(250);
-					}
-			}
-		}.start();
 	}
 
 	protected void switchTheLed(){
@@ -39,6 +24,11 @@ public class BlsApplicationLogic implements IAppLogic { //Note: it is NOT an obs
 
 	@Override //from IControlLed
 	public void execute( String cmd  ){
+		System.out.println("	BlsApplicationLogic | execute cmd=" + cmd);
+ 		if( cmd.equals("stop") ){
+			doBlink = false;
+			return;
+		}
 		numOfCalls++;
 		doBlink = numOfCalls % 2 != 0;
 		System.out.println("	BlsApplicationLogic | numOfCalls=" + numOfCalls + " doBlink=" + doBlink);
@@ -60,7 +50,7 @@ public class BlsApplicationLogic implements IAppLogic { //Note: it is NOT an obs
 			public void run(){
  				System.out.println("	BlsApplicationLogic | doBlinkTheLedWaiting Thread STARTS   ..."  );
 				try {
-						while (true) {
+						while ( true  ) {
 							synchronized( monitor ) {
 								while( ! doBlink ) monitor.wait();
 							}

@@ -12,8 +12,10 @@ public class ButtonProxyArduino extends Observable implements IButtonObservable 
     }
     protected void configure( String portNum, int rate ){
         try {
-            conn = new JSSCSerialComm( rate );
-            conn.connect(portNum);
+            //conn = new JSSCSerialComm( rate );
+            //conn.connect(portNum);
+
+            conn = JSSCSerialComm.getSerialConn(portNum, rate);
             lookAtInputFromSerial(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +37,7 @@ public class ButtonProxyArduino extends Observable implements IButtonObservable 
                     String msg = conn.readData();  //blocking
                     //System.out.println("    ButtonProxyArduino | lookAtInputFromSerial: " + msg);
                     if( msg.contains("buttonstate(0)") ) {  //is a click //TODO: introduce a Message class
-                        System.out.println("    ButtonProxyArduino | lookAtInputFromSerial: " + msg);
+                        //System.out.println("    ButtonProxyArduino | lookAtInputFromSerial: " + msg);
                         obj.update(msg);
                     }
 

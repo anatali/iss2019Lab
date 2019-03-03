@@ -1,22 +1,19 @@
 package it.unibo.bls.kotlin.applLogic
 
+import it.unibo.bls.interfaces.IControlLed
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
-import it.unibo.blsFramework.interfaces.IAppLogic
-import it.unibo.blsFramework.interfaces.ILedModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 
-open class BlsApplicationLogic : IAppLogic {
+open class BlsApplicationLogic : IControlLed {
     protected var led: ILed? = null
     protected var numCalls = 0
     protected var doBlink = false
     protected val channel = Channel<Boolean>()
 
-    //protected var currentApplLogic : IApplLogic? = this //(arg : BlsApplicationLogic)-> Unit = ::builtInLogic
-
-    override fun setControlled(led: ILedModel) {
+    override fun setControlled(led: ILed) {
         this.led = led
         GlobalScope.launch{
             println("FOR COROUTINE | numOfThreads=${Thread.activeCount()} currentThread=${Thread.currentThread().name}")
