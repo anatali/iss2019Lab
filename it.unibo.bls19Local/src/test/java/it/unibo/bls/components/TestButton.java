@@ -1,7 +1,7 @@
 package it.unibo.bls.components;
 
 import static org.junit.Assert.*;
-
+import it.unibo.bls.interfaces.IButtonListener;
 import it.unibo.bls.interfaces.IButtonObservable;
 import it.unibo.bls.interfaces.IControlLed;
 import it.unibo.bls.listener.ButtonObserver;
@@ -15,7 +15,7 @@ public class TestButton {
 	public void testTheButtonMock(){
 		IButtonObservable button  = ButtonMock.createButton();
 		IControlLed applLogic        = new BlsApplicationLogic();
-		IApplListener buttonObs   = ButtonObserver.createButtonListener( );
+		IButtonListener buttonObs   = ButtonObserver.createButtonListener( );
 		buttonObs.setControl( applLogic );
 		button.addObserver( buttonObs );	//Starts
 		Utils.delay(4000);				//Give the time to work

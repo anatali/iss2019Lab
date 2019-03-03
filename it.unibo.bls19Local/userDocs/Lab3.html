@@ -125,7 +125,7 @@ table, th, td {
 
 <div class="body"> 
 
-<h1>72939 - LAB3 | A ButtonLedSystem application framework</h1> 
+<h1>72939 - LAB3 | A ButtonLedSystem framework</h1> 
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
 <h2>REQUIREMENTS</h2>
@@ -170,6 +170,8 @@ is also defined as an <em>observer</em>.
 <ul>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IAppLogic.java" target="code">IAppLogic</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IApplListener.java" target="code">IApplListener</a></li>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a></li>
 </ul>	
 	</td>
@@ -231,7 +233,7 @@ of a state change in a  <tt>concrete Button</tt>.
  <a href="../src/main/java/it/unibo/blsFramework/concreteDevices/LedObserver.java" target="code">LedObserver</a>
  as an <a href="https://en.wikipedia.org/wiki/Adapter_pattern">adapter</a> between the 
 <a href="../src/main/java/it/unibo/blsFramework/models/LedModel.java" target="code">LedModel</a> a concrete <tt>Led</tt>;</li>
- <li>we can reuse the application logic 
+ <li>we can also reuse the application logic 
 <a href="../src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic</a> 
 with little change, since it must make reference to a 
 <a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a> rather than  to a 
@@ -239,10 +241,7 @@ with little change, since it must make reference to a
  
  </ul>
  
- 
- 
- 
- 
+  
  <h2>THE NEW FEATURES</h2>
 The main result of our model-based re-factoring of the <tt>BLS</tt> system can be summarized as follows:
 
@@ -293,7 +292,28 @@ public static void main(String[] args) {
 	}
 </pre>
   
+ <h2>TESTING / JaCoCo</h2>
+A possible integration test is reported in
+	<a href="../src/test/java/it/unibo/bls/integration/TestBlsFramework.java" target="code">TestBlsFramework.java</a>
+<br/><br/>	
+Execute <bc>gradle test</bc> and look at 
+	<a href="../build/reports/tests/test/index.html" target="code">build/report/tests/test/index.html</a>	
+	
+	
+<h3>JaCoCo</h3>
+<ol>
+<li>In <a href="../build.gradle" target="code">build.gradle</a> add the 
+<a href="https://docs.gradle.org/current/userguide/jacoco_plugin.html" target="webb">JaCoCo plugin</a> 
+(<a href="https://www.youtube.com/watch?v=ieYs0hkogVY">Video on JaCoCo</a>)</li>
+<li>The command <bc>gradle build</bc> executes the tests and <tt>JaCoCo</tt> create the binary file <tt>text.exec</tt> in <tt>build/jacoco</tt></li>
 
+<li>Execute <bc>gradle build jacocoTestReport</bc> to generate a readable report and look at
+<a href="../build/reports/jacoco/test/html/index.html" target="code">build/reports/jacoco/test/html/index.html</a>
+
+</li>
+</ol>
+	
+	<br/><br/>
 	
 </div>  
 

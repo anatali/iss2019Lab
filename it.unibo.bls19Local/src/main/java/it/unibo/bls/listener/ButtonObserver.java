@@ -1,10 +1,10 @@
 package it.unibo.bls.listener;
 
-import it.unibo.bls.interfaces.IApplListener;
+import it.unibo.bls.interfaces.IButtonListener;
 import it.unibo.bls.interfaces.IControlLed;
 import java.util.Observable;
 
-public class ButtonObserver  implements IApplListener {
+public class ButtonObserver  implements IButtonListener {
 private IControlLed controller;
 	private int count   = 0;
 //Factory method
@@ -21,7 +21,7 @@ private IControlLed controller;
 		return count;
 	}
 
-	@Override  //from IApplListener IObserver -> Observer
+	@Override  //from IButtonListener IObserver -> Observer
 	public void update( Observable source, Object state ){
 		count++;
 		//System.out.println("ButtonListener update | state=" + state + " controller=" + controller);

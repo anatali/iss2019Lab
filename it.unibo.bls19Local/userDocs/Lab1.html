@@ -214,9 +214,9 @@ Led state=true
 	<ul>
 	<li>Execute <bc>gradle test</bc> and look at 
 	<a href="../build/reports/tests/test/index.html" target="code">build/report/tests/test/index.html</a></li>
-	<li>Unit testing: <a href="../src/test/java/it/unibo/bls/components/TestLed.java" target="code">TestLed.java</a>,
+	<li><em>Unit testing</em>: <a href="../src/test/java/it/unibo/bls/components/TestLed.java" target="code">TestLed.java</a>,
 	<a href="../src/test/java/it/unibo/bls/components/TestButton.java" target="code">TestButton.java</a></li>
-	<li>Integration testing: <a href="../src/test/java/it/unibo/bls/integration/TestBlsMock.java" target="code">TestBlsMock.java</a> </li>
+	<li><em>Integration testing</em>: <a href="../src/test/java/it/unibo/bls/integration/TestBlsMock.java" target="code">TestBlsMock.java</a> </li>
 	</ul>
 
 	<h3>Looking at the code</h3>
@@ -269,7 +269,7 @@ Led state=true
 		<li><em>Observers</em>: The <tt>Application logic</tt> is put in execution by a component 
 		(<a href="../src/main/java/it/unibo/bls/listener/ButtonObserver.java" target="code">ButtonObserver</a>) 
 		that acts as an observer of the state of the <tt>Button</tt>, by implementing the interface 
-		<a href="../src/main/java/it/unibo/bls/interfaces/IApplListener.java" target="code">IApplListener</a> that extends 
+		<a href="../src/main/java/it/unibo/bls/interfaces/IButtonListener.java" target="code">IButtonListener</a> that extends 
 		<a href="../src/main/java/it/unibo/bls/interfaces/IObserver.java" target="code">IObserver</a> 
 		(a warpper of the built-in <tt>java.util.Observer</tt>).</li>
 		<li><em>Dependency injection</em>:The final software system is created by

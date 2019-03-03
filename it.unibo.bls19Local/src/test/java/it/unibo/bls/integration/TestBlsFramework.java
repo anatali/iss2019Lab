@@ -28,8 +28,11 @@ private IBlsFramework sys;
  		ILedModel led              = sys.getLedModel();
 		IApplListener buttonObs    = sys.getButtonObserver();
 		IAppLogic appLogic         = sys.getApplLogic();
-		Utils.delay(4000);
- 		assertTrue( appLogic.getNumOfCalls()== appLogic.getNumOfCalls()  );
+		for( int i=1; i<= 5; i++){
+			buttonObs.update(null,"click");
+			Utils.delay(500);
+			}
+ 		assertTrue( buttonObs.getNumOfClicks()== appLogic.getNumOfCalls()  );
 	}
 
 }

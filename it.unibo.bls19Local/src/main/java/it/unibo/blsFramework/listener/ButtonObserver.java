@@ -21,7 +21,7 @@ private IAppLogic controller;
 		return count;
 	}
 
-	@Override  //from IApplListener IObserver -> Observer
+	@Override  //from IButtonListener IObserver -> Observer
 	public void update( Observable source, Object state ){
 		count++;
 		//System.out.println("ButtonListener update | state=" + state + " controller=" + controller);

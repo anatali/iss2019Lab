@@ -2,9 +2,13 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
     id 'application'
+    //id 'jacoco'         //ADDED After BLSFramework
 }
+
+apply plugin: 'jacoco'      //ADDED After BLSFramework
+
 group 'issUnibo19'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -30,6 +34,16 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+/*
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}\\reports\\test\\jacocoHtml"
+    }
+}
+*/
+
 // Define the main class for the application.
-mainClassName = 'it.unibo.bls.appl.MainBlsMockBase'
- 
+//mainClassName = 'it.unibo.bls.appl.MainBlsMockBase'
+mainClassName = 'it.unibo.blsFramework.appl.MainBlsFramework'

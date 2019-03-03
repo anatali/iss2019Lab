@@ -8,13 +8,13 @@ import it.unibo.bls.interfaces.*;
 import it.unibo.bls.kotlin.applLogic.BlsApplicationLogic;	//KOTLIN IMPL
 import it.unibo.bls.listener.ButtonObserver;
 import it.unibo.bls.utils.Utils;
-import it.unibo.bls.interfaces.IApplListener;
+import it.unibo.bls.interfaces.IButtonListener;
 
 
 public class MainBlsMockBase  {
 	protected IButtonObservable btn;
 	protected ILed led;
-	protected IApplListener buttonObserver;
+	protected IButtonListener buttonObserver;
 	protected IControlLed applLogic;
 	protected DeviceFactory devFactory = new DeviceFactory();
 	protected LedType ledType ;
@@ -59,7 +59,7 @@ public class MainBlsMockBase  {
 	public ILed getLed(){
 		return led;
 	}
-	public IApplListener getButtonObserver(){
+	public IButtonListener getButtonObserver(){
 		return buttonObserver;
 	}
 	public IControlLed getApplLogic(){

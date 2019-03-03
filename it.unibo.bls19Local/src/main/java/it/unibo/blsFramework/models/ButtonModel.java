@@ -3,6 +3,7 @@ package it.unibo.blsFramework.models;
 import java.util.Observable;
 
 import it.unibo.bls.interfaces.IObserver;
+import it.unibo.blsFramework.interfaces.IApplListener;
 import it.unibo.blsFramework.interfaces.IButtonModel;
 
 public class ButtonModel extends Observable implements IButtonModel {
