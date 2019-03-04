@@ -8,6 +8,7 @@ import it.unibo.blsFramework.interfaces.IAppLogic;
 import it.unibo.blsFramework.interfaces.IApplListener;
 import it.unibo.blsFramework.interfaces.IBlsFramework;
 import it.unibo.blsFramework.interfaces.ILedModel;
+import it.unibo.blsFramework.kotlin.applLogic.AnotherApplLogic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +22,7 @@ private IBlsFramework sys;
 		sys = MainBlsFramework.createTheSystem("BLSFramework");
 		sys.setConcreteLed( LedAsGui.createLed() );
 		sys.addConcreteButton( ButtonAsGui.createButton("Click") );
+		sys.setApplLogic (  new AnotherApplLogic() );
 	}
 
 	@Test
@@ -30,9 +32,9 @@ private IBlsFramework sys;
 		IAppLogic appLogic         = sys.getApplLogic();
 		for( int i=1; i<= 5; i++){
 			buttonObs.update(null,"click");
-			Utils.delay(500);
+			Utils.delay(250);
 			}
- 		assertTrue( buttonObs.getNumOfClicks()== appLogic.getNumOfCalls()  );
+ 		assertTrue( buttonObs.getNumOfClicks()== 5 && appLogic.getNumOfCalls() == 5  );
 	}
 
 }

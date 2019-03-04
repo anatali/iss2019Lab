@@ -5,7 +5,7 @@ import it.unibo.bls.devices.arduino.LedProxyArduino;
 import it.unibo.bls.devices.gui.ButtonAsGui;
 import it.unibo.bls.interfaces.*;
 import it.unibo.bls.utils.Utils;
-import it.unibo.blsFramework.applLogic.AnotherApplLogic;
+import it.unibo.blsFramework.kotlin.applLogic.AnotherApplLogic;
 import it.unibo.blsFramework.kotlin.applLogic.BlsApplicationLogic;
 import it.unibo.blsFramework.concreteDevices.LedObserver;
 import it.unibo.bls.devices.gui.LedAsGui;
@@ -134,9 +134,9 @@ public class MainBlsFramework implements IBlsFramework {
 		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
         //blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
 
-		Utils.delay(10000);
+		Utils.delay(5000);
 		System.out.println(" ================== CHANGE CONTROL ================= ");
- 		//blSystem.setApplLogic (  new AnotherApplLogic() );
+ 		blSystem.setApplLogic (  new AnotherApplLogic() );
 
  	}
 }

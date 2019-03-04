@@ -4,6 +4,7 @@ import it.unibo.bls.utils.Utils
 import it.unibo.blsFramework.interfaces.IAppLogic
 import it.unibo.blsFramework.interfaces.ILedModel
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
@@ -14,20 +15,22 @@ open class BlsApplicationLogic : IAppLogic {
     protected var doBlink = false
     @kotlinx.coroutines.ObsoleteCoroutinesApi
     protected val dispatcher = newFixedThreadPoolContext(3, "mypool")
+    //protected val jobBlink = Job();
     /*
     PROACTIVE PART
     The actor returns a send channel
      */
     @kotlinx.coroutines.ObsoleteCoroutinesApi
-    protected  val actorBlink = GlobalScope.actor<String>(dispatcher, 1 ) {
+    val actorBlink = GlobalScope.actor<String>(dispatcher, 1 ) {
         for( msg in channel ) {
             println("   ACTOR actorBlink |  msg= $msg doBlink= $doBlink ")
             while ( doBlink ) {
                 //switch the led
                 if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
+                //WARNING: inactive for 250 msec
                 Utils.delay(250)
             }
-            //println("   ACTOR actorBlink  | doBlinkTheLed ENDS ...")
+            println("   ACTOR actorBlink  | doBlinkTheLed ENDS ...")
         }
     }
 
@@ -44,7 +47,7 @@ open class BlsApplicationLogic : IAppLogic {
     open  fun applLogic( ){  //open : can be overridden
         numCalls++
         doBlink = numCalls % 2 != 0     //if false actorBlink ends its loop
-        //println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
+        println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
         if( doBlink )
         GlobalScope.launch {
             actorBlink.send("work") //REACTIVATES the actor

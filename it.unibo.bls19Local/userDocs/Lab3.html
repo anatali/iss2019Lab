@@ -91,6 +91,7 @@ bc{
 	background-color: #fcf8c7;
 }
 pre{
+	font-family: "Helvetica";
 	font-size: 80%;
 	background-color: #fcf8c7;
 	border: 1px solid blue;
@@ -241,61 +242,111 @@ with little change, since it must make reference to a
  
  </ul>
  
-  
+ <h2>The Application Logic</h2> 
+The  application logic built-in in the framework is implemented by a component 
+(<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>)
+that works as a proactive/reactive entity:
+
+<ul>
+<li><em>reactive</em>: the application logic is always able to run the operation <bc>execute</bc>, since this operation is 
+the method of a conventional object (the method code runs in the context of a caller Thread); </li>
+<li><em>proactive</em>: the application logic is able to perform the 'blinking task' within a <em>Kotlin Actor</em> 
+(for an introduction to the concept of actor in Kotlin, see <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
+Kotlin corotines: Shared mutable state and concurrency</a>) defined as follows:
+
+
+<pre>
+    protected var led: ILedModel? = null
+    protected var doBlink        = false
+	 
+    val actorBlink = GlobalScope.actor<String>(dispatcher, 1 ) {
+        for( msg in channel ) {
+            //println("   ACTOR actorBlink |  msg= $msg doBlink= $doBlink ")
+            while ( doBlink ) { //switch the led            
+                if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
+                Utils.delay(250)
+            }
+            //println("   ACTOR actorBlink  | doBlinkTheLed ENDS ...")
+        }
+    }
+</pre> 
+ 
+The actor blinks the <tt>Led</tt> while the boolean variable <bc>doBlink</bc> is true. Otherwise it checks for a new message from its
+input channel; if no message is present, the actor waits (more precisely, it <em>suspends</em>, since it is a coroutine) without consuming
+<tt>CPU</tt> time. The variable <bc>doBlink</bc> is changed by the method <bc>applLogic</bc> (called by the method <bc>execute</bc>)
+that sends also a message to the actor, in order to resume its activity.
+ 
+
+</li>
+</ul>
+
+ <h3>(KOTLIN) ACTORS</h3> 
+The <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">Kotlin actor</a>
+is a coroutine builder  <i>'that conveniently combines actor's mailbox channel into its scope to receive messages from and 
+combines the send channel into the resulting job object'</i>. From now on, we will represent such a new computational entity with the
+following picture:
+
+ <center><img src="./actor.png" alt="actor" width="10%" height="10%"></center>
+
+ 
  <h2>THE NEW FEATURES</h2>
 The main result of our model-based re-factoring of the <tt>BLS</tt> system can be summarized as follows:
 
 <ul>
-<li>We can deploy the framework as a 'stand-alone', tested system (e.g. by providing an executable jar like ). </li>
+<li>We can deploy the framework as a 'stand-alone', tested system (e.g. by providing a linrary as a <tt>JAR</tt> file). </li>
 <li>We can build a <tt>BLS</tt> application by simply injecting in the framework some (new) specific, concrete device.</li>
-<li>We can modify the application logic by overriding the <bc>execute</bc> method. </li>
+<li>We can modify the application logic by overriding the <bc>appLogic</bc> method. </li>
 <li>We can dynamically extend the system by adding more concrete buttons and led.</li>
 </ul>
 
 
-, without
-changing the  <a href="../src/main/kotlin/it/unibo/bls/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
-built-in in the framework
 
 
  <h2>DYNAMIC EXTENSIONS</h2>
 Of course, the consequence of dynamic extensions must be carefully analyzed before allowing them, but in some
-applications can be appropriate and useful. For example, we could start a system by introducing a 
+applications can be appropriate and useful. 
+<br/><br/>
+For example, we could:
+<ol>
+<li><em>START</em>: start a system by introducing a 
 <a href="../src/main/java/it/unibo/bls/devices/gui/LedAsGui.java" target="code">LedAsGui</a> and
-a <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a> 
-after some time add a <a href="../src/main/java/it/unibo/bls/devices/arduino/LedProxy.java" target="code">LedProxy (Arduino)</a>,
-a <a href="../src/main/java/it/unibo/bls/devices/arduino/ButtonProxy.java" target="code">ButtonProxy (Arduino)</a>
-and also  AnotherApplLogic .
+a <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a>.</li>
+<li><em>ADD</em>: after some time add a <a href="../src/main/java/it/unibo/bls/devices/arduino/LedProxyArduino.java" target="code">LedProxyArduino</a>,
+and a <a href="../src/main/java/it/unibo/bls/devices/arduino/ButtonProxyArduino.java" target="code">ButtonProxyArduino</a> as defined
+in our previous <a href="Lab2.html" target="info">Lab2.html</a>.
+</li>
+<li><em>CHANGE</em>: set up <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/AnotherApplLogic.kt" target="code">AnotherApplLogic.kt</a></li>
+</ol>
+ 
 
+ 
  
 
 <pre>
 public static void main(String[] args) {
 		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
-	//Inject the concrete GUI devices		
+	//START:      Inject the concrete GUI devices		
 		blSystem.setConcreteLed( LedAsGui.createLed() );
 		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
- 	Utils.delay(10000);	
-	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED / BUTTON
-        blSystem.addConcreteLed(LedProxyArduino.create(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-	       blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+		Utils.delay(10000);	
+	//ADD:        CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED / BUTTON
+        blSystem.addConcreteLed(LedProxyArduino.create(
+			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+	       blSystem.addConcreteButton( new ButtonProxyArduino(
+			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
 		Utils.delay(10000);
-		System.out.println(" ================== CHANGE CONTROL ================= ");
- 		blSystem.setApplLogic (  new AnotherApplLogic() );
 
-	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
+	//CHANGE:    THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
  		Utils.delay(5000);
-		blSystem.setApplLogic (  new AnotherApplLogic() );
-		blSystem.setConcreteLed(LedProxy.createLed(
-			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate)
-		);
+		System.out.println(" ============ CHANGE CONTROL =============== ");
+ 		blSystem.setApplLogic (  new AnotherApplLogic() );
 	}
 </pre>
   
  <h2>TESTING / JaCoCo</h2>
 A possible integration test is reported in
 	<a href="../src/test/java/it/unibo/bls/integration/TestBlsFramework.java" target="code">TestBlsFramework.java</a>
-<br/><br/>	
+<br/>
 Execute <bc>gradle test</bc> and look at 
 	<a href="../build/reports/tests/test/index.html" target="code">build/report/tests/test/index.html</a>	
 	
@@ -304,17 +355,21 @@ Execute <bc>gradle test</bc> and look at
 <ol>
 <li>In <a href="../build.gradle" target="code">build.gradle</a> add the 
 <a href="https://docs.gradle.org/current/userguide/jacoco_plugin.html" target="webb">JaCoCo plugin</a> 
-(<a href="https://www.youtube.com/watch?v=ieYs0hkogVY">Video on JaCoCo</a>)</li>
-<li>The command <bc>gradle build</bc> executes the tests and <tt>JaCoCo</tt> create the binary file <tt>text.exec</tt> in <tt>build/jacoco</tt></li>
+(see <a href="https://www.youtube.com/watch?v=ieYs0hkogVY">Video on JaCoCo</a>)</li>
+<li>The command <bc>gradle build</bc> does execute the tests and <tt>JaCoCo</tt> creates the binary file <bc>text.exec</bc> in <tt>build/jacoco</tt></li>
 
-<li>Execute <bc>gradle build jacocoTestReport</bc> to generate a readable report and look at
-<a href="../build/reports/jacoco/test/html/index.html" target="code">build/reports/jacoco/test/html/index.html</a>
+<li>Execute <bc>gradle build jacocoTestReport</bc> to convert the binary file a readable test report; then look at
+<a href="../build/reports/jacoco/test/html/index.html" target="code">build/reports/jacoco/test/html/index.html</a>.
 
 </li>
 </ol>
 	
 	<br/><br/>
-	
+
+
+
+ <h2>DEPLOYMENT</h2>
+ 
 </div>  
 
 </body>
