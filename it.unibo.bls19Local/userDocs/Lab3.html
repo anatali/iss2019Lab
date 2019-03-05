@@ -136,7 +136,7 @@ Refactoring the <tt>BLS</tt> system introduced in <a href="Lab1.html" target="in
 </div>	    
  	
 	
-<h2>A SYSTEM BASED ON MODELS</h2>
+<h2>TOWARD SYSTEM MODELLING</h2>
 <p>
 The architecture of the <tt>BLS</tt> system introduced in <a href="Lab1.html" target="info">Lab1.html</a>  and later extended in
 <a href="Lab2.html" target="info">Lab2.html</a>, includes components
@@ -145,15 +145,34 @@ that represent, concrete devices, for example a
  <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a>.
 <br/>
  To enhance flexibility and reusability, a <a href="../src/main/java/it/unibo/bls/devices/DeviceFactory.java" target="code">DeviceFactory</a>
- is introduced, that works with reference to a set of device types (
+ is introduced, that works with reference to a set of <em>device types</em> (
  <a href="../src/main/java/it/unibo/bls/devices/LedType.java" target="code">LedType</a> and
 	<a href="../src/main/java/it/unibo/bls/devices/ButtonType.java" target="code">ButtonType</a>).
 </p><p>
 Let us now replace any specific device with a <em>device model</em> (for a quick introduction on the role of models in software, you can see 
 <a href="https://en.wikipedia.org/wiki/Conceptual_model_(computer_science)" target="web">Conceptual model</a> and
-<a href="https://en.wikipedia.org/wiki/Systems_modeling" target="web">Systems modeling</a>) that captures the relevant properties of the device, without
-any reference to its technological aspects.
+<a href="https://en.wikipedia.org/wiki/Systems_modeling" target="web">Systems modeling</a>) with the aim of captureing 
+the relevant properties of the device (without any reference to its technological aspects).
 </p><p>
+
+<h3>Digital twins</h3>
+In the context of the  <a href="https://en.wikipedia.org/wiki/Internet_of_things">Internet of things</a>, we can read  that a
+<a href="https://en.wikipedia.org/wiki/Digital_twin">digital twin</a> is:
+
+<ul>
+<li>a dynamic virtual representation of a physical object or system across its lifecycle, 
+using real-time data to enable understanding, learning and reasoning;</li>
+<li>a real time digital replica of a physical device;</li>
+<li>a digital replica of a living or non-living physical entity. By bridging the physical and the virtual world, 
+data is transmitted seamlessly allowing the virtual entity to exist simultaneously with the physical entity</li>
+<li>...</li>
+</ul>
+
+The introduction of the concept of <em>digital twin</em> is going to 'disruptt' the entire <em>Product Lifecycle Management</em> (<tt>PLM</tt>), 
+from manufacturing to service and operations.
+Digital twins offer a great amount of business potential by predicting the future instead of analyzing the past of the manufacturing process.
+
+<h2>MODELLING THE DEVICES</h2>
 Our definition of a model for the <tt>Led</tt> and for the <tt>Button</tt> is at the moment quite simple, since it is limited to capture
 the idea of a components with a <bc>state</bc>, represented as a <tt>boolean</tt> variable.
 </p><p>
@@ -190,12 +209,14 @@ is also defined as an <em>observer</em>.
 
 <ul>
 <li>The  model  of any <bc>input/sensor</bc> device (like a <tt>Button</tt>) should evolve according to information that arises from some
-concrete device, i.e. it should be an <em>Observer</em>.</li>
-<li>The model of any <bc>output/actuator</bc>  device (like a <tt>Led</tt>) should send information (when it changes)
- to some concrete device without being obliged to know such a device in static way, i.e. it should be an <em>Observable</em>.</li>
+concrete device, i.e. it should be an <em>Observer</em>. Moreover, it should be also an <em>Observable</em> in order to propagate
+information about changes, by avoiding the need of polling on it.</li>
+<li>The model of any <bc>output/actuator</bc>  device (like a <tt>Led</tt>) should be an <em>Observable</em>,
+since it should send information (when it changes)
+ to some concrete device without being obliged to know such a device in static way.</li>
  <li>A <b>system</b> based on proper set of models can be designed, build and tested <em>once and for all</em>. Concrete devices can be
  added (also in a dynamic way) as <i>observers</i> (if output devices) or as <i>observable</i> (if input devices). In other
- words, we can build a reusable software <a href="https://en.wikipedia.org/wiki/Software_framework">framework</a>.</li>
+ words, we can design and build a reusable software <a href="https://en.wikipedia.org/wiki/Software_framework">framework</a>.</li>
  <li>An <b>application built upon the framework</b> can be logically conceived as a software system composed of two main parts: 
  a <em>logical, high-level</em> part (the framework) that does not change and a <em>technology-dependent, lower-level</em>  part 
  that provides concrete components  to be 'injected' into the logical part.</li>
@@ -244,16 +265,27 @@ with little change, since it must make reference to a
  </ul>
  
  <h2>The Application Logic</h2> 
-The  application logic built-in in the framework is implemented by a component 
-(<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>)
-that works as a proactive/reactive entity:
+ 
+ In this work, rather than simply reusing our previous <tt>Java</tt> version of the component that implements the application logic,
+ we will introduce a version based on <tt>Kotlin</tt>
+ (<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>), 
+ by starting from the given requirement that it must work as a <em>proactive/reactive</em> entity:
 
 <ul>
 <li><em>reactive</em>: the application logic is always able to run the operation <bc>execute</bc>, since this operation is 
-the method of a conventional object (the method code runs in the context of a caller Thread); </li>
-<li><em>proactive</em>: the application logic is able to perform the 'blinking task' within a <em>Kotlin Actor</em> 
-(for an introduction to the concept of actor in Kotlin, see <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
-Kotlin corotines: Shared mutable state and concurrency</a>) defined as follows:
+the method of a conventional object (the method code runs in the context of a caller<tt>Thread</tt>); </li>
+<li><em>proactive</em>: the application logic is able to perform the 'blinking task' in autonomous way, until
+the <tt>Button</tt> is pressed again.
+
+</li>
+</ul>
+
+As done in <a href="../src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a>,
+the <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>)
+is a conventional <tt>Java</tt> class that exposes the method  <bc>execute</bc>.
+
+<h4>The proactive part</h4>
+The difference consists in implementing the 'proactive' part as a <em>Kotlin Actor</em> defined as follows:
 
 
 <pre>
@@ -267,24 +299,41 @@ Kotlin corotines: Shared mutable state and concurrency</a>) defined as follows:
                 if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
                 Utils.delay(250)
             }
-            //println("   ACTOR actorBlink  | doBlinkTheLed ENDS ...")
-        }
+         }
     }
 </pre> 
  
 The actor blinks the <tt>Led</tt> while the boolean variable <bc>doBlink</bc> is true. Otherwise it checks for a new message from its
 input channel; if no message is present, the actor waits (more precisely, it <em>suspends</em>, since it is a coroutine) without consuming
-<tt>CPU</tt> time. The variable <bc>doBlink</bc> is changed by the method <bc>applLogic</bc> (called by the method <bc>execute</bc>)
-that sends also a message to the actor, in order to resume its activity.
- 
+<tt>CPU</tt> time.
 
-</li>
-</ul>
+<h4>The reactive part</h4>
+The variable <bc>doBlink</bc> is changed by the method <bc>applLogic</bc> (called by the method <bc>execute</bc>)
+that sends also a message to the actor, in order to resume its activity.
+
+<pre>
+   open  fun applLogic( ){  //open : can be overridden
+        numCalls++
+        doBlink = numCalls % 2 != 0     //if false actorBlink ends its loop
+        println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
+        if( doBlink )
+        GlobalScope.launch {
+            actorBlink.send("work") //REACTIVATES the actor
+        }
+    }
+</pre> 
 
  <h3>(KOTLIN) ACTORS</h3> 
-The <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">Kotlin actor</a>
+For an introduction to the concept of actor in Kotlin, see 
+<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
+Kotlin corotines: Shared mutable state and concurrency</a>.  Here we read that
+ 
+"<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">Kotlin actor</a>
 is a coroutine builder  <i>'that conveniently combines actor's mailbox channel into its scope to receive messages from and 
-combines the send channel into the resulting job object'</i>. From now on, we will represent such a new computational entity with the
+combines the send channel into the resulting job object'</i>." 
+
+
+From now on, we will represent such a new computational entity with the
 following picture:
 
  <center><img src="./actor.png" alt="actor" width="10%" height="10%"></center>
@@ -319,10 +368,6 @@ in our previous <a href="Lab2.html" target="info">Lab2.html</a>.
 <li><em>CHANGE</em>: set up <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/AnotherApplLogic.kt" target="code">AnotherApplLogic.kt</a></li>
 </ol>
  
-
- 
- 
-
 <pre>
 public static void main(String[] args) {
 		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
@@ -333,10 +378,9 @@ public static void main(String[] args) {
 	//ADD:        CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED / BUTTON
         blSystem.addConcreteLed(LedProxyArduino.create(
 			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-	       blSystem.addConcreteButton( new ButtonProxyArduino(
+	    blSystem.addConcreteButton( new ButtonProxyArduino(
 			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
 		Utils.delay(10000);
-
 	//CHANGE:    THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
  		Utils.delay(5000);
 		System.out.println(" ============ CHANGE CONTROL =============== ");

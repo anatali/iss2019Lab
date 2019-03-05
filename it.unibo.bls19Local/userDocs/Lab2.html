@@ -126,14 +126,16 @@ div.req{
 <h2>REQUIREMENTS</h2>
 <div class="req">
 Extend the <tt>BLS</tt> system <a href="Lab1.html" target="info">Lab1.html</a> (built with reference to <tt>Mock</tt> and <tt>GUI</tt> devices),
- by introducing a <tt>Physical Led</tt> and a <tt>Physical Button</tt> controlled by Arduino.
+ by introducing a <tt>Physical Led</tt> and a <tt>Physical Button</tt> controlled by the  <a href="https://en.wikipedia.org/wiki/Arduino">Arduino</a>
+microcontroller.
 </div>	    
  	
 	
 <h2>STARTING POINT</h2>
 
  
-A local solution for the <tt>BLS</tt> system running on <tt>Arduino</tt> can be easily found  on the network. There are technical,
+A local solution for the <tt>BLS</tt> system running on <a href="https://en.wikipedia.org/wiki/Arduino">Arduino</a> can be easily found  on the network. 
+There are technical,
 technology-dependent problems to face (e.g. interact with a very fast micro-controller, avoid signal bouncing, etc.) but
 a possible solution can be: <a href="../src/arduino/bls2019LocalOnArduino/bls2019LocalOnArduino.ino" target="code">bls2019LocalOnArduino.ino</a>.
 
@@ -153,7 +155,19 @@ At the moment, since we have to start from the system introduced in <a href="Lab
 it is useful to build a <em>model</em>
 of that system, to recall its properties from three different points of view:  <i>structure, interaction and behavior</i>.
 
-<h4>A logic architecture</h4>
+<h2>MODELS in SOFTWARE</h2>
+In <a href="https://www.sebokwiki.org/wiki/System_Modeling_Concepts"></a> we read that
+"perhaps the most fundamental concept in systems modeling is <em>abstraction</em>, 
+which concerns hiding unimportant details in order to <b>focus on essential characteristics</b>". 
+<p>
+It is useful to have a common way to talk about the concepts underlying the many different types of models 
+(e.g., many modeling techniques enable the understanding of <em>system behavior</em>, while others enable the understanding of 
+<em>system structure</em>). In our approach a relevant aspect is related to <em>interaction</em>, since
+we are moving from the traditional interaction based on procedure-calls among system components towards interaction based on 
+<a href="https://en.wikipedia.org/wiki/Message_passing">message-passing</a>.
+</p>
+
+<h3>A logic architecture for the BLS</h3>
 As already, proposed in <a href="Lab1.html" target="info">Lab1.html</a>, the following <tt>UML</tt> interaction diagram 
 can give us a summary of our model of the current software system:
 <center><img src="./bls0.png" alt="bls0" width="60%" height="60%"></center>
