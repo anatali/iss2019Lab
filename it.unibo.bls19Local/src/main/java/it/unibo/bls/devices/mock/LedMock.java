@@ -3,7 +3,7 @@ package it.unibo.bls.devices.mock;
 import it.unibo.bls.interfaces.ILed;
 
 public class LedMock implements ILed{
-private boolean state = false;
+protected boolean state = false;
 
 //Factory method
 public static ILed createLed(){

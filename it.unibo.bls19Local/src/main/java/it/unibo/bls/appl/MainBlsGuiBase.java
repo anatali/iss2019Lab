@@ -8,6 +8,7 @@ public class MainBlsGuiBase  extends MainBlsMockBase{
  		return new MainBlsGuiBase();	//calls the super costructor
  	}
 
+ 	@Override  //From MainBlsMockBase
 	protected void setDeviceTypes(){
 		ledType    = LedType.LedGuiObj;
 		buttonType = ButtonType.ButtonGuiObj;

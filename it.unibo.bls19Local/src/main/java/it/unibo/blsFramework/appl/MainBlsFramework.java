@@ -104,9 +104,29 @@ public class MainBlsFramework implements IBlsFramework {
 	public IApplListener getButtonObserver(){
 		return  buttonObserver;
 	}
+
+/*
+----------------------------------------
+MAIN
+----------------------------------------
+ */
 	public static void main(String[] args) {
 		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLSFramework");
-	/*
+
+		blSystem.setConcreteLed( LedAsGui.createLed() );
+		//blSystem.addConcreteLed( LedAsGui.createLed() );
+        //blSystem.addConcreteLed(LedProxyArduino.create(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
+        //blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
+
+		Utils.delay(5000);
+		System.out.println(" ================== CHANGE CONTROL ================= ");
+ 		blSystem.setApplLogic (  new AnotherApplLogic() );
+
+ 	}
+}
+
+/*
 	//Inject the concrete MOCK devices
 		blSystem.setConcreteLed( LedMock.createLed() );
 		blSystem.setConcreteButton( ButtonMock.createButton() );
@@ -119,24 +139,10 @@ public class MainBlsFramework implements IBlsFramework {
 		blSystem.setConcreteLed( LedGui.createLed() );
 		blSystem.setConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
 
-
 	//CHANGE THE SYSTEM DYNAMICALLY BY ADDING TO A GUI LED AN ARDUINO LED
 		blSystem.setConcreteLed( LedGui.createLed() );
 		blSystem.setConcreteButton(ButtonAsGui.createButton("ClickMe"));
 		Utils.delay(5000);
 		blSystem.setConcreteLed(LedProxy.createLed(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-	*/
+*/
 
-	//Inject the concrete GUI devices
-
-		blSystem.setConcreteLed( LedAsGui.createLed() );
-        //blSystem.addConcreteLed(LedProxyArduino.create(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
-        //blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-
-		Utils.delay(5000);
-		System.out.println(" ================== CHANGE CONTROL ================= ");
- 		blSystem.setApplLogic (  new AnotherApplLogic() );
-
- 	}
-}

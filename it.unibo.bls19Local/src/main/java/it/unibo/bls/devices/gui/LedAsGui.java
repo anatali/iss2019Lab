@@ -10,7 +10,6 @@ import it.unibo.bls.interfaces.ILed;
 import it.unibo.bls.utils.Utils;
 
 public class LedAsGui extends LedMock { //
-private boolean state = false;
 private Panel p ; 
 private Frame frame;
 private final Dimension sizeOn  = new Dimension(100,100);

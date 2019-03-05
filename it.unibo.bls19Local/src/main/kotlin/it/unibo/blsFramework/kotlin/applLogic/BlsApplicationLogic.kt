@@ -14,7 +14,7 @@ open class BlsApplicationLogic : IAppLogic {
     protected var numCalls = 0
     protected var doBlink = false
     @kotlinx.coroutines.ObsoleteCoroutinesApi
-    protected val dispatcher = newFixedThreadPoolContext(3, "mypool")
+    protected val dispatcher = newFixedThreadPoolContext(2, "mypool")
     //protected val jobBlink = Job();
     /*
     PROACTIVE PART

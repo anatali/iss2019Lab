@@ -181,13 +181,14 @@ the idea of a components with a <bc>state</bc>, represented as a <tt>boolean</tt
 Our models for the <tt>Led</tt> and for the <tt>Button</tt> are defined so to be <em>observable</em>; moreover, the model of the <tt>Button</tt>
 is also defined as an <em>observer</em>.
 </p><p>
-<center><table style="width:70%">
+<center><table style="width:90%">
   <tr>
     <th>Interfaces</th>
     <th>Models</th> 
+	<th>Application logic</th>
     </tr>
-  <tr>
-    <td>
+<tr>
+<td>
 <ul>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
@@ -195,14 +196,17 @@ is also defined as an <em>observer</em>.
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IApplListener.java" target="code">IApplListener</a></li>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IBlsFramework.java" target="code">IBlsFramework</a></li>
 </ul>	
-	</td>
-    <td>
+</td>
+<td>
 <ul>
 <li><a href="../src/main/java/it/unibo/blsFramework/models/ButtonModel.java" target="code">ButtonModel</a> (<tt>boolean buttonState</tt>)</li>
 <li><a href="../src/main/java/it/unibo/blsFramework/models/LedModel.java" target="code">LedModel</a> (<tt>boolean ledState</tt>)</li>
 </ul>	
-	</td> 
-    </tr>
+</td> 
+<td><a href="../src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" target="code">BlsApplicationLogic.java</a><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
+</td>
+</tr>
  </table></center>
  </p><p>
  Our ideas can be summarized as follows:
@@ -349,10 +353,7 @@ The main result of our model-based re-factoring of the <tt>BLS</tt> system can b
 <li>We can dynamically extend the system by adding more concrete buttons and led.</li>
 </ul>
 
-
-
-
- <h2>DYNAMIC EXTENSIONS</h2>
+<h2>DYNAMIC EXTENSIONS</h2>
 Of course, the consequence of dynamic extensions must be carefully analyzed before allowing them, but in some
 applications can be appropriate and useful. 
 <br/><br/>
@@ -414,9 +415,11 @@ Execute <bc>gradle test</bc> and look at
 Executing <bc>gradle jar</bc> and look at <tt>build/libs</tt> for
 <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>.
 
+<h2>WORK TO DO</h2>
 
-	
-	<br/><br/>
+Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a> build a software
+system that	
+<br/><br/>
 
 
 </div>  
