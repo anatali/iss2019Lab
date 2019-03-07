@@ -131,14 +131,17 @@ table, th, td {
 
 <h2>REQUIREMENTS</h2>
 <div class="req">
-With reference to the system based on models, introduced in <a href="Lab3.html" target="info">Lab3.html</a>, re-design the application logic
-as an Kotlin actor that works like a Finite State Machine (FSM)
+With reference to the system  introduced in <a href="Lab3.html" target="info">Lab3.html</a>, re-design the application logic
+as an Kotlin actor that works like a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> (<bc>FSM</bc>).
 </div>	    
  	
 	
 <h2>THE GOAL</h2>
 
 <center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
+
+<h2>THE SYSTEM</h2>
+
 <p>
 <center><table style="width:90%">
   <tr>
@@ -151,11 +154,11 @@ as an Kotlin actor that works like a Finite State Machine (FSM)
 <ul>
 <li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IBlsFrameworkFsm.kt" target="code">IBlsFrameworkFsm.kt</a></li>
 <li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IAppLogicFsm.kt" target="code">IAppLogicFsm.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IButtonListener.kt" target="code">IButtonListener.kt</a></li>
 <li>---------</li>
 
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
 <li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IApplListener.java" target="code">IApplListener</a></li>
 </ul>	
 </td>
 <td>
@@ -165,7 +168,8 @@ as an Kotlin actor that works like a Finite State Machine (FSM)
 </td> 
 <td>
 <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" target="code">ButtonObserver.kt</a><br/>
-<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" target="code">BlsFsmAppl.kt</a>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" target="code">BlsFsmAppl.kt</a><br/><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a>
 </td>
 </tr>
  </table></center>
@@ -176,7 +180,27 @@ as an Kotlin actor that works like a Finite State Machine (FSM)
 
 <center><img src="./blsLogicModelsFsmAll.png" alt="blsLogicModelsFsmAll" width="60%" height="60%"></center>
 
- 
+<h2>MESSAGES</h2> 
+
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the messages:
+<pre>
+enum class Messages{
+    Stop,Goon,Click
+}
+</pre>
+
+
+<h2>COMMUNICATION</h2> 
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the operation
+<bc>forward</bc>:
+<pre>
+fun forward(msg : Messages, channel: SendChannel<Messages>){
+    GlobalScope.launch {
+        channel.send(msg)
+    }
+}
+</pre>
+
 </p>
 
 

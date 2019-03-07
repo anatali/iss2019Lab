@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/appl/MainBlsFramework.java" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/appl/MainBlsFramework.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/applLogic/BlsApplicationLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/listener/ButtonObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/java/it/unibo/blsFramework/listener/ButtonObserver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/blsLogicModelsFsm0.png" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/blsLogicModelsFsm0.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -131,7 +132,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551959131334" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551960249193" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />

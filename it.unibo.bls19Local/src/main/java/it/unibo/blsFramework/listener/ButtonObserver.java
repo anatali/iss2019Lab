@@ -18,7 +18,7 @@ private IAppLogic controller;
 	public void setControl( IAppLogic ctrl ){
 		this.controller = ctrl;
 	}
-	
+
 	public int getNumOfClicks(){
 		return count;
 	}

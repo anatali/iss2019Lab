@@ -1,6 +1,5 @@
 package it.unibo.blsFramework.kotlin.fsm
 
-import it.unibo.blsFramework.interfaces.IButtonListener
 import kotlinx.coroutines.channels.SendChannel
 import java.util.Observable
 
@@ -10,11 +9,13 @@ class ButtonObserver private constructor() : IButtonListener {
 
     private var count = 0
 
-    override fun setControl(ctrl: SendChannel<Messages>) {
+    override
+    fun setControl(ctrl: SendChannel<Messages>) {
         this.controller = ctrl
     }
 
-    override fun getNumOfClicks(): Int {
+    override
+    fun getNumOfClicks(): Int {
         return count
     }
 

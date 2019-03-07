@@ -71,18 +71,6 @@ open class BlsFsmAppl : IAppLogicFsm {
         }
     }
 
-     @kotlinx.coroutines.ObsoleteCoroutinesApi
-    open fun applLogic( ) {  //open : can be overridden
-        if (fsm is SendChannel<Messages>) {  //stateMachine has been initialized
-            numCalls++
-            val doBlink = numCalls % 2 != 0     //if false actorBlink ends its loop
-            println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
-            when (doBlink) {
-                true -> forward(Messages.Start, fsm!!)
-                false -> forward(Messages.Stop, fsm!!)
-            }
-        }
-    }
 
     @kotlinx.coroutines.ObsoleteCoroutinesApi
     override fun getStateMachine( ) :  SendChannel<Messages>{

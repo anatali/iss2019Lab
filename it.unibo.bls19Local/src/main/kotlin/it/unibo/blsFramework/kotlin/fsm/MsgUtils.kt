@@ -5,7 +5,7 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.launch
 
 enum class Messages{
-    Stop,Start,Goon,Click
+    Stop,Goon,Click
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
