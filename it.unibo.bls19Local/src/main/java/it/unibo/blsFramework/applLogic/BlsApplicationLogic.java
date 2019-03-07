@@ -25,7 +25,7 @@ public class BlsApplicationLogic implements IAppLogic { //Note: it is NOT an obs
 	@Override //from IControlLed
 	public void execute( String cmd  ){
 		System.out.println("	BlsApplicationLogic | execute cmd=" + cmd);
- 		if( cmd.equals("stop") ){
+ 		if( cmd.equals("stop") ){ //to allow change in ApplicationLogic
 			doBlink = false;
 			return;
 		}

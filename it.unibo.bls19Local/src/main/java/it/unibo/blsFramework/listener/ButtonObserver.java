@@ -14,9 +14,11 @@ private IAppLogic controller;
 	private ButtonObserver(  ){
 		super();
  	}
+
 	public void setControl( IAppLogic ctrl ){
 		this.controller = ctrl;
 	}
+	
 	public int getNumOfClicks(){
 		return count;
 	}

@@ -46,4 +46,4 @@ jacocoTestReport {
 
 // Define the main class for the application.
 //mainClassName = 'it.unibo.bls.appl.MainBlsMockBase'
-mainClassName = 'it.unibo.blsFramework.appl.MainBlsFramework'
+mainClassName = 'it.unibo.blsFramework.kotlin.fsm.xxx'

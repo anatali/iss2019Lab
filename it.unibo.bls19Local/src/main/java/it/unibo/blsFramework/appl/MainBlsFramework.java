@@ -53,25 +53,25 @@ public class MainBlsFramework implements IBlsFramework {
 	/*
 	 * Setter methods
 	 */
-	@Override //IBlsFramework
+	@Override //IBlsFrameworkFsm
 	public void setConcreteLed(ILed led) {
         concreteLed = led;
 		ledObserver.setLed(led) ;
 	}
-    @Override //IBlsFramework
+    @Override //IBlsFrameworkFsm
     public void addConcreteLed(ILed led) {
         ILedObserver ledObs = LedObserver.create();
         concreteLed = led;
         ledObs.setLed(led);
         ledmodel.addObserver( ledObs );
     }
-	@Override //IBlsFramework
+	@Override //IBlsFrameworkFsm
 	public void addConcreteButton(IObservable button) {
 		//concreteButton = button;            //for a single controller
         button.addObserver(buttonmodel);  //STARTS
 	}
 	public void setApplLogic( IAppLogic appLogic ){
-        applLogic.execute("stop");
+        applLogic.execute("stop");			//to promote applicationLogic
         applLogic = appLogic;
         applLogic.setControlled( ledmodel );
 		buttonObserver.setControl( applLogic );
@@ -119,9 +119,9 @@ MAIN
 		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
         //blSystem.addConcreteButton( new ButtonProxyArduino(DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
 
-		Utils.delay(5000);
-		System.out.println(" ================== CHANGE CONTROL ================= ");
- 		blSystem.setApplLogic (  new AnotherApplLogic() );
+		//Utils.delay(5000);
+		//System.out.println(" ================== CHANGE CONTROL ================= ");
+ 		//blSystem.setApplLogic (  new AnotherApplLogic() );
 
  	}
 }
