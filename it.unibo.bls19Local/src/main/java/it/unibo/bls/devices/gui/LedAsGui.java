@@ -16,7 +16,7 @@ private final Dimension sizeOn  = new Dimension(100,100);
 private final Dimension sizeOff = new Dimension(30,30);
 
 	public static ILed createLed(  ){
-		LedAsGui led = new LedAsGui(Utils.initFrame(200,200));
+		LedAsGui led = new LedAsGui(Utils.initFrame(400,400));
 		led.turnOff();
 		return led;
 	}

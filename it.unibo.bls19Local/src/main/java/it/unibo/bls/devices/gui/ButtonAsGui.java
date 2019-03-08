@@ -18,7 +18,7 @@ public class ButtonAsGui extends Observable implements IButtonObservable, Action
 //Factory method
 public static ButtonAsGui createButton(  String cmd  ){
 	ButtonAsGui button = new ButtonAsGui();
-	ButtonBasic bb     = new ButtonBasic(Utils.initFrame(400,400), cmd, button);	//button is the listener
+	ButtonBasic bb     = new ButtonBasic(Utils.initFrame(600,600), cmd, button);	//button is the listener
 	return button;
 }
 	@Override //from Observable and IButtonObservable
