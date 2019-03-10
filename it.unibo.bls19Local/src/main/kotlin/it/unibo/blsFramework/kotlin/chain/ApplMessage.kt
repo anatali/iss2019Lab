@@ -1,4 +1,4 @@
-package it.unibo.bls19d.messages
+package it.unibo.blsFramework.kotlin.chain
 
 import alice.tuprolog.Struct
 import alice.tuprolog.Term

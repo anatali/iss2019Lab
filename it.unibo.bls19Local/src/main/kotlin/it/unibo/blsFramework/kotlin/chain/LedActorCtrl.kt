@@ -1,15 +1,14 @@
-package it.unibo.blsFramework.kotlin.fsm
+package it.unibo.blsFramework.kotlin.chain
 
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
-import it.unibo.bls19d.messages.ApplMessage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 
-class LedActor(val name: String, val led : ILed){
+class LedActorCtrl(val name: String, val led : ILed){
     private val dispatcher = newFixedThreadPoolContext(2, "mypool")
     private var nextledActor : SendChannel<ApplMessage>? = null
     private var stopped    = false
