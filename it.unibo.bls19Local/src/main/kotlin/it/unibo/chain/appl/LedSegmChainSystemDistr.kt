@@ -1,9 +1,11 @@
 package it.unibo.chain.appl
 
 import it.unibo.bls.utils.Utils
-import it.unibo.chain.messages.MsgUtil
+import it.unibo.kactor.MsgUtil
 import it.unibo.chain.segment7.LedSegment
-import it.unibo.chain.segment7.LedSegmentHorizontal
+import it.unibo.chain.segment7.LedSegmHorizontal
+import it.unibo.chain.segment7.LedSegmVerticalLeft
+import it.unibo.chain.segment7.LedSegmVerticalRight
 import kotlinx.coroutines.runBlocking
 import java.awt.Color
 import java.awt.GridLayout
@@ -24,21 +26,22 @@ class LedSegmChainSystemDistr(val name:String, val numOfElements:Int  ){
         connecctComponents()
     }
 
-    fun  createFrame() : JFrame{
+    fun  createFrame(i:Int) : JFrame{
         JFrame.setDefaultLookAndFeelDecorated(true)
         val frame = JFrame("Chain")
-        frame.setSize( 120, 80)
+        frame.setSize( 120, 150)
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.layout = GridLayout(1, 1)
-        //frame.location =
+        frame.setLocation(100+i*120 ,100)
         frame.contentPane.background = Color.BLUE
          return frame
     }
 
     fun createComponents(  ){
         for( i in 1..numOfElements ){
-            val  frame = createFrame()
-            val segm = LedSegmentHorizontal("segm$i", 110, 180)
+            val  frame = createFrame(i)
+            //val segm = LedSegmHorizontal("segm$i", 110, 180)
+            val segm = LedSegmVerticalRight("segm$i", 110, 180)
             segmList.add(segm)
             frame.add(segm)
             frame.isVisible = true
@@ -73,7 +76,7 @@ MAIN
 */
 fun main( ) = runBlocking {
     Utils.showSystemInfo()
-    val system = LedSegmChainSystemDistr("ChainDistributed", 3)
+    val system = LedSegmChainSystemDistr("ChainDistributed", 1)
     system.startTheSystem()
     Utils.delay(10000)
     system.stopTheSystem()

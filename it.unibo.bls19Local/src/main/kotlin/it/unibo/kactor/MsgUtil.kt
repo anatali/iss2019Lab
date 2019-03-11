@@ -1,4 +1,4 @@
-package it.unibo.chain.messages
+package it.unibo.kactor
 //FILE MsgUtil.kt
 
 import kotlinx.coroutines.GlobalScope
@@ -15,11 +15,11 @@ var count = 1;
 
     fun startMsg() : ApplMessage {
         count++
-        return ApplMessage("msg( start, dispatch, main, none, start, $count )" )
+        return ApplMessage("msg( start, dispatch, main, none, start, $count )")
     }
     fun stoptMsg() : ApplMessage {
         count++
-        return ApplMessage("msg( stop, dispatch, main, none, stop, $count )" )
+        return ApplMessage("msg( stop, dispatch, main, none, stop, $count )")
     }
 
 

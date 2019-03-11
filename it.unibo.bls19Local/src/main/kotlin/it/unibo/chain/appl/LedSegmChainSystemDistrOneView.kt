@@ -2,12 +2,12 @@ package it.unibo.chain.appl
 
 import it.unibo.bls.utils.Utils
 import it.unibo.chain.segment7.LedSegment
-import it.unibo.chain.segment7.LedSegmentHorizontal
+import it.unibo.chain.segment7.LedSegmHorizontal
 import kotlinx.coroutines.runBlocking
 import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
-import it.unibo.chain.messages.MsgUtil
+import it.unibo.kactor.MsgUtil
 
 /*
     The system is a distributed chain of LedSegment, each controlled by a LedInChainCtrlActor
@@ -36,7 +36,7 @@ class LedSegmChainSystemDistrOneView(val name:String, val numOfElements:Int  ){
 
     fun createComponents( frame: JFrame){
         for( i in 1..numOfElements ){
-            val segm = LedSegmentHorizontal("segm$i", 110, 80)
+            val segm = LedSegmHorizontal("segm$i", 110, 80)
             segmList.add(segm)
             frame.add(segm)
             actorList.add(LedInChainCtrlActor("led$i", segm))

@@ -274,10 +274,35 @@ with little change, since it must make reference to a
 
  <h4>An example</h4>
  An example of its usage is given in  
-<a href="../src/main/java/it/unibo/blsFramework/appl/MainBlsFramework.java" target="code">MainBlsFramework</a>.
+ <a href="../src/main/java/it/unibo/blsFramework/appl/MainBlsFramework.java" target="code">/MainBlsFramework.java</a>
+ or in an equivalent Kotlin version.
+
+ <br/><br/>
+<table style="width:100%">
+<tr>
+<td width="60%">
+<img src="./kotlin-Actor3.png" alt="kotlin-Actor3" width="500" height="400"> 
+</td>
+
+<td width="40%">
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MainBlsFsmFramework.kt" target="code">MainBlsFsmFramework.kt</a>
+<br/<br/>
+<ol>
+<li><em>START</em> Create a BLS with  
+<a href="../src/main/java/it/unibo/bls/devices/gui/LedAsGui.java" target="code">LedAsGui</a> and
+a <a href="../src/main/java/it/unibo/bls/devices/gui/ButtonAsGui.java" target="code">ButtonAsGui</a>.</li>
+<li><em>ADD</em>: add another <a href="../src/main/java/it/unibo/bls/devices/gui/LedAsGui.java" target="code">LedAsGui</a>.
+</li>
+<li><em>CHANGE</em>: after some time, set
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/AnotherApplLogic.kt" target="code">AnotherApplLogic.kt</a></li>
+</ol></td>
+
+</tr>
+</table>
 
 
- <h2>The Application Logic</h2> 
+
+ <h2>The Application Logic (in Kotlin)</h2> 
  
  In this work, rather than simply reusing our previous <tt>Java</tt> version of the component that implements the application logic,
  we will introduce a version based on <tt>Kotlin</tt>
@@ -299,58 +324,51 @@ is a conventional <tt>Java</tt> class that exposes the method  <bc>execute</bc>.
 
 <h4>The proactive part</h4>
 The difference consists in implementing the 'proactive' part as a <em>Kotlin Actor</em> defined as follows:
-
-
-<pre>
-    protected var led: ILedModel? = null
-    protected var doBlink        = false
-	 
-    val actorBlink = GlobalScope.actor<String>(dispatcher, 1 ) {
-        for( msg in channel ) {
-            //println("   ACTOR actorBlink |  msg= $msg doBlink= $doBlink ")
-            while ( doBlink ) { //switch the led            
-                if ( led!!.getState() ) led!!.turnOff() else led!!.turnOn()
-                Utils.delay(250)
-            }
-         }
-    }
-</pre> 
+ <br/><br/>
+<table style="width:100%">
+<tr>
+<td width="70%">
+<img src="./kotlin-Actor1.png" alt="kotlin-Actor1" width="600" height="400"> 
+ </td>
+ <td width="30%">
+ The actor  is defined within the extendible class 
+ <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/BlsApplicationLogic.kt" target="code">BlsApplicationLogic.kt</a>
+  <br/>  <br/>
  
-The actor blinks the <tt>Led</tt> while the boolean variable <bc>doBlink</bc> is true. Otherwise it checks for a new message from its
-input channel; if no message is present, the actor waits (more precisely, it <em>suspends</em>, since it is a coroutine) without consuming
-<tt>CPU</tt> time.
-
+ If no message is present on the actor input channel, the actor waits without consuming
+<tt>CPU</tt> time (more precisely, it <em>suspends</em>, since it is a coroutine) .
+<br/><br/>
+ If there is a message, the actor blinks the <a href="../src/main/java/it/unibo/blsFramework/models/LedModel.java" target="code">LedModel</a>
+  while the boolean variable <bc>doBlink</bc> is true. 
+ <br/>
+ Otherwise it checks for a new message from its
+input channel.
+</td>
+</tr>
+ </table>
+ 
 <h4>The reactive part</h4>
 The variable <bc>doBlink</bc> is changed by the method <bc>applLogic</bc> (called by the method <bc>execute</bc>)
 that sends also a message to the actor, in order to resume its activity.
 
-<pre>
-   open  fun applLogic( ){  //open : can be overridden
-        numCalls++
-        doBlink = numCalls % 2 != 0     //if false actorBlink ends its loop
-        println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
-        if( doBlink )
-        GlobalScope.launch {
-            actorBlink.send("work") //REACTIVATES the actor
-        }
-    }
-</pre> 
+ <br/><br/>
+<table style="width:100%">
+<tr>
+<td width="60%">
+<img src="./kotlin-Actor2.png" alt="kotlin-Actor2" width="400" height="300"> 
+</td>
 
- <h3>(KOTLIN) ACTORS</h3> 
-For an introduction to the concept of actor in Kotlin, see 
-<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
-Kotlin corotines: Shared mutable state and concurrency</a>.  Here we read that
+<td width="40%">
+The variable <bc>doBlink</bc> is changed by the method <bc>applLogic</bc> (called by the method <bc>execute</bc>)
+that sends also a message to the actor, in order to resume its activity.
+</td>
+
+</tr>
+</table>
+
  
-"<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">Kotlin actor</a>
-is a coroutine builder  <i>'that conveniently combines actor's mailbox channel into its scope to receive messages from and 
-combines the send channel into the resulting job object'</i>." 
 
-
-From now on, we will represent such a new computational entity with the
-following picture:
-
- <center><img src="./actor.png" alt="actor" width="10%" height="10%"></center>
-
+ 
  
  <h2>THE NEW FEATURES</h2>
 The main result of our model-based re-factoring of the <tt>BLS</tt> system can be summarized as follows:
@@ -362,7 +380,7 @@ The main result of our model-based re-factoring of the <tt>BLS</tt> system can b
 <li>We can dynamically extend the system by adding more concrete buttons and led.</li>
 </ul>
 
-<h2>DYNAMIC EXTENSIONS</h2>
+<h3>DYNAMIC EXTENSIONS</h3>
 Of course, the consequence of dynamic extensions must be carefully analyzed before allowing them, but in some
 applications can be appropriate and useful. 
 <br/><br/>
@@ -378,25 +396,7 @@ in our previous <a href="Lab2.html" target="info">Lab2.html</a>.
 <li><em>CHANGE</em>: set up <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/applLogic/AnotherApplLogic.kt" target="code">AnotherApplLogic.kt</a></li>
 </ol>
  
-<pre>
-public static void main(String[] args) {
-		IBlsFramework blSystem = MainBlsFramework.createTheSystem("BLS-blink");
-	//START:      Inject the concrete GUI devices		
-		blSystem.setConcreteLed( LedAsGui.createLed() );
-		blSystem.addConcreteButton( ButtonAsGui.createButton("LedControl") );
-		Utils.delay(10000);	
-	//ADD:        CHANGE THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED / BUTTON
-        blSystem.addConcreteLed(LedProxyArduino.create(
-			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-	    blSystem.addConcreteButton( new ButtonProxyArduino(
-			DeviceConfig.serialPortNum, DeviceConfig.serialBaudrate));
-		Utils.delay(10000);
-	//CHANGE:    THE SYSTEM DYNAMICALLY BY ADDING AN ARDUINO LED
- 		Utils.delay(5000);
-		System.out.println(" ============ CHANGE CONTROL =============== ");
- 		blSystem.setApplLogic (  new AnotherApplLogic() );
-	}
-</pre>
+ 
   
  <h2>TESTING / JaCoCo</h2>
 A possible integration test is reported in
@@ -424,10 +424,109 @@ Execute <bc>gradle test</bc> and look at
 Executing <bc>gradle jar</bc> and look at <tt>build/libs</tt> for
 <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>.
 
+
+<h2>(KOTLIN) ACTORS</h2> 
+In Kotlin, an <a href="https://en.wikipedia.org/wiki/Actor_model">actor</a> is an entity made up of a combination of a <em>coroutine</em>, 
+the state that is confined and encapsulated into this coroutine,
+and a <em>channel</em> to communicate with other coroutines. A simple actor can be written as a function, but an actor with a complex
+state is better suited for a class. 
+<br/><br/>
+In Kotlin 1.3, coroutines are stable (but the <tt>@kotlinx.coroutines.ObsoleteCoroutinesApi</tt> is still required in IntelliJ) and
+also actors should be. However, changes will be still possible.  For an introduction, we could read:
+<ul>
+<li></li>
+<li><a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
+Kotlin coroutines: Shared mutable state and concurrency</a></li>
+</ul>
+
+
+In the second paper, we read that:<br/>
+ 
+"<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">Kotlin actor</a>
+is a coroutine builder  <i>'that conveniently combines actor's mailbox channel into its scope to receive messages from and 
+combines the send channel into the resulting job object'</i>." 
+<br/>
+
+From now on, we will represent such a new computational entity with the
+following picture:
+
+ <center><img src="./actor.png" alt="actor" width="130" height="100"></center>
+
+ <h3>Reference resources</h3>
+ To facilitate the design and the development of our next applications, we introduce a set of resources:
+ <br/><br/>
+ 
+ <table style="width:100%">
+<tr>
+<td width="20%">
+<center><img src="./ActorBasic.png" alt="ActorBasic" width="130" height="100"></center> 
+</td>
+<td width="40%">
+<center><img src="./ActorBasicCode.png" alt="ActorBasicCode" width="450" height="400"></center> 
+ 
+</td>
+<td width="40%">
+<a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a><br/><br/>
+An abstract class  that provides an actor. <br/> <br/>
+The application designer must write the <tt>actorBody</tt>
+method to  handle:
+<li>
+with the help of <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a></li>
+<li>the received message of type 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a> (requires
+<a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf">tuProlog</a> )</li>
+
+</td>
+</tr>
+<tr>
+<td width="20%"></td>
+<td width="40%"></td>
+<td width="40%"><a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a></td>
+</tr>
+
+<tr>
+<td width="20%">
+<center><img src="./segmHoriz.png" alt="segmHoriz" width="130" height="100"></center> 
+ 
+</td>
+<td width="40%"></td>
+<td width="40%"><a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmHorizontal.kt" target="code">LedSegmHorizontal.kt</a></td>
+</tr>
+
+<tr>
+<td width="20%">
+<center><img src="./segmVertLeft.png" alt="segmVertLeft" width="130" height="100"></center> 
+
+</td>
+<td width="40%"></td>
+<td width="40%"><a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmVerticalRight.kt" target="code">LedSegmVerticalRight.kt</a></td>
+</tr>
+
+<tr>
+<td width="20%">
+<center><img src="./segmVertRight.png" alt="segmVertRight" width="130" height="100"></center> 
+
+</td>
+<td width="40%"></td>
+<td width="40%"><a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmVerticalLeft.kt" target="code">LedSegmVerticalLeft.kt</a></td>
+</tr>
+</table>
+ 
+
 <h2>WORK TO DO</h2>
 
-Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>, build a software
-system with a single <tt>GUI Button</tt> that blinks a <tt>GUI Led</tt> on the PC and a <tt>Led</tt> on Arduino.
+<ul>
+<li>Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>, build a software
+system with a single <tt>GUI Button</tt> that blinks a <tt>GUI Led</tt> shaped as a  
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>, 
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmHorizontal.kt" target="code">LedSegmHorizontal.kt</a>, either 
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmVerticalRight.kt" target="code">LedSegmVerticalRight.kt</a> or
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegmVerticalLeft.kt" target="code">LedSegmVerticalLeft.kt</a>
+</li>
+<li>Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>, build a software
+system with a single <tt>GUI Button</tt> that blinks a <tt>Segment Led</tt> on the PC and a <tt>Led</tt> on Arduino.</li>
+</ul>
+
 
 
 

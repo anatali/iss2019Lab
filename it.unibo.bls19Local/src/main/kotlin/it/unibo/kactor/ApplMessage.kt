@@ -1,4 +1,4 @@
-package it.unibo.chain.messages
+package it.unibo.kactor
 
 import alice.tuprolog.Struct
 import alice.tuprolog.Term

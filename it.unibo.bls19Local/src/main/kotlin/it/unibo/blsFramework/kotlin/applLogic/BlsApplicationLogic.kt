@@ -4,7 +4,7 @@ import it.unibo.bls.utils.Utils
 import it.unibo.blsFramework.interfaces.IAppLogic
 import it.unibo.blsFramework.interfaces.ILedModel
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
@@ -21,7 +21,8 @@ open class BlsApplicationLogic : IAppLogic {
     The actor returns a send channel
      */
     @kotlinx.coroutines.ObsoleteCoroutinesApi
-    val actorBlink = GlobalScope.actor<String>(dispatcher, 1 ) {
+    val actorBlink : SendChannel<String> =
+                    GlobalScope.actor<String>(dispatcher, 1 ) {
         for( msg in channel ) {
             println("   ACTOR actorBlink |  msg= $msg doBlink= $doBlink ")
             while ( doBlink ) {

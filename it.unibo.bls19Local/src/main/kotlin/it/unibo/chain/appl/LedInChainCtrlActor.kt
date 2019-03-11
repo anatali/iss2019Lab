@@ -2,9 +2,10 @@ package it.unibo.chain.appl
 
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
-import it.unibo.chain.messages.ApplMessage
+import it.unibo.kactor.ApplMessage
 import kotlinx.coroutines.channels.SendChannel
-import it.unibo.chain.messages.MsgUtil
+import it.unibo.kactor.MsgUtil
+import it.unibo.kactor.ActorBasic
 
 class LedInChainCtrlActor(name: String, val led : ILed) : ActorBasic( name ){
 

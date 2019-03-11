@@ -1,6 +1,6 @@
 package it.unibo.chain.segment7
 
-class LedSegmentHorizontal(name: String, width: Int, height: Int) : LedSegment(name, width, height) {
+class LedSegmHorizontal(name: String, width: Int, height: Int) : LedSegment(name, width, height) {
 
     override fun setLedRep() {
         ledRep.addPoint(x + 10, y + 8)

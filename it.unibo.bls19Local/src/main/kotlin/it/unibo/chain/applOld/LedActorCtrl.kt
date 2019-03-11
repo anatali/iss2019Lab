@@ -2,7 +2,7 @@ package it.unibo.chain.applOld
 
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
-import it.unibo.chain.messages.ApplMessage
+import it.unibo.kactor.ApplMessage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor

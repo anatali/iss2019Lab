@@ -1,7 +1,5 @@
-package it.unibo.chain.appl
+package it.unibo.kactor
 
-import it.unibo.chain.messages.ApplMessage
-import it.unibo.chain.messages.MsgUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
@@ -12,7 +10,6 @@ import kotlinx.coroutines.newFixedThreadPoolContext
     its processing to the abstract method actorBody
  */
 abstract class  ActorBasic( val name: String ){
-
     protected val dispatcher = newFixedThreadPoolContext(2, "mypool")
 
     @kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -22,16 +19,13 @@ abstract class  ActorBasic( val name: String ){
             actorBody( msg )
         }
     }
-
     //To be defined by the application designer
     abstract suspend fun actorBody(msg : ApplMessage)
 
     fun getChannel() : SendChannel<ApplMessage> {
         return  actor
     }
-
     suspend fun autoMsg( msg : ApplMessage) {
         actor.send( msg )
     }
-
 }

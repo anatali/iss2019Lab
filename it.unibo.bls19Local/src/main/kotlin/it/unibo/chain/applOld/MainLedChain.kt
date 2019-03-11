@@ -2,7 +2,7 @@ package it.unibo.chain.applOld
 
 import it.unibo.bls.devices.gui.LedAsGui
 import it.unibo.bls.utils.Utils
-import it.unibo.chain.messages.ApplMessage
+import it.unibo.kactor.ApplMessage
 import kotlinx.coroutines.runBlocking
 
 private fun startMsg() : ApplMessage {

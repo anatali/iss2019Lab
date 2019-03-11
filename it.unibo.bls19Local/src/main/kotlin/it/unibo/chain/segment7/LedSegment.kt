@@ -56,9 +56,8 @@ open class LedSegment (protected var myname: String, width: Int, height: Int) : 
         return ledState
     }
     protected fun setSegmentState(g: Graphics) {
-        //println("LedSegment $name | setSegmentState $state      ");
-        if (ledState) g.color = on
-        else g.color = off
+         if (ledState) g.color = on else g.color = off
+        //println("LedSegment $name | setSegmentState $state  ");
         g.fillPolygon(ledRep)
         g.drawPolygon(ledRep)
     }
