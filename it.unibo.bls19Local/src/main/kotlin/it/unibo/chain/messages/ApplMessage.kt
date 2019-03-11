@@ -1,8 +1,7 @@
-package it.unibo.blsFramework.kotlin.chain
+package it.unibo.chain.messages
 
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
-
 
 class ApplMessage  {
     //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
@@ -21,7 +20,7 @@ class ApplMessage  {
 
     //@Throws(Exception::class)
     constructor(
-            MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String) {
+        MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String) {
         msgId = MSGID
         msgType = MSGTYPE
         msgSender = SENDER
@@ -46,35 +45,35 @@ class ApplMessage  {
         msgNum = Integer.parseInt(msgStruct.getArg(5).toString())
     }
 
-     fun msgId(): String {
+    fun msgId(): String {
         return msgId
     }
 
-     fun msgType(): String? {
+    fun msgType(): String? {
         return msgType
     }
 
-     fun msgSender(): String {
+    fun msgSender(): String {
         return msgSender
     }
 
-     fun msgReceiver(): String {
+    fun msgReceiver(): String {
         return msgReceiver
     }
 
-     fun msgContent(): String {
+    fun msgContent(): String {
         return msgContent
     }
 
-     fun msgNum(): String {
+    fun msgNum(): String {
         return "" + msgNum
     }
 
-     override fun toString(): String {
+    override fun toString(): String {
         return getDefaultRep()
-     }
+    }
 
-     fun getDefaultRep(): String {
+    fun getDefaultRep(): String {
         return if (msgType == null)
             "msg(none,none,none,none,none,0)"
         else
