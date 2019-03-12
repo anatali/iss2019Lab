@@ -1,14 +1,12 @@
 package it.unibo.blsFramework.appl;
 
-import it.unibo.bls.devices.gui.ButtonAsGui;
-import it.unibo.bls.devices.gui.LedAsGui;
 import it.unibo.bls.interfaces.ILed;
 import it.unibo.bls.interfaces.IObservable;
 import it.unibo.bls.utils.Utils;
-import it.unibo.blsFramework.applLogic.BlsApplicationLogic;
+//import it.unibo.blsFramework.applLogic.BlsApplicationLogic;
+import it.unibo.blsFramework.kotlin.applLogic.BlsApplicationLogic;
 import it.unibo.blsFramework.concreteDevices.LedObserver;
 import it.unibo.blsFramework.interfaces.*;
-import it.unibo.blsFramework.kotlin.applLogic.AnotherApplLogic;
 import it.unibo.blsFramework.listener.ButtonObserver;
 import it.unibo.blsFramework.models.ButtonModel;
 import it.unibo.blsFramework.models.LedModel;

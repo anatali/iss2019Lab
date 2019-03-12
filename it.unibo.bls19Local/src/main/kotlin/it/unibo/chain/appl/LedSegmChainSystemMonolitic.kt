@@ -24,7 +24,7 @@ The system:
 class LedSegmChainSystemMonolitic(
      name:String, val numOfElements:Int, var  frame : JFrame? ) : ActorBasic(name) {
 
-    private val dt         = 250
+    private val TIMEON     = 250
     private val numOfLeds  = numOfElements;
     private var stopped    = false
     private val segmList : MutableList<LedSegment> = mutableListOf<LedSegment>()
@@ -64,7 +64,7 @@ class LedSegmChainSystemMonolitic(
     suspend fun doStep(  ){
         segmList.forEach(   ){
             it.turnOn()
-            Utils.delay(dt)
+            Utils.delay(TIMEON)
             it.turnOff()
         }
         autoMsg( MsgUtil.startMsg() )
@@ -92,7 +92,7 @@ fun main( ) = runBlocking {
     JFrame.setDefaultLookAndFeelDecorated(true)
     val frame = JFrame("Chain")
 //Business Logic
-    val sys = LedSegmChainSystemMonolitic("Chain", 5, frame)
+        val sys = LedSegmChainSystemMonolitic("Chain", 5, frame)
     sys.startTheSystem()
     Utils.delay(5000)
     sys.stopTheSystem()

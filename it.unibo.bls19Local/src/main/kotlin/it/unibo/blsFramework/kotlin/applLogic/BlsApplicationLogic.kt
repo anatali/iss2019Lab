@@ -21,7 +21,7 @@ open class BlsApplicationLogic : IAppLogic {
     The actor returns a send channel
      */
     @kotlinx.coroutines.ObsoleteCoroutinesApi
-    val actorBlink : SendChannel<String> =
+    protected val actorBlink : SendChannel<String> =
                     GlobalScope.actor<String>(dispatcher, 1 ) {
         for( msg in channel ) {
             println("   ACTOR actorBlink |  msg= $msg doBlink= $doBlink ")
@@ -40,19 +40,20 @@ open class BlsApplicationLogic : IAppLogic {
     }
     //REACTIVE PART
     override fun execute(cmd: String) {
-        //println("	BlsFrameworkApplicationLogicKt | execute cmd=$cmd  ")
+        println("	BlsFrameworkApplicationLogicKt | execute cmd=$cmd  ")
         if (cmd == "stop") { doBlink = false
         }else applLogic( )
     }
 
+    @kotlinx.coroutines.ObsoleteCoroutinesApi
     open  fun applLogic( ){  //open : can be overridden
         numCalls++
         doBlink = numCalls % 2 != 0     //if false actorBlink ends its loop
         println("	BlsFrameworkApplicationLogicKt | execute numCalls=$numCalls doBlink=$doBlink")
         if( doBlink )
-        GlobalScope.launch {
-            actorBlink.send("work") //REACTIVATES the actor
-        }
+            GlobalScope.launch {
+                actorBlink.send("work") //REACTIVATES the actor
+            }
     }
     //Useful for testing
      override fun getNumOfCalls(): Int {

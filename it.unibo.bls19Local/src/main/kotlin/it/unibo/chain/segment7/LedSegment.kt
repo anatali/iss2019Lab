@@ -5,13 +5,6 @@ import it.unibo.bls.utils.Utils
 import javax.swing.*
 import java.awt.*
 
-/*
-TODO:
-it should be used by an LedObserverAdapter
-that is the Observer of the LedModel in the chain
-
-
- */
 open class LedSegment (protected var myname: String, width: Int, height: Int) : JPanel(),ILed {
       protected var ledRep   = Polygon()
      protected var ledState = false
@@ -91,6 +84,5 @@ For rapid check
             secs0.turnOff()
             secs1.turnOn()
         }
-
     }
 }
