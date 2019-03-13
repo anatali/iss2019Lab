@@ -93,9 +93,12 @@ bc{
 pre{
 	font-family: "Helvetica";
 	font-size: 80%;
-	background-color: #fcf8c7;
-	border: 1px solid blue;
-	width: 700px;
+	background-color: #fcf8c7; 
+}
+ 
+m{
+	font-family: "Helvetica";
+	font-size: 80%;
 }
 div.body{
 	width: 800px;
@@ -126,98 +129,182 @@ table, th, td {
 
 <div class="body"> 
 
-<h1>72939 - LAB4 | From object to actors</h1> 
+<h1>72939 - LAB4 | Introduction to KOTLIN</h1> 
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
-<h2>REQUIREMENTS</h2>
-<div class="req">
-With reference to the system  introduced in <a href="Lab3.html" target="info">Lab3.html</a>, re-design the application logic
-as an Kotlin actor that works like a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> (<bc>FSM</bc>).
-</div>	    
- 	
-	
-<h2>THE GOAL</h2>
+<br/><br/>
+To run the experiments, define a basic Kotlin program as follows
+<pre>
+fun experiment() : Unit{
+	println("Hello world")
+}
 
-<center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
+fun main(){
+    experiment()
+}
+</pre>
+You cas use:
 
-<h2>THE SYSTEM</h2>
+<a href="https://try.kotlinlang.org/#/Examples/Hello,%20world!/Simplest%20version/Simplest%20version.kt" target="web">Kotlin online</a>
+<br/><br/>
+The code of each experiment that is not a function or a class should  become the body of the <tt>experiment</tt> function. 
 
-<p>
-<center><table style="width:90%">
-  <tr>
-    <th>Interfaces</th>
-    <th>System</th> 
-	<th>Components</th>
-    </tr>
+<h2>INDEX</h2>
+
+<ol>
+<li><a href="#data">Data, Types and Variables</a></li>
+<li><a href="#funs">Functions</a></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+
+<h2><a id="basics"/>BASICS</h2>
+ 
+
+<h3><a id="data"/>Data, Types and Variables</h3>
+
+<center><table style="width:95%">
+
+<tbody>	
 <tr>
-<td>
-<ul>
-<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IBlsFrameworkFsm.kt" target="code">IBlsFrameworkFsm.kt</a></li>
-<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IAppLogicFsm.kt" target="code">IAppLogicFsm.kt</a></li>
-<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IButtonListener.kt" target="code">IButtonListener.kt</a></li>
-<li>---------</li>
-
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
-<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
-</ul>	
-</td>
-<td>
-<ul>
-<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsActorFramework.kt" target="code">BlsActorFramework.kt</a>  </li>
-<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MainBlsFsmFramework.kt" target="code">MainBlsFsmFramework.kt</a>  </li>
-</ul>	
-</td> 
-<td>
-<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" target="code">ButtonObserver.kt</a><br/>
-<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" target="code">BlsFsmAppl.kt</a><br/><br/>
-<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a>
-</td>
+<td style="width:45%"><pre> val counter : Int = 0</pre> </td>
+<td><m><em>Immutable reference</em>. </m> </td>
 </tr>
- </table></center>
+
+<tr>
+<td><pre> var counter = 0</pre> </td>
+<td><m><em>Mutable reference</em>. The Type <bc>Int</bc> is inferred</m> </td>
+</tr>
+
+<tr>
+<td><pre>val name = "Bob"
+val str = "Hello $name"
+println( str )	//Hello Bob
+</pre> </td>
+<td><m><em>String template</em></m> </td>
+</tr>
+
+
+<tr>
+<td><pre>val name : String? = null
+val v = name?.length ?: 0
+println("v=$v")	//0
+</pre> </td>
+<td><m><em>Nullable type</em> with safe null access</m> </td>
+</tr>
+
+<tr>
+<td><pre>var v : Any = "Bob"
+println( "v is String=${v is String}") //true
+println( "v is Int=${v is Int}")	//false
+</pre> </td>
+<td><m><em>Smart cast</em>. <bc>Any</bc> is the root of the Kotlin class hierarchy</m> </td>
+</tr>
+
+<tr>
+<td><pre>var v : Any = "Bob"
+println( "v is String=${v is String}") //true
+println( "v is Int=${v is Int}")	//false
+</pre> </td>
+<td><m><em>Explicit casting</em> with <bc>is</bc> operator</m> </td>
+</tr>
+
+<tr>
+<td ><pre>
+val s1 = "a"
+var s2 = "a"
+println( "s1 === s2 : ${s1 === s2} ") //true
+println( "s1 == s2  : ${s1 == s2} ") //true
+
+s2 = "b"
+println( "s1 === s2 : ${s1 === s2} ") //false
+s2 = "a"
+println( "s1 === s2 : ${s1 === s2} ") //true
+
+val a = java.io.File("a")
+val b = java.io.File("a")
+println( "a === b : ${a === b}") //false
+println( "a == b  : ${a == b}") //true
+
+</pre> </td>
+<td><m><em>Referential equality</em> <bc>===</bc> and </m> <em>structural equality</em> <bc>==</bc> 
+(that is translated into a call of the <bc>equals</bc> function of the class) </td>
+</tr>
+
+<tr>
+<td><pre> 
+val aToz = "a".."z"
+val q = "q"
+println( "q in aToz=${q in aToz}") //true
+println( "1 in aToz=${"""1""" in aToz}") //false
+</pre> </td>
+<td><m><em>Range</em> and belong test with <bc>in</bc> infix operator</m>. Triple quotes <bc>"""</bc> (do not require escaping chars)</td>
+</tr>
+
+<tr>
+<td><pre>var a = arrayOf(1,2,3)
+println( "array of size=${a.size}")
+println( "firstEl=${a[0]}  lastEl=${a[a.size-1]}")
+</pre> </td>
+<td><m><em>Array</em>. They are a regular collection class. <bc>size</bc> is a <em>Property</em></m> </td>
+</tr>
+
+
+</tbody>	
+</table></center>
+ 	
+
+<h3><a id="funs"/>Functions</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:30%"> </td>
+<td> </td>
+</tr>
+</tbody>	
+</table></center>
+ 
+ 
+<h3><a id="suspend"/>Suspend</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>	
+</table></center>
+ 
  
 
-<h2>THE FINITE STATE NACHINE</h2>
- 
-
-<center><img src="./blsLogicModelsFsmAll.png" alt="blsLogicModelsFsmAll" width="60%" height="60%"></center>
-
-<h2>MESSAGES</h2> 
-
-In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the messages:
-<pre>
-enum class Messages{
-    Stop,Goon,Click
-}
-</pre>
-
-
-<h2>COMMUNICATION</h2> 
-In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the operation
-<bc>forward</bc>:
-<pre>
-fun forward(msg : Messages, channel: SendChannel<Messages>){
-    GlobalScope.launch {
-        channel.send(msg)
-    }
-}
-</pre>
-
-</p>
-
-<h2>WORK TO DO</h2>
- 
-<ul>
-<li>Build a system that blinks an array of <tt>n>2</tt> Leds represented as a 
-<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>
-</li>
-<li></li>
-<li></li>
-</ul>
-
-
  
  
-	<br/><br/> 
+<br/><br/> 
 </div>  
 
 </body>
