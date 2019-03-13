@@ -3,20 +3,37 @@ package experiment
 
 
 var counter = 0 //type inferred
+fun square(v: Int) = v * v
 
+fun incCounter() : Unit{ counter++ }
+fun decCounter() { counter-- }
+
+val getCounter = {    counter }
+
+val fl = { print( "Return last exp val: " ); 100 }
+
+fun sum(a:Int, b:Int) : Int  {
+    return a+b
+}
+
+fun mirror(v: Int) : Pair<Int,Int> {
+    return Pair(v, -v)
+}
+
+val f = ::sum
+
+fun sToN( s: String, base: Int=10 ) : Int{
+    var v = 0
+    for( i in 0..s.length-1 ) {
+        val cifra =  s[i].toInt()-48
+        v = ( cifra ) + v*base
+        //println( "s[$i]= ${cifra}   v=$v " )
+    }
+    return v
+}
 fun xxx() : Unit{
-    val s1 = "a"
-    var s2 = "a"
-    println( "s1 === s2 : ${s1 === s2} ") //true
-    println( "s1 == s2  : ${s1 == s2} ") //true
-    s2 = "b"
-    println( "s1 === s2 : ${s1 === s2} ") //false
-    s2 = "a"
-    println( "s1 === s2 : ${s1 === s2} ") //true
-    val a = java.io.File("a")
-    val b = java.io.File("a")
-    println( "a === b : ${a === b}") //false
-    println( "a == b  : ${a == b}") //true
+   // val n = sToN( "123")
+    println( " ${ sToN( "123") } " )
 
 }
 

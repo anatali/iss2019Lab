@@ -195,7 +195,7 @@ The code of each experiment that is not a function or a class should  become the
 </tr>
 
 <tr>
-<td><pre> var counter = 0</pre> </td>
+<td><pre>var counter = 0</pre> </td>
 <td><m><em>Mutable reference</em>. The Type <bc>Int</bc> is inferred</m> </td>
 </tr>
 
@@ -215,21 +215,42 @@ println("v=$v")	//0
 </pre> </td>
 <td><m><em>Nullable type</em> with safe null access</m> </td>
 </tr>
+<tr>
+<td><pre>val : Any = 23
+val Unit
+println( "v is String=${v is String}") //true
+println( "v is Int=${v is Int}")	//false
+</pre> </td>
+<td><m><em>Type hierarchy</em>. <bc>Any</bc> is is a non-nullable type that denotes the root of the Kotlin class hierarchy. 
+<bc>Unit</bc> is used as a return type of a function that has nothing to return
+</m> </td>
+</tr>
+
 
 <tr>
 <td><pre>var v : Any = "Bob"
 println( "v is String=${v is String}") //true
 println( "v is Int=${v is Int}")	//false
 </pre> </td>
-<td><m><em>Smart cast</em>. <bc>Any</bc> is the root of the Kotlin class hierarchy</m> </td>
+<td><m><em>Smart cast</em>. <bc>is</bc> is a predefined check operator (like Java <bc>instanceOf</bc>)</m> 
+</td>
 </tr>
 
 <tr>
-<td><pre>var v : Any = "Bob"
-println( "v is String=${v is String}") //true
-println( "v is Int=${v is Int}")	//false
+<td><pre>val v : Any = "Bob"
+//val n = v.length //ERROR
+val n = (v as String).length
+println( "$n") //3
+//println( "${v as Int}") //java.lang.ClassCastException
+println( "${v as? Int}")  //null
+
+val t : Int = v as? Int ?: 100
+println( "$t") //100  //100
 </pre> </td>
-<td><m><em>Explicit casting</em> with <bc>is</bc> operator</m> </td>
+<td><m><em>Explicit casting</em>. The <bc>as</bc> operator performs type casting. 
+The <bc>as?</bc> operator performs safe type casting
+The <bc>?:</bc> is the <em>Elvis operator</em> that provides default values instead of null
+</m> </td>
 </tr>
 
 <tr>
@@ -261,7 +282,8 @@ val q = "q"
 println( "q in aToz=${q in aToz}") //true
 println( "1 in aToz=${"""1""" in aToz}") //false
 </pre> </td>
-<td><m><em>Range</em> and belong test with <bc>in</bc> infix operator</m>. Triple quotes <bc>"""</bc> (do not require escaping chars)</td>
+<td><m><em>Range</em> created by the <bc>..</bc> operator.
+The <bc>in</bc> infix operator performs a belong test. Triple quotes <bc>"""</bc> do not require escaping chars</m></td>
 </tr>
 
 <tr>
@@ -282,9 +304,96 @@ println( "firstEl=${a[0]}  lastEl=${a[a.size-1]}")
 <center><table style="width:95%">
 <tbody>	
 <tr>
-<td style="width:30%"> </td>
-<td> </td>
+<td style="width:45%"><pre>fun sum(a:Int, b:Int) : Int {
+  return a+b
+}
+println( " ${sum(3,6)} " ) //9
+</pre> </td>
+<td><m>A <em>Top-level function</em> that returns a value</m>
+ </td>
 </tr>
+
+<tr>
+<td><pre>var counter = 0
+fun incCounter() : Unit{ counter++ }
+fun decCounter() { counter-- }
+
+println( "pre=$counter  " ) //pre=0
+incCounter()
+println( "post=$counter " ) //post=1
+decCounter()
+</pre> </td>
+<td><m>Top-level functions that <em>do not return a value</em>. The return type <bc>Unit</bc> can be omitted</m></td>
+</tr>
+
+<tr>
+
+<tr>
+<td><pre>fun square(v: Int) = v * v
+println( " ${square(3)} " ) //9
+</pre> </td>
+<td><m><em>One line function</em>. Braces can be omitted. Return type can be omitted (it is inferred)</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+{ println( "Function literal" ) }()  //Function literal
+
+val fl = { print( "Return last exp val: " ); 100 }
+println( "${fl()}" )  //Return last exp val: 100
+println("$fl")	      //() -> kotlin.Unit
+
+val showasliteral = { msg:String -> println(msg) }
+</td>
+<td><m><em>Expression literal</em>: it can be assigned to a variable, just like any other literal</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun sToN( s: String, base: Int=10 ) : Int{
+    var v = 0
+    for( i in 0..s.length-1 ) {
+        v = ( s[i].toInt()-48 ) + v*base
+    }
+    return v
+}
+
+println( " ${ sToN( s: "123") } " ) //123
+</pre> </td>
+<td><m><em>Default parameters</em> with <em>Named parameters</em> at call </m> </td>
+</tr>
+
+
+<tr>
+<td><pre>fun mirror(v: Int) : Pair<Int,Int> {
+	return Pair(v, -v)
+}
+
+val(pos,neg) = mirror(3)
+println( " pos=$pos neg=$neg " ) //pos=3 neg=-3  
+</pre> </td>
+<td><m><em>Multiple return values</em>. To extract the values into separate values, we can exploit
+<bc>destructuring declarations</bc> (syntactic sugar)</m> </td>
+</tr>
+
+
+
+<td style="width:45%"><pre>fun sum(a:Int, b:Int) : Int {
+  return a+b
+}
+println( " ${::sum}" ) //fun sum(kotlin.Int, kotlin.Int): kotlin.Int 
+</pre> 
+To obtain the output, include the dependency on:
+<pre>
+implementation "org.jetbrains.kotlin:kotlin-reflect"
+</pre>
+</td>
+<td><m><em>Function reference</em>. The <bc>::</bc> operator creates a member reference or a (statically known) class reference.
+The <em>reference</em> is a value of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a>.
+A Kotlin class reference is not the same as a Java class reference. To obtain a Java class reference, 
+use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
+ </td>
+ 
 </tbody>	
 </table></center>
  
@@ -294,8 +403,8 @@ println( "firstEl=${a[0]}  lastEl=${a[a.size-1]}")
 <center><table style="width:95%">
 <tbody>	
 <tr>
-<td> </td>
-<td> </td>
+<td><pre></pre> </td>
+<td><m></m> </td>
 </tr>
 </tbody>	
 </table></center>
