@@ -12,9 +12,7 @@ val getCounter = {    counter }
 
 val fl = { print( "Return last exp val: " ); 100 }
 
-fun sum(a:Int, b:Int) : Int  {
-    return a+b
-}
+val sum = { x:Int, y:Int -> x+y }
 
 fun mirror(v: Int) : Pair<Int,Int> {
     return Pair(v, -v)
@@ -32,24 +30,36 @@ fun sToN( s: String, base: Int=10 ) : Int{
     return v
 }
 
-fun exec23( op: (first: Int, second: Int) -> Int ) : Int{
-    return op(2,3)
-}
+fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
 
 fun p2( op: ( Int ) -> Int ) : Int { return op(2) }
 
+fun counterCreate()  : ( cmd : String ) -> Int {
+    var localCounter = 0
+    return {
+        when (it) {
+            "inc" -> ++localCounter
+            "dec" -> --localCounter
+            "val" -> localCounter
+             else -> throw Exception( "unknown" )
+        }
+    }
+}
+
 fun xxx() : Unit {
+    val action: ()->Unit = fun() { println("Hello") }
+    action() //hello
 
+    val sum: (Int)->Int  = fun(x) = x * x
+    println("sum=${sum(1,2)}")	      //sum=3
 
-    val v1 = p2( { x:Int-> x*x } )
-    val v2 = p2( )  { x:Int-> x*x }
-    val v3 =  p2 { x:Int-> x*x }
-    val v4 =  p2 { x -> x*x }
-    val v5 =  p2 { it -> it*it }
-    println("v5=$v5")	      //v45=4
+    val greet: (String)->()->Unit = fun(m:String) = fun() { println("Printing $m") }
+            greet( "Hello World" )() //Printing Hello World
+
 
 
 }
+
 fun main(){
     xxx()
 }

@@ -321,33 +321,76 @@ println( " ${square(3)} " ) //9
 
 
 
-<tr>
-<td><pre>
-{ println( "Function literal" ) }()  //Function literal
 
-val fl = { print( "Return last exp val: " ); 100 }
-println( "${fl()}" )  //Return last exp val: 100
-println("$fl")	      //() -> kotlin.Unit
+
+<td><pre>
+val action : () -> Unit 	   
+	//function type (no args, returns nothing useful (Unit)
+
+val sum : ( Int,  Int) -> Int  
+	//function type (two args, returns an Int)
+
+val greet: ( String )-> ()->Unit
+	//returns another function  
 </td>
-<td><m><em>Expression literal</em>: it can be assigned to a variable, just like any other literal</m> </td>
+<td><m><em>Function type</em> is just a syntactic sugar for an interface, but the interface cannot be used explicitly.
+We can  use them to type local variables, properties or arguments.
+It is implemented in Java as a <bc>FunctionN</bc> interface.
+
+A  way to provide a value function is to use a <em>function literal</em>:
+
+<ul>
+<li><em>Lambda expression</em></li>
+<li><em>Anonymous function</em></li>
+
+</ul>
+</m> </td>
 </tr>
 
+<tr>
 <td><pre>
-val action : () -> Unit 	//function type
-	= { println("hello") }  //lambda expression
+action	= { println("hello") }  //lambda expression
 action() //hello
 
-val sum : ( Int,  Int) -> Int  //function type
-	= { x:Int, y:Int -> x+y }  //lambda expression
+sum = { x:Int, y:Int -> x+y }  //lambda expression
 val a = sum(1,2)
 println("a=$a")	      //a=3
 
-val add = { x:Int, y:Int -> x+y } //Type inference
-println("${add(1,2)}")	      //3
+greet = { m: String -> { println(m)}  }
+greet( "Hello World" )() //Hello World
+
+---------------------------------------------------
+{ println( "Welcome" ) }()  //Welcome
+
+val fl = { print( "Last exp val=" ); 100 }
+println( "${fl()}" )  //Last exp val=100
+println("$fl")	      //() -> kotlin.Unit
 </td>
-<td><m><em>Function type</em> (implemented in Java as a <bc>FuncionN</bc> interface) and <em>lambda expression</em>.   </m> </td>
+<td><m><em>Lambda Expression literal</em>: it can be assigned to a variable, just like any other literal. 
+Returns (the value of the) <bc>last</bc> expression </m> </td>
 </tr>
 
+<tr>
+<td><pre>
+val action: ()->Unit = fun() { println("Hello") }
+action() //hello
+
+val sum: (Int)->Int  = fun(x) = x * x
+println("sum=${sum(1,2)}")	      //sum=3
+
+val greet: (String)->()->Unit = 
+		fun(m:String) = fun() { println("Printing $m") }
+greet( "Hello World" )() //Printing Hello World
+
+------------------------------------------
+fun exec23( op: ( Int, Int) -> Int ) {  op(2,3)  }
+
+val v4 =  exec23( fun(x:Int,y:Int):Int{return x+y} )
+println("$v4")          //5
+</pre> </td>
+<td><m><em>Anonymous function</em>; another way to write a block of code instead of a Lambda expression. Needs <bc>return</bc>
+like any function </m> </td>
+</tr>
 
 <tr>
 <td><pre>
@@ -355,21 +398,15 @@ fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
 
 val sum = { x:Int, y:Int -> x+y }
 val mul = { x:Int, y:Int -> x*y }
-println("${ exec23(add) }")	      //5 
+
+println("${ exec23(sum) }")	      //5 
 println("${ exec23(mul) }")	      //6
 
 </td>
 <td><m><em>Higher order functions</em>. </m> </td>
 </tr>
 
-<tr>
-<td><pre>
-fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
-val v4 =  exec23( fun(x:Int,y:Int):Int{return x+y} )
-println("$v4")          //5
-</pre> </td>
-<td><m><em>Anonymous function</em>; another way to write a block of code instead of a Lambda expression </m> </td>
-</tr>
+
 
 <tr>
 <td><pre>
@@ -403,7 +440,7 @@ fun p2( op: ( Int ) -> Int ) : Int { return op(2) }
     val v5 =  p2 { it -> it*it }
     println("v5=$v5")	      //v45=4
 </pre> </td>
-<td><m><em>Ipersemplifcation</em> </m>. The keyword <bc>it</bc> is an auto-generated parameter name </td>
+<td><m><em>Semplifcation</em> </m>. The keyword <bc>it</bc> is an auto-generated parameter name </td>
 </tr>
 
 
@@ -458,10 +495,10 @@ println( " pos=$pos neg=$neg " ) //pos=3 neg=-3
 
 
 
-<td style="width:45%"><pre>fun sum(a:Int, b:Int) : Int {
+<td><pre>fun sum(a:Int, b:Int) : Int {
   return a+b
 }
-println( " ${::sum}" ) //fun sum(kotlin.Int, kotlin.Int): kotlin.Int 
+println("${::sum}") //fun sum(kotlin.Int,kotlin.Int):kotlin.Int 
 </pre> 
 To obtain the output, include the dependency on:
 <pre>
@@ -483,8 +520,30 @@ use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
 <center><table style="width:95%">
 <tbody>	
 <tr>
-<td><pre></pre> </td>
-<td><m><em></em</m> </td>
+<td style="width:45%"><pre>
+fun counterCreate()  : ( cmd : String ) -> Int {
+    var localCounter = 0
+    return {
+        when (it) {
+            "inc" -> ++localCounter
+            "dec" -> --localCounter
+            "val" -> localCounter
+             else -> throw Exception( "unknown" )
+        }
+    }
+}
+
+val c1 = counterCreate()
+for( i in 1..3 ) c1("inc")
+println("c1=${c1("val")}")	      //c1=3
+
+val c2 = counterCreate()
+for( i in 1..3 ) c2("dec")
+println("c2=${c2("val")}")	     //c2=-3
+
+</pre> </td>
+<td><m>The <em>closure</em> returned by <bc>counterCreate</bc> is "closed over" the variable <bc>localCounter</bc>.
+We are reproducing oo programming style (<i>instance</i> and <i>state encapsulation</i>)</m> </td>
 </tr>
 </tbody>	
 </table></center>
