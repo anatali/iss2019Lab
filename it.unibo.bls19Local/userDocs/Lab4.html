@@ -154,31 +154,14 @@ The code of each experiment that is not a function or a class should  become the
 <ol>
 <li><a href="#data">Data, Types and Variables</a></li>
 <li><a href="#funs">Functions</a></li>
+<li><a href="#clos">Closures</a></li>
+<li><a href="#suspend">Suspend</a></li>
+<li></li> 
 <li></li>
 <li></li>
 <li></li>
 <li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+ 
 </ol>
 
 <h2><a id="basics"/>BASICS</h2>
@@ -335,6 +318,9 @@ println( " ${square(3)} " ) //9
 <td><m><em>One line function</em>. Braces can be omitted. Return type can be omitted (it is inferred)</m> </td>
 </tr>
 
+
+
+
 <tr>
 <td><pre>
 { println( "Function literal" ) }()  //Function literal
@@ -342,10 +328,102 @@ println( " ${square(3)} " ) //9
 val fl = { print( "Return last exp val: " ); 100 }
 println( "${fl()}" )  //Return last exp val: 100
 println("$fl")	      //() -> kotlin.Unit
-
-val showasliteral = { msg:String -> println(msg) }
 </td>
 <td><m><em>Expression literal</em>: it can be assigned to a variable, just like any other literal</m> </td>
+</tr>
+
+<td><pre>
+val action : () -> Unit 	//function type
+	= { println("hello") }  //lambda expression
+action() //hello
+
+val sum : ( Int,  Int) -> Int  //function type
+	= { x:Int, y:Int -> x+y }  //lambda expression
+val a = sum(1,2)
+println("a=$a")	      //a=3
+
+val add = { x:Int, y:Int -> x+y } //Type inference
+println("${add(1,2)}")	      //3
+</td>
+<td><m><em>Function type</em> (implemented in Java as a <bc>FuncionN</bc> interface) and <em>lambda expression</em>.   </m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
+
+val sum = { x:Int, y:Int -> x+y }
+val mul = { x:Int, y:Int -> x*y }
+println("${ exec23(add) }")	      //5 
+println("${ exec23(mul) }")	      //6
+
+</td>
+<td><m><em>Higher order functions</em>. </m> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
+val v4 =  exec23( fun(x:Int,y:Int):Int{return x+y} )
+println("$v4")          //5
+</pre> </td>
+<td><m><em>Anonymous function</em>; another way to write a block of code instead of a Lambda expression </m> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun exec23( op:(Int,Int) -> Int ) : Int { return op(2,3) }
+
+val v1 = exec23( { x:Int, y:Int -> x-y } ) //no shortcut
+println("v1=$v1")	      //v1=-1
+
+val v2 = exec23() { x:Int, y:Int -> x-y } //lamda is last arg
+println("v2=$v2")	      //v2=-1
+
+val v3 = exec23{ x:Int, y:Int -> x-y } //() can be removed
+println("v3=$v3")	      //v3=-1
+
+val v4 = exec23{ x,y -> x-y } //arg types inferred
+println("v4=$v4")	      //v4=-1
+
+	
+</td>
+<td><m><em>Lambda syntax shortcut</em>. </m> </td>
+</tr>
+
+<tr>
+<td><pre>
+fun p2( op: ( Int ) -> Int ) : Int { return op(2) }
+
+    val v1 = p2( { x:Int-> x*x } )
+    val v2 = p2( )  { x:Int-> x*x }
+    val v3 =  p2 { x:Int-> x*x }
+    val v4 =  p2 { x -> x*x }
+    val v5 =  p2 { it -> it*it }
+    println("v5=$v5")	      //v45=4
+</pre> </td>
+<td><m><em>Ipersemplifcation</em> </m>. The keyword <bc>it</bc> is an auto-generated parameter name </td>
+</tr>
+
+
+
+<td><pre>
+fun modulo(k:Int): (Int) -> Int    //SIGNATURE
+            = { it % k  }               //BODY
+var v = modulo(3)(5)	
+println("$v") //2
+</pre> </td>
+<td><m><em>Function as return value</em>.  </m> </td>
+</tr>
+
+
+
+
+<tr>
+<td><pre>
+</pre> </td>
+<td><m><em>...</em></m> </td>
 </tr>
 
 <tr>
@@ -362,6 +440,8 @@ println( " ${ sToN( s: "123") } " ) //123
 </pre> </td>
 <td><m><em>Default parameters</em> with <em>Named parameters</em> at call </m> </td>
 </tr>
+
+
 
 
 <tr>
@@ -397,14 +477,25 @@ use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
 </tbody>	
 </table></center>
  
- 
+
+ <h3><a id="clos"/>Closures</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td><pre></pre> </td>
+<td><m><em></em</m> </td>
+</tr>
+</tbody>	
+</table></center>
+
 <h3><a id="suspend"/>Suspend</h3>
 
 <center><table style="width:95%">
 <tbody>	
 <tr>
 <td><pre></pre> </td>
-<td><m></m> </td>
+<td><m><em></em</m> </td>
 </tr>
 </tbody>	
 </table></center>

@@ -31,12 +31,25 @@ fun sToN( s: String, base: Int=10 ) : Int{
     }
     return v
 }
-fun xxx() : Unit{
-   // val n = sToN( "123")
-    println( " ${ sToN( "123") } " )
 
+fun exec23( op: (first: Int, second: Int) -> Int ) : Int{
+    return op(2,3)
 }
 
+fun p2( op: ( Int ) -> Int ) : Int { return op(2) }
+
+fun xxx() : Unit {
+
+
+    val v1 = p2( { x:Int-> x*x } )
+    val v2 = p2( )  { x:Int-> x*x }
+    val v3 =  p2 { x:Int-> x*x }
+    val v4 =  p2 { x -> x*x }
+    val v5 =  p2 { it -> it*it }
+    println("v5=$v5")	      //v45=4
+
+
+}
 fun main(){
     xxx()
 }
