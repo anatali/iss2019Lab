@@ -1,5 +1,7 @@
 package experiment
 
+import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
 
 var counter = 0 //type inferred
@@ -46,20 +48,34 @@ fun counterCreate()  : ( cmd : String ) -> Int {
     }
 }
 
+suspend fun ioBoundFun(){
+    val timeElapsed = measureTimeMillis {
+        println("Perfoming an IO operation ...")
+        kotlinx.coroutines.delay(500)
+    }
+    println("Done, time=$timeElapsed")
+}
+
+suspend fun activate(){
+    val job1 = GlobalScope.async{
+        ioBoundFun()
+    }
+    val job2 = GlobalScope.async{
+         ioBoundFun()
+    }
+    println("Waiting for completion")
+    val end1 = job1.await()
+    val end2 = job2.await()
+    println("All jobs done")
+}
+
+
 fun xxx() : Unit {
-    val action: ()->Unit = fun() { println("Hello") }
-    action() //hello
-
-    val sum: (Int)->Int  = fun(x) = x * x
-    println("sum=${sum(1,2)}")	      //sum=3
-
-    val greet: (String)->()->Unit = fun(m:String) = fun() { println("Printing $m") }
-            greet( "Hello World" )() //Printing Hello World
-
-
 
 }
 
-fun main(){
-    xxx()
+fun main() = runBlocking{
+    println("BEGINS")
+    activate()
+    println("ENDS")
 }

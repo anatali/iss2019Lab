@@ -311,7 +311,7 @@ decCounter()
 
 <tr>
 
-<tr>
+<tr>
 <td><pre>fun square(v: Int) = v * v
 println( " ${square(3)} " ) //9
 </pre> </td>
@@ -440,7 +440,7 @@ fun p2( op: ( Int ) -> Int ) : Int { return op(2) }
     val v5 =  p2 { it -> it*it }
     println("v5=$v5")	      //v45=4
 </pre> </td>
-<td><m><em>Semplifcation</em> </m>. The keyword <bc>it</bc> is an auto-generated parameter name </td>
+<td><m><em>Simplifcation</em> </m>. The keyword <bc>it</bc> is an auto-generated parameter name </td>
 </tr>
 
 
@@ -548,20 +548,177 @@ We are reproducing oo programming style (<i>instance</i> and <i>state encapsulat
 </tbody>	
 </table></center>
 
-<h3><a id="suspend"/>Suspend</h3>
+<h3><a id="suspend"/>Suspending functions and coroutines</h3>
 
 <center><table style="width:95%">
 <tbody>	
 <tr>
-<td><pre></pre> </td>
-<td><m><em></em</m> </td>
+<td style="width:45%"><pre>
+suspend ioBoundFun(){
+	val timeElapsed = measureTimeMillis {
+		println("Perfoming an IO operation ...")
+		delay(500)
+	}
+	println("Done, time=$timeElapsed")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    ioBoundFun()
+    println("ENDS")
+}
+
+//OUTPUT:
+BEGINS
+Perfoming an IO operation ...
+Done, time=527
+ENDS
+</pre> </td>
+<td><m>A function that can <em>susped</em> its work cannot be called from a normal function,
+but only from another suspend function or from a <em>Coroutine</em>, created with a <em>Coroutine Builder</em>:
+<ul>
+<li><bc>GlobalScope.launch</bc></li>
+<li><bc>launch</bc></li>
+<li><bc>asynch</bc></li>
+<li><bc>GlobalScope.actor</bc></li>
+</ul>
+
+The <tt>Coroutine Builder</tt> <bc>runBlocking</bc> works as a wrapper that runs new coroutine and blocks current thread interruptibly until its completion. 
+This function should not be used from coroutine. It is designed to bridge regular blocking code to libraries that are written in suspending style, 
+to be used in main functions and in tests.
+
+</m> </td>
 </tr>
+ 
+ 
+ <tr>
+<td><pre>
+fun main() = runBlocking{
+    println("BEGINS")
+    val job = GlobalScope.launch {
+        ioBoundFun()
+    }
+    println("ENDS")
+}
+
+//OUTPUT:
+BEGINS
+ENDS
+Performing an IO operation ...
+</pre> </td>
+<td><m><bc>GlobalScope.launch</bc> launches an inner coroutine that works 'in parallel'. We do not await for coroutine completion
+and the programs ends before that the coroutine is done
+</m> </td>
+</tr>
+ 
+ 
+<tr>
+<td><pre>
+fun main() = runBlocking{
+    println("BEGINS")
+    val job = GlobalScope.launch {
+        ioBoundFun()
+    }
+	job.join()
+    println("ENDS")
+}
+
+//OUTPUT:
+BEGINS
+Perfoming an IO operation ...
+Done, time=524
+ENDS
+</pre> </td>
+<td><m>Coroutines started by <bc>launch</bc> return a  <em>Job</em> immediately, which we can use to <tt>cancel</tt> 
+the computation or <em>await</em> its completion with <bc>join</bc></m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+fun main() = runBlocking{
+    println("BEGINS")
+    val job = launch {
+        ioBoundFun()
+    }
+    //job.join()
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS
+ENDS
+Perfoming an IO operation ...
+Done, time=550
+</pre> </td>
+<td><m>If we change <bc>GlobalScope.launch</bc> to just <bc>launch</bc>, then the coroutine is launched in the
+scope of the outer <bc>runBlocking</bc> coroutine.
+As a result, we can now also remove the explicit <bc>join</bc> since <tt>runBlocking</tt> won't complete before all of its 
+child coroutines finish.
+
+This is an example of  <em>structured concurrency</em></m>: coroutines confined to different scopes 
+are more maintainable and manageable. </td>
+</tr>
+
+<tr>
+<td><pre>
+suspend fun activate(){
+    val job1 = GlobalScope.async{
+        ioBoundFun()
+    }
+    val job2 = GlobalScope.async{
+         ioBoundFun()
+    }
+    println("Waiting for completion")
+    val end1 = job1.await()
+    val end2 = job2.await()
+    println("All jobs done")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    activate()
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS
+Waiting for completion
+Perfoming an IO operation ...
+Perfoming an IO operation ...
+Done, time=530
+Done, time=546
+All jobs done
+ENDS
+</pre> </td>
+<td><m>The <bc>async</bc> builder returns a <em>promise</em> (also known as <tt>future</tt> ), 
+(which is of type <bc>Deferred</bc> in Kotlin) that provides the method <bc>await</bc>: it promises to compute a value which we can wait for or 
+request at any time</m> </td>
+</tr>
+
+
+
+
 </tbody>	
 </table></center>
- 
- 
 
- 
+
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"><pre></pre> </td>
+<td><m><em></em></m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em></em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+
  
 <br/><br/> 
 </div>  
