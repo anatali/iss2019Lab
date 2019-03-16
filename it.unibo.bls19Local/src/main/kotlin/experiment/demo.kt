@@ -1,6 +1,11 @@
 package experiment
 
+
+import javafx.application.Application.launch
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.channels.actor
 import kotlin.system.measureTimeMillis
 
 
@@ -69,13 +74,65 @@ suspend fun activate(){
     println("All jobs done")
 }
 
+suspend fun channelTest(){
+ val timeElapsed = measureTimeMillis {
+     val n = 5
+     val channel = Channel<Int>(2)
 
+     val sender = GlobalScope.launch {
+         repeat( n ) {
+             channel.send(it)
+             println("SENDER | sent $it")
+         }
+     }
+     delay(500) //The receiver starts after a while ...
+     val receiver = GlobalScope.launch {
+         for( i in 1..n ) {
+             val v = channel.receive()
+             println("RECEIVER | receives $v")
+         }
+     }
+
+     delay(3000)
+ }
+    println("Done. time=$timeElapsed")
+}
+
+
+class CounterMsg( val cmd : String , val replyChannel : SendChannel<Int>? = null){
+}
+
+fun counterActor() = GlobalScope.actor<CounterMsg> { //(1)
+    var localCounter  = 0
+    for (msg in channel) { // handle incoming messages
+        when ( msg.cmd ) {
+            "INC" -> localCounter++
+            "DEC" -> localCounter--
+            "GET" -> msg.replyChannel?.send(localCounter)
+            else -> throw Exception( "unknown" )
+        }
+    }
+}
+
+
+suspend fun useTheCounter(){
+    val counter = counterActor()
+    println("INC")
+    counter.send( CounterMsg("INC") )
+
+    val answerChannel = Channel<Int>()
+
+    counter.send( CounterMsg("GET", answerChannel) )
+
+    val answer = answerChannel.receive()
+
+    println("useTheCounter COUNTER = $answer")
+}
 fun xxx() : Unit {
-
 }
 
 fun main() = runBlocking{
     println("BEGINS")
-    activate()
+    useTheCounter()
     println("ENDS")
 }

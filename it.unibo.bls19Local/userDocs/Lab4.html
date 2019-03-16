@@ -155,8 +155,8 @@ The code of each experiment that is not a function or a class should  become the
 <li><a href="#data">Data, Types and Variables</a></li>
 <li><a href="#funs">Functions</a></li>
 <li><a href="#clos">Closures</a></li>
-<li><a href="#suspend">Suspend</a></li>
-<li></li> 
+<li><a href="#suspend">Suspending functions and coroutines</a></li>
+<li><a href="#channels">Channels</a></li>
 <li></li>
 <li></li>
 <li></li>
@@ -577,15 +577,17 @@ ENDS
 <td><m>A function that can <em>susped</em> its work cannot be called from a normal function,
 but only from another suspend function or from a <em>Coroutine</em>, created with a <em>Coroutine Builder</em>:
 <ul>
-<li><bc>GlobalScope.launch</bc></li>
-<li><bc>launch</bc></li>
-<li><bc>asynch</bc></li>
+<li><bc>GlobalScope.launch</bc> | <bc>launch</bc> ! <bc>asynch</bc></li>
 <li><bc>GlobalScope.actor</bc></li>
 </ul>
 
-The <tt>Coroutine Builder</tt> <bc>runBlocking</bc> works as a wrapper that runs new coroutine and blocks current thread interruptibly until its completion. 
-This function should not be used from coroutine. It is designed to bridge regular blocking code to libraries that are written in suspending style, 
+The <tt>Coroutine Builder</tt> <bc>runBlocking</bc> is a wrapper that runs new coroutine and blocks current thread interruptibly until its completion. 
+This function is designed to bridge regular blocking code to libraries that are written in suspending style, 
 to be used in main functions and in tests.
+
+<br/><br/>
+Coroutines do not rely on features of the Operating System or the J<tt>VM</tt>. Instead, a <bc>Continuation</bc> is added to every suspending function as 
+an additional parameter acording to the <em>Continuation-passing</em> style. The compiler produces a <em>state machine</em> to handle suspnesion.
 
 </m> </td>
 </tr>
@@ -696,24 +698,182 @@ ENDS
 request at any time</m> </td>
 </tr>
 
-
+<tr>
+<td><pre></pre> </td>
+<td><m><em>Thread confinement</em></m> </td>
+</tr>
 
 
 </tbody>	
 </table></center>
 
-
+<h3><a id="channels"/>Channels</h3>
 
 <center><table style="width:95%">
 <tbody>	
 <tr>
-<td style="width:45%"><pre></pre> </td>
-<td><m><em></em></m> </td>
+<td style="width:45%"><pre>
+suspend fun channelTest(){
+ val timeElapsed = measureTimeMillis {
+     val n = 5
+     val channel = Channel<Int>(2)
+
+     val sender = GlobalScope.launch {
+         repeat( n ) {
+             channel.send(it)
+             println("SENDER | sent $it")
+         }
+     }
+     delay(500) //The receiver starts after a while ...
+     val receiver = GlobalScope.launch {
+         for( i in 1..n ) {
+             val v = channel.receive()
+             println("RECEIVER | receives $v")
+         }
+     }
+
+     delay(3000)
+ }
+    println("Done. time=$timeElapsed")
+}
+
+//OUTPUT
+BEGINS
+SENDER | sent 0
+SENDER | sent 1
+RECEIVER | receives 0
+SENDER | sent 2
+SENDER | sent 3
+RECEIVER | receives 1
+RECEIVER | receives 2
+RECEIVER | receives 3
+RECEIVER | receives 4
+SENDER | sent 4
+Done. time=3556
+ENDS
+</pre> </td>
+<td><m>Channels provide a way to transfer a <tt>stream of values</tt>. <bc>send</bc> and <bc> receive</bc>  are
+<em>suspending functions</em> used for providing and consuming objects from the channel, implemented with a <tt>FIFO</tt>
+strategy.
+
+<br/><br/>
+The example shows the usage of sn <bc>ArrayChannel</bc> of capacity <tt>2</tt>. The sender is suspended when the channel is full
+and resumes as soon as the receiver consumes the data. This concept i often referred to as <em>Backpressure</em> and helps to
+prevent a channel from being flooded with more elements than the receivers can actually process.
+
+<br/><br/>
+Kotlin defines several types of channels:
+
+<br/><br/>
+<em>Unbuffered Channels</em>:
+<ul>
+ 
+<li><bc>RendezvousChannel</bc> (the buffer has capacity <tt>0</tt> and the sender suspends until the element is cosnumed)</li>
+</ul>
+
+<em>Buffered Channels</em>:
+<ul>
+<li><bc>LinkedListChannel</bc></li>
+<li><bc>ArrayChannel</bc></li>
+<li><bc>ConflatedChannel</bc> (the buffer has capacity <tt>1</tt> and the sender overrides an element not cosumed)</li>
+</ul>
+
+</m> </td>
 </tr>
 
 <tr>
 <td><pre></pre> </td>
 <td><m><em></em></m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+
+ 
+<h3><a id="actors"/>Actors</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"> <pre>
+class CounterMsg( 
+	val cmd : String , val replyChannel : SendChannel<Int>? = null){
+}
+
+fun counterActor() = GlobalScope.actor<CounterMsg> { //(1)
+    var localCounter  = 0
+    for (msg in channel) { // handle incoming messages
+        when ( msg.cmd ) {
+            "INC" -> localCounter++
+            "DEC" -> localCounter--
+            "GET" -> msg.replyChannel?.send(localCounter)
+            else -> throw Exception( "unknown" )
+        }
+    }
+}
+
+suspend fun useTheCounter(){
+    val counter = counterActor()
+    println("INC")
+    counter.send( CounterMsg("INC") )
+
+    val answerChannel = Channel<Int>()
+    counter.send( CounterMsg("GET", answerChannel) )
+
+    val answer = answerChannel.receive()
+    println("useTheCounter COUNTER = $answer")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    useTheCounter()
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS
+INC
+useTheCounter COUNTER = 1
+ENDS
+</pre> </td>
+<td><m>An <em>Actor </em> :
+<ul>
+<li>confines the access of a state to asingle Thread</li>
+<li>modifies the stete by using channels</li>
+</ul>
+
+This combination of mechanisms open thw way to the concpet of <em>state share by communication</em>.
+
+<br/><br/>
+By deafult, an actor is <bc>unbuffered</bc>.
+</m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<h3><a id=" "/>Next</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"> <pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
 </tr>
 
 </tbody>	
