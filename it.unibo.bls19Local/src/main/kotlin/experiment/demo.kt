@@ -166,9 +166,63 @@ suspend fun actionWithContext( n: Int){
 
 //https://ktor.io/
 
+suspend fun inputFun( callBack : ( String ) -> Unit){
+    //val timeElapsed = measureTimeMillis {
+        println("Performing an input operation ...")
+        kotlinx.coroutines.delay(500)
+        println("Calling the callback")
+        callBack("someInput")
+    //}
+    //println("Done, time=$timeElapsed")
+}
+
+fun getInput() : String{
+    println("Input  ...")
+    //kotlinx.coroutines.delay(500)
+    return "myinput"
+}
+
+fun submit( v: Int, msg: String ) : String{
+    println("Submit ...")
+    return "$msg-$v"
+}
+
+fun handle( msg: String ){
+    println("Handle $msg")
+}
+
+fun doJob(n:Int){
+    val s = getInput()
+    val v = submit( n, s )
+    handle( v )
+}
+
+
+
+fun doJobCps( n: Int, callback : ( String ) -> Unit ){
+    val s = getInput()
+    callback( s   )
+}
+
+fun submitCps( v: Int, msg: String , callback : ( String ) -> Unit )  {
+    println("Submit ...")
+    callback( "$msg-$v" )
+}
+
+/*
+fun doJobCpssss( n: Int, callback : (m:String, c:(String)->Unit ) -> Unit ){
+    val s = getInput()
+    callback( s , c(s) )
+}
+*/
+
+
 fun main() = runBlocking{
     println("BEGINS")
-    for(i in 1..3) launch{ actionWithContext(i) }
+    doJob(10)
+    //val n = 10
+    //doJobCps( n, {  t -> submitCps( n, t , { m -> handle(m) } )  } )
+    //launch{ inputFun( {  println( "$it" )}) }
     println("ENDS")
 }
 

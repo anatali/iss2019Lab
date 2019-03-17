@@ -534,6 +534,103 @@ println("c2=${c2("val")}")	     //c2=-3
 <td><m>The <em>closure</em> returned by <bc>counterCreate</bc> is "closed over" the variable <bc>localCounter</bc>.
 We are reproducing oo programming style (<i>instance</i> and <i>state encapsulation</i>)</m> </td>
 </tr>
+
+<tr>
+<td><pre>
+suspend fun inputFun( callBack : ( String ) -> Unit){
+ println("Performing an input operation ...")
+ kotlinx.coroutines.delay(500)
+ println("Call the callback")
+ callBack("someInput")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    launch{ inputFun( {  println( "$it" )}) }
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS
+ENDS
+Performing an input operation ...
+Calling the callback
+someInput
+</pre> </td>
+<td><m><em>Callbacks</em> are quite common in event-loop architectures such as JavaScript.
+People have moved away to using other approaches such as promises or 
+Reactive Extensions (Rx) (<tt>C#</tt>, <tt>.NET</tt>).</m> 
+
+asynchronous programming 
+</td>
+</tr>
+
+<tr>
+<td><pre>
+fun getInput() : String{
+    println("Input  ...")
+    return "myinput"
+}
+fun submit( v: Int, msg: String ) : String{
+    println("Submit ...")
+    return "$msg-$v"
+}
+fun handle( msg: String ){
+    println("Handle $msg")
+}
+fun doJob(n:Int){
+    val s = getInput()
+    val v = submit( n, s )
+    handle( v )
+}
+fun main() = runBlocking{
+    println("BEGINS")
+    doJob(10)
+    println("ENDS")
+}
+
+//OUPUT
+BEGINS
+Input  ...
+Submit ...
+Handle myinput-10
+ENDS
+</pre> </td>
+<td><m><em>Normal sequence</em></m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+fun doJobCps( n: Int, callback : ( String ) -> Unit ){
+    val s = getInput()
+    callback( s   )
+}
+fun submitCps( v: Int, msg: String , callback : ( String ) -> Unit )  {
+    println("Submit ...")
+    callback( "$msg-$v" )
+}
+fun main() = runBlocking{
+    println("BEGINS")
+    val n = 10
+    doJobCps( n, {  t -> submitCps( n, t , { m -> handle(m) } )  } )
+    println("ENDS")
+}
+
+//OUPUT
+BEGINS
+Input  ...
+Submit ...
+Handle myinput-10
+ENDS
+</pre> </td>
+<td><m><em>Continuation-passing style</em></m> see <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">CPS</a>.
+Should be asynchronous</td>
+</tr>
+
+
+
+
 </tbody>	
 </table></center>
 
@@ -545,7 +642,7 @@ We are reproducing oo programming style (<i>instance</i> and <i>state encapsulat
 <td style="width:45%"><pre>
 suspend fun ioBoundFun(){
 	val timeElapsed = measureTimeMillis {
-		println("Perfoming an IO operation ...")
+		println("Performing an IO operation ...")
 		kotlinx.coroutines.delay(500)
 	}
 	println("Done, time=$timeElapsed")
@@ -616,7 +713,7 @@ fun main() = runBlocking{
 
 //OUTPUT:
 BEGINS
-Perfoming an IO operation ...
+Performing an IO operation ...
 Done, time=524
 ENDS
 </pre> </td>
@@ -675,8 +772,8 @@ fun main() = runBlocking{
 //OUTPUT
 BEGINS
 Waiting for completion
-Perfoming an IO operation ...
-Perfoming an IO operation ...
+Performing an IO operation ...
+Performing an IO operation ...
 Done, time=530
 Done, time=546
 All jobs done
