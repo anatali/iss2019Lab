@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
+import java.util.*
 import kotlin.system.measureTimeMillis
 
 
@@ -128,11 +129,68 @@ suspend fun useTheCounter(){
 
     println("useTheCounter COUNTER = $answer")
 }
+
+fun getList(): List<Int> {
+    val arrayList = arrayListOf(1, 5, 7)
+    Collections.sort(arrayList, { x, y -> println("x=$x y=$y ${y-x}"); y-x})
+    return arrayList
+}
+
 fun xxx() : Unit {
 }
 
+
+suspend fun suspendLogin( n: Int) =
+    //withContext( th ) {
+    withContext(Dispatchers.Default) { //it would block the UI
+    //withContext( Dispatchers.IO ){
+        //Simulate UI interaction
+        println("$n) thread=${Thread.currentThread().name}") //1) thread=DefaultDispatcher-worker-1
+        delay( 1000 )
+        println("Login $n done")
+    }
+
+suspend fun action( n: Int){
+ println("$n) thread=${Thread.currentThread().name}") //1) thread=DefaultDispatcher-worker-1
+ delay( 1000 )
+ println("Action $n done")
+}
+
+suspend fun actionWithContext( n: Int){
+    withContext(Dispatchers.Default) {
+        println("$n) thread=${Thread.currentThread().name}") //1) thread=DefaultDispatcher-worker-1
+        delay(1000)
+        println("ActionWithContext $n done")
+    }
+}
+
+//https://ktor.io/
+
 fun main() = runBlocking{
     println("BEGINS")
-    useTheCounter()
+    for(i in 1..3) launch{ actionWithContext(i) }
+    println("ENDS")
+}
+
+val th = newSingleThreadContext("My Thread")
+
+suspend fun launchDefault(i: Int, scope: CoroutineScope ){
+    scope.launch( Dispatchers.Default ){ action(i) }
+}
+suspend fun launchIO(i: Int, scope: CoroutineScope ){
+    scope.launch( Dispatchers.IO ){ action(i) }
+}
+suspend fun launchSingle(i: Int, scope: CoroutineScope ){
+    scope.launch( th ){ action(i) }
+}
+
+suspend fun launchAction( i: Int, scope: CoroutineScope ){
+    launchSingle(i,scope)
+}
+fun mainM() = runBlocking {
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("AT START | CPU=$cpus threads=${Thread.activeCount()} curThread=${Thread.currentThread().name}")
+    println("BEGINS")
+    for (i in 1..6) launchAction(i,this)//launch( Dispatchers.Default ){ action(i) }
     println("ENDS")
 }

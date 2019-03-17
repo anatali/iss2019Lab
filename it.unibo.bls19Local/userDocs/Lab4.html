@@ -98,7 +98,7 @@ pre{
  
 m{
 	font-family: "Helvetica";
-	font-size: 80%;
+ 	font-size: 80%;
 }
 div.body{
 	width: 800px;
@@ -133,22 +133,12 @@ table, th, td {
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
 <br/><br/>
-To run the experiments, define a basic Kotlin program as follows
-<pre>
-fun experiment() : Unit{
-	println("Hello world")
-}
+To run the experiments, use an IDE or <a href="https://play.kotlinlang.org">Kotlin Playground</a>.
 
-fun main(){
-    experiment()
-}
-</pre>
-You cas use:
+You can consult also:
 
-<a href="https://try.kotlinlang.org/#/Examples/Hello,%20world!/Simplest%20version/Simplest%20version.kt" target="web">Kotlin online</a>
-<br/><br/>
-The code of each experiment that is not a function or a class should  become the body of the <tt>experiment</tt> function. 
-
+<a href="https://try.kotlinlang.org/#/Examples" target="web">Kotlin online</a>
+ 
 <h2>INDEX</h2>
 
 <ol>
@@ -199,8 +189,8 @@ println("v=$v")	//0
 <td><m><em>Nullable type</em> with safe null access</m> </td>
 </tr>
 <tr>
-<td><pre>val : Any = 23
-val Unit
+<td><pre>
+val v : Any = 23
 println( "v is String=${v is String}") //true
 println( "v is Int=${v is Int}")	//false
 </pre> </td>
@@ -364,7 +354,6 @@ greet( "Hello World" )() //Hello World
 
 val fl = { print( "Last exp val=" ); 100 }
 println( "${fl()}" )  //Last exp val=100
-println("$fl")	      //() -> kotlin.Unit
 </td>
 <td><m><em>Lambda Expression literal</em>: it can be assigned to a variable, just like any other literal. 
 Returns (the value of the) <bc>last</bc> expression </m> </td>
@@ -506,7 +495,7 @@ implementation "org.jetbrains.kotlin:kotlin-reflect"
 </pre>
 </td>
 <td><m><em>Function reference</em>. The <bc>::</bc> operator creates a member reference or a (statically known) class reference.
-The <em>reference</em> is a value of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a>.
+The <em>reference</em> is a value of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html" target="web">KClass</a>.
 A Kotlin class reference is not the same as a Java class reference. To obtain a Java class reference, 
 use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
  </td>
@@ -554,10 +543,10 @@ We are reproducing oo programming style (<i>instance</i> and <i>state encapsulat
 <tbody>	
 <tr>
 <td style="width:45%"><pre>
-suspend ioBoundFun(){
+suspend fun ioBoundFun(){
 	val timeElapsed = measureTimeMillis {
 		println("Perfoming an IO operation ...")
-		delay(500)
+		kotlinx.coroutines.delay(500)
 	}
 	println("Done, time=$timeElapsed")
 }
@@ -570,7 +559,7 @@ fun main() = runBlocking{
 
 //OUTPUT:
 BEGINS
-Perfoming an IO operation ...
+Performing an IO operation ...
 Done, time=527
 ENDS
 </pre> </td>
@@ -650,7 +639,7 @@ fun main() = runBlocking{
 //OUTPUT
 BEGINS
 ENDS
-Perfoming an IO operation ...
+Performing an IO operation ...
 Done, time=550
 </pre> </td>
 <td><m>If we change <bc>GlobalScope.launch</bc> to just <bc>launch</bc>, then the coroutine is launched in the
@@ -699,8 +688,238 @@ request at any time</m> </td>
 </tr>
 
 <tr>
+<td><pre>
+fun main() = runBlocking<Unit> {
+ println("BEGINS")
+ launch { //context of the parent runBlocking  
+  println("1) thread=${Thread.currentThread().name}")
+ }
+ launch(Dispatchers.Unconfined) { // in main thread
+  println("2) thread=${Thread.currentThread().name}")
+ }
+ launch(Dispatchers.Default) { // DefaultDispatcher
+  println("3) thread=${Thread.currentThread().name}")
+ }
+ launch(
+  newSingleThreadContext("MyThr")) { //new thread
+  println("4) thread=${Thread.currentThread().name}")
+ }
+ println("ENDS")
+}
+
+//OUTPUT
+BEGINS
+2) thread=main
+3) thread=DefaultDispatcher-worker-1
+ENDS
+4) thread=MyThr
+1) thread=main
+</pre> </td>
+<td><m><em>Coroutine Context</em>: a set of rules and configurations that define how the coroutine will be executed.
+Useful to read: <a href="https://proandroiddev.com/demystifying-coroutinecontext-1ce5b68407ad" target="web">Demystifying CoroutineContext</a>
+<br/><br/>
+All the <em>coroutine builder</em> functions like <bc>launch</bc> and <bc>async</bc> have as first parameter a <tt>context: CoroutineContext</tt>
+that can be used to specify context elements.
+It includes a <em>CoroutineDispatcher</em> that determines 
+the thread or threads where the coroutine will be executed. This dispatcher can be provided in two ways:
+
+<ul>
+<li><bc>Explicitly</bc>: the coroutine builder receives a coroutine context as a first parameter</li>
+<li><bc>By the coroutine scope</bc></li>
+</ul>
+
+
+
+Every coroutine builder is also an extension on <em>CoroutineScope</em> interface and inherits its abstract read-only property
+<tt>coroutineContext: CoroutineContext</tt> to  automatically propagate both context elements and cancellation.
+See <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html" target="web">
+Coroutine Scope</a>
+ 
+
+
+<ul>
+<li><bc>Global scope</bc>: the coroutine affects the whole Application</li>
+<li><bc>CoroutineScope</bc>: defines a scope for new coroutines</li>
+</ul>
+
+-Dkotlinx.coroutines.debug JVM option
+https://play.kotlinlang.org
+/koans/overview
+
+</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	...
+}
+fun main() = runBlocking {
+ val cpus = Runtime.getRuntime().availableProcessors();
+ println("AT START | 
+    CPU=$cpus threads=${Thread.activeCount()} 
+    curThread=${Thread.currentThread().name}")
+ println("BEGINS")
+ for (i in 1..6) launchAction(i,this) 
+ println("ENDS")
+}</pre> </td>
+<td><m><em>Code pattern</em> for experiments on Dispatchers:
+<ul>
+<li>Coroutine dispatcher can confine coroutine execution to a specific thread, dispatch it to a thread pool, 
+or let it run unconfined.</li>
+<li>Coroutines can be executed concurrently using a multi-threaded dispatcher.</li>
+<li>Coroutines can suspend on one thread and resume on another thread.</li>
+</ul>
+
+We have four main Dispatchers:
+
+<ol>
+<li><bc>Default</bc>: for CPU-intensive tasks. It can use as many threads as CPU cores</li>
+<li><bc>IO</bc>: IO-intensive tasks  waiting for an answer from another system. 
+The size of this thread pool is 64</li>
+<li><bc>Unconfined</bc>: don’t use it unless you’re very sure of what you’re doing</li>
+<li><bc>Main</bc>: a special dispatcher that is included in <tt>UI</tt> related coroutine libraries
+(see <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html" target="web">kotlinx.coroutines.Main</a>)</li>
+
+</ol>
+</m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	launchDefault(i,scope)
+}
+suspend fun launchDefault(i:Int,scope:CoroutineScope){
+    scope.launch( Dispatchers.Default ){ action(i) }
+}
+
+//OUTPUT
+AT START | CPU=4 threads=2 curThread=main
+BEGINS
+1) thread=DefaultDispatcher-worker-1
+2) thread=DefaultDispatcher-worker-2
+ENDS
+3) thread=DefaultDispatcher-worker-4
+4) thread=DefaultDispatcher-worker-3
+6) thread=DefaultDispatcher-worker-1
+5) thread=DefaultDispatcher-worker-4
+Action 3 done
+Action 1 done
+Action 6 done
+Action 5 done
+Action 4 done
+Action 2 done
+</pre> </td>
+<td><m><em>Dispatch.Default</em>: the actions are executed by as many Threads as the CPU cores
+ 
+</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	launchIO(i,scope)
+}
+suspend fun launchIO(i:Int,scope:CoroutineScope){
+    scope.launch( Dispatchers.IO ){ action(i) }
+}
+
+//OUTPUT
+AT START | CPU=4 threads=2 curThread=main
+BEGINS
+1) thread=DefaultDispatcher-worker-1
+ENDS
+2) thread=DefaultDispatcher-worker-2
+3) thread=DefaultDispatcher-worker-3
+4) thread=DefaultDispatcher-worker-4
+5) thread=DefaultDispatcher-worker-5
+6) thread=DefaultDispatcher-worker-6
+Action 6 done
+Action 2 done
+Action 5 done
+Action 3 done
+Action 4 done
+Action 1 done
+</pre> </td>
+<td><m><em>Dispatch.IO</em>: the actions are executed by a pool of (<tt>64??</tt>) Threads 
+ 
+</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+val th = newSingleThreadContext("My Thread")
+
+suspend fun launchAction(i:Int,scope:CoroutineScope){
+	launchSingle(i,scope)
+}
+suspend fun launchSingle(i:Int,scope:CoroutineScope){
+    scope.launch( th ){ action(i) }
+}
+
+//OUTPUT
+AT START | CPU=4 threads=2 curThread=main
+BEGINS
+1) thread=My Thread
+ENDS
+2) thread=My Thread
+3) thread=My Thread
+4) thread=My Thread
+5) thread=My Thread
+6) thread=My Thread
+Action 1 done
+Action 2 done
+Action 3 done
+Action 4 done
+Action 5 done
+Action 6 done
+</pre> </td>
+<td><m><em>Thread confinement </em>: : the actions are executed one a e time (in <tt>mutual exclusion</tt>)
+by a <bc>single thread</bc>
+ 
+</m> </td>
+</tr>
+
+<tr>
+<td><pre>
+suspend fun actionWithContext( n: Int){
+ withContext(Dispatchers.Default) {
+   println("$n) thread=${Thread.currentThread().name}")  
+   delay(1000)
+   println("ActionWithContext $n done")
+ }
+}
+fun main() = runBlocking{
+	println("BEGINS")
+    for(i in 1..3) launch{ actionWithContext(i) } 
+    println("ENDS")
+}
+
+//OUPUT
+BEGINS
+ENDS
+1) thread=DefaultDispatcher-worker-1
+2) thread=DefaultDispatcher-worker-2
+3) thread=DefaultDispatcher-worker-3
+ActionWithContext 3 done
+ActionWithContext 1 done
+ActionWithContext 2 done
+</pre> </td>
+<td><m><em>withContext</em>: allows to 
+change the context that will be used to run a part of the code inside a coroutine.
+
+ 
+</m> </td>
+</tr>
+
+<tr>
 <td><pre></pre> </td>
-<td><m><em>Thread confinement</em></m> </td>
+<td><m><em>...</em>
+
+ 
+</m> </td>
 </tr>
 
 
@@ -843,14 +1062,14 @@ ENDS
 </pre> </td>
 <td><m>An <em>Actor </em> :
 <ul>
-<li>confines the access of a state to asingle Thread</li>
-<li>modifies the stete by using channels</li>
+<li>confines the access of a state to a single Thread</li>
+<li>modifies the state by using a channel</li>
 </ul>
 
 This combination of mechanisms open thw way to the concpet of <em>state share by communication</em>.
 
 <br/><br/>
-By deafult, an actor is <bc>unbuffered</bc>.
+By default, an actor is <bc>unbuffered</bc>.
 </m> </td>
 </tr>
 
