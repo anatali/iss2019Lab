@@ -1061,13 +1061,7 @@ change the context that will be used to run a part of the code inside a coroutin
 </m> </td>
 </tr>
 
-<tr>
-<td><pre></pre> </td>
-<td><m><em>...</em>
-
  
-</m> </td>
-</tr>
 
 
 </tbody>	
@@ -1101,11 +1095,12 @@ suspend fun CoroutineScope.massiveRun(
     println("Completed ${n * k} actions in $time ms")    
 }
 </pre> </td>
-<td><m><em>Concurrency</em>. This example is taken from<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
+<td><m><em>Concurrency</em>. Let us introduce an example taken from<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
 Kotlin coroutines: Shared mutable state and concurrency</a>:<br/>
 <li><tt>n=100</tt> coroutines are launched to execute <tt>k=1000</tt> times a given <b>action</b> of signature <tt>suspend () -> Unit</tt></li>
 <li>the  action  will be the increment of the shared variable <bc>counter</bc> </li>
-
+<br/><br/>
+We will make reference to the example with the name  "<bc>CounterIncCoroutines</bc>".
 </m>
 </td>
 </tr>
@@ -1216,7 +1211,7 @@ ENDS with Counter = 100000
 <td><m>A <em>Critical section</em> protects all modifications of a shared state so that is never executed concurrently 
 (but it is accessed in <bc>mutual exclusion</bc>). The Coroutine's alternative to  <tt>synchronized</tt> operations is <bc>Mutex</bc>.
 <br/>
-The locking here is fine-grained amd the execution is quite slow. However, it can be  it is a good solution
+The locking here is fine-grained and the execution is quite slow. However, it can be  it is a good solution
  when there is no natural thread in which we can confine a shared state to be modified.
 
 
@@ -1224,8 +1219,36 @@ The locking here is fine-grained amd the execution is quite slow. However, it ca
 </tr>
 
 <tr>
-<td><pre></pre> </td>
-<td><m><em> </em></m> </td>
+<td><pre>
+val simpleProducer = produce {
+        send(1)
+}
+println(simpleProducer.receive()) //1
+
+val context = newSingleThreadContext("myThread")
+val typedProducer: ReceiveChannel<Any> = produce(context){
+	send(5)
+	send("a")
+	send(100)
+}
+println(typedProducer.receive()) //1
+typedProducer.consumeEach {
+   println(it)
+}
+
+
+</pre> </td>
+<td><m>A <em>Producer</em> works as follows:
+<ul>
+<li>suspends after a value s produced and  resumes when a new value is requested (similar to suspending sequences anmd iterators)</li>
+<li>can be built with a specific <tt>CoroutineContext</tt> (as with <tt>launch</tt> or <tt>async</tt>) </li>
+<li>the body of the suspending lambda that is passed can suspend at any point</li>
+<li>a value from a producer can only be received in a suspending computation </li>
+<li></li>
+</ul>
+
+A producer is associated with the channel that it sends elements to (a <bc>ReceiveChannel</bc>) .
+</m> </td>
 </tr>
 
 </tbody>	
@@ -1305,15 +1328,7 @@ Kotlin defines several types of channels:
 </m> </td>
 </tr>
 
-<tr>
-<td><pre></pre> </td>
-<td><m><em></em></m> </td>
-</tr>
-
-<tr>
-<td><pre></pre> </td>
-<td><m><em> </em></m> </td>
-</tr>
+ 
 
 </tbody>	
 </table></center>
@@ -1323,65 +1338,97 @@ Kotlin defines several types of channels:
 
 <center><table style="width:95%">
 <tbody>	
+
 <tr>
-<td style="width:45%"> <pre>
-class CounterMsg( 
-	val cmd : String , val replyChannel : SendChannel<Int>? = null){
+<td><pre>
+class CounterMsg(
+  val cmd:String,val response:CompletableDeferred<Int>?=null){
 }
 
-fun counterActor() = GlobalScope.actor<CounterMsg> { //(1)
-    var localCounter  = 0
-    for (msg in channel) { // handle incoming messages
+fun CoroutineScope.counterActor() : SendChannel<CounterMsg> =
+            actor<CounterMsg> {
+    var localCounter = 0 // actor state
+    for (msg in channel) { // iterate over incoming messages
         when ( msg.cmd ) {
             "INC" -> localCounter++
             "DEC" -> localCounter--
-            "GET" -> msg.replyChannel?.send(localCounter)
+            "GET" -> msg.response?.complete(localCounter) 
             else -> throw Exception( "unknown" )
-        }
+        }    }
+}
+
+fun main() = runBlocking<Unit>{
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("BEGINS with $cpus  cores")
+    val counter = counterActor() // create the actor
+    val initVal = CompletableDeferred<Int>()
+    counter.send(CounterMsg("GET", initVal))
+    println("Counter INITIAL VALUE=${initVal.await()}")
+    GlobalScope.massiveRun {
+        counter.send(CounterMsg("INC") )
     }
-}
-
-suspend fun useTheCounter(){
-    val counter = counterActor()
-    println("INC")
-    counter.send( CounterMsg("INC") )
-
-    val answerChannel = Channel<Int>()
-    counter.send( CounterMsg("GET", answerChannel) )
-
-    val answer = answerChannel.receive()
-    println("useTheCounter COUNTER = $answer")
-}
-
-fun main() = runBlocking{
-    println("BEGINS")
-    useTheCounter()
-    println("ENDS")
+    val finalVal = CompletableDeferred<Int>()
+    counter.send(CounterMsg("GET", finalVal))
+    println("Counter FINAL VALUE= = ${finalVal.await()}")
+    counter.close() // shutdown the actor
+    println("ENDS ")
 }
 
 //OUTPUT
-BEGINS
-INC
-useTheCounter COUNTER = 1
-ENDS
+BEGINS with 4  cores
+Counter INITIAL VALUE=0
+Completed 100000 actions in 734 ms
+Counter FINAL VALUE= = 100000
+ENDS 
 </pre> </td>
-<td><m>An <em>Actor </em> :
+<td><m>
+Our <bc>CounterIncCoroutines</bc> problem, can be solved by 'embedding' the counter-data into an <em>Actor</em> that:
 <ul>
-<li>confines the access of a state to a single Thread</li>
-<li>modifies the state by using a channel</li>
+<li>confines the access of a state to a single Coroutine</li>
+<li>is associated with the <bc>channel</bc> (<tt>unbuffered</tt> by default ) that it receives messages from</li>
+<li>modifies the state by handling the messages received on its <bc>channel</bc> </li>
+<li>has type <bc>SendChannel&ltT></bc> where <tt>T</tt> is the type of message it can handle</li>
 </ul>
 
-This combination of mechanisms open thw way to the concpet of <em>state share by communication</em>.
+This combination of mechanisms opens the way to the concept of <em>state share by communication</em>.
+<!-- A simple actor can be written as a function, but an actor with a complex state is better suited for a class.
+An actor is associated with the <bc>channel</bc> ( <bc>unbuffered</bc> by default ) that it receives messages from (of type <bc>SendChannel<T></bc>)
+-->
+<br/>
+In this version
+The Actor has always work to do and does not have to switch to a different context at all.
 
 <br/><br/>
-By default, an actor is <bc>unbuffered</bc>.
+The first step of using an actor is to define a class of messages that an actor is going to process.
+Kotlin's <bc>sealed classes</bc> are well suited for that purpose. However, at the moment, we introduce a more conventional class
+<bc>CounterMsg</bc>.
+
+<br/>
+The <b>action</b> consists now in sending a <tt>CounterMsg</tt> with <tt>cmd="INC"</tt> .
+
+<br/>
+The final value of the counter is obtaind by sending to the actor the <tt>CounterMsg</tt> with <tt>cmd="GET"</tt> 
+and <tt>response</tt> bound to an object that will include the response, once available.
+<br/>
+The object of <bc>CompletableDeferred</bc> interface 
+(see <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-completable-deferred/" target="web">CompletableDeferred</a>))
+is a <tt>Deferred</tt> that can be completed via public functions <bc>complete</bc> or <bc>cancel</bc>.
+All functions on this interface and on all interfaces derived from it, are <bc>thread-safe</bc> and can be safely invoked 
+from concurrent coroutines without external synchronization.
+<br/><br/> 
+The <bc>actor</bc> coroutine builder is a dual of <bc>produce</bc> coroutine builder, 
+since a producer is associated with the channel that it <i>sends</i> elements to.
+
+
+
 </m> </td>
 </tr>
 
-<tr>
-<td><pre></pre> </td>
-<td><m><em> </em></m> </td>
-</tr>
+
+
+ 
+
+
 
 </tbody>	
 </table></center>
@@ -1409,3 +1456,44 @@ By default, an actor is <bc>unbuffered</bc>.
 
 </body>
 </html>
+
+<!--
+class CounterMsg( 
+	val cmd:String, val replyChannel:SendChannel<Int>?=null){
+}
+
+fun counterActor() : SendChannel<CounterMsg> = GlobalScope.actor<CounterMsg> {
+    var localCounter = 0 // actor state
+    for (msg in channel) { // iterate over messages
+        when ( msg.cmd ) {
+            "INC" -> localCounter++
+            "DEC" -> localCounter--
+            "GET" -> msg.replyChannel?.send(localCounter)
+            else -> throw Exception( "unknown" )
+        }    }
+}
+
+suspend fun useTheCounter(){
+    val counter = counterActor()
+    println("INC")
+    counter.send( CounterMsg("INC") )
+
+    val answerChannel = Channel<Int>()
+    counter.send( CounterMsg("GET", answerChannel) )
+
+    val answer = answerChannel.receive()
+    println("useTheCounter COUNTER = $answer")
+}
+
+fun main() = runBlocking{
+    println("BEGINS")
+    useTheCounter()
+    println("ENDS")
+}
+
+//OUTPUT
+BEGINS with 4  cores
+INC
+useTheCounter COUNTER = 1
+ENDS 
+-->
