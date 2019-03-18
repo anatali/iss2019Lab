@@ -92,13 +92,14 @@ bc{
 }
 pre{
 	font-family: "Helvetica";
-	font-size: 80%;
+	font-size: 70%;
 	background-color: #fcf8c7; 
 }
  
 m{
 	font-family: "Helvetica";
- 	font-size: 80%;
+	line-height: 100%;
+ 	font-size: 75%;
 }
 div.body{
 	width: 800px;
@@ -144,9 +145,11 @@ You can consult also:
 <ol>
 <li><a href="#data">Data, Types and Variables</a></li>
 <li><a href="#funs">Functions</a></li>
-<li><a href="#clos">Closures</a></li>
+<li><a href="#clos">Closures and Callbacks</a></li>
 <li><a href="#suspend">Suspending functions and coroutines</a></li>
+<li><a href="#concur">Concurrency</a></li>
 <li><a href="#channels">Channels</a></li>
+<li><a href="#actors">Actors</a></li>
 <li></li>
 <li></li>
 <li></li>
@@ -301,7 +304,7 @@ decCounter()
 
 <tr>
 
-<tr>
+<tr>
 <td><pre>fun square(v: Int) = v * v
 println( " ${square(3)} " ) //9
 </pre> </td>
@@ -504,7 +507,7 @@ use the <bc>.java</bc> property on a <tt>KClass</tt> instance.</m>
 </table></center>
  
 
- <h3><a id="clos"/>Closures</h3>
+ <h3><a id="clos"/>Closures and Callbacks</h3>
 
 <center><table style="width:95%">
 <tbody>	
@@ -537,36 +540,6 @@ We are reproducing oo programming style (<i>instance</i> and <i>state encapsulat
 
 <tr>
 <td><pre>
-suspend fun inputFun( callBack : ( String ) -> Unit){
- println("Performing an input operation ...")
- kotlinx.coroutines.delay(500)
- println("Call the callback")
- callBack("someInput")
-}
-
-fun main() = runBlocking{
-    println("BEGINS")
-    launch{ inputFun( {  println( "$it" )}) }
-    println("ENDS")
-}
-
-//OUTPUT
-BEGINS
-ENDS
-Performing an input operation ...
-Calling the callback
-someInput
-</pre> </td>
-<td><m><em>Callbacks</em> are quite common in event-loop architectures such as JavaScript.
-People have moved away to using other approaches such as promises or 
-Reactive Extensions (Rx) (<tt>C#</tt>, <tt>.NET</tt>).</m> 
-
-asynchronous programming 
-</td>
-</tr>
-
-<tr>
-<td><pre>
 fun getInput() : String{
     println("Input  ...")
     return "myinput"
@@ -583,28 +556,52 @@ fun doJob(n:Int){
     val v = submit( n, s )
     handle( v )
 }
+
 fun main() = runBlocking{
     println("BEGINS")
     doJob(10)
     println("ENDS")
 }
 
+</pre> </td>
+<td><m>Let us execute a <em>Normal call sequence</em> with reference to the set of functions on the left.
+The output is:</m>
+<pre>
 //OUPUT
 BEGINS
 Input  ...
 Submit ...
 Handle myinput-10
 ENDS
-</pre> </td>
-<td><m><em>Normal sequence</em></m> </td>
-</tr>
+</pre>
+<m>Now, let us suppose that the operation <bc>getInput</bc> takes a long time and that we do not want to block
+the computation. As a solution we could introduce:
 
+<ol>
+<li>Threading</li>
+<li>Callbacks</li>
+<li>Futures, Promises et al.</li>
+<li>Reactive Extensions</li>
+<li>Coroutines</li>
+</ol>
+
+</m>
+</td>
+</tr>
 
 <tr>
 <td><pre>
-fun doJobCps( n: Int, callback : ( String ) -> Unit ){
-    val s = getInput()
-    callback( s   )
+fun doJobCps( n: Int  ){
+    getInputCps(
+        { input -> submitCps( n, input, {
+              msg ->  handle( msg )
+            }//handle
+        )}//submitCps
+     )//getInputCps	
+}
+fun getInputCps(  callback : ( String ) -> Unit ) : Unit{
+    println("Input  ...")
+    callback( "myinputcps" )
 }
 fun submitCps( v: Int, msg: String , callback : ( String ) -> Unit )  {
     println("Submit ...")
@@ -612,8 +609,7 @@ fun submitCps( v: Int, msg: String , callback : ( String ) -> Unit )  {
 }
 fun main() = runBlocking{
     println("BEGINS")
-    val n = 10
-    doJobCps( n, {  t -> submitCps( n, t , { m -> handle(m) } )  } )
+    doJobCps( 10  )
     println("ENDS")
 }
 
@@ -621,13 +617,66 @@ fun main() = runBlocking{
 BEGINS
 Input  ...
 Submit ...
-Handle myinput-10
+Handle myinputcps-10
 ENDS
 </pre> </td>
-<td><m><em>Continuation-passing style</em></m> see <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">CPS</a>.
-Should be asynchronous</td>
+<td><m><em>Callbacks</em> are quite common in event-loop architectures such as JavaScript.
+The idea is to pass one function as a parameter to another function, and have this one invoked once the process has completed.
+<br/>
+People have moved away to using other approaches such as <em>promises</em> or 
+<em>Reactive Extensions</em> (<bc>Rx</bc>) (<tt>C#</tt>, <tt>.NET</tt>) in order to avoid the <bc>anti-pattern</bc> known as
+ <a href="http://callbackhell.com/">callback hell</a>.
+
+ <br/><br/>
+ The usage of callbacks leads to the
+ <em>Continuation-passing style</em>  (see <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="web">CPS</a>),
+ quite diffused to handle 
+ <a href="https://en.wikipedia.org/wiki/Asynchronous_I/O" target="web">Asynchronous I/O</a>
+</m> 
+
+ 
+</td>
 </tr>
 
+
+
+
+ 
+
+
+<tr>
+<td><pre>
+fun getInputAsynchCps(  callback : ( String ) -> Unit ) : Unit{
+  kotlin.concurrent.thread(start = true) {
+    println("Input  ...")
+    Thread.sleep(1000)
+    callback( "myinputasynchcps" )
+  }
+}
+fun doJobCps( n: Int  ){
+    getInputAsynchCps(
+		...
+	)//getInputAsynchCps	
+}
+//OUPUT
+BEGINS
+ENDS
+Input  ...
+Submit ...
+Handle myinputasynchcps-10
+		
+</pre> </td>
+<td><m>As an example of <a href="https://en.wikipedia.org/wiki/Continuation-passing_style" target="web">CPS</a> in <em>Asynchronous programming</em>
+(see <a href="https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)" target="web">asynchronous</a> ),
+we simulate here the <tt>getInput</tt> operation as an activity that runs in its own thread  and ends after <tt>1 sec</tt>.
+
+</m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
 
 
 
@@ -874,6 +923,7 @@ We have four main Dispatchers:
 <li><bc>Default</bc>: for CPU-intensive tasks. It can use as many threads as CPU cores</li>
 <li><bc>IO</bc>: IO-intensive tasks  waiting for an answer from another system. 
 The size of this thread pool is 64</li>
+<li><bc>newSingleThreadContext</bc> creates a new thread for the coroutine to run</li>
 <li><bc>Unconfined</bc>: don’t use it unless you’re very sure of what you’re doing</li>
 <li><bc>Main</bc>: a special dispatcher that is included in <tt>UI</tt> related coroutine libraries
 (see <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html" target="web">kotlinx.coroutines.Main</a>)</li>
@@ -1019,6 +1069,164 @@ change the context that will be used to run a part of the code inside a coroutin
 </m> </td>
 </tr>
 
+
+</tbody>	
+</table></center>
+
+
+<h3><a id="concur"/>Concurrency</h3>
+
+<center><table style="width:95%">
+<tr>
+<td style="width:45%"> <pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+<tr>
+<td><pre>
+var counter = 0
+
+suspend fun CoroutineScope.massiveRun(
+				action: suspend () -> Unit) {
+    val n=100  //number of coroutines to launch
+    val k=1000 //times an action is repeated by each coroutine
+    val time = measureTimeMillis {
+        val jobs = List(n) {
+            launch {
+                repeat(k) { action() }
+            }
+        }
+        jobs.forEach { it.join() }
+    }
+    println("Completed ${n * k} actions in $time ms")    
+}
+</pre> </td>
+<td><m><em>Concurrency</em>. This example is taken from<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/shared-mutable-state-and-concurrency.md#actors" target="web">
+Kotlin coroutines: Shared mutable state and concurrency</a>:<br/>
+<li><tt>n=100</tt> coroutines are launched to execute <tt>k=1000</tt> times a given <b>action</b> of signature <tt>suspend () -> Unit</tt></li>
+<li>the  action  will be the increment of the shared variable <bc>counter</bc> </li>
+
+</m>
+</td>
+</tr>
+
+<tr>
+<td><pre>
+fun main() = runBlocking<Unit>{
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("BEGINS with $cpus  cores")
+    GlobalScope.massiveRun {
+         counter++
+    }
+    println("ENDS with Counter = $counter")
+}
+
+//OTPUT
+BEGINS with 4  cores
+Completed 100000 actions in 55 ms
+ENDS with Counter = 83987
+</pre> </td>
+<td><m><em>No synchronization</em>. We use the multi-threaded <bc>Dispatcher.Defaults</bc> within a computer with <tt>4</tt> cores.
+Since the increment operation <tt>counter++</tt> is <bc>not atomic</bc> some increment is lost
+and the final value is less then <tt>10000</tt> .
+</m></td>
+</tr>
+
+<tr>
+<td><pre>
+var counter = java.util.concurrent.atomic.AtomicInteger()
+
+fun main() = runBlocking<Unit>{
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("BEGINS with $cpus  cores")
+    GlobalScope.massiveRun {
+            counter.incrementAndGet()
+    }
+    println("ENDS with Counter = ${counter.get()}")
+}
+
+//OUTPUT
+BEGINS with 4  cores
+Completed 100000 actions in 55 ms
+ENDS with Counter = 100000
+
+</pre> </td>
+<td><m><em>Thread-safe data</em>. Thread-safe (synchronized, linearizable, atomic) data structure  are a general solution 
+that works both for threads and for coroutines. However, it does not easily scale to complex state or to complex operations.
+
+</m> </td>
+</tr>
+
+
+
+<tr>
+<td><pre>
+val counter = 0
+val counterContext = 
+	newSingleThreadContext("CounterContext")
+
+fun main() = runBlocking<Unit>{
+ val cpus = Runtime.getRuntime().availableProcessors();
+ println("BEGINS with $cpus  cores")
+ GlobalScope.massiveRun {
+   //run each coroutine with DefaultDispathcer 
+   withContext(counterContext) {
+    //confine each increment to the single-threaded context
+    counter++
+  }
+ }
+ println("ENDS with Counter = $counter")
+}
+
+//OUTPUT
+BEGINS with 4  cores
+Completed 100000 actions in 902 ms
+ENDS with Counter = 100000
+
+</pre> </td>
+<td><m><em>Thread confinement fine-grained</em>. Each coroutine is launched with DefaultDispathcer, but each increment is confined
+to a single-threaded context. 
+<br/>
+Each individual increment switches from multi-threaded <bc>Dispatchers.Default</bc> context to the 
+<bc>newSingleThreadContext</bc> using <bc>withContext</bc> block. Thus, the code works more slowly.
+
+</m> </td>
+</tr>
+
+
+<tr>
+<td><pre>
+val mutex = kotlinx.coroutines.sync.Mutex()
+
+fun main() = runBlocking<Unit>{
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("BEGINS with $cpus  cores")
+    GlobalScope.massiveRun {
+        mutex.withLock { counter++ }
+    }
+    println("ENDS with Counter = $counter")
+}
+
+//OUTPUT
+BEGINS with 4  cores
+Completed 100000 actions in 480 ms
+ENDS with Counter = 100000
+
+</pre> </td>
+<td><m>A <em>Critical section</em> protects all modifications of a shared state so that is never executed concurrently 
+(but it is accessed in <bc>mutual exclusion</bc>). The Coroutine's alternative to  <tt>synchronized</tt> operations is <bc>Mutex</bc>.
+<br/>
+The locking here is fine-grained amd the execution is quite slow. However, it can be  it is a good solution
+ when there is no natural thread in which we can confine a shared state to be modified.
+
+
+</m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
 
 </tbody>	
 </table></center>

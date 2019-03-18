@@ -6,27 +6,19 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.thread
 import kotlin.system.measureTimeMillis
 
 
-var counter = 0 //type inferred
-fun square(v: Int) = v * v
 
-fun incCounter() : Unit{ counter++ }
-fun decCounter() { counter-- }
 
-val getCounter = {    counter }
 
-val fl = { print( "Return last exp val: " ); 100 }
 
-val sum = { x:Int, y:Int -> x+y }
-
-fun mirror(v: Int) : Pair<Int,Int> {
-    return Pair(v, -v)
-}
-
-val f = ::sum
 
 fun sToN( s: String, base: Int=10 ) : Int{
     var v = 0
@@ -199,10 +191,28 @@ fun doJob(n:Int){
 
 
 
-fun doJobCps( n: Int, callback : ( String ) -> Unit ){
-    val s = getInput()
-    callback( s   )
+fun doJobCps( n: Int  ){
+    getInputAsynchCps(
+        { input -> submitCps( n, input, {
+                msg ->  handle( msg )
+        }//handle
+        )}//submitCps
+    )//getInputCps
 }
+
+fun getInputCps(  callback : ( String ) -> Unit ) : Unit{
+    println("Input  ...")
+    //kotlinx.coroutines.delay(500)
+    callback( "myinputcps" )
+}
+
+fun getInputAsynchCps(  callback : ( String ) -> Unit ) : Unit{
+    kotlin.concurrent.thread(start = true) {
+        println("Input  ...")
+        Thread.sleep(1000)
+        callback( "myinputasynchcps" )
+     }
+ }
 
 fun submitCps( v: Int, msg: String , callback : ( String ) -> Unit )  {
     println("Submit ...")
@@ -216,14 +226,32 @@ fun doJobCpssss( n: Int, callback : (m:String, c:(String)->Unit ) -> Unit ){
 }
 */
 
+var counter = 0
+val counterContext = newSingleThreadContext("CounterContext")
+val mutex = kotlinx.coroutines.sync.Mutex()
 
-fun main() = runBlocking{
-    println("BEGINS")
-    doJob(10)
-    //val n = 10
-    //doJobCps( n, {  t -> submitCps( n, t , { m -> handle(m) } )  } )
-    //launch{ inputFun( {  println( "$it" )}) }
-    println("ENDS")
+suspend fun CoroutineScope.massiveRun(action: suspend () -> Unit) {
+    val n = 100  // number of coroutines to launch
+    val k = 1000 // times an action is repeated by each coroutine
+    val time = measureTimeMillis {
+        val jobs = List(n) {
+            launch {
+                repeat(k) { action() }
+            }
+        }
+        jobs.forEach { it.join() }
+    }
+    println("Completed ${n * k} actions in $time ms")
+}
+
+
+fun main() = runBlocking<Unit>{
+    val cpus = Runtime.getRuntime().availableProcessors();
+    println("BEGINS with $cpus  cores")
+    GlobalScope.massiveRun {
+        mutex.withLock { counter++ }
+    }
+    println("ENDS with Counter = $counter")
 }
 
 val th = newSingleThreadContext("My Thread")
