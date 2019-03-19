@@ -78,6 +78,6 @@ fun main( ) = runBlocking {
     Utils.showSystemInfo()
     val system = LedSegmChainSystemDistr("ChainDistributed", 3)
     system.startTheSystem()
-    Utils.delay(10000)
+    Utils.delay(5000)
     system.stopTheSystem()
 }

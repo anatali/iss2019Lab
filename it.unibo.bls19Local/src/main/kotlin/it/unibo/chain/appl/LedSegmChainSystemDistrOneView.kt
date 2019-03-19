@@ -50,7 +50,6 @@ class LedSegmChainSystemDistrOneView(val name:String, val numOfElements:Int  ){
         actorList.get(actorList.size-1).setNextLedActor(actorList.get(0).getChannel())
     }
 
-
     suspend fun startTheSystem(){
         MsgUtil.forward( MsgUtil.startMsg(), actorList.get(0).getChannel()  )
         //actorList.get(0).getChannel().send( MsgUtil.startMsg())

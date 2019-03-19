@@ -529,7 +529,7 @@ with the help of <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target=
 </table>
  
 
-<h4>WORK TO DO</h4>
+<h4><a id="worktodo"/>WORK TO DO</h4>
 
 <ol>
 <li>Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>, build a software
@@ -563,8 +563,30 @@ Our attention will be focused on the  following aspects:
 </li>
 </ol>
 
+<h4>Possible architectures</h4>
 
+<ol>
+<li><em>Monolitic</em>. A central control creates the <tt>n</tt> LedSegment and inserts each of them in the same GUI context (<tt>JFrame</tt>).
+The control can be modeled as an actor that waits for <tt>'START'</tt> and <tt>'STOP'</tt> message. The blinking activity
+turns on/off each LedSegment in sequence; to repeat it the controls sends to itself the  <tt>'START'</tt> message.
+</li>
+<li><em>Distributed-one view</em>. Each LedSegment <tt>k (1<=k<=n)</tt> is controlled by an actor (<tt>LedInChainCtrlActor</tt>) that 
+owns a reference to  the next actor <tt>k+1</tt> (when <tt>k=n</tt>, the next actor is <tt>1</tt>). Each LedSegment is inserted
+in a unique GUI context (<tt>JFrame</tt>). The system is started/stopped by sending the message <tt>'START'</tt>/<tt>'STOP'</tt> to
+the first <tt>LedInChainCtrlActor</tt> that propagates the command to the next actor.
+</li>
+<li><em>Distributed-n views</em>. Like the previous one, with the difference that each LedSegment is inserted
+in its own GUI context (<tt>JFrame</tt>).
+</li>
+<li><em>Model-based</em>. A central control actor handles a model of the chain, implemented as a  <tt>MutableList</tt> of <tt>ILedModel</tt>. 
+In the system configuration phase, a LedSegment is injected into a <tt>LedInChainObs</tt> that works as an <i>Observer</i> of the corresponding
+item of the model list.  Each LedSegment is inserted in a unique GUI context (<tt>JFrame</tt>)
+<br/> 
+The  business logic of the control actor (the <tt>actorBody</tt>) is structured as Finite State Machine as shown in the following picture:
 
+<center><img src="./chainModelBased.png" alt="chainModelBased" width="80%" height="80%"></center>
+</li>
+</ol>
 
 
 <br/><br/>
