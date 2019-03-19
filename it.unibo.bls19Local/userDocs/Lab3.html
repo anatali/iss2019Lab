@@ -423,7 +423,7 @@ Execute <bc>gradle test</bc> and look at
 Executing <bc>gradle jar</bc> and look at <tt>build/libs</tt> for
 <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>.
 
-<h4>WORK TO DO</h4>
+<h4>EXERCISE</h4>
 
 <ul>
 <li>Using the library <a href="../build/libs/it.unibo.bls19Local-1.0.jar" target="code">it.unibo.bls19Local-1.0.jar</a>, build a software
@@ -568,25 +568,64 @@ Our attention will be focused on the  following aspects:
 <ol>
 <li><em>Monolitic</em>. A central control creates the <tt>n</tt> LedSegment and inserts each of them in the same GUI context (<tt>JFrame</tt>).
 The control can be modeled as an actor that waits for <tt>'START'</tt> and <tt>'STOP'</tt> message. The blinking activity
-turns on/off each LedSegment in sequence; to repeat it the controls sends to itself the  <tt>'START'</tt> message.
+turns on/off each LedSegment in sequence; to repeat it, the control sends to itself the  <tt>'START'</tt> message.
+(See <a href="../src/main/kotlin/it/unibo/chain/appl/LedSegmChainSystemMonolitic.kt" target="code">LedSegmChainSystemMonolitic.kt</a> )
 </li>
 <li><em>Distributed-one view</em>. Each LedSegment <tt>k (1<=k<=n)</tt> is controlled by an actor (<tt>LedInChainCtrlActor</tt>) that 
 owns a reference to  the next actor <tt>k+1</tt> (when <tt>k=n</tt>, the next actor is <tt>1</tt>). Each LedSegment is inserted
 in a unique GUI context (<tt>JFrame</tt>). The system is started/stopped by sending the message <tt>'START'</tt>/<tt>'STOP'</tt> to
-the first <tt>LedInChainCtrlActor</tt> that propagates the command to the next actor.
+the first <tt>LedInChainCtrlActor</tt> 
+(see <a href="../src/main/kotlin/it/unibo/chain/appl/LedInChainCtrlActor.kt" target="code">LedInChainCtrlActor.kt</a>) 
+that propagates the command to the next actor.
+(See <a href="../src/main/kotlin/it/unibo/chain/appl/LedSegmChainSystemDistrOneView.kt" target="code">LedSegmChainSystemDistrOneView.kt</a> )
 </li>
 <li><em>Distributed-n views</em>. Like the previous one, with the difference that each LedSegment is inserted
 in its own GUI context (<tt>JFrame</tt>).
+(See <a href="../src/main/kotlin/it/unibo/chain/appl/LedSegmChainSystemDistr.kt" target="code">LedSegmChainSystemDistr.kt</a> )
 </li>
 <li><em>Model-based</em>. A central control actor handles a model of the chain, implemented as a  <tt>MutableList</tt> of <tt>ILedModel</tt>. 
-In the system configuration phase, a LedSegment is injected into a <tt>LedInChainObs</tt> that works as an <i>Observer</i> of the corresponding
-item of the model list.  Each LedSegment is inserted in a unique GUI context (<tt>JFrame</tt>)
+In the system configuration phase, a LedSegment is injected into a <tt>LedInChainObs</tt> 
+(see <a href="../src/main/kotlin/it/unibo/chain/model/LedInChainObs.kt" target="code">LedInChainObs.kt</a>)
+that works as an <i>Observer</i> of the corresponding
+item of the model list.  Each LedSegment is inserted in a unique GUI context (<tt>JFrame</tt>).
+(See <a href="../src/main/kotlin/it/unibo/chain/model/ChainModel.kt" target="code">ChainModel.kt</a> 
+and <a href="../src/main/kotlin/it/unibo/chain/model/ModelChainSystemMonolitic.kt" target="code">ModelChainSystemMonolitic.kt</a> )
 <br/> 
-The  business logic of the control actor (the <tt>actorBody</tt>) is structured as Finite State Machine as shown in the following picture:
+The  business logic of the control actor (the <tt>actorBody</tt>) is structured as 
+<a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a> (<bc>FSM</bc>)
+as shown in the following picture:
 
 <center><img src="./chainModelBased.png" alt="chainModelBased" width="80%" height="80%"></center>
 </li>
+<li>...</li>
 </ol>
+
+<h2>Towards Distributed Systems </h2>
+
+Every software systems can be described/designed along three main coordinates/dimensions:
+
+<ol>
+<li><em>STRUCTURE</em>: related to the set of (static/dynamic) elements that compose the system.</li>
+<li><em>INETRACTION</em>: related on how the components exchange information (and control).</li>
+<li><em>BEHAVIOUR</em>: related on how each component works and how the system as a whole works.</li>
+</ol>
+
+Until now, our reference paradigm was 'conventional' 
+<a href="https://en.wikipedia.org/wiki/Object-oriented_programming">object-oriented programming</a> (<bc>OOP</bc>), in which the components are objects
+- also called <a href="https://en.wikipedia.org/wiki/Plain_old_Java_object">Plain Old Java Objects</a> (<bc>POJO</bc>) 
+that interact by using <bc>procedure-calls</bc>.
+<br/><br/>
+From now on, we will consider (as it was at the very beginning of the history of <tt>OOP</tt>) the idea that each software component
+is an active entity able to interact with other components by exchanging messages.
+In other words, we will  start from a <a href="https://en.wikipedia.org/wiki/Metamodeling">meta-model</a> in which a software systems is composed of a set of <em>actors</em> that can share
+the same computational node or that can work on a set of different nodes.
+<br/><br/>
+Before entering in this new design space, it is important to explore in more detail the <em>behavior</em> dimension,
+with particular reference to the <a href="https://en.wikipedia.org/wiki/Functional_programming">functional style<a> of programming, 
+in contrast to 'traditional' imperative programming.
+Once again, Kotlin can help us in this job.
+
+
 
 
 <br/><br/>

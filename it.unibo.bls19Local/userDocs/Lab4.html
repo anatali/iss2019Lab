@@ -139,8 +139,12 @@ To run the experiments, use an IDE or <a href="https://play.kotlinlang.org">Kotl
 You can consult also:
 
 <a href="https://try.kotlinlang.org/#/Examples" target="web">Kotlin online</a>
- 
-<h2>INDEX</h2>
+<br/> <br/> 
+ <table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:55%">
+<h3>INDEX</h3>
 
 <ol>
 <li><a href="#data">Data, Types and Variables</a></li>
@@ -150,12 +154,25 @@ You can consult also:
 <li><a href="#concur">Concurrency</a></li>
 <li><a href="#channels">Channels</a></li>
 <li><a href="#actors">Actors</a></li>
-<li></li>
-<li></li>
-<li></li>
-<li></li>
+<li> ... </li>
+
  
 </ol>
+</td>
+
+<td style="width:45%">
+<img src="./KotlinInAction.png" alt="KotlinInAction" width="70%" height="40%">
+ 
+</td>
+
+</tr> 
+</tbody>	
+</table>
+ 
+
+
+
+
 
 <h2><a id="basics"/>BASICS</h2>
  
@@ -532,7 +549,6 @@ println("c1=${c1("val")}")	      //c1=3
 val c2 = counterCreate()
 for( i in 1..3 ) c2("dec")
 println("c2=${c2("val")}")	     //c2=-3
-
 </pre> </td>
 <td><m>The <em>closure</em> returned by <bc>counterCreate</bc> is "closed over" the variable <bc>localCounter</bc>.
 We are reproducing oo programming style (<i>instance</i> and <i>state encapsulation</i>)</m> </td>
@@ -792,9 +808,11 @@ Done, time=550
 scope of the outer <bc>runBlocking</bc> coroutine.
 As a result, we can now also remove the explicit <bc>join</bc> since <tt>runBlocking</tt> won't complete before all of its 
 child coroutines finish.
-
-This is an example of  <em>structured concurrency</em></m>: coroutines confined to different scopes 
-are more maintainable and manageable. </td>
+<br/>
+This is an example of  <em>structured concurrency</em>: coroutines confined to different scopes 
+are more maintainable and manageable.
+</m>
+ </td>
 </tr>
 
 <tr>
@@ -887,11 +905,11 @@ Coroutine Scope</a>
 <li><bc>Global scope</bc>: the coroutine affects the whole Application</li>
 <li><bc>CoroutineScope</bc>: defines a scope for new coroutines</li>
 </ul>
-
+<!--
 -Dkotlinx.coroutines.debug JVM option
 https://play.kotlinlang.org
 /koans/overview
-
+-->
 </m> </td>
 </tr>
 
@@ -1433,6 +1451,8 @@ since a producer is associated with the channel that it <i>sends</i> elements to
 </tbody>	
 </table></center>
 
+<!--
+
 <h3><a id=" "/>Next</h3>
 
 <center><table style="width:95%">
@@ -1449,7 +1469,7 @@ since a producer is associated with the channel that it <i>sends</i> elements to
 
 </tbody>	
 </table></center>
-
+-->
  
 <br/><br/> 
 </div>  
