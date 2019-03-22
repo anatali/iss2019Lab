@@ -31,19 +31,6 @@ var count = 1;
             destActor.getChannel().send(msg)
         }
     }
-    /*
-    fun forward( msgId : String, msg: String, destActor: ActorBasic) {
-        GlobalScope.launch {
-            destActor.getChannel().send(   buildDispatch(msgId, msg) )
-        }
-    }
-
-
-    fun buildDispatch(  msgId : String, content : String ) : ApplMessage {
-        return ApplMessage(msgId, "dispatch",
-            "ledProxy", "ledFrontEnd", "$content", "" + count++)
-    }
-*/
 
     fun getFactoryProtocol(protocol: Protocol) : FactoryProtocol?{
         var factoryProtocol : FactoryProtocol? = null
@@ -51,6 +38,7 @@ var count = 1;
             Protocol.SERIAL -> println("WARNING: TODO")
             Protocol.TCP , Protocol.UDP -> factoryProtocol =
                 FactoryProtocol(null, "$protocol", "LedFrontEnd")
+
             else -> {
                 println("WARNING: protocol unknown")
             }

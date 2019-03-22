@@ -120,20 +120,26 @@ table, th, td {
     
 <head>
    
-<title>ISSLAB2019</title></head>
+<title>ISSLAB5</title></head>
     
 <body>
 
 <div class="body"> 
 
-<h1>72939 - LAB4 | A ButtonLedSystem distributed</h1> 
+<h1>72939 - LAB5 | A ButtonLedSystem distributed</h1> 
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
 <h2>REQUIREMENTS</h2>
 <div class="req">
-Design and build a distributed <tt>ButtonLed software system</tt> (<em>BLSD</em>) in which the <em>Led</em> and the  <em>Button</em>  are
-virtual or real devices, each connected to a different computational device. The application logic should run on a third 
-computational device, e.g. a conventional <tt>PC</tt>.
+Design and build a distributed <tt>ButtonLed software system</tt> (<em>BLSD</em>) 
+ that controls a <em>chain of Led</em> made of <tt>n>2</tt>:
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>, so that:
+<ol>
+<li> <em>R0 (START)</em>: the chain is activated (at time <tt>t0</tt>) when a command <tt>START</tt> is sent to it</li>
+<li> <em>R1 (BLINK)</em>: the  <b>Led-i</b>  (<tt>i=1..n</tt>) is turned-on for a prefixed time <bc>TIMEON</bc>, at time <bc>t0 + TIMEON*i</bc></li>
+<li> <em>R2 (REPEAT)</em>: the chain blinking repeats</li>
+<li> <em>R3 (STOP)</em>: the chain blinking is stopped when the chain receives the command <tt>STOP</tt> </li>
+</ol>
 </div>	    
  	
 	
