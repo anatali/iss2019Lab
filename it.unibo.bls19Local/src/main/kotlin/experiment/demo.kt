@@ -19,7 +19,35 @@ import kotlin.coroutines.suspendCoroutine
 import kotlin.system.measureTimeMillis
 
 //http://beust.com/weblog/2015/10/30/exploring-the-kotlin-standard-library/
- 
+
+fun counterCreate()  : ( cmd : String ) -> Int {
+    var localCounter = 0
+    return {
+        when (it) {
+            "inc" -> ++localCounter
+            "dec" -> --localCounter
+            "val" -> localCounter
+            else -> throw Exception( "unknown" )
+        }
+    }
+}
+
+fun main() : Unit{
+
+  var c1 = counterCreate()
+    c1("inc")
+    println("${c1("val")}")
+
+    var c2 = counterCreate()
+    c2( "dec")
+    println("${c2("val")}")
+
+    c1 = c2
+    
+}
+
+
+
 
 /*
 fun main() : Unit{

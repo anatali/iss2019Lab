@@ -6,8 +6,8 @@ import javax.swing.*
 import java.awt.*
 
 open class LedSegment (protected var myname: String, width: Int, height: Int) : JPanel(),ILed {
-      protected var ledRep   = Polygon()
-     protected var ledState = false
+    protected var ledRep   = Polygon()
+    protected var ledState = false
 
     init {
         this.name  = myname

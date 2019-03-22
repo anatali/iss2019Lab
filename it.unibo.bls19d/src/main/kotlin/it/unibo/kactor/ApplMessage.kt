@@ -1,10 +1,9 @@
-package it.unibo.bls19d.messages
+package it.unibo.kactor
 
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
-import it.unibo.contactEvent.interfaces.IActorMessage
 
-class ApplMessage : IActorMessage {
+class ApplMessage  {
     //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
     protected var msgId: String = ""
     protected var msgType: String? = null
@@ -21,7 +20,7 @@ class ApplMessage : IActorMessage {
 
     //@Throws(Exception::class)
     constructor(
-            MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String) {
+        MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String) {
         msgId = MSGID
         msgType = MSGTYPE
         msgSender = SENDER
@@ -46,35 +45,35 @@ class ApplMessage : IActorMessage {
         msgNum = Integer.parseInt(msgStruct.getArg(5).toString())
     }
 
-    override fun msgId(): String {
+    fun msgId(): String {
         return msgId
     }
 
-    override fun msgType(): String? {
+    fun msgType(): String? {
         return msgType
     }
 
-    override fun msgSender(): String {
+    fun msgSender(): String {
         return msgSender
     }
 
-    override fun msgReceiver(): String {
+    fun msgReceiver(): String {
         return msgReceiver
     }
 
-    override fun msgContent(): String {
+    fun msgContent(): String {
         return msgContent
     }
 
-    override fun msgNum(): String {
+    fun msgNum(): String {
         return "" + msgNum
     }
 
     override fun toString(): String {
-        return defaultRep
+        return getDefaultRep()
     }
 
-    override fun getDefaultRep(): String {
+    fun getDefaultRep(): String {
         return if (msgType == null)
             "msg(none,none,none,none,none,0)"
         else
@@ -88,7 +87,6 @@ class ApplMessage : IActorMessage {
         } catch (e: Exception) {
             return "'$content'"
         }
-
     }
 
 }

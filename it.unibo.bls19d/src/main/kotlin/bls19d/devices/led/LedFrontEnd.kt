@@ -1,21 +1,22 @@
 package it.unibo.bls19d.devices.led
 
-import bls19d.messages.Protocol
-import bls19d.messages.UtilsMsg
+
 import it.unibo.supports.FactoryProtocol
 import it.unibo.bls.interfaces.IObservable
 import it.unibo.bls.interfaces.IObserver
-import it.unibo.bls19d.messages.ApplMessage
+import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.MsgUtil
+import it.unibo.kactor.Protocol
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class LedFrontEnd(  val protocol: Protocol, val portNum: Int) : Observable(), IObservable {
+class LedFrontEnd(val protocol: Protocol, val portNum: Int) : Observable(), IObservable {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol? = null
 
     init {
-        factoryProtocol = UtilsMsg.getFactoryProtocol(protocol)
+        factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
         doJob()
     }
 
