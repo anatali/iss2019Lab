@@ -15,13 +15,13 @@ import it.unibo.bls19d.chain.elements.ChainElements
 
 class ChainCentralControl( name: String ) : ActorBasic(name) {
 protected val ledList : ArrayList<LedProxy>  = ArrayList<LedProxy>()
-protected val TIMEON : Long = 1000
+protected val TIMEON : Long = 200
 
     override suspend fun actorBody( msg : ApplMessage ){
-        println("ChainCentralControl | RECEIVED: $msg")
+        //println("ChainCentralControl | RECEIVED: $msg")
         when( msg.msgId() ){
            "chainRegister" -> {
-               println("${msg.msgContent()}")
+               //println("${msg.msgContent()}")
                val t = Term.createTerm( msg.msgContent() )
                val ts = t as Struct
                val host=ts.getArg(0).toString()
@@ -35,9 +35,12 @@ protected val TIMEON : Long = 1000
             ChainMsg.startChainBlink.name -> {
                 println("ChainCentralControl | blink listSize=${ledList.size}")
                 ledList.forEach{
-                    it.forward( startBlink.name, startBlink.cmd,it)
+                    it.forward( on.name, on.cmd,it)
+                    delay( TIMEON )
+                    it.forward( on.name, off.cmd,it)
                     delay( TIMEON )
                 }
+                autoMsg( ChainMsg.startChainBlink.name, ChainMsg.startChainBlink.name )
             }
             ChainMsg.stopChainBlink.name -> {
                 println("ChainCentralControl | no blink")
@@ -79,16 +82,15 @@ fun main() : Unit = runBlocking{
         val ledPort   = portNum+i*10
         val msg       = ChainRegister("localhost", ledPort.toString())
         ccc.forward(msg.msgId, msg.toString(), ccc)
+        delay(100)
     }
-    delay(1000)
+    //delay(1000)
     println(" -------------- BLINK  ---------------------- ")
     ccc.forward(
-        ChainMsg.startChainBlink.name,
-        ChainMsg.startChainBlink.name, ccc)
-    delay(7000)
+        ChainMsg.startChainBlink.name, ChainMsg.startChainBlink.name, ccc)
+    delay(5000)
     ccc.forward(
-        ChainMsg.stopChainBlink.name,
-        ChainMsg.stopChainBlink.name, ccc)
+        ChainMsg.stopChainBlink.name, ChainMsg.stopChainBlink.name, ccc)
 
     delay(3000)
 }

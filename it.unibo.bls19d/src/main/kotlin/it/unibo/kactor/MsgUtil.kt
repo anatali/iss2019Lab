@@ -4,10 +4,7 @@ package it.unibo.kactor
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
 import it.unibo.supports.FactoryProtocol
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.launch
-
-
 
 enum class Protocol {
     SERIAL, TCP, UDP, BTH
@@ -29,6 +26,11 @@ var count = 1;
     fun forward(msg: ApplMessage, destActor: ActorBasic) {
         GlobalScope.launch {
             destActor.getChannel().send(msg)
+        }
+    }
+    fun forward(msg: ApplMessage, destActor: String) {
+        GlobalScope.launch {
+            //destActor.getChannel().send(msg)
         }
     }
 

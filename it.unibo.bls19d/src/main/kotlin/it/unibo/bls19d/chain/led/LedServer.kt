@@ -29,7 +29,7 @@ class LedServer(val name:String, val protocol: Protocol, val portNum: Int,
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
-                    //println("   LedServer $name | WAIT FOR CONNECTION")
+                    println("   LedServer $name | WAIT FOR CONNECTION")
                     val conn = factoryProtocol!!.createServerProtocolSupport(portNum) //BLOCKS
                     handleConnection(conn)
                 }
@@ -43,7 +43,7 @@ class LedServer(val name:String, val protocol: Protocol, val portNum: Int,
     protected fun handleConnection(conn: IConnInteraction) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                //println("   LedServer | handling new connection:$conn")
+                println("   LedServer | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
                     //println("   LedServer | receives:$msg")

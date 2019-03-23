@@ -3,15 +3,19 @@ package it.unibo.bls19d.chain.elements
 import it.unibo.bls19d.chain.led.LedActor
 import it.unibo.bls19d.chain.led.LedProxy
 import it.unibo.bls19d.chain.led.LedServer
-import it.unibo.chain.appl.LedInChainCtrlActor
 import it.unibo.chain.segment7.LedSegmVerticalRight
 import it.unibo.kactor.Protocol
 import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
 import it.unibo.kactor.*
-import it.unibo.bls19d.chain.LedMsg.*
+import it.unibo.bls19d.chain.ApplLedCmd
+import it.unibo.bls19d.chain.LedCmd
+import it.unibo.bls19d.chain.LedMsg
 
+/*
+Builds numOfElements
+ */
 class ChainElements(  ){
 
     companion object{
@@ -20,11 +24,14 @@ class ChainElements(  ){
 
     val protocol  = Protocol.TCP
     val portNum   = 8000
-    val proxyList : ArrayList<LedProxy> = arrayListOf<LedProxy>()
+    val ledActorList : ArrayList<LedActor> = arrayListOf<LedActor>()
+    val proxyList    : ArrayList<LedProxy> = arrayListOf<LedProxy>()
 
     init{
         createComponents(   )
-        test()
+        localControlTest()
+        Thread.sleep(2000)
+        proxyControlTest()
       }
 
     protected fun  createFrame(i:Int) : JFrame {
@@ -49,29 +56,41 @@ class ChainElements(  ){
             //actorList.add(LedInChainCtrlActor("led1", segm))
             val ledPort   = portNum+i*10
             val ledActor  = LedActor("led${i}", segm)
-            val server    = LedServer("led${i}server", protocol, ledPort, ledActor)
+            ledActorList.add( ledActor )
+            LedServer("led${i}server", protocol, ledPort, ledActor)  //START A SERVER
             val led1Proxy = LedProxy("led${i}proxy", protocol, "localhost", ledPort)
             proxyList.add( led1Proxy )
+            Thread.sleep(500)
         }
     }
-//For debugging
-    fun test(){
-        proxyList.forEach{
-            //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-            val msgOn = ApplMessage( startBlink.name, "dispatch", "test", it.name, startBlink.cmd, "0")
-            MsgUtil.forward(msgOn, it)
-        }
-        Thread.sleep(3000)
-        proxyList.forEach{
-            //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-            val msgOff = ApplMessage( stopBlink.name, "dispatch", "test", it.name, stopBlink.cmd, "1")
-            MsgUtil.forward(msgOff, it)
-        }
 
-        /*
-        Register to the controller ??? NO
-         */
+    fun localControlTest(){
+    //CONTROL AT LOCAL LEVEL
+        val msgOn  = ApplLedCmd( LedMsg.on,"test", "local" )
+        val msgOff = ApplLedCmd( LedMsg.off,"test", "local" )
+        for( i in 1..3 ) {
+            ledActorList.forEach {
+                Thread.sleep(200)
+                MsgUtil.forward(msgOn, it)
+                Thread.sleep(200)
+                MsgUtil.forward(msgOff, it)
+            }
+        }
     }
+    fun proxyControlTest(){
+        //CONTROL AT LOCAL LEVEL
+        val msgOn  = ApplLedCmd( LedMsg.on,"test", "server" )
+        val msgOff = ApplLedCmd( LedMsg.off,"test", "server" )
+        for( i in 1..3 ) {
+            proxyList.forEach {
+                Thread.sleep(200)
+                MsgUtil.forward(msgOn, it)
+                Thread.sleep(200)
+                MsgUtil.forward(msgOff, it)
+            }
+        }
+    }
+
 }
 fun main() {
     val elements = ChainElements( )

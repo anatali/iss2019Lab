@@ -3,7 +3,7 @@ package it.unibo.kactor
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 
-class ApplMessage  {
+open class ApplMessage  {
     //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
     protected var msgId: String = ""
     protected var msgType: String? = null
