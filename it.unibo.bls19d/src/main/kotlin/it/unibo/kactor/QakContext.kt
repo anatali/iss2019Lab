@@ -1,19 +1,30 @@
 package it.unibo.kactor
 
-import it.unibo.bls19d.chain.led.LedProxy
+import alice.tuprolog.Prolog
 
-open class NodeContext(val name: String, val hostAddr: String, val portNum: Int ){
+open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : ActorBasic(name){
+    val pengine = Prolog()
+
+    companion object {
+        enum class CtxMsg{
+            attach, remove
+        }
+    }
 
     protected val actorMap : MutableMap<String, ActorBasic> =
                                             mutableMapOf<String, ActorBasic>()
     val proxyMap : MutableMap<String, NodeProxy> =
                                             mutableMapOf<String, NodeProxy>()
-
-
     init{
-        println("NodeContext $name INIT on port=$portNum")
-        NodeServer( this, "Node$name", Protocol.TCP )
+        println("QakContext $name INIT on port=$portNum")
+        QakContextServer( this, "Node$name", Protocol.TCP )
     }
+
+    override suspend fun actorBody(msg : ApplMessage){
+        println("       QakContext $name receives $msg " )
+    }
+
+
     fun addActor( actor: ActorBasic ) {
         actorMap.put( actor.name, actor )
     }
@@ -22,8 +33,7 @@ open class NodeContext(val name: String, val hostAddr: String, val portNum: Int 
         return actorMap.containsKey(actorName)
     }
 
-
-    fun addCtxProxy( ctx : NodeContext ){
+    fun addCtxProxy( ctx : QakContext ){
         val proxy = NodeProxy("proxy${ctx.name}", Protocol.TCP, ctx.hostAddr, ctx.portNum)
         proxyMap.put( ctx.name, proxy )
     }

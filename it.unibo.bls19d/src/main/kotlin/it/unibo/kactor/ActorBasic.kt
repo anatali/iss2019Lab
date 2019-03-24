@@ -5,13 +5,14 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.newSingleThreadContext
 
 /*
     Implements an abstract actor able to receive an ApplMessage and to delegate
     its processing to the abstract method actorBody
  */
 abstract class  ActorBasic( val name: String ){
-    protected val dispatcher = newFixedThreadPoolContext(2, "mypool")
+    protected val dispatcher = newSingleThreadContext("ActorThread")//newFixedThreadPoolContext(2, "mypool")
     protected var count = 1;
 
     val  actor = GlobalScope.actor<ApplMessage>(dispatcher, 3 ) {

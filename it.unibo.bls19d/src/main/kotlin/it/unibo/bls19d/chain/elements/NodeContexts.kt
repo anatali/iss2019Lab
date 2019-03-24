@@ -28,9 +28,9 @@ class NodeContexts(  ){
     protected fun createContexts(  ){
         for( i in 1..numOfContexts ){
             val port = portNum+i*10
-            val ctx  = NodeContext( "ctx$i", "localhost", port)
+            val ctx  = QakContext( "ctx$i", "localhost", port)
             for(i in 1..numOfLeds ){
-                val led  = LedComponent("led$i", 100+i*120)
+                val led  = LedComponent("_$i", 100+i*120)
                 ctx.addActor( led.getActor() )
             }
         }

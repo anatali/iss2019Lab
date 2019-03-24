@@ -23,9 +23,9 @@ class LedActorBlink( name: String, val led: ILed) : ActorBasic(name) {
     }
     override
     suspend fun actorBody( cmd : ApplMessage){
-        //println( "LedActor $name | RECEIVED $cmd in state=$curState" )
+        //println( "LedActorBlink $name | RECEIVED $cmd in state=$curState" )
         /*
-        Message driven pattern, BUT for each message, LedActor works according to its internal state
+        Message driven pattern, BUT for each message, LedActorBlink works according to its internal state
          */
         when( curState ){
             States.INIT ->
@@ -35,7 +35,7 @@ class LedActorBlink( name: String, val led: ILed) : ActorBasic(name) {
                          curState = States.BLINKON;
                          autoMsg( LedMsg.goonBlink.name, LedMsg.goonBlink.cmd)
                     }
-                    else -> println("LedActor | msg $cmd ignored in $curState")
+                    else -> println("LedActorBlink | msg $cmd ignored in $curState")
                 }
             States.BLINKON -> {
                  when (cmd.msgContent()) {
@@ -46,7 +46,7 @@ class LedActorBlink( name: String, val led: ILed) : ActorBasic(name) {
                          delay( 500 );
                          autoMsg( LedMsg.goonBlink.name, LedMsg.goonBlink.cmd )
                      }
-                     else -> println("LedActor | msg $cmd ignored in $curState")
+                     else -> println("LedActorBlink | msg $cmd ignored in $curState")
                  }
             }
             States.BLINKOFF -> {
@@ -58,10 +58,10 @@ class LedActorBlink( name: String, val led: ILed) : ActorBasic(name) {
                         delay( 500 );
                         autoMsg( LedMsg.goonBlink.name, LedMsg.goonBlink.cmd )
                     }
-                    else -> println("LedActor | msg $cmd ignored in $curState")
+                    else -> println("LedActorBlink | msg $cmd ignored in $curState")
                 }
             }
-            else -> throw Exception("LedActor INCONSISTENT")
+            else -> throw Exception("LedActorBlink INCONSISTENT")
         }
       }
 }

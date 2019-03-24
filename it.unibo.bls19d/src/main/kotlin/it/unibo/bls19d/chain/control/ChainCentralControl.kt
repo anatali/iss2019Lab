@@ -18,7 +18,7 @@ protected val ledList : ArrayList<LedProxy>  = ArrayList<LedProxy>()
 protected val TIMEON : Long = 200
 
     override suspend fun actorBody( msg : ApplMessage ){
-        //println("ChainCentralControl | RECEIVED: $msg")
+        println("ChainCentralControl | RECEIVED: $msg")
         when( msg.msgId() ){
            "chainRegister" -> {
                //println("${msg.msgContent()}")
@@ -35,12 +35,15 @@ protected val TIMEON : Long = 200
             ChainMsg.startChainBlink.name -> {
                 println("ChainCentralControl | blink listSize=${ledList.size}")
                 ledList.forEach{
+                    it.forward(startBlink.name, startBlink.name,it )
+                    /*
                     it.forward( on.name, on.cmd,it)
                     delay( TIMEON )
                     it.forward( on.name, off.cmd,it)
                     delay( TIMEON )
+                    */
                 }
-                autoMsg( ChainMsg.startChainBlink.name, ChainMsg.startChainBlink.name )
+                //autoMsg( ChainMsg.startChainBlink.name, ChainMsg.startChainBlink.name )
             }
             ChainMsg.stopChainBlink.name -> {
                 println("ChainCentralControl | no blink")
@@ -72,6 +75,7 @@ fun main() : Unit = runBlocking{
         delay( 2000 )
     }
      */
+    ChainElements()
     /*
     Each element of the chain must be registered to the controller
      */

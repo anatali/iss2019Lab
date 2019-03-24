@@ -6,14 +6,11 @@ import kotlinx.coroutines.*
 
 /*
 Works at node level
-Waits for a P2P connection with another node
-For each connection:
-    dispatches a received ApplMessage  to the receiver Actor
- */
+*/
 
-class NodeServer(val ctx: NodeContext, val name:String, val protocol: Protocol ) {
+class QakContextServer(val ctx: QakContext, name:String, val protocol: Protocol ) : ActorBasic(name){
     protected var hostName: String? = null
-    protected var factoryProtocol: FactoryProtocol? = null
+    protected var factoryProtocol: FactoryProtocol?
 
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
@@ -21,35 +18,40 @@ class NodeServer(val ctx: NodeContext, val name:String, val protocol: Protocol )
         waitForConnection()
     }
 
+    override suspend fun actorBody(msg : ApplMessage){
+        println("       QakContextServer $name receives $msg " )
+        waitForConnection()
+    }
+
     protected fun waitForConnection() {
         //We could handle several connections
-        GlobalScope.launch(Dispatchers.IO) {
+        //GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
-                    println("   LedServer $name | WAIT FOR CONNECTION")
+                    println("       QakContextServer $name | WAIT FOR CONNECTION")
                     val conn = factoryProtocol!!.createServerProtocolSupport(ctx.portNum) //BLOCKS
                     handleConnection(conn)
                 }
             } catch (e: Exception) {
-                 println("   LedServer $name | WARNING: ${e.message}")
+                 println("      QakContextServer $name | WARNING: ${e.message}")
             }
-        }
+       // }
     }
 
     protected fun handleConnection(conn: IConnInteraction) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                println("   LedServer | handling new connection:$conn")
+                println("       QakContextServer $name | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
                     //println("   LedServer | receives:$msg")
                     val inputmsg = ApplMessage(msg)
                     val dest     = inputmsg.msgReceiver()
                     if( ctx.hasActor( dest )) MsgUtil.forward(inputmsg, dest )
-                    else  println("   LedServer $name | no local actor ${dest}")
+                        else  println("     QakContextServer $name | no local actor ${dest}")
                 }
             } catch (e: Exception) {
-                println("   LedServer $name | handleConnection WARNING: ${e.message}")
+                println("       QakContextServer $name | handleConnection WARNING: ${e.message}")
             }
         }
     }

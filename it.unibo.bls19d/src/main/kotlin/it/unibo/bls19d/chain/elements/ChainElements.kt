@@ -1,6 +1,6 @@
 package it.unibo.bls19d.chain.elements
 
-import it.unibo.bls19d.chain.led.LedActor
+import it.unibo.bls19d.chain.led.LedActorBlink
 import it.unibo.bls19d.chain.led.LedProxy
 import it.unibo.bls19d.chain.led.LedServer
 import it.unibo.chain.segment7.LedSegmVerticalRight
@@ -13,6 +13,7 @@ import it.unibo.bls19d.chain.ApplLedCmd
 import it.unibo.bls19d.chain.LedCmd
 import it.unibo.bls19d.chain.LedMsg
 
+
 /*
 Builds numOfElements
  */
@@ -24,14 +25,14 @@ class ChainElements(  ){
 
     val protocol  = Protocol.TCP
     val portNum   = 8000
-    val ledActorList : ArrayList<LedActor> = arrayListOf<LedActor>()
+    val ledActorList : ArrayList<LedActorBlink> = arrayListOf<LedActorBlink>()
     val proxyList    : ArrayList<LedProxy> = arrayListOf<LedProxy>()
 
     init{
         createComponents(   )
-        localControlTest()
-        Thread.sleep(2000)
-        proxyControlTest()
+        //localControlTest()
+        //Thread.sleep(2000)
+        //proxyControlTest()
       }
 
     protected fun  createFrame(i:Int) : JFrame {
@@ -55,7 +56,7 @@ class ChainElements(  ){
             frame.isVisible = true
             //actorList.add(LedInChainCtrlActor("led1", segm))
             val ledPort   = portNum+i*10
-            val ledActor  = LedActor("led${i}", segm)
+            val ledActor  = LedActorBlink("led${i}", segm)
             ledActorList.add( ledActor )
             LedServer("led${i}server", protocol, ledPort, ledActor)  //START A SERVER
             val led1Proxy = LedProxy("led${i}proxy", protocol, "localhost", ledPort)
@@ -78,7 +79,7 @@ class ChainElements(  ){
         }
     }
     fun proxyControlTest(){
-        //CONTROL AT LOCAL LEVEL
+        //CONTROL AT PROXY LEVEL
         val msgOn  = ApplLedCmd( LedMsg.on,"test", "server" )
         val msgOff = ApplLedCmd( LedMsg.off,"test", "server" )
         for( i in 1..3 ) {

@@ -13,8 +13,11 @@ import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
 
-class LedServer(val name:String, val protocol: Protocol, val portNum: Int,
-                val ledActor: ActorBasic ) {
+/*
+Not an ActorBasic, since it must use Dispatchers.IO
+*/
+class LedServer( val name:String, val protocol: Protocol, val portNum: Int,
+                val ledActor: ActorBasic )  {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol? = null
 
@@ -23,6 +26,7 @@ class LedServer(val name:String, val protocol: Protocol, val portNum: Int,
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
         waitForConnection()
     }
+
 
     protected fun waitForConnection() {
         //We could handle several connections
@@ -46,7 +50,7 @@ class LedServer(val name:String, val protocol: Protocol, val portNum: Int,
                 println("   LedServer | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
-                    //println("   LedServer | receives:$msg")
+                    println("   LedServer | receives:$msg")
                     val inputmsg = ApplMessage(msg)
                     MsgUtil.forward(inputmsg, ledActor)
                 }
