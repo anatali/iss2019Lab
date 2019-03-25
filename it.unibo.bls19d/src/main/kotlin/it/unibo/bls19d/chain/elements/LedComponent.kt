@@ -1,6 +1,6 @@
 package it.unibo.bls19d.chain.elements
 
-import it.unibo.bls19d.chain.led.LedActor
+import it.unibo.bls19d.chain.led.LedActorAlone
 import it.unibo.chain.segment7.LedSegmHorizontal
 import it.unibo.chain.segment7.LedSegmVerticalRight
 import it.unibo.kactor.ActorBasic
@@ -18,7 +18,7 @@ class LedComponent( name: String, val location: Int )  {
         //val segm = LedSegmVerticalRight(name, 110, 180)
         frame.add(segm)
         frame.isVisible = true
-        ledActor = LedActor("led$name", segm )
+        ledActor = LedActorAlone("led$name", segm )
      }
 
     protected fun  createFrame() : JFrame {

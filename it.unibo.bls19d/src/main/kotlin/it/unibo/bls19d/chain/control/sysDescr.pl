@@ -1,6 +1,7 @@
-context(ctxControl,"locahost", "TCP",  8010).
-context(ctxLeds,   "locahost", "TCP", 8020).
+context(ctxControl,"localhost", "TCP",  8010).
+context(ctxLeds,   "localhost", "TCP", 8020).
 
-actor( led1, ctxLeds ).
-actor( led2, ctxLeds ).
-actor( led3, ctxLeds ).
+qactor( control, ctxControl, "it.unibo.bls19d.chain.control.ControlActor").
+qactor( led1, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
+qactor( led2, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
+qactor( led3, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).

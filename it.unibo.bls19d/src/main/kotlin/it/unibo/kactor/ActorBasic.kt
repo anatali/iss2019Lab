@@ -11,11 +11,15 @@ import kotlinx.coroutines.newSingleThreadContext
     Implements an abstract actor able to receive an ApplMessage and to delegate
     its processing to the abstract method actorBody
  */
-abstract class  ActorBasic( val name: String ){
-    protected val dispatcher = newSingleThreadContext("ActorThread")//newFixedThreadPoolContext(2, "mypool")
+abstract class  ActorBasic( val name: String, val confined : Boolean = false ){
+
+    protected val dispatcher = if( confined )
+        newSingleThreadContext("ActorThread")
+    else newFixedThreadPoolContext(4, "mypool")
+
     protected var count = 1;
 
-    val  actor = GlobalScope.actor<ApplMessage>(dispatcher, 3 ) {
+    val  actor = GlobalScope.actor<ApplMessage>(dispatcher, 10 ) {
         for( msg in channel ) {
             //println("   ActorBasic $name |  msg= $msg "  )
             actorBody( msg )
@@ -43,6 +47,15 @@ abstract class  ActorBasic( val name: String ){
         GlobalScope.launch {
             destActor.getChannel().send(   buildDispatch(msgId, msg, destActor.name ) )
         }
+    }
+
+    fun forward( msgId : String, msg: String, destName: String) {
+        println("TODO forward $msgId : $msg to $destName SEARCH IN SYS DESCR" )
+        /*
+        GlobalScope.launch {
+            destActor.getChannel().send(   buildDispatch(msgId, msg, destName ) )
+        }
+        */
     }
 
 }

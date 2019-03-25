@@ -1,6 +1,6 @@
 %==============================================
-% DEFINED BY THE SYSTEM DESIGNER
-% CONTEXT HANDLING UTILTY RULES
+% DEFINED BY THE S
+% CONTEXT HANDLING UTILTY RULESYSTEM DESIGNER
 %==============================================
 getCtxNames(CTXNAMES) :-
 	findall( NAME, context( NAME, _, _, _ ), CTXNAMES).
@@ -18,6 +18,12 @@ getOtherContexts(OTHERCTXS, MYSELF) :-
 		(context( CTX, HOST, PROTOCOL, PORT ), CTX \== MYSELF), 	 
 		OTHERCTXS
 	).
+getOtherContextNames(OTHERCTXS, MYSELF) :-
+	findall(
+		CTX,
+		(context( CTX, HOST, PROTOCOL, PORT ), CTX \== MYSELF),
+		OTHERCTXS
+	).
 /*
 	stdout <- println(CTXS),
 	'$tolist'(CTXS,OTHERCTXS),
@@ -25,20 +31,9 @@ getOtherContexts(OTHERCTXS, MYSELF) :-
 */
 	
 getTheActors(ACTORS,CTX) :-
-	findall( qactor( A, CTX ), qactor( A, CTX ),   ACTORS).
-getTheHandlers(ACTORS,CTX) :-
-	findall( eventhandler( A, CTX, EVENTS ), eventhandler( A, CTX, EVENTS ),   ACTORS).
-getTheRobots(ACTORS,CTX) :-
-	findall( qactor( A, CTX ), qactor( A, CTX, robot ),   ACTORS).
-
-insertActorOnce( NAME, CTX ) :-
-	qactor( NAME , CTX ), !.
-insertActorOnce( NAME, CTX ) :-	
- 	assert( qactor( NAME , CTX ) ).
-
-removeActor( NAME, CTX ):-
-	retract( qactor( NAME , CTX ) ).
-removeActor( NAME, CTX ).
+	findall( qactor( A, CTX, CLASS ), qactor( A, CTX, CLASS ),   ACTORS).
+getActorNames(ACTORS,CTX) :-
+    findall( NAME, qactor( NAME, CTX, CLASS ),   ACTORS).
 
 getCtxHost( NAME, HOST )  :- context( NAME, HOST, PROTOCOL, PORT ).
 getCtxPort( NAME,  PORT ) :- context( NAME, HOST, PROTOCOL, PORT ).

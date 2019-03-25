@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 Works at node level
 */
 
-class QakContextServer(val ctx: QakContext, name:String, val protocol: Protocol ) : ActorBasic(name){
+class QakContextServer(val ctx: QakContext, val name:String, val protocol: Protocol ) { //: ActorBasic(name)
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol?
 
@@ -17,15 +17,15 @@ class QakContextServer(val ctx: QakContext, name:String, val protocol: Protocol 
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
         waitForConnection()
     }
-
+/*
     override suspend fun actorBody(msg : ApplMessage){
         println("       QakContextServer $name receives $msg " )
         waitForConnection()
     }
-
+*/
     protected fun waitForConnection() {
         //We could handle several connections
-        //GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
                     println("       QakContextServer $name | WAIT FOR CONNECTION")
@@ -35,7 +35,7 @@ class QakContextServer(val ctx: QakContext, name:String, val protocol: Protocol 
             } catch (e: Exception) {
                  println("      QakContextServer $name | WARNING: ${e.message}")
             }
-       // }
+        }
     }
 
     protected fun handleConnection(conn: IConnInteraction) {

@@ -37,4 +37,10 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : A
         val proxy = NodeProxy("proxy${ctx.name}", Protocol.TCP, ctx.hostAddr, ctx.portNum)
         proxyMap.put( ctx.name, proxy )
     }
+
+    fun addCtxProxy( ctxName :String, hostAddr: String, portNum : Int  ){
+        val proxy = NodeProxy("proxy${ctxName}", Protocol.TCP, hostAddr, portNum)
+        proxyMap.put( ctxName, proxy )
+    }
+
 }

@@ -77,7 +77,7 @@ fun main() : Unit = runBlocking{
     frame.isVisible = true
 
     //CREATE THE LED ACTOR
-    val led1      = LedActor("led1", ledgui)
+    val led1      = LedActor("led1" )
     //CREATE THE LED SERVER
     val ledServer = LedServer("led1server", protocol, portNum, led1)
     delay(500)

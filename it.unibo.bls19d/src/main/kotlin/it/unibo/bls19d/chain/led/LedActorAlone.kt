@@ -4,47 +4,22 @@ import it.unibo.bls.devices.gui.LedAsGui
 import it.unibo.bls.interfaces.ILed
 import it.unibo.bls.utils.Utils
 import it.unibo.bls19d.chain.LedCmd
-import it.unibo.bls19d.chain.control.getLedLocation
-import it.unibo.chain.segment7.LedSegmHorizontal
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.ApplMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import java.awt.Color
-import java.awt.GridLayout
-import javax.swing.JFrame
 
 
-open class LedActor( name: String) : ActorBasic(name) {
-    val segm: ILed
-
-    init{
-        val  frame = createFrame()
-        segm = LedSegmHorizontal(name, 110, 180)
-        //segm = LedSegmVerticalRight(name, 110, 180)
-        frame.add(segm)
-        frame.isVisible = true
-
-    }
-    protected fun  createFrame() : JFrame {
-        JFrame.setDefaultLookAndFeelDecorated(true)
-        val frame = JFrame("Chain")
-        frame.setSize( 120, 150)
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        frame.layout = GridLayout(1, 1)
-        frame.setLocation(getLedLocation() ,100)
-        frame.contentPane.background = Color.BLUE
-        return frame
-    }
+open class LedActorAlone( name: String, val led: ILed) : ActorBasic(name) {
 
     override suspend fun actorBody( cmd : ApplMessage){
         println( "LedActor $name | RECEIVED $cmd " )
         when( cmd.msgContent()  ){
             "on" -> {
-                segm.turnOn();
+                led.turnOn();
             }
             "off" -> {
-                segm.turnOff();
+                led.turnOff();
             }
             else ->
             println("LedActor does not handle ${cmd.msgContent()} ")
@@ -55,9 +30,11 @@ open class LedActor( name: String) : ActorBasic(name) {
 
 /* Rapid check */
 fun main() : Unit = runBlocking{
-    val ledActor = LedActor("ledActor" )
+    val led      = LedAsGui.createLed(Utils.initFrame(200, 200))
+    led.turnOff()
+    val ledActor = LedActorAlone("ledActor", led )
     //MsgUtil.forward( LedMsg.startBlink.name, LedMsg.startBlink.cmd, led1 )
-    delay(1000)
+    delay(2000)
    //CONTROL
       for( i in 1..3 ) {
         delay(500)
