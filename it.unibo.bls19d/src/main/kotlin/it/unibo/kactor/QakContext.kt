@@ -3,7 +3,12 @@ package it.unibo.kactor
 import alice.tuprolog.Prolog
 
 open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : ActorBasic(name){
-    val pengine = Prolog()
+    //val pengine = Prolog()
+
+    protected val actorMap : MutableMap<String, ActorBasic> =
+        mutableMapOf<String, ActorBasic>()
+    val proxyMap : MutableMap<String, NodeProxy> =
+        mutableMapOf<String, NodeProxy>()
 
     companion object {
         enum class CtxMsg{
@@ -11,10 +16,6 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : A
         }
     }
 
-    protected val actorMap : MutableMap<String, ActorBasic> =
-                                            mutableMapOf<String, ActorBasic>()
-    val proxyMap : MutableMap<String, NodeProxy> =
-                                            mutableMapOf<String, NodeProxy>()
     init{
         println("QakContext $name INIT on port=$portNum")
         QakContextServer( this, "Node$name", Protocol.TCP )
@@ -24,13 +25,13 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : A
         println("       QakContext $name receives $msg " )
     }
 
-
     fun addActor( actor: ActorBasic ) {
+        actor.context = this
         actorMap.put( actor.name, actor )
     }
 
-    fun hasActor( actorName: String ) : Boolean {
-        return actorMap.containsKey(actorName)
+    fun hasActor( actorName: String ) : ActorBasic? {
+        return actorMap.get(actorName)
     }
 
     fun addCtxProxy( ctx : QakContext ){

@@ -44,11 +44,12 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
                 println("       QakContextServer $name | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
-                    //println("   LedServer | receives:$msg")
+                    println("       QakContextServer  $name | receives:$msg")
                     val inputmsg = ApplMessage(msg)
                     val dest     = inputmsg.msgReceiver()
-                    if( ctx.hasActor( dest )) MsgUtil.forward(inputmsg, dest )
-                        else  println("     QakContextServer $name | no local actor ${dest}")
+                    val actor    = ctx.hasActor( dest )
+                    if( actor is ActorBasic ) MsgUtil.forward(inputmsg, actor )
+                    else  println("       QakContextServer $name | no local actor ${dest} in ${ctx.name}")
                 }
             } catch (e: Exception) {
                 println("       QakContextServer $name | handleConnection WARNING: ${e.message}")

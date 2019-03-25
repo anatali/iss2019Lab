@@ -1,5 +1,6 @@
 package it.unibo.kactor
 
+import alice.tuprolog.Prolog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
@@ -12,6 +13,9 @@ import kotlinx.coroutines.newSingleThreadContext
     its processing to the abstract method actorBody
  */
 abstract class  ActorBasic( val name: String, val confined : Boolean = false ){
+
+    var context : QakContext? = null
+    val pengine = Prolog()
 
     protected val dispatcher = if( confined )
         newSingleThreadContext("ActorThread")
@@ -38,6 +42,12 @@ abstract class  ActorBasic( val name: String, val confined : Boolean = false ){
         actor.send( buildDispatch(msgId, msg, this.name) )
     }
 
+    //fun setContext( ctx: QakContext ) built-in
+
+/*
+Messaging
+ */
+
     fun buildDispatch( msgId : String , content : String, dest: String ) : ApplMessage {
         return ApplMessage(msgId, "dispatch",
             this.name, dest, "$content", "" + count++)
@@ -50,12 +60,19 @@ abstract class  ActorBasic( val name: String, val confined : Boolean = false ){
     }
 
     fun forward( msgId : String, msg: String, destName: String) {
-        println("TODO forward $msgId : $msg to $destName SEARCH IN SYS DESCR" )
-        /*
-        GlobalScope.launch {
-            destActor.getChannel().send(   buildDispatch(msgId, msg, destName ) )
+        println("forward $msgId : $msg to $destName SEARCH IN SYS DESCR context=$context" )
+        val actor = context!!.hasActor(destName)
+        if( actor is ActorBasic   ) {//local
+            GlobalScope.launch {
+                actor.getChannel().send(   buildDispatch(msgId, msg, destName ) )
+            }
+        }else{ //remote
+            val ctx = sysUtil.getActorContext(destName)
+            val proxy = context!!.proxyMap.get(ctx)
+            GlobalScope.launch {
+                proxy!!.getChannel().send(buildDispatch(msgId, msg, destName))
+            }
         }
-        */
     }
 
 }
