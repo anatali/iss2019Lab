@@ -1,9 +1,6 @@
 package it.unibo.bls19d.chain.led
 
-import it.unibo.bls.devices.gui.LedAsGui
 import it.unibo.bls.interfaces.ILed
-import it.unibo.bls.utils.Utils
-import it.unibo.bls19d.chain.LedCmd
 import it.unibo.bls19d.chain.control.getLedLocation
 import it.unibo.chain.segment7.LedSegmHorizontal
 import it.unibo.kactor.ActorBasic

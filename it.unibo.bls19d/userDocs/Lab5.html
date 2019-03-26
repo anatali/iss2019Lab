@@ -120,63 +120,125 @@ table, th, td {
     
 <head>
    
-<title>ISSLAB5</title></head>
+<title>LBA5ISS</title></head>
     
 <body>
 
 <div class="body"> 
 
-<h1>72939 - LAB5 | A ButtonLedSystem distributed</h1> 
+<h1>72939 - LAB5 | From objects to actors</h1> 
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
 <h2>REQUIREMENTS</h2>
 <div class="req">
-Design and build a distributed <tt>ButtonLed software system</tt> (<em>BLSD</em>) 
- that controls a <em>chain of Led</em> made of <tt>n>2</tt>:
-<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>, so that:
-<ol>
-<li> <em>R0 (START)</em>: the chain is activated (at time <tt>t0</tt>) when a command <tt>START</tt> is sent to it</li>
-<li> <em>R1 (BLINK)</em>: the  <b>Led-i</b>  (<tt>i=1..n</tt>) is turned-on for a prefixed time <bc>TIMEON</bc>, at time <bc>t0 + TIMEON*i</bc></li>
-<li> <em>R2 (REPEAT)</em>: the chain blinking repeats</li>
-<li> <em>R3 (STOP)</em>: the chain blinking is stopped when the chain receives the command <tt>STOP</tt> </li>
-</ol>
+With reference to the system  introduced in <a href="../../it.unibo.bls19Local/userDocs/Lab3.html" target="info">Lab3.html</a>, re-design the system by using
+Kotlin actors, each working as a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> (<bc>FSM</bc>).
 </div>	    
  	
 	
-<h2>START UP</h2>
+<h2>THE GOAL</h2>
 
-<ol>
-<li>In <i>IntelliJ IDEA Community Edition</i>  
-	<pre>new Project -> select Gradle -> Java & Kotlin(Java).
-	Set GroupId=issUnibo19, ArtifactId=it.unibo.bls19d, Version=1.0 
-	Use auto-import, Use local gradle distribution</pre> 
-</li>
-<li>Update <a href="../.gitignore" target="code">gitignore</a>.</li>
-<!--
-<li>Create the directory <tt>src/main/java</tt> the directory <tt>libs</tt> and (optionally) <tt>userDocs</tt>.
-<li>Copy the library <tt>it.unibo.bls19Local-1.0.jar</tt> built during our previous work 
-(<a href="../../it.unibo.bls19Local/userDocs/Lab1.html" target="info">Lab3.html</a>)
-into the local directory <bc>libs</bc>.</li>
--->
-<li>Define proper dependences in <a href="../build.gradle" target="code">build.gradle</a>, 
-in particular the <tt>'CUSTOM'</tt> section that will include the library <tt>it.unibo.bls19Local-1.0.jar</tt> built during our previous work 
-(<a href="../../it.unibo.bls19Local/userDocs/Lab3.html" target="info">Lab3.html</a>).</li>
-<li>Define a simple application (e.g. <a href="../src/main/java/it/unibo/bls19d/appl/StartTest.java" target="code">StartTest</a>) 
-to check that all is ok.
-</ol>
+<center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
 
+<h2>THE SYSTEM</h2>
 
+<center><img src="./blsActork.png" alt="blsActork" width="80%" height="80%"></center>
 
-<h2>CODE </h2>
+<p>
+<center><table style="width:90%">
+  <tr>
+    <th>Interfaces</th>
+    <th>System</th> 
+	<th>Components</th>
+    </tr>
+<tr>
+<td>
 <ul>
-<li><em>LedFrontEnd</em>: <a href="../src/main/kotlin/bls19d/devices/led/LedFrontEnd.kt" target="code">LedFrontEnd.kt</a></li>
-<li><em>LedProxy</em>: <a href="../src/main/kotlin/bls19d/devices/led/LedProxy.kt" target="code">LedProxy.kt</a></li>
-<li><em>Messages</em>: <a href="../src/main/kotlin/bls19d/messages/ApplMessage.kt" target="code">ApplMessage.kt</a></li>
-<li><em>Message Utility</em>: <a href="../src/main/kotlin/bls19d/messages/UtilsMsg.kt" target="code">UtilsMsg.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IBlsFrameworkFsm.kt" target="code">IBlsFrameworkFsm.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IAppLogicFsm.kt" target="code">IAppLogicFsm.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IButtonListener.kt" target="code">IButtonListener.kt</a></li>
+<li>---------</li>
+
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
+</ul>	
+</td>
+<td>
+<ul>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsActorFramework.kt" target="code">BlsActorFramework.kt</a>  </li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MainBlsFsmFramework.kt" target="code">MainBlsFsmFramework.kt</a>  </li>
+</ul>	
+</td> 
+<td>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" target="code">ButtonObserver.kt</a><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" target="code">BlsFsmAppl.kt</a><br/><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a>
+</td>
+</tr>
+ </table></center>
+ 
+<h2>ActorBasic</h2>
+ <table style="width:100%">
+<tr>
+<td width="20%">
+<center><img src="./ActorBasic.png" alt="ActorBasic" width="130" height="100"></center> 
+</td>
+<td width="40%">
+<center><img src="./ActorBasicCode.png" alt="ActorBasicCode" width="450" height="400"></center> 
+</td>
+<td width="40%">
+<a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a><br/><br/>
+An abstract class  that provides an actor. <br/> <br/>
+The application designer must write the <tt>actorBody</tt>
+method to  handle:
+<li>
+with the help of <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a></li>
+<li>the received message of type 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a> (requires
+<a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf">tuProlog</a> )</li>
+
+</td>
+</tr>
+
+</tr>
+</table>
+<h2>THE FINITE STATE NACHINE</h2>
+ 
+
+<center><img src="./blsActorkAll.png" alt="blsActorkAll" width="60%" height="60%"></center>
+
+<h2>MESSAGES</h2> 
+
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the messages:
+<pre>
+enum class Messages{
+    Stop,Goon,Click
+}
+</pre>
+
+
+<h2>COMMUNICATION</h2> 
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the operation
+<bc>forward</bc>:
+<pre>
+fun forward(msg : Messages, channel: SendChannel<Messages>){
+    GlobalScope.launch {
+        channel.send(msg)
+    }
+}
+</pre>
+
+</p>
+
+<h2>WORK TO DO</h2>
+ 
+<ul>
+<li>Build a system that blinks an array of <tt>n>2</tt> Leds represented as a 
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>
+</li>
+<li></li>
 <li></li>
 </ul>
-
-
 
 
  

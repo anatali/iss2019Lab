@@ -8,8 +8,7 @@ import kotlinx.coroutines.delay
 class ControlActor( name : String ) : ActorBasic(name){
     var goon = true
     init{
-        println(" ----------------------------------------- ControlActor $name STARTS")
-
+        println(" --- ControlActor $name STARTS")
     }
 
     /*

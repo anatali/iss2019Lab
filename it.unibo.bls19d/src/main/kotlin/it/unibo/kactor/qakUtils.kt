@@ -21,6 +21,9 @@ object sysUtil{
 	fun getPrologEngine() : Prolog{
 		return pengine
 	}
+	fun curThread() : String {
+		return "thread=${Thread.currentThread().name}"
+	}
 	fun loadInfo(   ruleFile: String,   sysDescrFile: String) {
 		loadTheory(ruleFile, pengine)
 		loadTheory(sysDescrFile, pengine)

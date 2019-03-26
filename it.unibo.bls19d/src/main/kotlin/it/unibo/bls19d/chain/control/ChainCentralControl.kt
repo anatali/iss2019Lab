@@ -6,18 +6,18 @@ import it.unibo.bls19d.chain.ChainMsg
 import it.unibo.bls19d.chain.ChainRegister
 import it.unibo.bls19d.chain.led.LedProxy
 import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
 import it.unibo.kactor.Protocol
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import it.unibo.bls19d.chain.LedMsg.*
 import it.unibo.bls19d.chain.elements.ChainElements
+import it.unibo.kactor.ApplMessage
 
 class ChainCentralControl( name: String ) : ActorBasic(name) {
 protected val ledList : ArrayList<LedProxy>  = ArrayList<LedProxy>()
 protected val TIMEON : Long = 200
 
-    override suspend fun actorBody( msg : ApplMessage ){
+    override suspend fun actorBody( msg : ApplMessage){
         println("ChainCentralControl | RECEIVED: $msg")
         when( msg.msgId() ){
            "chainRegister" -> {

@@ -1,14 +1,11 @@
 package it.unibo.bls19d.chain.led
 
 
-import it.unibo.bls.devices.gui.LedAsGui
 import it.unibo.bls.interfaces.ILed
-import it.unibo.bls.utils.Utils
 import it.unibo.bls19d.chain.LedMsg
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.ApplMessage
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 
 
 enum class States{

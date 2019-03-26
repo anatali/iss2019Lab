@@ -1,7 +1,5 @@
 package it.unibo.kactor
 
-import alice.tuprolog.Prolog
-
 open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : ActorBasic(name){
     //val pengine = Prolog()
 

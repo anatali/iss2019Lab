@@ -72,9 +72,9 @@ class ChainElements(  ){
         for( i in 1..3 ) {
             ledActorList.forEach {
                 Thread.sleep(200)
-                MsgUtil.forward(msgOn, it)
+                MsgUtil.sendMsg(msgOn, it)
                 Thread.sleep(200)
-                MsgUtil.forward(msgOff, it)
+                MsgUtil.sendMsg(msgOff, it)
             }
         }
     }
@@ -85,9 +85,9 @@ class ChainElements(  ){
         for( i in 1..3 ) {
             proxyList.forEach {
                 Thread.sleep(200)
-                MsgUtil.forward(msgOn, it)
+                MsgUtil.sendMsg(msgOn, it)
                 Thread.sleep(200)
-                MsgUtil.forward(msgOff, it)
+                MsgUtil.sendMsg(msgOff, it)
             }
         }
     }

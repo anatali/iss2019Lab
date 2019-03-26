@@ -52,7 +52,7 @@ class LedServer( val name:String, val protocol: Protocol, val portNum: Int,
                     val msg = conn.receiveALine()       //BLOCKING
                     println("   LedServer | receives:$msg")
                     val inputmsg = ApplMessage(msg)
-                    MsgUtil.forward(inputmsg, ledActor)
+                    MsgUtil.sendMsg(inputmsg, ledActor)
                 }
             } catch (e: Exception) {
                 println("   LedServer $name | handleConnection WARNING: ${e.message}")

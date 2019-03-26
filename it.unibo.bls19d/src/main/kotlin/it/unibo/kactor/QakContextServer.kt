@@ -17,12 +17,7 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
         waitForConnection()
     }
-/*
-    override suspend fun actorBody(msg : ApplMessage){
-        println("       QakContextServer $name receives $msg " )
-        waitForConnection()
-    }
-*/
+
     protected fun waitForConnection() {
         //We could handle several connections
         GlobalScope.launch(Dispatchers.IO) {
@@ -48,7 +43,7 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
                     val inputmsg = ApplMessage(msg)
                     val dest     = inputmsg.msgReceiver()
                     val actor    = ctx.hasActor( dest )
-                    if( actor is ActorBasic ) MsgUtil.forward(inputmsg, actor )
+                    if( actor is ActorBasic ) MsgUtil.sendMsg(inputmsg, actor )
                     else  println("       QakContextServer $name | no local actor ${dest} in ${ctx.name}")
                 }
             } catch (e: Exception) {
