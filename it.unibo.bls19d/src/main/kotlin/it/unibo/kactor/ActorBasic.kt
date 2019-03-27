@@ -13,7 +13,8 @@ import kotlinx.coroutines.newSingleThreadContext
  */
 
 abstract class  ActorBasic( val name: String,
-                            val channelSize : Int = 10, val confined : Boolean = false ) {
+                            val channelSize : Int = 5,
+                            val confined : Boolean = false ) {
     val cpus = Runtime.getRuntime().availableProcessors();
     lateinit var context : QakContext
     val pengine = Prolog()      //TO BE USED FOR LOCAL KB

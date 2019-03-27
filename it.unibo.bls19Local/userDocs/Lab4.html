@@ -1637,7 +1637,7 @@ The initializer, getter and setter are optional.
  
 <m>While Java stores class data into <bc>fields</bc>, classes in Kotlin do introduce <bc>properties</bc> 
 (<tt>fields</tt> together with <tt>accessors</tt> methods) as a first-class language feature 
-(see <a href="https://kotlinlang.org/docs/reference/properties.html">Kotlin Properties and Fields</a>). 
+(see <a href="https://kotlinlang.org/docs/reference/properties.html" target="web">Kotlin Properties and Fields</a>). 
 We can have:
 <ul>
 <li>properties that stores a value</li>
@@ -1668,7 +1668,14 @@ fun main(){
 			married=${p.isMarried} adult=${p.isAdult} ")
 }
 </pre> </td>
-<td><m><em>Custom getter accessor</em>: allows us to implement a computed property</m> 
+<td><m><em>Prinary constructor</em>: 
+<ul>
+<li>specifies constructor parameters</li>
+<li>defines properties initialized by those parameters</li>
+</ul>
+
+
+<em>Custom getter accessor</em>: allows us to implement a computed property</m> 
 <pre>
 //OUTPUT
 name=Bob, age=10, married=false adult=false 
@@ -1745,6 +1752,195 @@ name=Bob, age=22, married=true adult=true
 The special identifier <bc>field</bc> is used to access the <tt>backing field</tt></m>
  
  </td>
+</tr>
+
+<tr>
+<td><pre>
+enum class Color( //properties
+    var r: Int, val g: Int, val b: Int){
+//Property values for each constant
+    RED(255,0,0),
+    YELLOW(255,255,0) //declares its own anonymous class
+    { override fun toString():String{return "YELLOW_COLOR"} },
+    GREEN(0,255,0), BLUE(0,0, 255)
+    ; //semicolon is is mandatory if define methods
+
+    fun rgb() = (r * 256 + g) * 256 + b
+    override fun toString() : String { 
+        return "${super.toString()}($r,$g,$b)" }
+}
+
+fun main(){
+    val y = Color.YELLOW
+    val b = Color.BLUE
+    println("$y = ${y.rgb()} | $b = ${b.rgb()} ")
+}
+</pre> </td>
+<td><m><em>enum</em>: is a <bc>soft keyword</bc> (i.e. the name can be reused) 
+that introduces a set of constant objects, each instanc eof the class.
+Each object can be initalized and declare methods.</m> 
+
+<pre>
+//OUTPUT
+YELLOW_COLOR = 16776960 | BLUE(0,0,255) = 255
+</pre>
+ 
+
+<br/><br/></td>
+</tr>
+
+<tr>
+<td><pre>
+enum class Origin{
+    asia, africa, europa, america, australia
+}
+
+class Person(val name: String, 
+				val nickname: String = "rambo") {
+    var age : Int = 0
+    var married = false
+        set( value ){
+            if( age &lt; 14 ) 
+			  println("WARNING: too joung for marriage")
+            else field = true
+        }
+    val isAdult: Boolean
+        get(){ return age >= 18} //custom getter
+
+     lateinit var country  : Origin //visible from outside
+     protected var  voter  : Boolean //not visible
+        get(){ return isAdult }
+    init{
+        //country = Origin.europa
+        voter  =  (age > 18)   //expression
+    }
+    //custom accessor
+    fun voter():Boolean{ return voter }
+}
+
+fun main(){
+ val p = Person("Bob")
+  println("name=${p.name} age=${p.age} "+
+     " married=${p.married} " +
+     " adult=${p.isAdult} nickname=${p.nickname}" +
+     " voter=${p.voter()}") // p.country not initialized
+  p.age     = 22
+  p.married = true
+  p.country = Origin.europa
+  println("name=${p.name} age=${p.age}"+
+      " married=${p.married} " +
+      " adult=${p.isAdult} nickname=${p.nickname}" +
+      " country=${p.country} voter=${p.voter()}")
+ 
+}
+
+</pre> </td>
+<td><m>
+
+
+<em>default parameter values</em>: set default values for properties. Their usage avoids the introduction
+of secondary constructors
+
+<br/><br/>
+<em>init</em>: keyword that introduces an <bc>initializer block</bc>
+
+<br/><br/>
+
+<em>lateinit</em>: a modifier that allows us to introduce a <bc>var</bc> property without an initializer.
+It is not applicable to primitive types.
+
+<br/><br/>
+A common use is for <a href="https://it.wikipedia.org/wiki/Dependency_injection" target="web">dependency injection</a>.
+</m> 
+
+<pre>
+//OUTPUT
+name=Bob age=0  married=false  adult=false nickname=rambo voter=false
+name=Bob age=22 married=trueadult=true 
+	nickname=rambo country=europa voter=true
+</pre>
+
+</td>
+</tr>
+
+<tr>
+<td><pre>
+open class Person(val name: String, 
+	val nickname: String = "rambo") {
+	...
+}
+
+class Student(name: String,
+	nickname: String="nerd") : Person(name, nickname) {
+
+}
+
+fun main(){
+  val p = Student("Alice", "batterfly")
+  p.age     = 24
+  println("name=${p.name} age=${p.age} "+
+     " married=${p.married} " +
+     " adult=${p.isAdult} nickname=${p.nickname}" +
+     " voter=${p.voter()}") // p.country not initialized
+  p.country = Origin.asia
+  println("name=${p.name} age=${p.age}"+
+      " married=${p.married} " +
+      " adult=${p.isAdult} nickname=${p.nickname}" +
+      " country=${p.country} voter=${p.voter()}")
+
+}
+
+</pre> </td>
+<td>
+<h5>Inheritance</h5>
+<m><em>open</em>: a modifier that makes it possible to define subclasses.
+Whereas Java's classes and methods are open by default, in Kotlin they are <bc>final</bc>,
+in order to overcome the <a href="https://en.wikipedia.org/wiki/Fragile_base_class" target="web">fragile base class problem</a>.
+<br/><br/>
+An <em>abstract</em> class is <bc>open</bc> by default.
+
+ </m> 
+
+<pre>
+//OUTPUT
+name=Alice age=24  married=false  adult=true nickname=batterfly voter=true
+name=Alice age=24 married=false  adult=true 
+	nickname=batterfly country=asia voter=true
+</pre>
+</td>
+</tr>
+
+<tr>
+<td><pre>
+sealed class Expr{
+    class Num( val value:Int):Expr()
+    class Add( val left:Expr, val right:Expr):Expr()
+    fun eval():Int{
+        when( this ){
+            is Num -> return value
+            is Add -> return left.eval() + right.eval()
+            //no deafult branch
+        }
+    }
+}
+
+
+fun main(){
+    val v1 = Expr.Num(10)
+    val v2 = Expr.Num(20)
+    val sum = Expr.Add(v1,v2)
+    println("${v1.eval()} + ${v2.eval()} = ${sum.eval()}")
+}
+</pre> </td>
+<td><h5>Selaed class</h5>
+<m><em>sealed </em>: a modifier which restricts the possible subclasses of a class. All the possible subclasses
+must be nested in the superclass </m> 
+
+<pre>
+//OUTPUT
+10 + 20 = 30
+</pre>
+</td>
 </tr>
 
 <tr>

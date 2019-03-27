@@ -151,9 +151,7 @@ Each actor should be structured as a <a href="https://en.wikipedia.org/wiki/Fini
 <center><table style="width:98%">
 <tbody>	
 <tr>
-<td style="width:45%"> 
-
-<pre>
+<td style="width:45%"> <pre>
 abstract class  ActorBasic( val name: String,
       val channelSize : Int = 10, val confined : Boolean = false ){
 	
@@ -164,13 +162,27 @@ abstract class  ActorBasic( val name: String,
  ...	
 }
 </pre> </td>
-<td>
-<center><img src="./ActorBasic.png" alt="ActorBasic" width="130" height="100"></center> 
-<m>The class <a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a> 
-provides the basic structure of an application actor. 
+<td><m>The class <a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a> 
+provides the basic structure of an application actor. The application designer must write the <bc>actorBody</bc>
+method to handle a received message of type <bc>ApplMessage</bc>.
 <br/><br/>
-The application designer must write the <bc>actorBody</bc>
-method to handle a received message of type <tt>ApplMessage</tt>.
+The file :
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a> defines
+<ul>
+<li>The class <bc>ApplMessage</bc> that defines the structure of application messages:
+<pre>
+msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
+</pre>
+
+</li>
+<li>The object <bc>MsgUtil</bc> that provides utilty methods to build and send messages.
+It requires <a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf">tuProlog</a>
+ </li>
+</ul>
+
+<br/><br/>
+ 
+
 
 </m> </td>
 </tr>
@@ -206,9 +218,6 @@ sealed class BlsCmd(val cmd:String, val id:String ="blsMsg"){
 </pre> </td>
 <td><m>The class <tt>BlsCmd</tt> defines the structure of the <bc>CONTENT</bc> argument of the 
 <tt>ApplMessage</tt>
-<pre>
-msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-</pre>
 
 
  </m> </td>
@@ -223,33 +232,115 @@ msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
 </table></center>
 </p>
 </li>
-<li><em>Behavior</em>
-<center><img src="./blsActorkAll.png" alt="blsActorkAll" width="80%" height="80%"></center>
-</li>
+<li></li>
 </ol>
 
 
-<h2>MESSAGES</h2>
 
- The file :
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a> defines
-<ul>
-<li>The class <bc>ApplMessage</bc> that defines the structure of application messages:
-<pre>
-msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-</pre>
-
-</li>
-<li>The object <bc>MsgUtil</bc> that provides utilty methods to build and send messages.
-It requires <a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf" target="web">tuProlog</a>
- </li>
-</ul>
 
  
 
-<!--
+<p>
+<center><table style="width:90%">
+  <tr>
+    <th>Interfaces</th>
+    <th>System</th> 
+	<th>Components</th>
+    </tr>
+<tr>
+<td>
+<ul>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IBlsFrameworkFsm.kt" target="code">IBlsFrameworkFsm.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IAppLogicFsm.kt" target="code">IAppLogicFsm.kt</a></li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/IButtonListener.kt" target="code">IButtonListener.kt</a></li>
+<li>---------</li>
+
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/IButtonModel.java" target="code">IButtonModel</a></li>
+<li><a href="../src/main/java/it/unibo/blsFramework/interfaces/ILedModel.java" target="code">ILedModel</a></li>
+</ul>	
+</td>
+<td>
+<ul>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsActorFramework.kt" target="code">BlsActorFramework.kt</a>  </li>
+<li><a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MainBlsFsmFramework.kt" target="code">MainBlsFsmFramework.kt</a>  </li>
+</ul>	
+</td> 
+<td>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/ButtonObserver.kt" target="code">ButtonObserver.kt</a><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/BlsFsmAppl.kt" target="code">BlsFsmAppl.kt</a><br/><br/>
+<a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a>
+</td>
+</tr>
+ </table></center>
+ 
+<h2>ActorBasic</h2>
+ <table style="width:100%">
+<tr>
+<td width="20%">
+<center><img src="./ActorBasic.png" alt="ActorBasic" width="130" height="100"></center> 
+</td>
+<td width="40%">
+<center><img src="./ActorBasicCode.png" alt="ActorBasicCode" width="450" height="400"></center> 
+</td>
+<td width="40%">
+<a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a><br/><br/>
+An abstract class  that provides an actor. <br/> <br/>
+The application designer must write the <tt>actorBody</tt>
+method to  handle:
+<li>
+with the help of <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a></li>
+<li>the received message of type 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a> (requires
+<a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf">tuProlog</a> )</li>
+
+</td>
+</tr>
+
+</tr>
+</table>
+<h2>THE FINITE STATE NACHINE</h2>
+ 
+
+<center><img src="./blsActorkAll.png" alt="blsActorkAll" width="60%" height="60%"></center>
+
+<h2>MESSAGES</h2> 
+
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the messages:
+<pre>
+enum class Messages{
+    Stop,Goon,Click
+}
+</pre>
+
+
+<h2>COMMUNICATION</h2> 
+In <a href="../src/main/kotlin/it/unibo/blsFramework/kotlin/fsm/MsgUtils.kt" target="code">MsgUtils.kt</a> we define the operation
+<bc>forward</bc>:
+<pre>
+fun forward(msg : Messages, channel: SendChannel<Messages>){
+    GlobalScope.launch {
+        channel.send(msg)
+    }
+}
+</pre>
+
+</p>
+
+<h2>WORK TO DO</h2>
+ 
+<ul>
+<li>Build a system that blinks an array of <tt>n>2</tt> Leds represented as a 
+<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>
+</li>
+<li></li>
+<li></li>
+</ul>
+
+
+ <h2>THE GOAL OLD</h2>
+
 <center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
--->
+
  
 	<br/><br/> 
 </div>  
