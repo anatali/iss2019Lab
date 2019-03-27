@@ -112,19 +112,19 @@ var count = 1;
         GlobalScope.launch {
             val dispatchMsg = buildDispatch(sender, msgId, msg, destActor.name)
             println("sendMsg $dispatchMsg")
-            destActor.getChannel().send( dispatchMsg )
+            destActor.actor.send( dispatchMsg )
         }
     }
     fun sendMsg(msg: ApplMessage, destActor: ActorBasic) {
         GlobalScope.launch {
-            destActor.getChannel().send(msg)
+            destActor.actor.send(msg)
         }
     }
     fun sendMsg(msgId: String, msg: String, destActor: ActorBasic) {
         GlobalScope.launch {
             val dispatchMsg = buildDispatch("any", msgId, msg, destActor.name)
             println("sendMsg $dispatchMsg")
-            destActor.getChannel().send(dispatchMsg)
+            destActor.actor.send(dispatchMsg)
         }
     }
 

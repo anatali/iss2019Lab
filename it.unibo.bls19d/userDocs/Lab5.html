@@ -92,10 +92,14 @@ bc{
 }
 pre{
 	font-family: "Helvetica";
-	font-size: 80%;
-	background-color: #fcf8c7;
-	border: 1px solid blue;
-	width: 700px;
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+ 
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
 }
 div.body{
 	width: 800px;
@@ -117,7 +121,6 @@ table, th, td {
 
   -->
 </style>
-    
 <head>
    
 <title>LBA5ISS</title></head>
@@ -136,13 +139,72 @@ Kotlin actors, each working as a <a href="https://en.wikipedia.org/wiki/Finite-s
 </div>	    
  	
 	
-<h2>THE GOAL</h2>
 
-<center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
+<h2>SYSTEM ARCHITECTURE</h2>
 
-<h2>THE SYSTEM</h2>
-
+<ol>
+<li><em>Structure</em>: the system is composed of three actors 
 <center><img src="./blsActork.png" alt="blsActork" width="80%" height="80%"></center>
+<p>
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"> <pre>
+abstract class  ActorBasic( val name: String,
+    val channelSize : Int = 10, val confined : Boolean = false ){
+}
+</pre> </td>
+<td><m><em> sealed class </em></m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+</p>
+</li>
+<li><em>Interaction</em>: the actors do not share memory. They interact via message-passing:
+<p>
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"> <pre>
+sealed class BlsCmd(val cmd:String, val id:String ="blsMsg"){
+    override fun toString() : String{
+        return "$id(${cmd})"
+    }
+
+    class LedOn  : BlsCmd("on")
+    class LedOff : BlsCmd("off")
+
+    class ButtonCmd : BlsCmd( "click")
+
+    class BlinkStartCmd: BlsCmd( "startBlink")
+    class BlinkStopCmd: BlsCmd( "stopBlink")
+}
+</pre> </td>
+<td><m><em> sealed class </em></m> </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
+
+</tbody>	
+</table></center>
+</p>
+</li>
+<li></li>
+</ol>
+
+
+
+
+ 
 
 <p>
 <center><table style="width:90%">
@@ -241,7 +303,10 @@ fun forward(msg : Messages, channel: SendChannel<Messages>){
 </ul>
 
 
- 
+ <h2>THE GOAL OLD</h2>
+
+<center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
+
  
 	<br/><br/> 
 </div>  

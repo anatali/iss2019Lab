@@ -155,7 +155,7 @@ You can consult also:
 <li><a href="#concur">Concurrency</a></li>
 <li><a href="#channels">Channels</a></li>
 <li><a href="#actors">Actors</a></li>
-<li> ... </li>
+<li><a href="#classes">Classes</a></li>
 
   
 </ol>
@@ -651,8 +651,8 @@ useful higher order functions implementing idiomatic patterns.
 <td style="width:45%"><pre>
 fun counterCreate()  : ( cmd : String ) -> Int {
     var localCounter = 0
-    return {
-        when (it) {
+    return { msg ->
+        when (msg) {
             "inc" -> ++localCounter
             "dec" -> --localCounter
             "val" -> localCounter
@@ -692,7 +692,7 @@ fun doJob(n:Int){
     handle( v )
 }
 
-fun main() = runBlocking{
+fun main() {
     println("BEGINS")
     doJob(10)
     println("ENDS")
@@ -1097,6 +1097,8 @@ https://play.kotlinlang.org
 
 <tr>
 <td><pre>
+fun action(i : Int) { println("hello $i curThread=${curThread()}") }
+
 suspend fun launchAction(i:Int,scope:CoroutineScope){
 	...
 }
@@ -1419,7 +1421,7 @@ A producer is associated with the channel that it sends elements to (a <bc>Recei
 suspend fun channelTest(){
  val timeElapsed = measureTimeMillis {
      val n = 5
-     val channel = Channel<Int>(2)
+     val channel = Channel&ltInt>(2)
 
      val sender = GlobalScope.launch {
          repeat( n ) {
@@ -1492,16 +1494,27 @@ Kotlin defines several types of channels:
  
 <h3><a id="actors"/>Actors</h3>
 
+<m>An actor is an entity made up of a combination of a coroutine, the state that is confined and encapsulated into this coroutine, 
+and a channel to communicate with other coroutines. 
+<br/> 
+A simple actor can be written as a function, but an actor with a complex state 
+is better suited for a class.
+<br/> 
+There is an actor coroutine builder that conveniently combines actor’s mailbox channel into its scope to receive messages from 
+and combines the send channel into the resulting job object, so that a single reference to the actor can be carried around as its handle.</m>
 <center><table style="width:95%">
 <tbody>	
 
 <tr>
 <td><pre>
 class CounterMsg(
-  val cmd:String,val response:CompletableDeferred<Int>?=null){
+  val cmd:String,
+  val response:CompletableDeferred&ltInt>?=null){
 }
 
-fun CoroutineScope.counterActor() : SendChannel<CounterMsg> =
+//fun CoroutineScope.counterActor():
+//				SendChannel&ltCounterMsg>=
+fun CoroutineScope.counterActor() = actor<CounterMsg> {
             actor<CounterMsg> {
     var localCounter = 0 // actor state
     for (msg in channel) { // iterate over incoming messages
@@ -1517,13 +1530,13 @@ fun main() = runBlocking<Unit>{
     val cpus = Runtime.getRuntime().availableProcessors();
     println("BEGINS with $cpus  cores")
     val counter = counterActor() // create the actor
-    val initVal = CompletableDeferred<Int>()
+    val initVal = CompletableDeferred&ltInt>()
     counter.send(CounterMsg("GET", initVal))
     println("Counter INITIAL VALUE=${initVal.await()}")
     GlobalScope.massiveRun {
         counter.send(CounterMsg("INC") )
     }
-    val finalVal = CompletableDeferred<Int>()
+    val finalVal = CompletableDeferred&ltInt>()
     counter.send(CounterMsg("GET", finalVal))
     println("Counter FINAL VALUE= = ${finalVal.await()}")
     counter.close() // shutdown the actor
@@ -1585,6 +1598,159 @@ since a producer is associated with the channel that it <i>sends</i> elements to
  
 
 
+
+</tbody>	
+</table></center>
+
+
+<h3><a id="classes"/>CLASSES</h3>
+
+<center><table style="width:95%">
+<tbody>	
+<tr>
+<td style="width:45%"> <pre>
+public class Person {
+    private final String name;
+    private int age=0;
+    private boolean isMarried = false;
+    public Person(String name){ this.name = name; }
+    public String getName(){ return name;  }
+    public int getAge(){ return age;  }
+    public void incAge(){ age++;  }
+    public boolean getIsMarried(){ return isMarried;  }
+    public void setIsMarried(boolean v){ isMarried=v;  }
+}
+
+
+------------------------------------------------------------
+KOTLIN syntax for properties
+------------------------------------------------------------
+var &lt;propertyName>[: &lt;PropertyType>] 
+				[= &lt;property_initializer>]
+    [&lt;getter>]
+    [&lt;setter>]
+
+The initializer, getter and setter are optional.
+</pre> </td>
+<td><m><em>Java to Kotlin </em>: let us report here the result of automatic conversion done by the <tt>IDE</tt></m>
+<center><img src="./PersonKotlin.png" alt="PersonKotlin" width="90%" height="90%"></center>
+ 
+<m>While Java stores class data into <bc>fields</bc>, classes in Kotlin do introduce <bc>properties</bc> 
+(<tt>fields</tt> together with <tt>accessors</tt> methods) as a first-class language feature 
+(see <a href="https://kotlinlang.org/docs/reference/properties.html">Kotlin Properties and Fields</a>). 
+We can have:
+<ul>
+<li>properties that stores a value</li>
+<li>properties with custom accessors that calculates values at each access</li>
+</ul>
+
+ <bc>fields</bc>, but ... </m>
+</td>
+</tr>
+
+<tr>
+<td><pre>
+class Person(val name: String) {
+    var age : Int = 0       //public 
+    var isMarried = false   //public 
+    val isAdult: Boolean
+        get(){ return age >= 18} //custom getter
+}
+
+fun main(){
+    val p = Person("Bob")
+    p.age = 10
+    println( "name=${p.name}, age=${p.age}, 
+	    married=${p.isMarried} adult=${p.isAdult} ")	
+    p.age=22
+    p.isMarried = true
+    println( "name=${p.name}, age=${p.age}, 
+			married=${p.isMarried} adult=${p.isAdult} ")
+}
+</pre> </td>
+<td><m><em>Custom getter accessor</em>: allows us to implement a computed property</m> 
+<pre>
+//OUTPUT
+name=Bob, age=10, married=false adult=false 
+name=Bob, age=22, married=true adult=true 
+</pre>
+
+</td>
+</tr>
+
+<tr>
+<td><pre>
+class Person(val name: String) {
+    var age : Int = 0
+    var married = false
+        set( value ){
+            if( age < 14 ) println("WARNING: too joung for marriage")
+            //else married = value  //Stack overflow
+        }
+    val isAdult: Boolean
+        get(){ return age >= 18} //custom getter
+}
+
+fun main(){
+    val p = Person("Bob")
+    p.age = 10
+    p.married = true
+    println( "name=${p.name}, age=${p.age}, 
+	   married=${p.married} adult=${p.isAdult} ")
+}
+</pre> 
+</td>
+<td><m><em>Custom setter accessor</em>: it is called every time we assign a value to the property.</m> 
+<pre>
+//OUTPUT
+WARNING: too joung for marriage
+name=Bob, age=10, married=false adult=false 
+</pre>
+
+<m><em>Problem</em>: if we try to set <tt>married = value</tt> we generate <bc>Stack overflow</bc></m> 
+</td>
+</tr>
+
+
+
+<tr>
+<td><pre>
+class Person(val name: String) {
+    var age : Int = 0
+    var married = false
+        set( value ){
+            if( age < 14 ) println("WARNING: too joung for marriage")
+            else field = true   
+        }
+    val isAdult: Boolean
+        get(){ return age >= 18} //custom getter
+}
+
+fun main(){
+    val p = Person("Bob")
+    p.age = 22
+    p.married = true
+    println( "name=${p.name}, age=${p.age}, 
+		married=${p.married} adult=${p.isAdult} ")
+}
+</pre> </td>
+<td><m><em>Backing field</em>: a field <i>generated</i> by the compiler if we reference it explicitly or if we use the default accessor implementation.</m>
+
+<pre>
+//OUTPUT
+name=Bob, age=22, married=true adult=true 
+</pre>
+<br/>
+<m>
+The special identifier <bc>field</bc> is used to access the <tt>backing field</tt></m>
+ 
+ </td>
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m><em> </em></m> </td>
+</tr>
 
 </tbody>	
 </table></center>

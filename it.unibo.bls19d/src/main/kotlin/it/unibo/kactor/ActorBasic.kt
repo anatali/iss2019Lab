@@ -4,7 +4,6 @@ import alice.tuprolog.Prolog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.newSingleThreadContext
 
@@ -12,10 +11,11 @@ import kotlinx.coroutines.newSingleThreadContext
     Implements an abstract actor able to receive an ApplMessage and
     to delegate its processing to the abstract method actorBody
  */
+
 abstract class  ActorBasic( val name: String,
-                            val channelSize : Int = 10, val confined : Boolean = false ){
+                            val channelSize : Int = 10, val confined : Boolean = false ) {
     val cpus = Runtime.getRuntime().availableProcessors();
-    var context : QakContext? = null
+    lateinit var context : QakContext
     val pengine = Prolog()      //TO BE USED FOR LOCAL KB
 
     protected val dispatcher = if( confined )
@@ -32,10 +32,11 @@ abstract class  ActorBasic( val name: String,
     }
     //To be defined by the application designer
     abstract suspend fun actorBody(msg : ApplMessage)
-
+/*
     fun getChannel() : SendChannel<ApplMessage> {
         return  actor
     }
+*/
     suspend fun autoMsg(  msg : ApplMessage) {
         println("ActorBasic $name | autoMsg $msg ")
         actor.send( msg )
@@ -43,7 +44,8 @@ abstract class  ActorBasic( val name: String,
     suspend fun autoMsg( msgId : String, msg : String) {
         actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
     }
-    //fun setContext( ctx: QakContext ) built-in
+    //fun setContext( ctx: QakContext ) //built-in
+
 
 /*
 --------------------------------------------
@@ -52,7 +54,7 @@ Messaging
  */
     suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
         println("ActorBasic $name |  forward local $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
-        destActor.getChannel().send(
+        destActor.actor.send(
             MsgUtil.buildDispatch(name, msgId, msg, destActor.name ) )
      }
 
