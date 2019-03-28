@@ -19,30 +19,8 @@ enum class Color( //properties
 }
 
 
-open class Person(val name: String, val nickname: String = "rambo") {
-    var age : Int = 0
-    var married = false
-        set( value ){
-            if( age < 14 ) println("WARNING: too joung for marriage")
-            else field = true
-        }
-    val isAdult: Boolean
-        get(){ return age >= 18} //custom getter
 
-     lateinit var country  : Origin //visible from outside
-     protected var  voter  : Boolean //not visible
-        get(){ return isAdult }
-    init{
-        //country = Origin.europa
-        voter  =  (age > 18)   //expression
-    }
-    //custom accessor
-    fun voter():Boolean{ return voter }
-}
 
-class Student(name: String,nickname: String="nerd") : Person(name, nickname) {
-
-}
 sealed class Expr{
     class Num( val value:Int):Expr()
     class Add( val left:Expr, val right:Expr):Expr()
@@ -56,9 +34,26 @@ sealed class Expr{
 }
 
 
-fun main(){
-    val v1 = Expr.Num(10)
-    val v2 = Expr.Num(20)
-    val sum = Expr.Add(v1,v2)
-    println("${v1.eval()} + ${v2.eval()} = ${sum.eval()}")
+
+data class Person(val name: String) {
+    var age : Int = 0     //public
+    var married = false   //public
+    val isAdult: Boolean
+        get(){ return age >= 18} //custom getter
 }
+
+fun main(){
+    val p1 = Person("Bob")
+    p1.age=20
+    val p3 = Person("Bob")
+    p3.age= p1.age
+    println( "p1=${p1}, p3=${p3} ")
+    println( "equals:  ${p1.equals(p3)}" )
+}
+    /*
+    Person.showAllPersons()
+    Person.About.showAllAdults()
+    Person.About.showOrderedByName()
+    */
+//    val persons = listOf( p1,p2 )
+//    println( persons.sortedWith( Person.NameComparator ))
