@@ -53,7 +53,3 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
     }
 }
 
-fun main() : Unit = runBlocking{
-
-
-}

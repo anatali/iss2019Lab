@@ -140,14 +140,8 @@ Kotlin actors.
 Each actor should be structured as a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> (<bc>FSM</bc>).
 </div>	    
  	
-	
-
-<h2>SYSTEM ARCHITECTURE</h2>
-
-<ol>
-<li><em>Structure</em>: the system is composed of three actors 
-<center><img src="./blsActork.png" alt="blsActork" width="80%" height="80%"></center>
-<p>
+<h2>RESOURCES</h2>
+<m>To facilitate the design and the development of actor-based applications, let us introduce some (custom) resources and definitions.</m>	
 <center><table style="width:98%">
 <tbody>	
 <tr>
@@ -160,8 +154,10 @@ abstract class  ActorBasic( val name: String,
  val actor = 
 	 GlobalScope.actor<ApplMessage>(dispatcher,capacity=channelSize){...}
 	  
- abstract suspend fun actorBody(msg : ApplMessage)	 
+ abstract suspend fun actorBody(msg : ApplMessage)	
+ 
  ...	
+ 
 }
 </pre> </td>
 <td>
@@ -176,42 +172,180 @@ method to handle a received message of type <tt>ApplMessage</tt>.
 </tr>
 
 <tr>
+<td><pre>
+abstract class  ActorBasic( val name: String,
+      val channelSize : Int = 10, val confined : Boolean = false ){
+  ...
+
+suspend fun autoMsg(  msg : ApplMessage) {
+        println("ActorBasic $name | autoMsg $msg ")
+ actor.send( msg )
+}
+
+suspend fun forward( 
+   msgId : String, msg: String, destActor: ActorBasic) {
+ destActor.actor.send(
+   MsgUtil.buildDispatch(name,msgId,msg,destActor.name))
+ }
+}
+
+</pre> </td>
+<td><m>
+<h5>Built-in message-operations</h5>
+
+<em>autoMsg</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an <tt>ApplMessage</tt> to <b>itself</b>. 
+<br/><br/>
+<em>forward</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an <tt>ApplMessage</tt> to <b>another</b> <tt>ActorBasic</tt> object.
+
+
+</m> </td>
+</tr>
+
+ 
+
+
+<tr>
+<td><pre>
+msg(  
+ MSGID: String, //<tt>Identifier</tt> of the message
+ MSGTYPE: String, 	//<tt>Type</tt> of the message
+ SENDER: String, 	//Name of the  <tt>sender ActorBasic</tt> object
+ RECEIVER: String,  //Name of the  <tt>receiver ActorBasic</tt> object
+ CONTENT: String,   //<tt>Content</tt> of the message
+ SEQNUM: String 	//Unique Integer number
+)
+</pre> </td>
+<td><m>
+<h5>Application messages</h5>
+An <em>ApplMessage</em> is represented by the String shown on the left. For example:</m> 
+<pre>
+msg( "alarm", "dispatch", "temperatureSensor", "control", "alarm(fire)", "1" )
+</pre>
+<m>The string that represents a <tt>ApplMessage</tt> must be written according the syntax of a <bc>Prolog Struct</bc> 
+(See <a href="http://amsacta.unibo.it/3451/1/tuprolog-guide.pdf" target="web">2p-guide</a>).
+<br/>
+The class that implements <tt>ApplMessage</tt> can be found in <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>
+
+<!-- http://www.inf.unibz.it/dis/teaching/PP/ln/pp08_prolog-structures-lists.pdf -->
+</td>
+</tr>
+
+<tr>
+<td><pre>
+enum class ApplMessageType{
+    dispatch, 
+    request, 
+    invitation
+}
+</pre> </td>
+<td><m>
+<h5>Message types</h5>
+From the point of view of an application designer, we can distinguish among different types:
+<ul>
+<li><bc>Dispatch</bc>: fire and forget. The sender does not expect any answer.</li>
+<li><bc>Request</bc>: the sender expects an <tt>answer</tt></li>
+<li><bc>Invitation</bc>: the sender expects an <tt>ack</tt></li>
+</ul>
+<em> </em></m> </td>
+</tr>
+
+<tr>
+<td><pre>
+object MsgUtil {
+var count = 1;
+
+ fun buildDispatch( actor: String, 
+		msgId : String , content : 
+		String, dest: String ) : ApplMessage {
+	return ApplMessage(msgId, 
+	ApplMessageType.dispatch.toString(),
+	actor, dest, "$content", "${count++}")
+}
+
+ suspend fun sendMsg(msgId: String, msg: String, 
+		destActor: ActorBasic) {
+   val msg = buildDispatch("any", msgId, msg, destActor.name)
+   destActor.actor.send(msg)
+ }
+
+...
+}
+</pre> </td>
+<td><m>
+<h5>Message utilities</h5>
+The singleton object <em>MsgUtil</em> provides operations to build an <tt>ApplMessage</tt> <bc>dispatch</bc>.
+<br/><br/>
+The function <em>sendMsg</em> sends a <tt>dispatch</tt> to a given actor.
+<br/><br/>
+Other operations of the singleton object <tt>MsgUtil</tt> can be found in <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>.
+</m> </td>
+
+
+</tr>
+
+<tr>
+<td><pre></pre> </td>
+<td><m>
+<h5>Built-in operations</h5>
+
+<em> </em></m> </td>
+</tr>
+
+<tr>
 <td><pre></pre> </td>
 <td><m><em> </em></m> </td>
 </tr>
 
+
 </tbody>	
-</table></center>
+</table></center>	
+
+<h2>SYSTEM ARCHITECTURE</h2>
+
+<ol>
+<li><em>Structure</em>: the system is composed of three actors 
+<center><img src="./blsActork.png" alt="blsActork" width="80%" height="80%"></center>
+<p>
+
 </p>
 </li>
-<li><em>Interaction</em>: the actors do not share memory. They interact via message-passing:
+<li><em>Interaction</em>: at the moment the actors interact by using dispatch-messages of type <tt>ApplMessage</tt>.
+The field <bc>msgContent</bc> (see <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a>)
+is a String that can should be related to some application-message class. 
+<br/>Since each actor basically works in a <bc>message-driven</bc> way, a <tt>sealed class</tt> is the most appropriate way
+to define the content of our <tt>ApplMessage</tt>.
 <p>
-<center><table style="width:95%">
+<center><table style="width:98%">
 <tbody>	
 <tr>
 <td style="width:45%"> <pre>
-sealed class BlsCmd(val cmd:String, val id:String ="blsMsg"){
-    override fun toString() : String{
-        return "$id(${cmd})"
-    }
+sealed class BlsCmds( 
+	val cmd: String, val id : String ="blsCmd"  ){
+ override fun toString() : String{ return "$id(${cmd})" }
 
-    class LedOn  : BlsCmd("on")
-    class LedOff : BlsCmd("off")
-
-    class ButtonCmd : BlsCmd( "click")
-
-    class BlinkStartCmd: BlsCmd( "startBlink")
-    class BlinkStopCmd: BlsCmd( "stopBlink")
+ class LedCmd( cmd : String ) : BlsCmds(cmd, id=LedCmd.id){
+	companion object{ val id = "ledCmd" }
+ }
+ class ButtonCmd : BlsCmds( "click", id=ButtonCmd.id){
+	companion object{ val id = "buttonCmd" }
+ }
+ class ControlCmd(cmd : String):BlsCmds( cmd, id=ControlCmd.id){
+	companion object{ val id = "controlCmd" }
+ }
 }
 </pre> </td>
 <td><m>The class <tt>BlsCmd</tt> defines the structure of the <bc>CONTENT</bc> argument of the 
-<tt>ApplMessage</tt>
+<tt>ApplMessage</tt>.</m>
 <pre>
 msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
 </pre>
-
-
- </m> </td>
+<h5>EXAMPLES</h5>
+<pre>
+buttonCmd(click)
+controlCmd(dotBlink)
+ledCmd(on)
+</pre>
+ </td>
 </tr>
 
 <tr>
@@ -229,22 +363,7 @@ msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
 </ol>
 
 
-<h2>MESSAGES</h2>
-
- The file :
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a> defines
-<ul>
-<li>The class <bc>ApplMessage</bc> that defines the structure of application messages:
-<pre>
-msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
-</pre>
-
-</li>
-<li>The object <bc>MsgUtil</bc> that provides utilty methods to build and send messages.
-It requires <a href="http://tuprolog.sourceforge.net/doc/2p-guide.pdf" target="web">tuProlog</a>
- </li>
-</ul>
-
+ 
  
 
 <!--

@@ -12,6 +12,10 @@ enum class Protocol {
     SERIAL, TCP, UDP, BTH
 }
 
+enum class ApplMessageType{
+    dispatch, request, invitation
+}
+
 open class ApplMessage  {
     //msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
     protected var msgId: String = ""
@@ -39,6 +43,8 @@ open class ApplMessage  {
         //		System.out.println("ApplMessage " + MSGID + " " + getDefaultRep() );
     }
 
+    //msg(  MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String )
+    //msg( "a","dispatch","c","d","e","1" )
     //@Throws(Exception::class)
     constructor(msg: String) {
         val msgStruct = Term.createTerm(msg) as Struct
@@ -104,28 +110,28 @@ object MsgUtil {
 var count = 1;
 
     fun buildDispatch( actor: String, msgId : String , content : String, dest: String ) : ApplMessage {
-        return ApplMessage(msgId, "dispatch",
-            actor, dest, "$content", "" + count++)
+        return ApplMessage(msgId, ApplMessageType.dispatch.toString(),
+            actor, dest, "$content", "${count++}")
     }
 
-    fun sendMsg( sender : String, msgId: String, msg: String, destActor: ActorBasic) {
-        GlobalScope.launch {
+    suspend fun sendMsg( sender : String, msgId: String, msg: String, destActor: ActorBasic) {
+       // GlobalScope.launch {
             val dispatchMsg = buildDispatch(sender, msgId, msg, destActor.name)
             println("sendMsg $dispatchMsg")
             destActor.actor.send( dispatchMsg )
-        }
+       // }
     }
-    fun sendMsg(msg: ApplMessage, destActor: ActorBasic) {
-        GlobalScope.launch {
+    suspend fun sendMsg(msg: ApplMessage, destActor: ActorBasic) {
+        //GlobalScope.launch {
             destActor.actor.send(msg)
-        }
+        //}
     }
-    fun sendMsg(msgId: String, msg: String, destActor: ActorBasic) {
-        GlobalScope.launch {
+    suspend fun sendMsg(msgId: String, msg: String, destActor: ActorBasic) {
+        //GlobalScope.launch {
             val dispatchMsg = buildDispatch("any", msgId, msg, destActor.name)
             println("sendMsg $dispatchMsg")
             destActor.actor.send(dispatchMsg)
-        }
+        //}
     }
 
     fun getFactoryProtocol(protocol: Protocol) : FactoryProtocol?{

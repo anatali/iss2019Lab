@@ -4,7 +4,6 @@ import it.unibo.bls.devices.gui.ButtonBasic
 import it.unibo.bls.interfaces.IButtonObservable
 import it.unibo.bls.interfaces.IObserver
 import it.unibo.bls.utils.Utils
-
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener

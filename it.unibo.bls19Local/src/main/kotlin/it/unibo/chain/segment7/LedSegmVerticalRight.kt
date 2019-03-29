@@ -4,8 +4,7 @@ import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
 
-
-class LedSegmVerticalRight(name: String, width: Int, height: Int) : LedSegment(name, width, height) {
+open class LedSegmVerticalRight(name: String, width: Int, height: Int) : LedSegment(name, width, height) {
     //@Override
     override fun setLedRep() {
         ledRep.addPoint(x + 94,  y + 23)

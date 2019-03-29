@@ -16,8 +16,8 @@ abstract class  ActorBasic( val name: String,
                             val channelSize : Int = 5,
                             val confined : Boolean = false ) {
     val cpus = Runtime.getRuntime().availableProcessors();
-    lateinit var context : QakContext
-    val pengine = Prolog()      //TO BE USED FOR LOCAL KB
+    lateinit var context : QakContext  //to be injected
+    val pengine = Prolog()      //USED FOR LOCAL KB
 
     protected val dispatcher = if( confined )
         newSingleThreadContext("qaksingle")
@@ -33,18 +33,7 @@ abstract class  ActorBasic( val name: String,
     }
     //To be defined by the application designer
     abstract suspend fun actorBody(msg : ApplMessage)
-/*
-    fun getChannel() : SendChannel<ApplMessage> {
-        return  actor
-    }
-*/
-    suspend fun autoMsg(  msg : ApplMessage) {
-        println("ActorBasic $name | autoMsg $msg ")
-        actor.send( msg )
-    }
-    suspend fun autoMsg( msgId : String, msg : String) {
-        actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
-    }
+
     //fun setContext( ctx: QakContext ) //built-in
 
 
@@ -53,6 +42,13 @@ abstract class  ActorBasic( val name: String,
 Messaging
 --------------------------------------------
  */
+    suspend fun autoMsg(  msg : ApplMessage) {
+        println("ActorBasic $name | autoMsg $msg ")
+     actor.send( msg )
+    }
+    suspend fun autoMsg( msgId : String, msg : String) {
+        actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
+    }
     suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
         println("ActorBasic $name |  forward local $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
         destActor.actor.send(

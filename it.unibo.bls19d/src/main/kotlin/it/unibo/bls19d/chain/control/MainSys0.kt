@@ -3,8 +3,9 @@ package it.unibo.bls19d.chain.control
 import it.unibo.bls19d.chain.ChainMsg
 import it.unibo.kactor.MsgUtil
 import it.unibo.kactor.sysUtil
+import kotlinx.coroutines.runBlocking
 
-fun main() {
+fun main() = runBlocking {
      sysUtil.loadInfo("src\\main\\kotlin\\it\\unibo\\bls19d\\chain\\control\\sysRules.pl",
         "src/main/kotlin/it/unibo/bls19d/chain/control/sysDescr.pl")
     sysUtil.getAndCreatContexts()

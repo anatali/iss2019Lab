@@ -12,6 +12,7 @@ import it.unibo.kactor.*
 import it.unibo.bls19d.chain.ApplLedCmd
 import it.unibo.bls19d.chain.LedCmd
 import it.unibo.bls19d.chain.LedMsg
+import kotlinx.coroutines.runBlocking
 
 
 /*
@@ -65,7 +66,7 @@ class ChainElements(  ){
         }
     }
 
-    fun localControlTest(){
+    suspend fun localControlTest(){
     //CONTROL AT LOCAL LEVEL
         val msgOn  = ApplLedCmd( LedMsg.on,"test", "local" )
         val msgOff = ApplLedCmd( LedMsg.off,"test", "local" )
@@ -78,7 +79,7 @@ class ChainElements(  ){
             }
         }
     }
-    fun proxyControlTest(){
+    suspend fun proxyControlTest(){
         //CONTROL AT PROXY LEVEL
         val msgOn  = ApplLedCmd( LedMsg.on,"test", "server" )
         val msgOff = ApplLedCmd( LedMsg.off,"test", "server" )
@@ -93,7 +94,7 @@ class ChainElements(  ){
     }
 
 }
-fun main() {
+fun main() = runBlocking{
     val elements = ChainElements( )
     //elements.test()
 }
