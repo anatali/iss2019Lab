@@ -8,19 +8,28 @@ import kotlinx.coroutines.*
 Works at node level
 */
 
-class QakContextServer(val ctx: QakContext, val name:String, val protocol: Protocol ) {
+class QakContextServer(val ctx: QakContext,
+                       name:String, val protocol: Protocol ) : ActorBasic( name, true) {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol?
 
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
+        //waitForConnection()
+        GlobalScope.launch(Dispatchers.IO) {
+            autoMsg( "start", "start" )
+        }
+    }
+
+    override suspend fun actorBody(msg : ApplMessage){
+        println("       QakContextServer $name receives $msg  ")
         waitForConnection()
     }
 
-    protected fun waitForConnection() {
+    suspend protected fun waitForConnection() {
         //We could handle several connections
-        GlobalScope.launch(Dispatchers.IO) {
+        //GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
                     //println("       QakContextServer $name | WAIT FOR CONNECTION")
@@ -30,7 +39,7 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
             } catch (e: Exception) {
                  println("      QakContextServer $name | WARNING: ${e.message}")
             }
-        }
+        //}
     }
 
     suspend protected fun handleConnection(conn: IConnInteraction) {

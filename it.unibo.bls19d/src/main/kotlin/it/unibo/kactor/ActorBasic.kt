@@ -1,27 +1,28 @@
 package it.unibo.kactor
 
 import alice.tuprolog.Prolog
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.newFixedThreadPoolContext
-import kotlinx.coroutines.newSingleThreadContext
 
 /*
     Implements an abstract actor able to receive an ApplMessage and
     to delegate its processing to the abstract method actorBody
  */
 
-abstract class  ActorBasic( val name: String,
-                            val channelSize : Int = 5,
-                            val confined : Boolean = false ) {
+abstract class  ActorBasic(val name: String,
+                           val ioBound : Boolean = false,
+                           val channelSize : Int = 5,
+                           val confined : Boolean = false ) {
     val cpus = Runtime.getRuntime().availableProcessors();
     lateinit var context : QakContext  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
 
-    protected val dispatcher = if( confined )
+    protected val dispatcher =
+        if( confined )
         newSingleThreadContext("qaksingle")
-    else newFixedThreadPoolContext(cpus, "qakpool")
+        else if( ioBound )  newFixedThreadPoolContext(64, "qakiopool")
+            else newFixedThreadPoolContext(cpus, "qakpool")
 
     protected var count = 1;
 

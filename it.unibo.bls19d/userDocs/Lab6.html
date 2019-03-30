@@ -120,52 +120,64 @@ table, th, td {
     
 <head>
    
-<title>ISSLAB5</title></head>
+<title>Lab6ISS</title></head>
     
 <body>
 
 <div class="body"> 
 
-<h1>72939 - LAB5 | A ButtonLedSystem distributed</h1> 
+<h1>72939 - LAB6 | Towards distributed systems</h1> 
 <a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
 
-<h2>REQUIREMENTS</h2>
-<div class="req">
-Design and build a distributed <tt>ButtonLed software system</tt> (<em>BLSD</em>) 
- that controls a <em>chain of Led</em> made of <tt>n>2</tt>:
-<a href="../src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>, so that:
-<ol>
-<li> <em>R0 (START)</em>: the chain is activated (at time <tt>t0</tt>) when a command <tt>START</tt> is sent to it</li>
-<li> <em>R1 (BLINK)</em>: the  <b>Led-i</b>  (<tt>i=1..n</tt>) is turned-on for a prefixed time <bc>TIMEON</bc>, at time <bc>t0 + TIMEON*i</bc></li>
-<li> <em>R2 (REPEAT)</em>: the chain blinking repeats</li>
-<li> <em>R3 (STOP)</em>: the chain blinking is stopped when the chain receives the command <tt>STOP</tt> </li>
-</ol>
-</div>	    
- 	
-	
-<h2>START UP</h2>
+<h2>WORKPLAN (REQUIREMENTS)</h2>
 
 <ol>
-<li>In <i>IntelliJ IDEA Community Edition</i>  
-	<pre>new Project -> select Gradle -> Java & Kotlin(Java).
-	Set GroupId=issUnibo19, ArtifactId=it.unibo.bls19d, Version=1.0 
-	Use auto-import, Use local gradle distribution</pre> 
+<li><em>BLSDSingle</em>: Design and build a <tt>Distributed</tt> software system with one <tt>Button</tt> and one <tt>Led</tt>.</li>
+<li><em>BLSDChain</em>: Design and build a <tt>Distributed</tt> software system   with one <tt>Button</tt> and a 
+<em>chain of Led</em> made of <tt>n>2</tt>:
+<a href="../../it.unibo.bls19Local/src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>.</li>
+<li><em>BLSD7Segm</em>: Design and build a <tt>Distributed</tt> software system that updates a <tt>7-segment display</tt>.</li>
+</ol>
+
+<h2>BLSDSingle </h2> 
+Our starting point is the system of <a href="Lab5.html" target="code">Lab5.html</a>
+
+<center><img src="./blsActorkA.png" alt="blsActorkA" width="60%" height="60%"></center>
+
+<h3>Problem analysis</h3>
+
+<ol>
+<li>Since there are <tt>3</tt> components, how many computational nodes are appropriate: two or three?</li>
+<li>In order to reduce costs, the <bc>customer</bc> has fixed to <tt>2</tt> the number of computational nodes. Now the problem is: which node
+is more appropriate for the <tt>Control</tt>: the node of the <tt>Button</tt> or the node of the <tt>Led</tt>?
+If we want to minimize network traffic, it is more appropriate to put <tt>Control</tt> and  <tt>Led</tt> on the same node.
+
+<center><img src="./blsActorkB.png" alt="blsActorkB" width="60%" height="60%"></center>
+
+
 </li>
-<li>Update <a href="../.gitignore" target="code">gitignore</a>.</li>
-<!--
-<li>Create the directory <tt>src/main/java</tt> the directory <tt>libs</tt> and (optionally) <tt>userDocs</tt>.
-<li>Copy the library <tt>it.unibo.bls19Local-1.0.jar</tt> built during our previous work 
-(<a href="../../it.unibo.bls19Local/userDocs/Lab1.html" target="info">Lab3.html</a>)
-into the local directory <bc>libs</bc>.</li>
--->
-<li>Define proper dependences in <a href="../build.gradle" target="code">build.gradle</a>, 
-in particular the <tt>'CUSTOM'</tt> section that will include the library <tt>it.unibo.bls19Local-1.0.jar</tt> built during our previous work 
-(<a href="../../it.unibo.bls19Local/userDocs/Lab3.html" target="info">Lab3.html</a>).</li>
-<li>Define a simple application (e.g. <a href="../src/main/java/it/unibo/bls19d/appl/StartTest.java" target="code">StartTest</a>) 
-to check that all is ok.
+<li>Do we have appropriate technology for implementing  <i>exchange of information</i> among different computational nodes? Of course, the answer
+is positive, with many possible choices, mainly related to the usage of  <em>communication protocols</em>:
+	<ul>
+		<li><bc>UDP, TCP</bc></li>
+		<li><bc>Bluetooth</bc></li>
+		<li><bc>HTTP</bc></li>
+		<li><bc>CoAP</bc> : 
+		see <a href="https://en.wikipedia.org/wiki/Constrained_Application_Protocol" target="web">Constrained Application Protocol</a>
+		</li>
+		<li><bc>MQTT</bc> : 
+		see <a href="https://en.wikipedia.org/wiki/MQTT" target="web">Message Queuing Telemetry Transport</a>
+		</li>
+		<li>...</li>
+	</ul>
+Now the problem is about the possibility to design and build our software system, so to minimize the impact of changes in the case we want 
+to change the communication protocol.
+</li>
+<li>The <a href="https://en.wikipedia.org/wiki/Proxy_pattern" target="web">proxy design pattern</a>  cna be taken as a reference point
+for the required modifications in our system architecture:
+
+</li>
 </ol>
-
-
 
 <h2>CODE </h2>
 <ul>

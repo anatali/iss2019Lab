@@ -16,21 +16,29 @@ import javax.swing.JFrame
 /*
 Not an ActorBasic, since it must use Dispatchers.IO
 */
-class LedServer( val name:String, val protocol: Protocol, val portNum: Int,
-                val ledActor: ActorBasic )  {
+class LedServer(  name:String, val protocol: Protocol, val portNum: Int,
+                val ledActor: ActorBasic )  :  ActorBasic( name, true ) {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol? = null
 
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
+        //waitForConnection()
+        GlobalScope.launch(Dispatchers.IO) {
+            autoMsg( "start", "start" )
+        }
+        //MsgUtil.sendMsg("start", "start", this.actor )
+    }
+
+    override suspend fun actorBody(msg : ApplMessage){
+        println("       LedServer $name receives $msg  ")
         waitForConnection()
     }
 
-
-    protected fun waitForConnection() {
+    suspend protected fun waitForConnection() {
         //We could handle several connections
-        GlobalScope.launch(Dispatchers.IO) {
+        //GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
                     println("   LedServer $name | WAIT FOR CONNECTION")
@@ -41,11 +49,11 @@ class LedServer( val name:String, val protocol: Protocol, val portNum: Int,
                 //e.printStackTrace()
                 println("   LedServer $name | WARNING: ${e.message}")
             }
-        }
+        //}
     }
 
-    protected fun handleConnection(conn: IConnInteraction) {
-        GlobalScope.launch(Dispatchers.IO) {
+    suspend  protected fun handleConnection(conn: IConnInteraction) {
+        //GlobalScope.launch(Dispatchers.IO) {
             try {
                 println("   LedServer | handling new connection:$conn")
                 while (true) {
@@ -57,13 +65,14 @@ class LedServer( val name:String, val protocol: Protocol, val portNum: Int,
             } catch (e: Exception) {
                 println("   LedServer $name | handleConnection WARNING: ${e.message}")
             }
-        }
+        //}
     }
 }
 
 fun main() : Unit = runBlocking{
     val protocol  = Protocol.TCP
     val portNum   = 8010
+    /*
     //CREATE A LedSegment
     JFrame.setDefaultLookAndFeelDecorated(true)
     val frame = JFrame("Led")
@@ -73,21 +82,27 @@ fun main() : Unit = runBlocking{
     frame.contentPane.background = Color.BLUE
     val ledgui    = LedSegmHorizontal("s0", 110, 180)
     ledgui.background = Color.BLACK
-    frame.add( ledgui )
+    //frame.add( ledgui )
     frame.isVisible = true
-
+*/
     //CREATE THE LED ACTOR
-    val led1      = LedActor("led1" )
+    val ledactor      = LedActor("led1" )
     //CREATE THE LED SERVER
-    val ledServer = LedServer("led1server", protocol, portNum, led1)
+    val ledServer = LedServer("led1server", protocol, portNum, ledactor)
     delay(500)
-    //CREATE THE LED PROXY  connected with the LED SERVER
-    val led1Proxy = LedProxy("led1proxy", protocol, "localHost", portNum)
-    delay(1000)
-    println("WORKING ... ")
-    //SEND dispacth commands to the LED PROXY
-    led1Proxy.forward( LedMsg.startBlink.name, LedMsg.startBlink.cmd,led1Proxy)
-    delay(4000)
-    led1Proxy.forward( LedMsg.stopBlink.name, LedMsg.stopBlink.cmd, led1Proxy )
 
+
+    for( i in 1..3 ) {
+        //CREATE THE LED PROXY  connected with the LED SERVER
+        GlobalScope.launch {
+            println("STARTING LED $i ... ")
+            val ledProxy = LedProxy("led${i}proxy", protocol, "localHost", portNum)
+            delay(1000)
+            println("WORKING LED $i ... ")
+            //SEND dispacth commands to the LED PROXY
+            ledProxy.forward("on", "on", ledProxy)
+            delay(4000)
+            ledProxy.forward("off", "off", ledProxy)
+        }
+    }
 }

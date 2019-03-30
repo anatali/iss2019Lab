@@ -5,3 +5,5 @@ qactor( control, ctxControl, "it.unibo.bls19d.chain.control.ControlActor").
 qactor( led1, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
 qactor( led2, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
 qactor( led3, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
+%% qactor( led4, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).
+%% qactor( led5, ctxLeds, "it.unibo.bls19d.chain.led.LedActor" ).

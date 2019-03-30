@@ -4,6 +4,10 @@ import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.runBlocking
 
 class BlsActork{
+    companion object{
+        val blsActorMap : MutableMap<String, ActorBasic> =
+            mutableMapOf<String, ActorBasic>()
+    }
 
     init{
         configure()
@@ -14,15 +18,11 @@ class BlsActork{
         blsActorMap.put(led.name, led )
         val control = ControlActork("control")
         blsActorMap.put(control.name, control )
-        val button  = ButtonActork("btn", control.name )
+        val button  = ButtonActork("button", control.name )
         blsActorMap.put(button.name, button )
     }
 
-    companion object{
-        val blsActorMap : MutableMap<String, ActorBasic> =
-            mutableMapOf<String, ActorBasic>()
-    }
-}
+ }
 
 fun main() = runBlocking{
     println("START")

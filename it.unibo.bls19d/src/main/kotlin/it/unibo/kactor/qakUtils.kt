@@ -77,17 +77,6 @@ object sysUtil{
 				ctx.addActor(actor)
 				actor.context = ctx
 				ctxActorMap.put("$it",actor  )
- 				/*
-				if( actorClass!!.contains("LedActor")   )  {
-					val actor = it.unibo.bls19d.chain.led.LedActor("$it")  //actorClass
-					ctx.addActor(actor)
-					ctxActorMap.put("$it",actor)
-				}else if( actorClass!!.contains("ControlActor")   )  {
-					val actor = it.unibo.bls19d.chain.control.ControlActor("$it")  //actorClass
-					ctx.addActor(actor)
-					ctxActorMap.put("$it",actor)
-				}
-				*/
 			}
 		}
 	}

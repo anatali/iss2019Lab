@@ -114,6 +114,13 @@ div.req{
     margin: 10px;
 }    
 
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -137,7 +144,7 @@ table, th, td {
 With reference to the system  introduced in <a href="../../it.unibo.bls19Local/userDocs/Lab3.html" target="info">Lab3.html</a>, re-design the system by using
 Kotlin actors.
 <br/>
-Each actor should be structured as a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Finite State Machine</a> (<bc>FSM</bc>).
+Each actor should be structured as a <a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a> (<bc>FSM</bc>).
 </div>	    
  	
 <h2>RESOURCES</h2>
@@ -285,13 +292,6 @@ Other operations of the singleton object <tt>MsgUtil</tt> can be found in
 
 </tr>
 
-<tr>
-<td><pre></pre> </td>
-<td><m>
-<h5>Built-in operations</h5>
-
-<em> </em></m> </td>
-</tr>
 
 <tr>
 <td><pre></pre> </td>
@@ -312,8 +312,9 @@ Other operations of the singleton object <tt>MsgUtil</tt> can be found in
 </p>
 </li>
 <li><em>Interaction</em>: at the moment the actors interact by using dispatch-messages of type <tt>ApplMessage</tt>.
-The field <bc>msgContent</bc> (see <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a>)
-is a String that can should be related to some application-message class. 
+The field <bc>msgContent</bc> within an <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a>
+is a generic  <tt>String</tt>. However, the content of a message can should be related to some specific application-message class
+define by software designer. 
 <br/>Since each actor basically works in a <bc>message-driven</bc> way, a <tt>sealed class</tt> is the most appropriate way
 to define the content of our <tt>ApplMessage</tt>.
 <p>
@@ -367,12 +368,51 @@ ledCmd(on)
 <center><table style="width:98%">
 <tbody>	
 <tr>
-<td style="width:35%"> 
+<td style="width:25%">
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" target="code">MainBlsActork.kt</a></td>
+<td><m>
+The <em>Main</em> creates the system components by giving a name to each of them:<br/><br/>
+<ul>
+<li><bc>"button"</bc>: for the <a href="../src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" target="code">ButtonActork.kt</a></li>
+<li><bc>"led"</bc>: for the <a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a></li>
+<li><bc>"control"</bc>: for the <a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a></li>
+</ul>
+<br/>
+Moreover, it defines a static <tt>Map&lt;String, ActorBasic></tt> named <bc>blsActorMap</bc> to keep track of the actors that compose the system. 
+</m>  
+</td>
+</tr>
+
+<tr>
+<td> 
 
 <a href="../src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" target="code">ButtonActork.kt</a>
 </td>
 <td> 
-<m>The <em>Button</em> actor
+<m>The <em>Button</em> actor waits for a <bc>"click"</bc> dispatch sent by a concrete button. Then, it forwards an <tt>ApplMessage</tt> (with
+content a <bc>BlsCmds.ButtonCmd()</bc> object) to the actor named <bc>"control"</bc>.
+<br/><br/>
+The concrete button is an observable <tt>GUI</tt> object created by the button actor itself.  
+The observer added to the observable <tt>GUI</tt> is a locally created object, able to send to the <tt>"click"</tt> message to the button actor. 
+
+</m>
+ </td>
+</tr>
+
+<tr>
+<td >
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
+</td>
+<td>  
+<m>The <em>Control</em> actor waits for a <bc>BlsCmds.ButtonCmd()</bc> dispatch and implements the business logic by working as a
+<a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a>.
+<br/><br/>
+<center><img src="./controlFsm.png" alt="controlFsm" width="60%" height="60%"></center>
+
+<br/>
+In the state <bc>WORK</bc>, the <tt>control</tt> forwards to the actor named <bc>"led"</bc>  an <tt>ApplMessage</tt> with
+content a <bc>BlsCmds.LedCmd()</bc> object, so that the led does one blink. Afterwards, it sends to itself the dispatch  <bc>BlsCmds.ButtonCmd()</bc>,
+in order to assure a proactive/reactive behavior, 
 </m>
  </td>
 </tr>
@@ -383,29 +423,11 @@ ledCmd(on)
 <a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>
 </td>
 <td> 
-<m>The <em>Led</em> actor
+<m>The <em>Led</em> actor waits for a <bc>BlsCmds.LedCmd()</bc> dispatch and executes the command.
 </m>
  </td>
 </tr>
 
-<tr>
-<td >
-
-<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
-</td>
-<td> 
-<m>The <em>Control</em> actor
-</m>
- </td>
-</tr>
-
-<tr>
-<td>
-<a href="../src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" target="code">MainBlsActork.kt</a></td>
-<td><m>
-The <em>Main</em>  
-</m> </td>
-</tr>
 </tbody>	
 </table></center>
 
@@ -413,15 +435,14 @@ The <em>Main</em>
 </li>
 </ol>
 
-<h2>REMOTE ACTORS</h2>
- 
-Let us suppose now that the <tt>Led</tt> is on a remote computational node. 
+At the eand of our refactoring, we highlight that: 
+<div class="remark">
+The object <bc>Map&lt;String, ActorBasic></bc> allows us to get (the reference to) an actor by knowing the (unique) name of the actor. 
+<br/>
+In this way we could send messages to an actor, by only specifying its name, without knowing any 'technological detail' about the
+implementation of the actors.
+</div>	  
 
-<h3>Problem analysis</h3>
-
-<h2>WORK TO DO</h2>
-
-Seven segment display   
 <!--
 <center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
 -->
