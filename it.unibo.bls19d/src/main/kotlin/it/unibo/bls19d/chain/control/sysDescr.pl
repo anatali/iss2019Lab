@@ -1,4 +1,4 @@
-context(ctxControl,"localhost", "TCP",  8010).
+context(ctxControl,"localhost", "TCP", 8010).
 context(ctxLeds,   "localhost", "TCP", 8020).
 
 qactor( control, ctxControl, "it.unibo.bls19d.chain.control.ControlActor").

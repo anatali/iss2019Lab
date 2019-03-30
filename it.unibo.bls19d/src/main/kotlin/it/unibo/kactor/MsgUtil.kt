@@ -43,8 +43,6 @@ open class ApplMessage  {
         //		System.out.println("ApplMessage " + MSGID + " " + getDefaultRep() );
     }
 
-    //msg(  MSGID: String, MSGTYPE: String, SENDER: String, RECEIVER: String, CONTENT: String, SEQNUM: String )
-    //msg( "a","dispatch","c","d","e","1" )
     //@Throws(Exception::class)
     constructor(msg: String) {
         val msgStruct = Term.createTerm(msg) as Struct
@@ -115,23 +113,17 @@ var count = 1;
     }
 
     suspend fun sendMsg( sender : String, msgId: String, msg: String, destActor: ActorBasic) {
-       // GlobalScope.launch {
-            val dispatchMsg = buildDispatch(sender, msgId, msg, destActor.name)
-            println("sendMsg $dispatchMsg")
-            destActor.actor.send( dispatchMsg )
-       // }
+        val dispatchMsg = buildDispatch(sender, msgId, msg, destActor.name)
+        //println("sendMsg $dispatchMsg")
+        destActor.actor.send( dispatchMsg )
     }
     suspend fun sendMsg(msg: ApplMessage, destActor: ActorBasic) {
-        //GlobalScope.launch {
-            destActor.actor.send(msg)
-        //}
+        destActor.actor.send(msg)
     }
     suspend fun sendMsg(msgId: String, msg: String, destActor: ActorBasic) {
-        //GlobalScope.launch {
-            val dispatchMsg = buildDispatch("any", msgId, msg, destActor.name)
-            println("sendMsg $dispatchMsg")
-            destActor.actor.send(dispatchMsg)
-        //}
+        val dispatchMsg = buildDispatch("any", msgId, msg, destActor.name)
+        //println("sendMsg $dispatchMsg")
+        destActor.actor.send(dispatchMsg)
     }
 
     fun getFactoryProtocol(protocol: Protocol) : FactoryProtocol?{
@@ -140,10 +132,7 @@ var count = 1;
             Protocol.SERIAL -> println("WARNING: TODO")
             Protocol.TCP , Protocol.UDP -> factoryProtocol =
                 FactoryProtocol(null, "$protocol", "LedFrontEnd")
-
-            else -> {
-                println("WARNING: protocol unknown")
-            }
+            else -> println("WARNING: protocol unknown")
         }
         return factoryProtocol
     }

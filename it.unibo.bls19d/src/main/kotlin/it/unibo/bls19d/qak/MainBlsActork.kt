@@ -1,11 +1,7 @@
 package it.unibo.bls19d.qak
 
 import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.MsgUtil
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-
-
 
 class BlsActork{
 
@@ -20,7 +16,6 @@ class BlsActork{
         blsActorMap.put(control.name, control )
         val button  = ButtonActork("btn", control.name )
         blsActorMap.put(button.name, button )
-
     }
 
     companion object{

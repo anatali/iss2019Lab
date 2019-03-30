@@ -43,30 +43,29 @@ Messaging
 --------------------------------------------
  */
     suspend fun autoMsg(  msg : ApplMessage) {
-        println("ActorBasic $name | autoMsg $msg ")
+    //println("ActorBasic $name | autoMsg $msg ")
      actor.send( msg )
     }
     suspend fun autoMsg( msgId : String, msg : String) {
         actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
     }
     suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
-        println("ActorBasic $name |  forward local $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
+        //println("       ActorBasic $name | forward $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
         destActor.actor.send(
             MsgUtil.buildDispatch(name, msgId, msg, destActor.name ) )
      }
 
     suspend fun forward( msgId : String, msg: String, destName: String) {
-        println("ActorBasic $name |  forward  ${sysUtil.curThread()}")
-        println("forward $msgId : $msg to $destName SEARCH IN context=$context" )
+        //println("       ActorBasic $name |  forward $msgId to $destName -  ${sysUtil.curThread()}")
+        //println("forward $msgId : $msg to $destName SEARCH IN context=$context" )
         val actor = context!!.hasActor(destName)
         if( actor is ActorBasic   ) {//local
-            forward( msgId, msg , actor)
-            //actor.getChannel().send(MsgUtil.buildDispatch(name,msgId, msg, destName ) )
-          }else{ //remote
+            forward( msgId, msg, actor)
+           }else{ //remote
              val ctx = sysUtil.getActorContext(destName)
              val proxy = context!!.proxyMap.get(ctx)
-             forward( msgId, msg , proxy as ActorBasic)
-             //proxy!!.getChannel().send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+             //WARNING: destName must be the original and not the proxy
+             proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
           }
     }
 }

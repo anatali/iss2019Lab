@@ -27,40 +27,13 @@ class ButtonActork( name : String, observer: String ) : IObserver, ActorBasic( n
                 val outMsg = BlsCmds.ButtonCmd()
                 if (dest is ActorBasic) forward(outMsg.id, outMsg.toString(), dest!!)
             }
-                /*
-                if( working ){
-                    working = false
-                    sendStartToControl()
-                 }else{
-                    working = true
-                    sendStopToControl()
-                 }
-                 */
-            else ->  println("   ButtonActork $name | $msg UNKNOWN working=$working")
+             else -> println("   ButtonActork $name | $msg UNKNOWN working=$working")
         }//when
     }
-/*
-    suspend fun sendStartToControl(){
-        val startMsg = BlsCmds.BlinkStartCmd()
-        //println("   ButtonActork $name |  outMsg=${startMsg.toString()}   "  )
-        if( dest is  ActorBasic) forward( startMsg.id, startMsg.toString(), dest!!  )
-    }
-    suspend fun sendStopToControl(){
-        val stoptMsg = BlsCmds.BlinkStopCmd()
-        //println("   ButtonActork $name |   outMsg=${stoptMsg.toString()}"  )
-        if( dest is  ActorBasic) forward( stoptMsg.id, stoptMsg.toString(), dest!!  )
-    }
-
-*/
      override  fun update(o: Observable?, arg: Any?) {
-        println("   ButtonActork $name | UPDATE $arg in ${sysUtil.curThread()}" )
+        //println("   ButtonActork $name | UPDATE $arg in ${sysUtil.curThread()}" )
         GlobalScope.launch{
-            //val msg = BlsCmds.ButtonCmd()
-            //autoMsg(msg.id, msg.toString())  //CANNNOT BE USD HERE
-            MsgUtil.sendMsg("click", "click", myself)
+             MsgUtil.sendMsg("click", "click", myself)
         }
-
     }
-
-
 }

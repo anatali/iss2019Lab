@@ -35,7 +35,7 @@ open class LedActor( name: String) : ActorBasic(name) {
     }
 
     override suspend fun actorBody( cmd : ApplMessage){
-        println( "LedActor $name | RECEIVED $cmd " )
+        //println( "LedActor $name | RECEIVED $cmd " )
         when( cmd.msgContent()  ){
             "on" -> {
                 segm.turnOn();

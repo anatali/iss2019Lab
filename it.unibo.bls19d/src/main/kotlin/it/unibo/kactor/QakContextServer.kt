@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 Works at node level
 */
 
-class QakContextServer(val ctx: QakContext, val name:String, val protocol: Protocol ) { //: ActorBasic(name)
+class QakContextServer(val ctx: QakContext, val name:String, val protocol: Protocol ) {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol?
 
@@ -23,7 +23,7 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
-                    println("       QakContextServer $name | WAIT FOR CONNECTION")
+                    //println("       QakContextServer $name | WAIT FOR CONNECTION")
                     val conn = factoryProtocol!!.createServerProtocolSupport(ctx.portNum) //BLOCKS
                     handleConnection(conn)
                 }
@@ -33,23 +33,23 @@ class QakContextServer(val ctx: QakContext, val name:String, val protocol: Proto
         }
     }
 
-    protected fun handleConnection(conn: IConnInteraction) {
-        GlobalScope.launch(Dispatchers.IO) {
+    suspend protected fun handleConnection(conn: IConnInteraction) {
+        //GlobalScope.launch(Dispatchers.IO) {
             try {
-                println("       QakContextServer $name | handling new connection:$conn")
+                //println("       QakContextServer $name | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
-                    println("       QakContextServer  $name | receives:$msg")
+                    //println("       QakContextServer  $name | receives:$msg")
                     val inputmsg = ApplMessage(msg)
                     val dest     = inputmsg.msgReceiver()
                     val actor    = ctx.hasActor( dest )
                     if( actor is ActorBasic ) MsgUtil.sendMsg(inputmsg, actor )
-                    else  println("       QakContextServer $name | no local actor ${dest} in ${ctx.name}")
+                    else  println("       QakContextServer $name | WARNING!! no local actor ${dest} in ${ctx.name}")
                 }
             } catch (e: Exception) {
                 println("       QakContextServer $name | handleConnection WARNING: ${e.message}")
             }
-        }
+        //}
     }
 }
 

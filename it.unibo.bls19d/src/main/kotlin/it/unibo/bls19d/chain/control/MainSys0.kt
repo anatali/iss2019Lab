@@ -16,8 +16,8 @@ fun main() = runBlocking {
     println("STARTING : ${control!!.name}")
 
     MsgUtil.sendMsg("main", ChainMsg.startChainBlink.name, ChainMsg.startChainBlink.name, control!!)
-    Thread.sleep(3000)
-    println(" ---  STOPPING: ${control!!.name}")
+    Thread.sleep(2000)
+    println("STOPPING: ${control!!.name}")
     MsgUtil.sendMsg("main", ChainMsg.stopChainBlink.name, ChainMsg.stopChainBlink.name, control!!)
 
 

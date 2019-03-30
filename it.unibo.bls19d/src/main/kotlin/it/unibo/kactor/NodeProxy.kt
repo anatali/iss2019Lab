@@ -3,12 +3,10 @@ package it.unibo.kactor
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
 
 class NodeProxy( name: String, val protocol: Protocol,
-                 val hostName: String,  val portNum: Int ) :  ActorBasic( name ){
+                 val hostName: String,  val portNum: Int ) : ActorBasic( name ){
 
     protected var conn: IConnInteraction? = null
-    init {
-        configure()
-    }
+    init { configure()  }
 
     fun configure() {
         when (protocol) {
@@ -18,10 +16,9 @@ class NodeProxy( name: String, val protocol: Protocol,
             else -> println("WARNING: protocol unknown")
         }
     }
-
     //Routes each message to the connected server
     override suspend fun actorBody(msg : ApplMessage){
-        println("               NodeProxy $name receives $msg  conn=$conn")
+        //println("       NodeProxy $name receives $msg ") // conn=$conn"
         conn?.sendALine("$msg")
     }
 

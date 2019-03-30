@@ -10,9 +10,8 @@ class LedProxy(name:String, val protocol: Protocol,
                val hostName: String,  val portNum: Int ) :  ActorBasic( name ){
     protected var conn: IConnInteraction? = null
 
-    init {
-        configure()
-    }
+    init { configure() }
+
     fun configure() {
         when (protocol) {
             Protocol.SERIAL -> conn = MsgUtil.getConnectionSerial("", 9600)
@@ -24,10 +23,7 @@ class LedProxy(name:String, val protocol: Protocol,
 
     //Routes each message to the connected server
     override suspend fun actorBody(msg : ApplMessage){
-        println("               LedProxy $name receives $msg  conn=$conn")
+        println("       LedProxy $name receives $msg  conn=$conn")
         conn?.sendALine("$msg")
     }
-
-
-
 }

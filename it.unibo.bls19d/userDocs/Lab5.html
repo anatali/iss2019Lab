@@ -224,7 +224,8 @@ msg( "alarm", "dispatch", "temperatureSensor", "control", "alarm(fire)", "1" )
 <m>The string that represents a <tt>ApplMessage</tt> must be written according the syntax of a <bc>Prolog Struct</bc> 
 (See <a href="http://amsacta.unibo.it/3451/1/tuprolog-guide.pdf" target="web">2p-guide</a>).
 <br/>
-The class that implements <tt>ApplMessage</tt> can be found in <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>
+The class that implements <tt>ApplMessage</tt> can be found in 
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>
 
 <!-- http://www.inf.unibz.it/dis/teaching/PP/ln/pp08_prolog-structures-lists.pdf -->
 </td>
@@ -277,7 +278,8 @@ The singleton object <em>MsgUtil</em> provides operations to build an <tt>ApplMe
 <br/><br/>
 The function <em>sendMsg</em> sends a <tt>dispatch</tt> to a given actor.
 <br/><br/>
-Other operations of the singleton object <tt>MsgUtil</tt> can be found in <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>.
+Other operations of the singleton object <tt>MsgUtil</tt> can be found in 
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>.
 </m> </td>
 
 
@@ -315,6 +317,8 @@ is a String that can should be related to some application-message class.
 <br/>Since each actor basically works in a <bc>message-driven</bc> way, a <tt>sealed class</tt> is the most appropriate way
 to define the content of our <tt>ApplMessage</tt>.
 <p>
+
+
 <center><table style="width:98%">
 <tbody>	
 <tr>
@@ -329,12 +333,12 @@ sealed class BlsCmds(
  class ButtonCmd : BlsCmds( "click", id=ButtonCmd.id){
 	companion object{ val id = "buttonCmd" }
  }
- class ControlCmd(cmd : String):BlsCmds( cmd, id=ControlCmd.id){
+ class ControlCmd(cmd:String):BlsCmds(cmd,id=ControlCmd.id){
 	companion object{ val id = "controlCmd" }
  }
 }
 </pre> </td>
-<td><m>The class <tt>BlsCmd</tt> defines the structure of the <bc>CONTENT</bc> argument of the 
+<td><m>The sealed class <tt>BlsCmd</tt> defines classes used to define the structure of the <bc>CONTENT</bc> argument of the 
 <tt>ApplMessage</tt>.</m>
 <pre>
 msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
@@ -359,13 +363,65 @@ ledCmd(on)
 </li>
 <li><em>Behavior</em>
 <center><img src="./blsActorkAll.png" alt="blsActorkAll" width="80%" height="80%"></center>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:35%"> 
+
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" target="code">ButtonActork.kt</a>
+</td>
+<td> 
+<m>The <em>Button</em> actor
+</m>
+ </td>
+</tr>
+
+<tr>
+<td > 
+
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>
+</td>
+<td> 
+<m>The <em>Led</em> actor
+</m>
+ </td>
+</tr>
+
+<tr>
+<td >
+
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
+</td>
+<td> 
+<m>The <em>Control</em> actor
+</m>
+ </td>
+</tr>
+
+<tr>
+<td>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" target="code">MainBlsActork.kt</a></td>
+<td><m>
+The <em>Main</em>  
+</m> </td>
+</tr>
+</tbody>	
+</table></center>
+
+
 </li>
 </ol>
 
-
+<h2>REMOTE ACTORS</h2>
  
- 
+Let us suppose now that the <tt>Led</tt> is on a remote computational node. 
 
+<h3>Problem analysis</h3>
+
+<h2>WORK TO DO</h2>
+
+Seven segment display
 <!--
 <center><img src="./blsLogicModelsFsm0.png" alt="blsLogicModelsFsm0" width="80%" height="80%"></center>
 -->
