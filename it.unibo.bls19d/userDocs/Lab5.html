@@ -378,7 +378,9 @@ The <em>Main</em> creates the system components by giving a name to each of them
 <li><bc>"control"</bc>: for the <a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a></li>
 </ul>
 <br/>
-Moreover, it defines a static <tt>Map&lt;String, ActorBasic></tt> named <bc>blsActorMap</bc> to keep track of the actors that compose the system. 
+Moreover, it uses a static <tt>Map&lt;String, ActorBasic></tt> named <bc>blsActorMap</bc> defined in a singleton 
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
+to keep track of the actors that compose the system. 
 </m>  
 </td>
 </tr>
@@ -437,7 +439,8 @@ in order to assure a proactive/reactive behavior,
 
 At the eand of our refactoring, we highlight that: 
 <div class="remark">
-The object <bc>Map&lt;String, ActorBasic></bc> allows us to get (the reference to) an actor by knowing the (unique) name of the actor. 
+The object <bc>Map&lt;String, ActorBasic></bc> introdiced in <a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
+allows us to get (the reference to) an actor by knowing the (unique) name of the actor. 
 <br/>
 In this way we could send messages to an actor, by only specifying its name, without knowing any 'technological detail' about the
 implementation of the actors.

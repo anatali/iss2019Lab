@@ -2,15 +2,13 @@ package it.unibo.bls19d.qak.distr
 
 import it.unibo.bls19d.qak.ControlActork
 import it.unibo.bls19d.qak.LedActork
+import it.unibo.bls19d.qak.SystemKb
 import it.unibo.kactor.ActorBasic
+import it.unibo.kactor.Protocol
 import it.unibo.kactor.sysUtil
 import kotlinx.coroutines.runBlocking
 
 class BlsDistrNode2{
-    companion object{
-        val blsActorMap : MutableMap<String, ActorBasic> =
-            mutableMapOf<String, ActorBasic>()
-    }
 
     init{
         configure()
@@ -18,11 +16,12 @@ class BlsDistrNode2{
 
     fun configure(){
         val led     = LedActork("led")
-        blsActorMap.put(led.name, led )
-        val  control = ControlActork("control")
-        blsActorMap.put(control.name, control )
-        val servercontrol = ServerControl("serverControl")
-        blsActorMap.put(servercontrol.name, servercontrol )
+        SystemKb.blsActorMap.put(led.name, led )
+        val  control = ControlActork("control", led.name)
+        SystemKb.blsActorMap.put(control.name, control )
+        val servercontrol = ServerControl(
+            "serverControl", Protocol.TCP, SystemKb.portNumber, control.name )
+        SystemKb.blsActorMap.put(servercontrol.name, servercontrol )
      }
 
  }

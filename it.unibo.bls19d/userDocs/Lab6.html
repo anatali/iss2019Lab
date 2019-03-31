@@ -148,10 +148,10 @@ Our starting point is the system of <a href="Lab5.html" target="code">Lab5.html<
 
 <ol>
 <li>Since there are <tt>3</tt> components, how many computational nodes are appropriate: two or three?</li>
-<li>In order to reduce costs, the <bc>customer</bc> has fixed to <tt>2</tt> the number of computational nodes. Now the problem is: which node
+<li>In order to <bc>reduce costs</bc>, the <bc>customer</bc> has fixed to <tt>2</tt> the number of computational nodes. Now the problem is: which node
 is more appropriate for the <tt>Control</tt>: the node of the <tt>Button</tt> or the node of the <tt>Led</tt>?
-If we want to minimize network traffic, it is more appropriate to put <tt>Control</tt> and  <tt>Led</tt> on the same node.
-
+If we want to <bc>minimize network traffic</bc>, it is more appropriate to put <tt>Control</tt> and  <tt>Led</tt> on the same node.
+<br/><br/>
 <center><img src="./blsActorkB.png" alt="blsActorkB" width="60%" height="60%"></center>
 
 
@@ -176,17 +176,130 @@ to change the communication protocol.
 <li>The <a href="https://en.wikipedia.org/wiki/Proxy_pattern" target="web">proxy design pattern</a>  cna be taken as a reference point
 for the required modifications in our system architecture:
 
+<center><img src="./blsActorkDistr.png" alt="blsActorkDistr" width="80%" height="80%"></center>
+
 </li>
 </ol>
 
 <h2>CODE </h2>
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:25%">
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
+</td>
+<td><m>As done in <a href="Lab5.html" target="code">Lab5.html</a>, it defines a singleton
+ <bc>Map&lt;String, ActorBasic></bc>  that allows us to get (the reference to) an actor by knowing the (unique) name of the actor. 
+ Moreover, it defines the <bc>portNumber</bc> of the 
+ <a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" target="code">ServerControl.kt</a>.
+
+ </m>
+</td>
+</tr>
+
+
+<tr>
+<td> 
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" target="code">ButtonActork.kt</a>
+</td>
+<td> 
+<m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a> 
+</m>
+ </td>
+</tr>
+
+<tr>
+<td> 
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
+</td>
+<td> 
+<m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a> 
+</m>
+ </td>
+</tr>
+
+<tr>
+<td> 
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>
+</td>
+<td> 
+<m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a> 
+</m>
+ </td>
+</tr>
+
+
+<tr>
+<td style="width:25%">
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt" target="code">MainBlsDistrNode1.kt</a>
+</td>
+<td><m>Creates the system components running on the first node, i.e. 
 <ul>
-<li><em>LedFrontEnd</em>: <a href="../src/main/kotlin/bls19d/devices/led/LedFrontEnd.kt" target="code">LedFrontEnd.kt</a></li>
-<li><em>LedProxy</em>: <a href="../src/main/kotlin/bls19d/devices/led/LedProxy.kt" target="code">LedProxy.kt</a></li>
-<li><em>Messages</em>: <a href="../src/main/kotlin/bls19d/messages/ApplMessage.kt" target="code">ApplMessage.kt</a></li>
-<li><em>Message Utility</em>: <a href="../src/main/kotlin/bls19d/messages/UtilsMsg.kt" target="code">UtilsMsg.kt</a></li>
-<li></li>
+<li>the  button (<a href="../src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" target="code">ButtonActork.kt</a>)</li>
+<li>the proxy to the remote control 
+(<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" target="code">ProxyControl.kt</a>)</li>
 </ul>
+The main builds the <tt>ButtonActork</tt> by giving to it the name of the proxy, so that the button
+will convert a <tt>"click"</tt> into a <bc>BlsCmds.ButtonCmd()</bc> object sent to the proxy (instead to the
+control actor as done in <a href="Lab5.html" target="code">Lab5.html</a> ).
+
+</m>
+</td>
+</tr>
+
+<tr>
+<td style="width:25%">
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt" target="code">MainBlsDistrNode2.kt</a>
+</td>
+<td><m>Creates the system components running on the first node, i.e. 
+<ul>
+<li>the led (<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>)</li>
+<li>the control (<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>) </li>
+<li>the server (<a href="../src/main/kotlin/it/unibo/bls19d/qak/ServerControl.kt" target="code">ServerControl.kt</a>) 
+that accepts commands for the control.</li></ul>
+
+ </m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" target="code">ProxyControl.kt</a></td>
+<td><m>At construction time, the proxy attempts to connect itself with the remote
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" target="code">ServerControl.kt</a>.
+<br/>
+Then, it waits for an <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a>
+(with a <bc>BlsCmds.ButtonCmd()</bc> as content) and 'redirects' such a message to the connected server. </m>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" target="code">ServerControl.kt</a></td>
+<td><m>At construction time, the server receives the name of the 
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>;
+then its sends to itself a <bc>"start"</bc> message in order to start its works, that consists
+in waiting for a connection request (from the proxy).
+When a new connection is set, the server waits for an 
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a> that itswitches to the control.
+
+<br/><br/>
+All the work of the server is done within the same coroutine, since we no do expect more than one connection.
+</m>
+</td>
+</tr>
+
+
+
+</tbody>	
+</table></center>
+
+<h2>THE <bc>IConnInteraction</bc> INTERFACE </h2>
+
+ 
 
 
 

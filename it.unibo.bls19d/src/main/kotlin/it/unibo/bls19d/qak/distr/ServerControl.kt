@@ -1,6 +1,8 @@
 package it.unibo.bls19d.qak.distr
 
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
+import it.unibo.bls19d.qak.BlsActork
+import it.unibo.bls19d.qak.SystemKb
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.ApplMessage
 import it.unibo.kactor.MsgUtil
@@ -11,34 +13,26 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ServerControl(name : String,
-           val protocol: Protocol, val portNum: Int ) : ActorBasic( name ){
+           val protocol: Protocol, val portNum: Int,
+                    val destName : String ) : ActorBasic( name ){
     var control : ActorBasic? = null
 
-    /*
-    override suspend fun actorBody(msg : ApplMessage){
-        println("   ServerControl $name |  msg= $msg "  )
-        if(  ! (control is ActorBasic ) ){
-            control = BlsDistrNode2.blsActorMap.get("control")
-         }
-        println("   ServerControl $name |  propagates to $control "  )
-
-    }
-*/
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol? = null
 
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
+        control  = SystemKb.blsActorMap.get(destName) //From name to actor
         //waitForConnection()
         GlobalScope.launch(Dispatchers.IO) {
             autoMsg( "start", "start" )
+            //MsgUtil.sendMsg("start", "start", this.actor )
         }
-        //MsgUtil.sendMsg("start", "start", this.actor )
     }
 
     override suspend fun actorBody(msg : ApplMessage){
-        println("       LedServer $name receives $msg  ")
+        println("       ServerControl $name receives $msg  ")
         waitForConnection()
     }
 
@@ -52,7 +46,6 @@ class ServerControl(name : String,
                 handleConnection(conn)
             }
         } catch (e: Exception) {
-            //e.printStackTrace()
             println("   LedServer $name | WARNING: ${e.message}")
         }
         //}
@@ -61,15 +54,15 @@ class ServerControl(name : String,
     suspend  protected fun handleConnection(conn: IConnInteraction) {
         //GlobalScope.launch(Dispatchers.IO) {
         try {
-            println("   LedServer | handling new connection:$conn")
+            println("   ServerControl | handling new connection:$conn")
             while (true) {
                 val msg = conn.receiveALine()       //BLOCKING
-                println("   LedServer | receives:$msg")
+                println("   ServerControl | receives:$msg")
                 val inputmsg = ApplMessage(msg)
-                //MsgUtil.sendMsg(inputmsg, ledActor)
+                MsgUtil.sendMsg(inputmsg, control!!)
             }
         } catch (e: Exception) {
-            println("   LedServer $name | handleConnection WARNING: ${e.message}")
+            println("   ServerControl $name | handleConnection WARNING: ${e.message}")
         }
         //}
     }

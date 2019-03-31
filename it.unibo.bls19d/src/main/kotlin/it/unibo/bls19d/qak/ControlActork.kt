@@ -9,10 +9,10 @@ enum class states{
     INIT, WORK
 }
 
-class ControlActork(name : String ) : ActorBasic( name ){
+class ControlActork(name : String, val destName: String ) : ActorBasic( name ){
 
     var state    = states.INIT
-    val dest     = BlsActork.blsActorMap.get("led") //: ActorBasic?
+    val dest     = SystemKb.blsActorMap.get("led") //: ActorBasic?
     val onMsg    = BlsCmds.LedCmd("on" )
     val offMsg   = BlsCmds.LedCmd("off")
     val blinkMsg = BlsCmds.ControlCmd("dotBlink")

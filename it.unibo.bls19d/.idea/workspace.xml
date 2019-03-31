@@ -2,18 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/ControlActor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/ControlActor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/sysDescr.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedActor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedActor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContextServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContextServer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/qakUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/qakUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/userDocs/Lab5.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab5.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab6.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/blsActorkB.png" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/blsActorkB.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -47,8 +46,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+            <state relative-caret-position="144">
+              <caret line="42" column="33" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
               <folding>
                 <element signature="e#29#290#0" expanded="true" />
               </folding>
@@ -57,10 +56,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="18" column="35" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="35" />
+            <state relative-caret-position="42">
+              <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
               <folding>
                 <element signature="e#29#100#0" expanded="true" />
               </folding>
@@ -69,10 +77,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-6">
+              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+              <folding>
+                <element signature="e#29#160#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="57" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="57" />
+            <state relative-caret-position="144">
+              <caret line="18" column="50" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="65" />
+              <folding>
+                <element signature="e#35#225#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/MsgUtil.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="149" column="76" selection-start-line="149" selection-start-column="60" selection-end-line="149" selection-end-column="76" />
+              <folding>
+                <element signature="e#43#269#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedProxy.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="7" selection-end-line="26" selection-end-column="31" />
               <folding>
                 <element signature="e#35#225#0" expanded="true" />
               </folding>
@@ -81,22 +125,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/NodeProxy.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="56" selection-start-line="4" selection-start-column="29" selection-end-line="5" selection-end-column="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-              <folding>
-                <element signature="e#35#224#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="204">
+              <caret line="17" column="64" selection-start-line="17" selection-start-column="64" selection-end-line="17" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -104,50 +136,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+            <state relative-caret-position="147">
+              <caret line="19" column="36" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="36" />
               <folding>
-                <element signature="e#35#184#0" expanded="true" />
+                <element signature="e#35#215#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="25" column="2" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="2" />
+            <state relative-caret-position="836">
+              <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
               <folding>
                 <element signature="e#35#375#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="9" column="53" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedServer.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="69" selection-start-line="20" selection-end-line="69" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="59" column="99" lean-forward="true" selection-start-line="59" selection-start-column="77" selection-end-line="59" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -157,6 +162,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Class" />
         <option value="Kotlin File" />
       </list>
     </option>
@@ -179,6 +185,7 @@
       <find>localControlTest</find>
       <find>startChainBlink</find>
       <find>STARTING</find>
+      <find>actorBody</find>
     </findStrings>
     <replaceStrings>
       <replace>LedActorBlink</replace>
@@ -195,8 +202,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/kactors/chain/ChainCentralControl.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/ChainCentralControl.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/Node.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/NodeServer.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/elements/NodeContext.kt" />
@@ -224,8 +229,6 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedSegm.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/MsgUtil.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/MainSys0.kt" />
@@ -237,14 +240,18 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/qakUtils.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/ControlActor.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/control/sysDescr.pl" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsActork.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsActorkDistr.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.java" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" />
       </list>
     </option>
@@ -370,7 +377,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553961629618" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554027910334" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -414,7 +421,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.it.unibo.bls19d.qak.distr.MainBlsDistrNode2Kt">
+  <component name="RunManager" selected="Kotlin.it.unibo.bls19d.qak.distr.MainBlsDistrNode1Kt">
     <configuration name="it.unibo.bls19d.chain.control.MainSys0Kt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <module name="it.unibo.bls19d.main" />
       <option name="VM_PARAMETERS" />
@@ -423,19 +430,6 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" value="it.unibo.bls19d.chain.control.MainSys0Kt" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="it.unibo.bls19d.chain.led.LedActorAloneKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
-      <module name="it.unibo.bls19d.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="it.unibo.bls19d.chain.led.LedActorAloneKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -467,6 +461,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="it.unibo.bls19d.qak.distr.MainBlsDistrNode1Kt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="it.unibo.bls19d.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="it.unibo.bls19d.qak.distr.MainBlsDistrNode1Kt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="it.unibo.bls19d.qak.distr.MainBlsDistrNode2Kt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <module name="it.unibo.bls19d.main" />
       <option name="VM_PARAMETERS" />
@@ -482,11 +489,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.it.unibo.bls19d.qak.distr.MainBlsDistrNode1Kt" />
         <item itemvalue="Kotlin.it.unibo.bls19d.qak.distr.MainBlsDistrNode2Kt" />
         <item itemvalue="Kotlin.it.unibo.bls19d.qak.MainBlsActorkKt" />
         <item itemvalue="Kotlin.it.unibo.bls19d.chain.control.MainSys0Kt" />
         <item itemvalue="Kotlin.it.unibo.bls19d.chain.led.LedServerKt" />
-        <item itemvalue="Kotlin.it.unibo.bls19d.chain.led.LedActorAloneKt" />
       </list>
     </recent_temporary>
   </component>
@@ -507,7 +514,7 @@
     <frame x="50" y="0" width="1220" height="733" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2836207" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28879312" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -524,7 +531,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32752612" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5025597" side_tool="true" weight="0.48954704" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Build" order="10" sideWeight="0.49924356" weight="0.4317719" />
+      <window_info anchor="bottom" id="Build" order="10" sideWeight="0.49924356" weight="0.43166667" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.3292683" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -539,23 +546,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../libs/it.unibo.bls19Local-1.0.jar!/it/unibo/blsFramework/interfaces/ILedObserver.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../libs/it.unibo.bls19Local-1.0.jar!/it/unibo/blsFramework/concreteDevices/LedObserver.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="11" column="40" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/it/unibo/bls19d/QActorMessage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -701,13 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedActorAlone.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -739,16 +722,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/MsgUtil.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="106" column="14" selection-start-line="106" selection-start-column="7" selection-end-line="106" selection-end-column="14" />
-          <folding>
-            <element signature="e#43#269#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedActor.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -770,16 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="109">
           <caret line="78" selection-start-line="78" selection-end-line="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedProxy.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#35#225#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -837,10 +800,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/NodeProxy.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="56" selection-start-line="4" selection-start-column="29" selection-end-line="5" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="9" column="53" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedServer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="69" selection-start-line="20" selection-end-line="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="6" selection-start-line="2" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="17" column="64" selection-start-line="17" selection-start-column="64" selection-end-line="17" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
+          <folding>
+            <element signature="e#29#100#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="8" lean-forward="true" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+        <state relative-caret-position="-6">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
           <folding>
             <element signature="e#29#160#0" expanded="true" />
           </folding>
@@ -849,88 +864,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="14" column="80" selection-start-line="14" selection-start-column="80" selection-end-line="14" selection-end-column="80" />
+        <state relative-caret-position="144">
+          <caret line="42" column="33" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
           <folding>
             <element signature="e#29#290#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/BlsCmds.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="59" column="99" lean-forward="true" selection-start-line="59" selection-start-column="77" selection-end-line="59" selection-end-column="99" />
+        <state relative-caret-position="153">
+          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/NodeProxy.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedProxy.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="56" selection-start-line="4" selection-start-column="29" selection-end-line="5" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="57" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="57" />
+        <state relative-caret-position="221">
+          <caret line="26" column="31" lean-forward="true" selection-start-line="26" selection-start-column="7" selection-end-line="26" selection-end-column="31" />
           <folding>
             <element signature="e#35#225#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode1.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-          <folding>
-            <element signature="e#35#224#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="35" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="35" />
-          <folding>
-            <element signature="e#29#100#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="123">
+          <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+        <state relative-caret-position="147">
+          <caret line="19" column="36" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="36" />
           <folding>
-            <element signature="e#35#184#0" expanded="true" />
+            <element signature="e#35#215#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="9" column="53" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/led/LedServer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="69" selection-start-line="20" selection-end-line="69" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="25" column="2" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="2" />
+        <state relative-caret-position="836">
+          <caret line="60" column="47" selection-start-line="60" selection-start-column="47" selection-end-line="60" selection-end-column="47" />
           <folding>
             <element signature="e#35#375#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="18" column="50" lean-forward="true" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="65" />
+          <folding>
+            <element signature="e#35#225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/MsgUtil.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="149" column="76" selection-start-line="149" selection-start-column="60" selection-end-line="149" selection-end-column="76" />
+          <folding>
+            <element signature="e#43#269#0" expanded="true" />
           </folding>
         </state>
       </provider>

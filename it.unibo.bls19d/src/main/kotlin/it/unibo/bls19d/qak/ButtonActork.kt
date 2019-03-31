@@ -9,29 +9,31 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ButtonObserver( val butonActorName : String) : IObserver {
+class ButtonObserver( val buttonActorName : String) : IObserver {
     var buttonActor : ActorBasic? = null
     //BlsActork.blsActorMap.get(butonActorName) at the monent resturs null
     //since the ButtonActork has not  built yet. So we set buttonActor in update
     override fun update(o: Observable?, arg: Any?) {
-        println("   ButtonObserver  | UPDATE $arg in ${sysUtil.curThread()} " )
-        if(  ! ( buttonActor is ActorBasic ) )  //we must bind
-            buttonActor  = BlsActork.blsActorMap.get(butonActorName)
+        println("   ButtonObserver  | UPDATE $arg in ${sysUtil.curThread()} $buttonActorName" )
+        if(  ! ( buttonActor is ActorBasic ) ) {  //we must bind
+            buttonActor = SystemKb.blsActorMap.get(buttonActorName)
+            println("   ButtonObserver  | BINDS $buttonActor" )
+        }
         GlobalScope.launch{
             MsgUtil.sendMsg("click", "click", buttonActor!!)
         }
     }
 }
 
-class ButtonActork( name : String, observer: String ) : ActorBasic( name ){
+class ButtonActork( name : String, val destName: String ) : ActorBasic( name ){
     var working = true
     var dest    : ActorBasic?
     var myself  : ActorBasic
 
     init{
         val concreteButton = ButtonAsGui.createButton("click")
-        concreteButton.addObserver( ButtonObserver( name ) )
-        dest  = BlsActork.blsActorMap.get("control") //From name to actor
+        concreteButton.addObserver( ButtonObserver( destName ) )
+        dest  = SystemKb.blsActorMap.get(destName) //From name to actor
         myself = this
     }
     override suspend fun actorBody(msg : ApplMessage){

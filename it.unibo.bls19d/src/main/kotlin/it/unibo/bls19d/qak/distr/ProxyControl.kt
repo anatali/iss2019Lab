@@ -15,7 +15,7 @@ class ProxyControl( name : String, val protocol: Protocol,
     fun configure() {
         when (protocol) {
             Protocol.TCP, Protocol.UDP ->
-                conn = MsgUtil.getConnection(protocol, hostName, portNum, "ledProxy")
+                conn = MsgUtil.getConnection(protocol, hostName, portNum, name)
             Protocol.SERIAL -> conn = MsgUtil.getConnectionSerial("", 9600)
             else -> println("WARNING: protocol unknown")
         }
@@ -23,6 +23,7 @@ class ProxyControl( name : String, val protocol: Protocol,
 
     override suspend fun actorBody(msg : ApplMessage){
         println("   ProxyControl $name |  msg= $msg "  )
+        conn?.sendALine("$msg")
     }
 
 }
