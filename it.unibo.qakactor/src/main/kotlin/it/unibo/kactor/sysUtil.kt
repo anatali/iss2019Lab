@@ -1,13 +1,7 @@
 package it.unibo.kactor
-import alice.tuprolog.*
-import alice.tuprolog.Term.createTerm
-import java.io.FileInputStream
 
-/*
-====================================================================
-Package level functions
-====================================================================
-*/
+import alice.tuprolog.*
+import java.io.FileInputStream
 
 object sysUtil{
 	val pengine = Prolog()
@@ -17,8 +11,8 @@ object sysUtil{
 	fun getPrologEngine() : Prolog = pengine
 	fun curThread() : String = "thread=${Thread.currentThread().name}"
 
-	fun loadInfo(   ruleFile: String,   sysDescrFile: String) {
-		loadTheory( ruleFile )
+	fun loadInfo(   sysDescrFile: String) {
+		loadTheory( "src/main/kotlin/it/unibo/kactor/sysRules.pl" )
 		loadTheory( sysDescrFile )
 	}
 
@@ -31,7 +25,7 @@ object sysUtil{
 		//context( CTX, HOST, PROTOCOL, PORT )
 		val ctxsList = strRepToList(ctxs!!)
 			//ctxs!!.replace("[","") .replace("]","").split(",")
-		ctxsList?.forEach { ctx ->
+		ctxsList.forEach { ctx ->
 			val newctx = createTheContext(ctx, hostName = hostName)
 			if( newctx is QakContext) createTheActors( newctx )
 		}//foreach ctx
@@ -129,40 +123,10 @@ object sysUtil{
 			println("sysUtil | loadheory WARNING: ${e}" );
 		}
 	}
+
+	fun strCleaned( s : String) : String{
+		if( s.startsWith("'")) return s.replace("'","")
+		else return s
+
+	}
 }//sysUtil
-
-fun solve( goal: String, pengine : Prolog, resVar: String  ) : String? {
-	//println("sysUtil  | solveGoal ${goal}" );
-	val sol = pengine.solve( "$goal.")
-	if( sol is SolveInfo ) {
-		val result = sol.getVarValue(resVar)  //Term
-		var resStr = sol.getVarValue(resVar).toString()
-		return  strCleaned( resStr )
-	}
-	else return null
-}
-
-fun solveT( goal: String, pengine : Prolog, resVar: String  ) : Term? {
-	//println("sysUtil $name | solveGoal ${goal}" );
-	val sol = pengine.solve( "$goal.")
-	if( sol is SolveInfo ) {
-		if( resVar.isNotEmpty()   ){
-			val result = sol.getVarValue(resVar)  //Term
- 			return  result
-		}else{
- 			return createTerm("ok")
-		}
-	}
-	else return null
-}
-
-fun strCleaned( s : String) : String{
-	if( s.startsWith("'")) return s.replace("'","")
-	else return s
-
-}
-
-
-
-
-

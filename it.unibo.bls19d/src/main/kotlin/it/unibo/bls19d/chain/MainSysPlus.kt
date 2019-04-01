@@ -5,7 +5,6 @@ import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
      sysUtil.loadInfo(
-         "src\\main\\kotlin\\it\\unibo\\bls19d\\chain\\sysRules.pl",
         "src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl")
     //BUILD THE SYSTEM
     //sysUtil.createContexts("localhost")

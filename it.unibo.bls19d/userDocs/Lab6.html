@@ -92,10 +92,8 @@ bc{
 }
 pre{
 	font-family: "Helvetica";
-	font-size: 80%;
-	background-color: #fcf8c7;
-	border: 1px solid blue;
-	width: 700px;
+	font-size: 70%;
+	background-color: #fcf8c7; 
 }
 div.body{
 	width: 800px;
@@ -304,8 +302,6 @@ All the work of the server is done within the same coroutine, since we no do exp
 
 <h3>THE <bc>IConnInteraction</bc> INTERFACE </h3>
 
- 
-
 
 <h2>BLSDChain </h2> 
 <div class="req">
@@ -321,37 +317,198 @@ Since we have more than two leds, our system can take several configurations:
 
 <tr>
 <td style="width:35%"><img src="./chain0.png" alt="chain0" width="100%" height="40%"></td>
-<td><em>Two nodes only</em> and the leds on a <bc>single node</bc>. The control should be in the node of the led.</td>
+<td><em>Two nodes only</em> and the leds on a <bc>single node</bc>. The <tt>control</tt> should be in the node of the led.</td>
 </tr>
 
 <tr>
 <td style="width:35%"><img src="./chain01.png" alt="chain01" width="100%" height="40%"></td>
-<td><em>Two nodes only</em> and the leds on <bc>both the nodes</bc>. The control should be in one of the nodes 
+<td><em>Two nodes only</em> and the leds on <bc>both the nodes</bc>. The <tt>control</tt> should be in one of the nodes 
 but which is better? </td>
 </tr>
 
 
 <tr>
 <td><img src="./chain1.png" alt="chain1" width="100%" height="30%"></td>
-<td><em>Nore than two nodes</em>. The leds of the chain could be spread on several nodes.</td>
+<td><em>More than two nodes</em>. The leds of the chain are spread on several nodes.
+The <tt>control</tt> should be ... </td>
 </tr>
 
 <tr>
-<td><img src="./chain2.png" alt="chain2" width="100%" height="30%"></td>
+<td></td>
 <td></td>
 </tr>
 
 </tbody>	
 </table></center>
 
- 
+ <br/> 
+
+Suppose that, after a meeting with the customer, our reference configuration is <tt>More than two nodes</tt>
+with the <tt>control</tt> on the node of the <tt>button</tt>. In this case, with our previous approach,
+we should introduce a <tt>proxy-server</tt> pair for each led, even  when there are severla leds on the same node.
+
+<br/><br/>
+Since this is quite inprectical, an important <em>non-functional requirement</em> seems to arise at this point:
+<div class="req">
+Since different customers can decide to allocate the leds in different ways, we should design an 
+easily configurable software system. Moreover we should be able to build in automatic way the infrastructural 
+network support required to reach our applicative goals.
+</div>	 
+
+
+ <h2>Towards an infrastructure </h2>
 
 
 
 <ol>
-<li></li>
-</ol> 
+<li>The system should be built by starting form a proper <em>system description</em>. For example:
+
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<h5>Description</h5>
+<pre>
+context(ctxButton,  "localhost", "TCP", 8010).
+context(ctxLeds,    "localhost", "TCP", 8020).
+
+qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
+
+qactor( control, ctxLeds, "it.unibo.bls19d.chain.ControlActor").
+qactor( led1, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led2, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led3, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+
+</pre>
+
+<m>
+<ul>
+<li>The description is stored in file (<a href="../src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl" target="code">sysDescr.pl</a>) 
+ and is a knowledge-base written in <tt>tuProlog</tt> synatx.</li>
+<li>A set of built-in rules written in Prolog 
+(<a href="../src/main/kotlin/it/unibo/kactor/sysRules.pl" target="code">sysRules.pl</a>) 
+is used to facilitate the access to the description-kb</li>
+<li>An example of usage can be found in <a href="../src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt" target="code">MainSys0.kt</a></li>
+</ul>
+
  
+ </m>
+</td>
+<td>
+<h5>Meaning of the description</h5>
+<ol>
+<li>The system is composed of two computational nodes (<bc>context</bc>) and a set of actors (<bc>qactor</bc>).</li>
+<li>Eeach <tt>context</tt> provides (on the specified host) an <tt>input-port</tt> for messages sent via <bc>TCP</bc> </li>
+<li>Eeach <tt>qactor</tt> has a name, works within a  <tt>context</tt> and is implemented by the specififed (Kotlin) class.</li>
+</ol>
+Thus, the description is related to our <em>Two-node</em> configuration:
+
+<img src="./chain0.png" alt="chain0" width="80%" height="40%"></td>
+</tr>
+
+<tr>
+<td>
+<h5>Description</h5>
+<pre>
+context(ctxButton,"localhost", "TCP", 8010).
+context(ctxLeds1, "localhost", "TCP", 8020).
+context(ctxLeds2, "localhost", "TCP", 8030).
+
+qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
+qactor( control, ctxButton, "it.unibo.bls19d.chain.ControlActor").
+
+qactor( led1, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led2, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led3, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+
+qactor( led4, ctxLeds2, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led5, ctxLeds2, "it.unibo.bls19d.qak.LedActork" ).
+
+</pre>
+
+
+</td>
+<td><h5>Meaning of the description</h5>
+<ol>
+<li>The system is composed of three computational nodes.</li>
+<li>The <tt>control</tt> works in the same context of the <tt>button</tt>. </li>
+<li>The <tt>leds</tt> are spread on two different nodes.</li>
+</ol>
+Thus, the description related to our <em>More than two nodes</em> configuration:
+
+<img src="./chain2.png" alt="chain2" width="100%" height="40%"> 
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+
+</li>
+<li>The system is built by a component able to read and understand the system description. More specifically, the
+operation <bc>createContexts( hostName:String )</bc> 
+in <a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>.
+ looks at the description and, <i><b>for each 
+context</b></i> working on the given <tt>hostName</tt>:
+	<ol>
+	<li>Creates (see <tt>createTheContext(hostName:String)</tt>) the context and stores a reference to it in the 
+	<bc>sysUtil.ctxActorMap</bc>. Each context is  
+	implemented by an actor of class
+	<a href="../src/main/kotlin/it/unibo/kactor/QakContext.kt" target="code">QakContext.kt</a>
+that creates a <a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
+on  the <tt>port</tt> given in the description.  </li>
+	<li>Creates (see <tt>createTheActors(ctx: QakContext)</tt>)  the actors that belong to that context.</li>
+	<li>Creates (see <tt>addProxyToOtherCtxs(ctxsList : List<String>)</tt>) a <tt>proxy</tt> 
+	to the context-server of all the other contexts and  stores a reference to it in <bc>QakContext.proxyMap</bc>.</li>
+	</ol>
+
+</li>
+
+<li>The basic actor class  <a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a> provides
+the  operation <bc>forward</bc> to send a dispatch to an destination actor, given its name, by looking at the <tt>QakContext.proxyMap</tt>
+to find the proper <tt>proxy</tt> when the destination is into another context.
+<pre>
+    suspend fun forward( msgId : String, msg: String, destName: String) {
+         val actor = context!!.hasActor(destName)
+         if( actor is ActorBasic   ) {//local
+            forward( msgId, msg, actor)
+        }else{ //remote
+             val ctx   = sysUtil.getActorContext(destName)
+             val proxy = QakContext.proxyMap.get(ctx)
+              if( proxy is ActorBasic )
+                proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+            else println("       ActorBasic $name | proxy of $ctx is null ")
+          }
+    }
+</pre>
+
+</li>
+
+<li>Each message sent from a <tt>proxy</tt> to a <tt>context-server</tt> is a dispatch of class
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage.kt</a>
+that contains the name of the reciver. Thus, the work or the 
+<a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
+is to 'redirect' any received message to the proper destination actor. 
+</li>
+
+</ol> 
+
+ <h2>Work to do</h2>
+ <div class="req">
+Design and build a <tt>Distributed</tt> software system in which
+<ul>
+<li>A </li>
+<li>shows the value on <bc>Seven-Segment Display</bc>
+</li>
+</ul>
+
+
+ 
+</div>	 
+
 	<br/><br/> 
 </div>  
 

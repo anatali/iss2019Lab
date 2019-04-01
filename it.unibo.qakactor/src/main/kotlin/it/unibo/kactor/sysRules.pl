@@ -9,7 +9,7 @@ getCtxPortNames(PORTNAMES) :-
 getTheContexts(CTXS) :-
 	findall( context( CTX, HOST, PROTOCOL, PORT ), context( CTX, HOST, PROTOCOL, PORT ), CTXS).
 getTheActors(ACTORS) :-
-	findall( qactor( A, CTX ), qactor( A, CTX, CLASS ), ACTORS).
+	findall( qactor( A, CTX ), qactor( A, CTX ), ACTORS).
 
 %% Feb 2019
 getOtherContexts(OTHERCTXS, MYSELF) :-
