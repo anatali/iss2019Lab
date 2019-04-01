@@ -53,24 +53,25 @@ Messaging
         actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
     }
     suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
-        //println("       ActorBasic $name | forward $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
+        println("       ActorBasic $name | forward $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
         destActor.actor.send(
             MsgUtil.buildDispatch(name, msgId, msg, destActor.name ) )
      }
 
     suspend fun forward( msgId : String, msg: String, destName: String) {
         //println("       ActorBasic $name |  forward $msgId to $destName -  ${sysUtil.curThread()}")
-        //println("forward $msgId : $msg to $destName SEARCH IN context=$context" )
         val actor = context!!.hasActor(destName)
+        //println("forward $msgId : $msg to $destName IN context=${context.name} actor=$actor" )
         if( actor is ActorBasic   ) {//local
             forward( msgId, msg, actor)
-           }else{ //remote
-             val ctx = sysUtil.getActorContext(destName)
-             val proxy = context!!.proxyMap.get(ctx)
+        }else{ //remote
+             val ctx   = sysUtil.getActorContext(destName)
+             val proxy = QakContext.proxyMap.get(ctx)
+             //println("forward $msgId : $msg to $destName IN context=${ctx} proxy=$proxy" )
              //WARNING: destName must be the original and not the proxy
             if( proxy is ActorBasic )
                 proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
-            else println("proxy of $ctx is null ")
+            else println("       ActorBasic $name | proxy of $ctx is null ")
           }
     }
 }

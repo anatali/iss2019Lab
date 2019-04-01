@@ -129,10 +129,10 @@ var count = 1;
     fun getFactoryProtocol(protocol: Protocol) : FactoryProtocol?{
         var factoryProtocol : FactoryProtocol? = null
         when( protocol ){
-            Protocol.SERIAL -> println("WARNING: TODO")
+            Protocol.SERIAL -> println("MsgUtil WARNING: TODO")
             Protocol.TCP , Protocol.UDP -> factoryProtocol =
                 FactoryProtocol(null, "$protocol", "LedFrontEnd")
-            else -> println("WARNING: protocol unknown")
+            else -> println("MsgUtil WARNING: protocol unknown")
         }
         return factoryProtocol
     }
@@ -141,8 +141,13 @@ var count = 1;
         when( protocol ){
             Protocol.TCP , Protocol.UDP -> {
                 val factoryProtocol = FactoryProtocol(null, "$protocol", clientName)
-                val conn = factoryProtocol.createClientProtocolSupport(hostName, portNum)
-                return conn
+                try {
+                    val conn = factoryProtocol.createClientProtocolSupport(hostName, portNum)
+                    return conn
+                }catch( e: Exception ){
+                    //println("MsgUtil: NO conn to $hostName ")
+                    return null
+                }
             }
             else -> {
                  return null
@@ -155,4 +160,13 @@ var count = 1;
         return conn
     }
 
+    fun strToProtocol( ps: String):Protocol{
+        var p: Protocol
+        when( ps.toUpperCase() ){
+            Protocol.TCP.toString() -> return Protocol.TCP
+            Protocol.UDP.toString() -> return Protocol.UDP
+            Protocol.SERIAL.toString() -> return Protocol.SERIAL
+            else -> return Protocol.TCP
+        }
+     }
 }

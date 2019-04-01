@@ -18,7 +18,7 @@ class ControlActork(name : String, val destName: String ) : ActorBasic( name ){
     val blinkMsg = BlsCmds.ControlCmd("dotBlink")
 
     override suspend fun actorBody(msg : ApplMessage){
-        println("   ControlActork $name |  msg= $msg state=${state}"  )
+        //println("   ControlActork $name |  msg= $msg state=${state}"  )
         if (dest is ActorBasic   )
           when (state) {
             states.INIT -> {    //accepts ButtonCmd

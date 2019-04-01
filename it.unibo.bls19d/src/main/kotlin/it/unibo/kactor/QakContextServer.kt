@@ -40,14 +40,16 @@ class QakContextServer(val ctx: QakContext,
             }
         //}
     }
-
+/*
+EACH CONNECTION WORKS IN ITS OWN COROUTINE
+ */
     suspend protected fun handleConnection(conn: IConnInteraction) {
-        //GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             try {
                 //println("       QakContextServer $name | handling new connection:$conn")
                 while (true) {
                     val msg = conn.receiveALine()       //BLOCKING
-                    //println("       QakContextServer  $name | receives:$msg")
+                    //println("       QakContextServer  $name | receives:$msg in ${sysUtil.curThread()}")
                     val inputmsg = ApplMessage(msg)
                     val dest     = inputmsg.msgReceiver()
                     val actor    = ctx.hasActor( dest )
@@ -57,7 +59,7 @@ class QakContextServer(val ctx: QakContext,
             } catch (e: Exception) {
                 println("       QakContextServer $name | handleConnection WARNING: ${e.message}")
             }
-        //}
+        }
     }
 }
 

@@ -14,10 +14,15 @@ class ControlActor( name : String ) : ActorBasic(name){
     val stopBlinkcmd  = BlsCmds.ControlCmd("stopBlink")
     val ledOn         = BlsCmds.LedCmd("on")
     val ledOff        = BlsCmds.LedCmd("off")
+    val ledActorNamesList : List<String>
 
+    init{
+        val ledActors = sysUtil.solve("getActorNames(ACTORS,ANY)", "ACTORS")
+        ledActorNamesList = sysUtil.strRepToList(ledActors!!)
+    }
 
     override suspend fun actorBody(msg: ApplMessage){
-        println("ControlActor | receives $msg  ")
+        //println("ControlActor | receives $msg goon=$goon ")
         when( msg.msgId() ){
             BlsCmds.ButtonCmd.id -> {
                 if( oddClicks ){
@@ -33,12 +38,12 @@ class ControlActor( name : String ) : ActorBasic(name){
                 if (!goon) return
                 when (msg.msgContent()) {
                     "controlCmd(startBlink)" -> {
-                        actors.forEach {
+                        ledActorNamesList.forEach {
                             //println("ControlActor | actor= ${it.key.contains("led")}")
-                            if (it.key.contains("led")) {  //we should FILTER the map
-                                forward(ledOn.id, ledOn.toString(), "${it.key}")
+                            if (it.contains("led")) {  //we should FILTER the map
+                                forward(ledOn.id, ledOn.toString(),"${it}")
                                 delay(200)
-                                forward(ledOff.id, ledOff.toString(), "${it.key}")
+                                forward(ledOff.id, ledOff.toString(),"${it}")
                             }
                         }
                         autoMsg(startBlinkcmd.id, startBlinkcmd.toString())
@@ -47,7 +52,7 @@ class ControlActor( name : String ) : ActorBasic(name){
                         goon = false
                         actors.forEach {
                             if( it.key.contains("led") ) {
-                                forward(ledOff.id, ledOff.toString(), "${it.key}")
+                                forward(ledOff.id, ledOff.toString(), "${it}")
                             }
                         }
                     }

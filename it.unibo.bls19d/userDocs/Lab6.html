@@ -140,7 +140,10 @@ table, th, td {
 </ol>
 
 <h2>BLSDSingle </h2> 
-Our starting point is the system of <a href="Lab5.html" target="code">Lab5.html</a>
+<div class="req">
+Design and build a <tt>Distributed</tt> software system with one <tt>Button</tt> and one <tt>Led</tt>.
+</div>	 
+Our starting point could be the system of <a href="Lab5.html" target="code">Lab5.html</a>
 
 <center><img src="./blsActorkA.png" alt="blsActorkA" width="60%" height="60%"></center>
 
@@ -181,7 +184,7 @@ for the required modifications in our system architecture:
 </li>
 </ol>
 
-<h2>CODE </h2>
+<h3>CODE </h3>
 
 <center><table style="width:98%">
 <tbody>	
@@ -210,9 +213,10 @@ for the required modifications in our system architecture:
  </td>
 </tr>
 
+
 <tr>
 <td> 
-<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>
 </td>
 <td> 
 <m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a> 
@@ -222,10 +226,11 @@ for the required modifications in our system architecture:
 
 <tr>
 <td> 
-<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>
 </td>
 <td> 
-<m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a> 
+<m>The same introduced in <a href="Lab5.html" target="code">Lab5.html</a>. 
+
 </m>
  </td>
 </tr>
@@ -297,14 +302,55 @@ All the work of the server is done within the same coroutine, since we no do exp
 </tbody>	
 </table></center>
 
-<h2>THE <bc>IConnInteraction</bc> INTERFACE </h2>
+<h3>THE <bc>IConnInteraction</bc> INTERFACE </h3>
+
+ 
+
+
+<h2>BLSDChain </h2> 
+<div class="req">
+Design and build a <tt>Distributed</tt> software system   with one <tt>Button</tt> and a 
+<em>chain of Led</em> made of <tt>n>2</tt>:
+<a href="../../it.unibo.bls19Local/src/main/kotlin/it/unibo/chain/segment7/LedSegment.kt" target="code">LedSegment.kt</a>.
+</div>	 
+<h3>Problem analysis</h3>
+Since we have more than two leds, our system can take several configurations:
+
+<center><table style="width:90%">
+<tbody>	
+
+<tr>
+<td style="width:35%"><img src="./chain0.png" alt="chain0" width="100%" height="40%"></td>
+<td><em>Two nodes only</em> and the leds on a <bc>single node</bc>. The control should be in the node of the led.</td>
+</tr>
+
+<tr>
+<td style="width:35%"><img src="./chain01.png" alt="chain01" width="100%" height="40%"></td>
+<td><em>Two nodes only</em> and the leds on <bc>both the nodes</bc>. The control should be in one of the nodes 
+but which is better? </td>
+</tr>
+
+
+<tr>
+<td><img src="./chain1.png" alt="chain1" width="100%" height="30%"></td>
+<td><em>Nore than two nodes</em>. The leds of the chain could be spread on several nodes.</td>
+</tr>
+
+<tr>
+<td><img src="./chain2.png" alt="chain2" width="100%" height="30%"></td>
+<td></td>
+</tr>
+
+</tbody>	
+</table></center>
 
  
 
 
 
-
- 
+<ol>
+<li></li>
+</ol> 
  
 	<br/><br/> 
 </div>  
