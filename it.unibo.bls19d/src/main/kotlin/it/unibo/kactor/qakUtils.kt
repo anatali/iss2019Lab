@@ -3,10 +3,6 @@ import alice.tuprolog.*
 import alice.tuprolog.Term.createTerm
 import java.io.FileInputStream
 
-
-
-
-
 /*
 ====================================================================
 Package level functions
@@ -15,15 +11,12 @@ Package level functions
 
 object sysUtil{
 	val pengine = Prolog()
-	val ctxsMap :   MutableMap<String, QakContext> = mutableMapOf<String, QakContext>()
+	val ctxsMap :      MutableMap<String, QakContext> = mutableMapOf<String, QakContext>()
 	val ctxActorMap :  MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
 
-	fun getPrologEngine() : Prolog{
-		return pengine
-	}
-	fun curThread() : String {
-		return "thread=${Thread.currentThread().name}"
-	}
+	fun getPrologEngine() : Prolog = pengine
+	fun curThread() : String = "thread=${Thread.currentThread().name}"
+
 	fun loadInfo(   ruleFile: String,   sysDescrFile: String) {
 		loadTheory(ruleFile, pengine)
 		loadTheory(sysDescrFile, pengine)
@@ -33,54 +26,70 @@ object sysUtil{
 		val ctxName = solve( "qactor($actorName,CTX,_)", pengine, "CTX" )
 		return ctxName
 	}
-
-	fun getAndCreatContexts(  ){
+	fun createContexts(  hostName : String  ){
 		val ctxs : String? = solve("getCtxNames(X)", pengine, "X")
 		//context( CTX, HOST, PROTOCOL, PORT )
-		val ctxsList = ctxs!!.replace("[","").replace("]","").split(",")
+		val ctxsList = ctxs!!.replace("[","")
+			.replace("]","").split(",")
 		ctxsList?.forEach { ctx ->
-			val ctxHost : String?     = solve("getCtxHost($ctx,H)", pengine, "H")
-			val ctxProtocol : String? = solve("getCtxProtocol($ctx,P)", pengine, "P")
-			val ctxPort : String?     = solve("getCtxPort($ctx,P)", pengine, "P")
-			println("$ctx host=$ctxHost port = $ctxPort protocol=$ctxProtocol")
-			val portNum = Integer.parseInt(ctxPort)
-
-			val newctx = QakContext( "$ctx", "$ctxHost", portNum)
-			ctxsMap.put("$ctx", newctx)
-
-			getAndCreatActors( newctx )
+			val newctx = createTheContext(ctx, hostName = hostName)
+			if( newctx is QakContext) createTheActors( newctx )
 		}//foreach ctx
+		addProxyToOtherCtxs( ctxsList )
+	}//createContexts
 
-		//Add proxy to each ctx
+	fun createTheContext(  ctx : String, hostName : String  ) : QakContext?{
+		val ctxHost : String?     = solve("getCtxHost($ctx,H)", pengine, "H")
+		if( ! ctxHost.equals(hostName) ) return null
+		val ctxProtocol : String? = solve("getCtxProtocol($ctx,P)", pengine, "P")
+		val ctxPort : String?     = solve("getCtxPort($ctx,P)", pengine, "P")
+		println("$ctx host=$ctxHost port = $ctxPort protocol=$ctxProtocol")
+		val portNum = Integer.parseInt(ctxPort)
+		//CREATE AND MEMO THE CONTEXT
+		val newctx = QakContext( "$ctx", "$ctxHost", portNum)
+		ctxsMap.put("$ctx", newctx)
+		return newctx
+ 	}//createTheContext
+
+	fun addProxyToOtherCtxs( ctxsList : List<String>){
 		ctxsList?.forEach { ctx ->
 			val curCtx = ctxsMap.get("$ctx")
-			val others = solve("getOtherContextNames(OTHERS,$ctx)", pengine, "OTHERS")
-			val ctxs   = others!!.replace("[","").replace("]","").split(",")
-			ctxs?.forEach {
-				val ctxOther = ctxsMap.get("$it")
-				ctxOther!!.addCtxProxy( curCtx!! )
-			}
+			if( curCtx is QakContext ) {
+				val others = solve("getOtherContextNames(OTHERS,$ctx)", pengine, "OTHERS")
+				val ctxs = others!!.replace("[", "")
+					.replace("]", "").split(",")
+				ctxs?.forEach {
+					val ctxOther = ctxsMap.get("$it")
+					//if (ctxOther is QakContext) {
+						//println("FOR ACTIVATED CONTEXT ${ctxOther!!.name}: ADDING A PROXY to ${curCtx!!.name} ")
+						ctxOther?.addCtxProxy(curCtx!!)
+					//}else{
+					//	println("WARNING: CONTEXT $it NOT ACTIVATED: " +
+					//			"WE SHOULD WAIT FOR IT, TO SET THE PROXY in ${curCtx!!.name}")
+					//}
+				}
+			}else{ println("WARNING: $ctx NOT ACTIVATED ") }
 		}
- 	}//getAndCreatConstexts
+	}//addProxyToOtherCtxs
 
-	fun getAndCreatActors( ctx: QakContext ){
+	fun createTheActors( ctx: QakContext ){
 		val actorNames : String? = solve("getActorNames(A,${ctx.name})", pengine, "A" )
 		val actorList = actorNames!!.replace("[","").replace("]","").split(",")
 		actorList.forEach{
 			if( it.length > 0 ){
 				val actorClass = solve("qactor($it,_,CLASS)", pengine, "CLASS")
-				println("actor=$it in context: ${ctx.name}  class=$actorClass"   )
+				println("CREATE actor=$it in context: ${ctx.name}  class=$actorClass"   )
 				val className = actorClass!!.replace("'","")
 				val clazz = Class.forName(className)	//Class<?>
 				val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
 				val actor = ctor.newInstance("$it") as ActorBasic
 				ctx.addActor(actor)
 				actor.context = ctx
+				//MEMO THE ACTOR
 				ctxActorMap.put("$it",actor  )
 			}
 		}
-	}
-
+	}//createTheActors
 
 }
 

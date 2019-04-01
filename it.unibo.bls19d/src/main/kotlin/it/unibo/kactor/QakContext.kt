@@ -15,12 +15,12 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : A
     }
 
     init{
-        println("QakContext $name INIT on port=$portNum")
+        println("QakContext $name | INIT on port=$portNum CREATES the QakContextServer")
         QakContextServer( this, "Node$name", Protocol.TCP )
     }
 
     override suspend fun actorBody(msg : ApplMessage){
-        println("       QakContext $name receives $msg " )
+        println("QakContext $name |  receives $msg " )
     }
 
     fun addActor( actor: ActorBasic ) {
@@ -33,6 +33,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int ) : A
     }
 
     fun addCtxProxy( ctx : QakContext ){
+        println("QakContext $name | addCtxProxy ${ctx.name}")
         val proxy = NodeProxy("proxy${ctx.name}", Protocol.TCP, ctx.hostAddr, ctx.portNum)
         proxyMap.put( ctx.name, proxy )
     }

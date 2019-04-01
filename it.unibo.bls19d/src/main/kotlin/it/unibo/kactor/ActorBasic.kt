@@ -21,7 +21,9 @@ abstract class  ActorBasic(val name: String,
     protected val dispatcher =
         if( confined )
         newSingleThreadContext("qaksingle")
-        else if( ioBound )  newFixedThreadPoolContext(64, "qakiopool")
+        else
+            if( ioBound )
+                newFixedThreadPoolContext(64, "qakiopool")
             else newFixedThreadPoolContext(cpus, "qakpool")
 
     protected var count = 1;
@@ -66,7 +68,9 @@ Messaging
              val ctx = sysUtil.getActorContext(destName)
              val proxy = context!!.proxyMap.get(ctx)
              //WARNING: destName must be the original and not the proxy
-             proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+            if( proxy is ActorBasic )
+                proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+            else println("proxy of $ctx is null ")
           }
     }
 }

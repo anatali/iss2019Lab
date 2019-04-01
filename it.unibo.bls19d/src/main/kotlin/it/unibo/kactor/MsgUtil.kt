@@ -144,7 +144,9 @@ var count = 1;
                 val conn = factoryProtocol.createClientProtocolSupport(hostName, portNum)
                 return conn
             }
-            else -> return null
+            else -> {
+                 return null
+            }
         }
     }
     fun getConnectionSerial( portName: String, rate: Int) : IConnInteraction {

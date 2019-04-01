@@ -21,23 +21,23 @@ class ControlActork(name : String, val destName: String ) : ActorBasic( name ){
         println("   ControlActork $name |  msg= $msg state=${state}"  )
         if (dest is ActorBasic   )
           when (state) {
-            states.INIT -> {    //accepts click
+            states.INIT -> {    //accepts ButtonCmd
                 when ( msg.msgId() ) {
-                    BlsCmds.ButtonCmd.id ->   {  //click
+                    BlsCmds.ButtonCmd.id ->   {
                         state = states.WORK
                         autoMsg(MsgUtil.buildDispatch(name, blinkMsg.id, blinkMsg.toString(), this.name))
                     }
                     else -> println("   ControlActork $name | $msg UNKNOWN in state:$state")
                  }
             }
-            states.WORK -> {    //accepts click blinkMsg
+            states.WORK -> {    //accepts ButtonCmd ControlCmd
                 when ( msg.msgId() ) {
-                    BlsCmds.ButtonCmd.id ->   {  //click
+                    BlsCmds.ButtonCmd.id ->   {
                         state = states.INIT
                         forward(offMsg.id, offMsg.toString(), dest)
                         return
                     }
-                    BlsCmds.ControlCmd.id -> {  //blinkMsg
+                    BlsCmds.ControlCmd.id -> {
                         delay(200)
                         forward(onMsg.id, onMsg.toString(), dest)
                         delay(200)

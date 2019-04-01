@@ -16,8 +16,7 @@ class QakContextServer(val ctx: QakContext,
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
-        //waitForConnection()
-        GlobalScope.launch(Dispatchers.IO) {
+         GlobalScope.launch(Dispatchers.IO) {
             autoMsg( "start", "start" )
         }
     }

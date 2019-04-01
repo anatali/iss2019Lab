@@ -28,19 +28,18 @@ class ButtonObserver( val buttonActorName : String) : IObserver {
 class ButtonActork( name : String, val destName: String ) : ActorBasic( name ){
     var working = true
     var dest    : ActorBasic?
-    var myself  : ActorBasic
 
     init{
         val concreteButton = ButtonAsGui.createButton("click")
-        concreteButton.addObserver( ButtonObserver( destName ) )
         dest  = SystemKb.blsActorMap.get(destName) //From name to actor
-        myself = this
-    }
+        //If we do ButtonObserver( destName ) then the "click" is sne to destName DIRECTLY
+        concreteButton.addObserver( ButtonObserver( name ) )
+     }
     override suspend fun actorBody(msg : ApplMessage){
         println("   ButtonActork $name |  msg= $msg working=$working "  )
         when( msg.msgId() ){
             "click" -> {
-                val outMsg = BlsCmds.ButtonCmd()
+                val outMsg = BlsCmds.ButtonCmd("clicked")
                 if (dest is ActorBasic) forward(outMsg.id, outMsg.toString(), dest!!)
             }
              else -> println("   ButtonActork $name | $msg UNKNOWN working=$working")
