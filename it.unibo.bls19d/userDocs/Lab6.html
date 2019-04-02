@@ -287,7 +287,8 @@ Then, it waits for an <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" ta
 then its sends to itself a <bc>"start"</bc> message in order to start its works, that consists
 in waiting for a connection request (from the proxy).
 When a new connection is set, the server waits for an 
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a> that itswitches to the control.
+<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a> that it 
+redirects to the <tt>control</tt>.
 
 <br/><br/>
 All the work of the server is done within the same coroutine, since we no do expect more than one connection.
@@ -300,7 +301,37 @@ All the work of the server is done within the same coroutine, since we no do exp
 </tbody>	
 </table></center>
 
-<h3>THE <bc>IConnInteraction</bc> INTERFACE </h3>
+<h3>The <tt>unibonoawtsupports</tt> </h3>
+The classes <a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" target="code">ServerControl.kt</a> 
+and <a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" target="code">ProxyControl.kt</a>
+(via <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>) make use of the
+class  <bc>FactoryProtocol</bc> defines in the custom library <tt>unibonoawtsupports.jar</tt>.
+<br/><br/>
+The custom library <bc>unibonoawtsupports.jar</bc> provides a support for communications based on connection-based, 
+two-way protocols such as <tt>TCP, UDP</tt>, etc. or a serial line (the case of <tt>Arduino</tt>).  
+
+<center><img src="./noawtsupport.png" alt="noawtsupport" width="40%" height="40%"></center>
+
+The library is a first step towards a  
+<a href="#infras" target="code">custom infrastructure</a> and includes:
+<ul>
+<li>a set of specialized factories (<tt>FactoryTcpProtocol</tt>, <tt>FactoryUdpProtocol</tt>, etc.) that 
+provide protocol-specific supports (sockets, datagrams etc);  </li>
+<li> the factory <bc>FactoryProtocol</bc> that hides  details related to the specific protocol.
+Each operation of the factory returns an object that implements the interface <bc>IConnInteraction</bc> 
+(defined in the custom library <bc>uniboInterfaces.jar</bc>) 
+that can be used to send/receive information on the connection.
+
+<pre>
+public interface IConnInteraction {
+    void sendALine(String s) throws Exception;
+    String receiveALine() throws Exception;
+    void closeConnection() throws Exception;
+}
+</pre>
+</li>
+</ul>
+
 
 
 <h2>BLSDChain </h2> 
@@ -328,7 +359,7 @@ but which is better? </td>
 
 
 <tr>
-<td><img src="./chain1.png" alt="chain1" width="100%" height="30%"></td>
+<td><img src="./chain1.png" alt="chain1" width="100%" height="25%"></td>
 <td><em>More than two nodes</em>. The leds of the chain are spread on several nodes.
 The <tt>control</tt> should be ... </td>
 </tr>
@@ -356,7 +387,7 @@ network support required to reach our applicative goals.
 </div>	 
 
 
- <h2>Towards an infrastructure </h2>
+<h2><a id="infras"/>Towards an infrastructure </h2>
 
 
 
@@ -436,9 +467,9 @@ qactor( led5, ctxLeds2, "it.unibo.bls19d.qak.LedActork" ).
 <li>The <tt>control</tt> works in the same context of the <tt>button</tt>. </li>
 <li>The <tt>leds</tt> are spread on two different nodes.</li>
 </ol>
-Thus, the description related to our <em>More than two nodes</em> configuration:
+Thus, the description is related to our <em>More than two nodes</em> configuration:
 
-<img src="./chain2.png" alt="chain2" width="100%" height="40%"> 
+<img src="./chain2.png" alt="chain2" width="100%" height="30%"> 
 </td>
 </tr>
 
@@ -495,8 +526,8 @@ is to 'redirect' any received message to the proper destination actor.
 </li>
   
 </ol> 
-
- <h2>Work to do</h2>
+<!--
+ <h2>BLSD7Segm (Work to do)</h2>
  <div class="req">
 Design and build a <tt>Distributed</tt> software system in which
 <ul>
@@ -504,7 +535,7 @@ Design and build a <tt>Distributed</tt> software system in which
 <li>shows the value on <bc>Seven-Segment Display</bc>
 </li>
 </ul>
-
+-->
 
  
 </div>	 

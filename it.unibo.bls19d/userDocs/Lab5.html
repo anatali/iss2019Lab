@@ -369,7 +369,9 @@ ledCmd(on)
 <tbody>	
 <tr>
 <td style="width:25%">
-<a href="../src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" target="code">MainBlsActork.kt</a></td>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/MainBlsActork.kt" target="code">MainBlsActork.kt</a><br/>
+<a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
+</td>
 <td><m>
 The <em>Main</em> creates the system components by giving a name to each of them:<br/><br/>
 <ul>
@@ -437,9 +439,9 @@ in order to assure a proactive/reactive behavior,
 </li>
 </ol>
 
-At the eand of our refactoring, we highlight that: 
+At the end of our refactoring, we highlight that: 
 <div class="remark">
-The object <bc>Map&lt;String, ActorBasic></bc> introdiced in <a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
+The object <bc>Map&lt;String, ActorBasic></bc> introduced in <a href="../src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" target="code">SystemKb.kt</a>
 allows us to get (the reference to) an actor by knowing the (unique) name of the actor. 
 <br/>
 In this way we could send messages to an actor, by only specifying its name, without knowing any 'technological detail' about the
