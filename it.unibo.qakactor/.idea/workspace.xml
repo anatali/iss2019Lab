@@ -2,32 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../it.unibo.qak.sgm7/src/main/kotlin/it/unibo/qak/segm7/LedSegmHorizontal.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../it.unibo.qak.sgm7/src/main/kotlin/it/unibo/qak/segm7/LedSegmVerticalLeft.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../it.unibo.qak.sgm7/src/main/kotlin/it/unibo/qak/segm7/LedSegmVerticalRight.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../it.unibo.qak.sgm7/src/main/kotlin/it/unibo/qak/segm7/LedSegment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/IActorBasic.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/MsgUtil.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/NodeProxy.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContextServer.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/chain/ButtonGuiActork.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/chain/ControlActor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/chain/MainSys0.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/chain/SystemDescription.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/chain/sysDescr.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/MainSysPlus.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/MainSysPlus.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysRules.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/qakUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -233,7 +208,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554145610590" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554186563829" />
   </component>
   <component name="RecentsManager">
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
@@ -319,6 +294,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="33" y="8" width="1222" height="677" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
