@@ -1,5 +1,4 @@
 package it.unibo.bls19d.qak
-
 import it.unibo.kactor.ActorBasic
 
 object SystemKb{

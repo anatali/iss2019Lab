@@ -173,7 +173,8 @@ abstract class  ActorBasic( val name: String,
 provides the basic structure of an application actor. 
 <br/><br/>
 The application designer must write the <bc>actorBody</bc>
-method to handle a received message of type <tt>ApplMessage</tt>.
+method to handle a received message of type 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a>.
 
 </m> </td>
 </tr>
@@ -200,9 +201,11 @@ suspend fun forward(
 <td><m>
 <h5>Built-in message-operations</h5>
 
-<em>autoMsg</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an <tt>ApplMessage</tt> to <b>itself</b>. 
+<em>autoMsg</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an 
+ to <b>itself</b>. 
 <br/><br/>
-<em>forward</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an <tt>ApplMessage</tt> to <b>another</b> <tt>ActorBasic</tt> object.
+<em>forward</em>: a built-in operation that allows an <tt>ActorBasic</tt> object to send an 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a> to <b>another</b> <tt>ActorBasic</tt> object.
 
 
 </m> </td>
@@ -224,16 +227,14 @@ msg(
 </pre> </td>
 <td><m>
 <h5>Application messages</h5>
-An <em>ApplMessage</em> is represented by the String shown on the left. For example:</m> 
+An <em>ApplMessage</em> (<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a>) 
+is represented by the String shown on the left. For example:</m> 
 <pre>
 msg( "alarm", "dispatch", "temperatureSensor", "control", "alarm(fire)", "1" )
 </pre>
 <m>The string that represents a <tt>ApplMessage</tt> must be written according the syntax of a <bc>Prolog Struct</bc> 
 (See <a href="http://amsacta.unibo.it/3451/1/tuprolog-guide.pdf" target="web">2p-guide</a>).
-<br/>
-The class that implements <bc>ApplMessage</bc> can be found in 
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">MsgUtil.kt</a>
-
+ 
 <!-- http://www.inf.unibz.it/dis/teaching/PP/ln/pp08_prolog-structures-lists.pdf -->
 </td>
 </tr>

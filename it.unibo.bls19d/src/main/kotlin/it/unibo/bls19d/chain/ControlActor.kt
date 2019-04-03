@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 class ControlActor( name : String ) : ActorBasic(name){
     var oddClicks     = true
     var goon          = true
-    val actors        = sysUtil.ctxActorMap;
+    val actors        = sysUtil.getAllActorNames();
     val startBlinkcmd = BlsCmds.ControlCmd("startBlink")
     val stopBlinkcmd  = BlsCmds.ControlCmd("stopBlink")
     val ledOn         = BlsCmds.LedCmd("on")
@@ -51,8 +51,8 @@ class ControlActor( name : String ) : ActorBasic(name){
                     "controlCmd(stopBlink)" -> {
                         goon = false
                         actors.forEach {
-                            if( it.key.contains("led") ) {
-                                forward(ledOff.id, ledOff.toString(), "${it}")
+                            if( it.contains("led") ) {
+                                forward(ledOff.id, ledOff.toString(), "${sysUtil.getActor(it)}")
                             }
                         }
                     }

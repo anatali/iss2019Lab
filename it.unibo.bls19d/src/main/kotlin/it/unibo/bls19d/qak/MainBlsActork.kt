@@ -1,6 +1,5 @@
 package it.unibo.bls19d.qak
 
-import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.runBlocking
 
 class BlsActork{

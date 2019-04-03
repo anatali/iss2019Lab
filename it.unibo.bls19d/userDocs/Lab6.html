@@ -107,7 +107,12 @@ div.req{
     padding: 15px;
     margin: 10px;
 }    
-
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
 table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -256,13 +261,15 @@ control actor as done in <a href="Lab5.html" target="code">Lab5.html</a> ).
 <td style="width:25%">
 <a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/MainBlsDistrNode2.kt" target="code">MainBlsDistrNode2.kt</a>
 </td>
-<td><m>Creates the system components running on the first node, i.e. 
+<td><m>Creates the system components running on the second node, i.e. 
 <ul>
 <li>the led (<a href="../src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>)</li>
 <li>the control (<a href="../src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" target="code">ControlActork.kt</a>) </li>
 <li>the server (<a href="../src/main/kotlin/it/unibo/bls19d/qak/ServerControl.kt" target="code">ServerControl.kt</a>) 
-that accepts commands for the control.</li></ul>
+that accepts commands for the control.</li>
+</ul>
 
+This node should be activated as first one.
  </m>
 </td>
 </tr>
@@ -274,7 +281,7 @@ that accepts commands for the control.</li></ul>
 <td><m>At construction time, the proxy attempts to connect itself with the remote
 <a href="../src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" target="code">ServerControl.kt</a>.
 <br/>
-Then, it waits for an <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a>
+Then, it waits for an <a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a>
 (with a <bc>BlsCmds.ButtonCmd()</bc> as content) and 'redirects' such a message to the connected server. </m>
 </td>
 </tr>
@@ -287,7 +294,7 @@ Then, it waits for an <a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" ta
 then its sends to itself a <bc>"start"</bc> message in order to start its works, that consists
 in waiting for a connection request (from the proxy).
 When a new connection is set, the server waits for an 
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage</a> that it 
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a> that it 
 redirects to the <tt>control</tt>.
 
 <br/><br/>
@@ -379,7 +386,7 @@ with the <tt>control</tt> on the node of the <tt>button</tt>. In this case, with
 we should introduce a <tt>proxy-server</tt> pair for each led, even  when there are severla leds on the same node.
 
 <br/><br/>
-Since this is quite inprectical, an important <em>non-functional requirement</em> seems to arise at this point:
+Since this is quite impractical, an important <em>non-functional requirement</em> seems to arise at this point:
 <div class="req">
 Since different customers can decide to allocate the leds in different ways, we should design an 
 easily configurable software system. Moreover we should be able to build in automatic way the infrastructural 
@@ -417,7 +424,7 @@ qactor( led3, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
 <m>
 <ul>
 <li>The description is stored in file (<a href="../src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl" target="code">sysDescr.pl</a>) 
- and is a knowledge-base written in <tt>tuProlog</tt> synatx.</li>
+ and is a knowledge-base written in <tt>tuProlog</tt> syntax.</li>
 <li>A set of built-in rules written in Prolog 
 (<a href="../src/main/kotlin/it/unibo/kactor/sysRules.pl" target="code">sysRules.pl</a>) 
 is used to facilitate the access to the description-kb</li>
@@ -431,7 +438,9 @@ is used to facilitate the access to the description-kb</li>
 <h5>Meaning of the description</h5>
 <ol>
 <li>The system is composed of two computational nodes (<bc>context</bc>) and a set of actors (<bc>qactor</bc>).</li>
-<li>Eeach <tt>context</tt> provides (on the specified host) an <tt>input-port</tt> for messages sent via <bc>TCP</bc> </li>
+<li>Eeach <tt>context</tt> provides (on the specified host) an <tt>input-port</tt> for messages 
+(of class <a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a>)
+sent via <bc>TCP</bc> </li>
 <li>Eeach <tt>qactor</tt> has a name, works within a  <tt>context</tt> and is implemented by the specififed (Kotlin) class.</li>
 </ol>
 Thus, the description is related to our <em>Two-node</em> configuration:
@@ -480,19 +489,25 @@ Thus, the description is related to our <em>More than two nodes</em> configurati
 
 </li>
 <li>The system is built by a component able to read and understand the system description. More specifically, the
-operation <bc>createContexts( hostName:String )</bc> 
-in <a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>.
+static operation <bc>createContexts( hostName:String, ... )</bc> 
+in <a href="../src/main/kotlin/it/unibo/kactor/QakContext.kt" target="code">QakContext.kt</a>.
  looks at the description and, <i><b>for each 
 context</b></i> working on the given <tt>hostName</tt>:
 	<ol>
-	<li>Creates (see <tt>createTheContext(hostName:String)</tt>) the context and stores a reference to it in the 
+	
+	<li>Creates (see <tt>createTheContext(hostName:String)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>) the context and stores a reference to it in the 
 	<bc>sysUtil.ctxActorMap</bc>. Each context is  
 	implemented by an actor of class
 	<a href="../src/main/kotlin/it/unibo/kactor/QakContext.kt" target="code">QakContext.kt</a>
 that creates a <a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
 on  the <tt>port</tt> given in the description.  </li>
-	<li>Creates (see <tt>createTheActors(ctx: QakContext)</tt>)  the actors that belong to that context.</li>
-	<li>Creates (see <tt>addProxyToOtherCtxs(ctxsList : List<String>)</tt>) a <tt>proxy</tt> 
+	
+	<li>Creates (see <tt>createTheActors(ctx: QakContext)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>)  the actors that belong to that context.</li>
+	
+	<li>Creates (see <tt>addProxyToOtherCtxs(ctxsList : List<String>)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>) a <tt>proxy</tt> 
 	to the context-server of all the other contexts and  stores a reference to it in <bc>QakContext.proxyMap</bc>.</li>
 	</ol>
 
@@ -519,13 +534,59 @@ to find the proper <tt>proxy</tt> when the destination is into another context.
 </li>
 
 <li>Each message sent from a <tt>proxy</tt> to a <tt>context-server</tt> is a dispatch of class
-<a href="../src/main/kotlin/it/unibo/kactor/MsgUtil.kt" target="code">ApplMessage.kt</a>
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a>
 that contains the name of the reciver. Thus, the work or the 
 <a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
 is to 'redirect' any received message to the proper destination actor. 
+
+<center>
+<img src="./qakCtxProxy.png" alt="qakCtxProxy" width="60%" height="60%"> 
+</center> 
 </li>
   
+<li>
+
+<div class="remark">
+When the system is composed of many contexts (spread on many nodes), the infrastructure activates the actors within
+each context only when all the contexts that compose the system are activated.</div>
+</li>
 </ol> 
+
+<h2>EXAMPLE: a producer-consumer distributed system</h2>
+<center><table style="width:90%">
+<tbody>	
+
+<tr>
+<td style="width:55%">
+<pre>
+context(ctxProducer,"192.168.1.3",    "TCP", 8010).
+context(ctxConsumer,"192.168.1.10", "TCP", 8020).
+
+%%qactor( button,   ctxProducer, "it.unibo.qak.producer.ButtonGuiActork").
+qactor( producer, ctxProducer, "it.unibo.qak.producer.Producer").
+qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
+
+</pre>
+ </td>
+<td><em>System description </em>  </td>
+</tr>
+
+<tr>
+<td></td>
+<td></td>
+</tr> 
+
+
+ 
+
+<tr>
+<td></td>
+<td></td>
+</tr>
+
+</tbody>	
+</table></center>
+
 <!--
  <h2>BLSD7Segm (Work to do)</h2>
  <div class="req">

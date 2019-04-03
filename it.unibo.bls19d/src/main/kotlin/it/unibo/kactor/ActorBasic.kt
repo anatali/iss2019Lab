@@ -2,7 +2,6 @@ package it.unibo.kactor
 
 import alice.tuprolog.Prolog
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
 
 /*
@@ -28,7 +27,8 @@ abstract class  ActorBasic(val name: String,
 
     protected var count = 1;
 
-    val  actor = GlobalScope.actor<ApplMessage>(dispatcher, capacity=channelSize ) {
+    val  actor = GlobalScope.actor<ApplMessage>(
+            dispatcher, capacity=channelSize ) {
         for( msg in channel ) {
             //println("   ActorBasic $name |  msg= $msg "  )
             actorBody( msg )
@@ -60,17 +60,17 @@ Messaging
 
     suspend fun forward( msgId : String, msg: String, destName: String) {
         //println("       ActorBasic $name |  forward $msgId to $destName -  ${sysUtil.curThread()}")
-        val actor = context!!.hasActor(destName)
+        val actor = context.hasActor(destName)
         //println("forward $msgId : $msg to $destName IN context=${context.name} actor=$actor" )
         if( actor is ActorBasic   ) {//local
             forward( msgId, msg, actor)
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
-             val proxy = QakContext.proxyMap.get(ctx)
+             val proxy = QakContext.PROXY_MAP.get(ctx)
              println("       ActorBasic $name | forward $msgId : $msg to external $destName IN context=${ctx} " )
              //WARNING: destName must be the original and not the proxy
             if( proxy is ActorBasic )
-                proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+                proxy.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
             else println("       ActorBasic $name | proxy of $ctx is null ")
           }
     }

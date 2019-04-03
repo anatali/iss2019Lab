@@ -6,7 +6,7 @@ context(ctxButton,"localhost", "TCP", 8010).
 context(ctxLeds1, "localhost", "TCP", 8020).
 context(ctxLeds2, "localhost", "TCP", 8030).
 
-qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
+%%qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
 qactor( control, ctxButton, "it.unibo.bls19d.chain.ControlActor").
 
 qactor( led1, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).

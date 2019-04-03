@@ -2,9 +2,7 @@ package it.unibo.bls19d.qak.distr
 
 import it.unibo.bls19d.qak.ButtonActork
 import it.unibo.bls19d.qak.SystemKb
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.Protocol
-import it.unibo.kactor.sysUtil
+import it.unibo.kactor.*
 import kotlinx.coroutines.runBlocking
 
 class BlsDistrNode1{

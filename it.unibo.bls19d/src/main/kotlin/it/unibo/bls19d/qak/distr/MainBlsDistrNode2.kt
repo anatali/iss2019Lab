@@ -3,7 +3,6 @@ package it.unibo.bls19d.qak.distr
 import it.unibo.bls19d.qak.ControlActork
 import it.unibo.bls19d.qak.LedActork
 import it.unibo.bls19d.qak.SystemKb
-import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.Protocol
 import it.unibo.kactor.sysUtil
 import kotlinx.coroutines.runBlocking
