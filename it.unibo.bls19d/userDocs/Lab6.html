@@ -552,7 +552,7 @@ each context only when all the contexts that compose the system are activated.</
 </li>
 </ol> 
 
-<h2>EXAMPLE: a producer-consumer distributed system</h2>
+<h2>EXAMPLE: a producer-consumer distributed (qak) system</h2>
 <center><table style="width:90%">
 <tbody>	
 
@@ -568,16 +568,63 @@ qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 
 </pre>
  </td>
-<td><em>System description </em>  </td>
+<td><em>System description </em>
+<center>
+<img src="./prodCons.png" alt="prodCons" width="80%" height="80%"> 
+</center>
+ 
+  </td>
 </tr>
 
 <tr>
-<td></td>
-<td></td>
+<td><pre>
+package it.unibo.qak.producer
+...
+    QakContext.createContexts(
+        "192.168.1.10", this,
+        "src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl",
+        "src/main/kotlin/it/unibo/qak/prodCons/sysRules.pl"
+    )
+	val producer = QakContext.getActor("producer")
+    MsgUtil.sendMsg("start", "start", producer!!)
+}</pre></td>
+<td><m><em>Main of the producer</em><br/>
+The application designer focuses on input-message handling:</m>
+<pre>
+class Producer( name : String ) : ActorBasic( name ) {
+    override suspend fun actorBody(msg: ApplMessage) {
+        for( i in 1..3 ) {
+            delay( 500 )
+            forward("data", "item$i", "consumer")
+        }
+    }
+}
+</pre></td>
 </tr> 
 
 
- 
+ <tr>
+<td><pre>
+package it.unibo.qak.consumer
+...
+fun main() = runBlocking {
+    QakContext.createContexts(
+            "192.168.1.10",this,
+            "src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl",
+            "src/main/kotlin/it/unibo/qak/prodCons/sysRules.pl"
+    )
+}</pre></td>
+<td><m><em>Main of the consumer</em><br/>
+The application designer focuses on input-message handling:</m>
+<pre>
+class Consumer( name : String ) : ActorBasic( name ) {
+    override suspend fun actorBody(msg: ApplMessage) {
+        println("   Consumer $name |  receives msg= $msg ")
+    }
+}
+</pre>
+</td>
+</tr> 
 
 <tr>
 <td></td>
@@ -587,6 +634,81 @@ qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 </tbody>	
 </table></center>
 
+<h2>Heterogeneous distributed systems</h2>
+The design and development of a modern distributed application cannot start from the assumption that the nodes
+are 'similar'  each other. In fact, they are usually quite different, both as regards computational capabilities
+and software configuration. 
+<p>
+As an example, let us suppose that our producer must be written in <a href="https://nodejs.org/it/">Node.js</a>:
+
+<center>
+<img src="./prodNodeCons.png" alt="prodNodeCons" width="50%" height="50%"> 
+</center>
+
+In this case we do not have the possibility to exploit (in immediate way) the <tt>qak infrastructure</tt> on the producer node.
+However:
+<ol>
+<li>the <em>logical application design</em> does not change. From a logical point of view, the <tt>producer</tt> is always
+an actor that forwards dispatches to the  <tt>consumer</tt>;</li>
+<li>the <tt>consumer</tt> working upon the <tt>qak infrastructure</tt> does not make any assumption on the nature
+of the sender of the messages;</li>
+<li>if we send on the <tt>TCP</tt> port of the <tt>consumer</tt> node a message represented as follows:
+<pre>
+msg(MSGID,dispatch,producer,consumer,MSGCONTENT,MSGNUM)
+</pre>
+ 
+then the message will arrive to the <tt>consumer</tt>
+ </li>
+</ol>
+
+<h3>Example</h3>
+An example of a <tt>producer</tt> written in <tt>Node.js</tt> can be found in
+<a href="../node/TcpClientToConsumer.js" target="code">TcpClientToConsumer.js</a>.
+ 
+<h2>Dynamic systems</h2>
+
+The current <tt>qak infrastructure</tt> is designed in order to support a  <bc>metamodel</bc>
+in which a software system is made of a collections of <tt>Actors</tt>, each included in a
+computational node called <tt>Context</tt>. <br/>
+A <tt>Context</tt> can be viewed as a <i>subsystem</i> with a unique name and
+a unique <tt>IP</tt> address.
+<p>
+However, several applications could require dynamically changes in the configuration of the software system. 
+For example:
+<div class="req">
+Design and build a <tt>Distributed</tt> software system made of a <b>Button</b> and a 
+<em>dynamic chain </em> of <b>Led</b>. 
+ <hr/> 
+<b>User story</b><br/>
+
+ As a <bc>operator</bc>, I want to have: 
+<ol>
+<li><em>add</em>:  the possibility to add a new <b>Led</b> at the end on the chain </li>
+<li><em>remove</em>: the possibility to remove a <b>Led</b> form the chain  </li>
+</ol>
+As a <bc>end-user</bc>, I want to:
+<ol>
+<li> <em>startBlink</em>: press the <b>Button</b> and turn on the  <b>Led-i</b>  (<tt>i=1..n</tt>)  for a prefixed time <bc>TIMEON</bc>, 
+at time <bc>t0 + TIMEON*i</bc></li>
+<li> <em>stopBlink</em>: press the <b>Button</b> again and stop the chain blinking. </li>
+</ol>
+
+ The <b>Button</b> and the <b>Leds</b> can be physical devices connected to a <tt>RaspberryPi/Arduino</tt> or a 'virtual' 
+ (<tt>GUI</tt>-based) device implemented on a <tt>PC</tt>.
+</div>	 
+
+<!-- the set of Contexts and Actors that compose the system can be statically fixed, but there are other cases in which -->
+</p>
+In particular we should allow: 
+<ol>
+<li>an Actor to dynamically create other Actors (instances) within its Context;</li>
+<li>the dynamic introduction of new Contexts within a given system, together with the
+possibility to support the interaction among all the Actors, both statically defined and dynamically
+created.</li>
+</ol>
+ 
+
+</p>
 <!--
  <h2>BLSD7Segm (Work to do)</h2>
  <div class="req">
