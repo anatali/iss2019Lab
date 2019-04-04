@@ -383,7 +383,7 @@ The <tt>control</tt> should be ... </td>
 
 Suppose that, after a meeting with the customer, our reference configuration is <tt>More than two nodes</tt>
 with the <tt>control</tt> on the node of the <tt>button</tt>. In this case, with our previous approach,
-we should introduce a <tt>proxy-server</tt> pair for each led, even  when there are severla leds on the same node.
+we should introduce a <tt>proxy-server</tt> pair for each led, even  when there are several leds on the same node.
 
 <br/><br/>
 Since this is quite impractical, an important <em>non-functional requirement</em> seems to arise at this point:
@@ -636,7 +636,7 @@ class Consumer( name : String ) : ActorBasic( name ) {
 
 <h2>Heterogeneous distributed systems</h2>
 The design and development of a modern distributed application cannot start from the assumption that the nodes
-are 'similar'  each other. In fact, they are usually quite different, both as regards computational capabilities
+are 'similar'  each other. In fact, computational nodes are usually quite different, both as regards computational capabilities
 and software configuration. 
 <p>
 As an example, let us suppose that our producer must be written in <a href="https://nodejs.org/it/">Node.js</a>:
