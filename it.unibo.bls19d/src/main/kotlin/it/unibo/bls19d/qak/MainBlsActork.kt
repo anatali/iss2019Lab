@@ -3,11 +3,9 @@ package it.unibo.bls19d.qak
 import kotlinx.coroutines.runBlocking
 
 class BlsActork{
-
     init{
         configure()
     }
-
     fun configure(){
         val led     = LedActork("led")
         SystemKb.blsActorMap.put(led.name, led )
@@ -16,9 +14,7 @@ class BlsActork{
         val button  = ButtonActork("button", control.name )
         SystemKb.blsActorMap.put(button.name, button )
     }
-
  }
-
 fun main() = runBlocking{
     println("START")
     BlsActork()

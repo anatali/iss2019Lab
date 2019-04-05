@@ -1,0 +1,50 @@
+<pre><font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 931,5G  0 disk 
+├─sda1   8:1    0   450M  0 part 
+├─sda2   8:2    0   100M  0 part /boot/efi
+├─sda3   8:3    0    16M  0 part 
+├─sda4   8:4    0 599,4G  0 part 
+├─sda5   8:5    0   798M  0 part 
+├─sda6   8:6    0   793M  0 part 
+├─sda7   8:7    0  28,6G  0 part /
+├─sda8   8:8    0   9,6G  0 part [SWAP]
+└─sda9   8:9    0 291,9G  0 part /home
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 931,5G  0 disk 
+├─sda1   8:1    0   450M  0 part 
+├─sda2   8:2    0   100M  0 part /boot/efi
+├─sda3   8:3    0    16M  0 part 
+├─sda4   8:4    0 599,4G  0 part 
+├─sda5   8:5    0   798M  0 part 
+├─sda6   8:6    0   793M  0 part 
+├─sda7   8:7    0  28,6G  0 part /
+├─sda8   8:8    0   9,6G  0 part [SWAP]
+└─sda9   8:9    0 291,9G  0 part /home
+sdb      8:16   1  29,3G  0 disk 
+└─sdb1   8:17   1  29,3G  0 part /media/turi/32GB
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> umount /dev/sdb1 
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 931,5G  0 disk 
+├─sda1   8:1    0   450M  0 part 
+├─sda2   8:2    0   100M  0 part /boot/efi
+├─sda3   8:3    0    16M  0 part 
+├─sda4   8:4    0 599,4G  0 part 
+├─sda5   8:5    0   798M  0 part 
+├─sda6   8:6    0   793M  0 part 
+├─sda7   8:7    0  28,6G  0 part /
+├─sda8   8:8    0   9,6G  0 part [SWAP]
+└─sda9   8:9    0 291,9G  0 part /home
+sdb      8:16   1  29,3G  0 disk 
+└─sdb1   8:17   1  29,3G  0 part 
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> sudo dd bs=4M if=/home/turi/Desktop/2016-02-26-raspbian-jessie-iss.img of=/dev/sdb conv=fsync status=progress
+[sudo] password for turi: 
+2927456768 bytes (2,9 GB, 2,7 GiB) copied, 420 s, 7,0 MB/s 
+697+1 records in
+697+1 records out
+2927456768 bytes (2,9 GB, 2,7 GiB) copied, 773,003 s, 3,8 MB/s
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> udisksctl power-off -b /dev/sdb
+<font color="#8AE234"><b>turi@turi-Lenovo-Y50-70</b></font> <font color="#729FCF"><b>~ $</b></font> 
+</pre>
