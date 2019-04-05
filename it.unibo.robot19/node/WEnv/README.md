@@ -223,10 +223,17 @@ Messages from the client to the server.
 - alarm - `{ "type": "alarm" }`: This message will stop the player's movement. Rotations aren't stoppable.
 
 ## Client examples
-Two examples of client are provided in this repo, in the [ClientExamples](https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/tree/master/ClientExamples) folder.
+Two examples of client are provided in this repo, in the [ClientExamples]
+(https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/tree/master/ClientExamples) folder.
 
-- Android client, it can be used as a reference to write Java/Kotlin/.. clients. The app is written in Kotlin, translating the [IO module](https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/tree/master/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/io) to other object oriented langues should be trivial. The apk of the app can be downloaded [here](https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/raw/master/ClientExamples/AndroidClient/app.apk).
+- Android client, it can be used as a reference to write Java/Kotlin/.. clients.
+The app is written in Kotlin, translating the [IO module]
+(https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/tree/master/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/io)
+to other object oriented langues should be trivial.
+The apk of the app can be downloaded [here]
+(https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp/raw/master/ClientExamples/AndroidClient/app.apk).
 
 <img src="https://raw.githubusercontent.com/PierfrancescoSoffritti/ConfigurableThreejsApp/master/pictures/androidapp.png" height="500">
 
-- Node.js client, it can be used as a reference to write other Node.js clients. This client requires two arguments: ip and port of the server.
+- Node.js client, it can be used as a reference to write other Node.js clients.
+This client requires two arguments: ip and port of the server.

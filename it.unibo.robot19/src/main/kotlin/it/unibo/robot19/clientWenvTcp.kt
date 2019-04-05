@@ -11,7 +11,6 @@ import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
 
-
     object clientWenvTcp {
         private var hostName = "localhost"
         private var port     = 8999
@@ -75,6 +74,8 @@ import org.json.JSONObject
          }//startTheReader
 }//clientTcp
 
+
+//RAPID CHECK
 suspend fun doJob() {
     clientWenvTcp.initClientConn()
     var jsonString = ""

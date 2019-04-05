@@ -1,6 +1,6 @@
 /*
 * =====================================
-* TcpClientToConsumer.js
+* ClientToRobotExecutor.js
 * =====================================
 */
 var net  = require('net');
@@ -62,18 +62,18 @@ Application
 ===============================================================
 */ 
 var msgNum=1;
-sendMsgAfterTime("msg(data,dispatch,producer,consumer,item1," + msgNum++ +")", 200);
+sendMsgAfterTime("msg(robotCmd,dispatch,js,robot,robotCmd(turnRight)," + msgNum++ +")", 500);
+sendMsgAfterTime("msg(robotCmd,dispatch,producer,robot,robotCmd(turnLeft)," + msgNum++ +")", 1000);
+sendMsgAfterTime("msg(robotCmd,dispatch,producer,robot,robotCmd(forward),"   + msgNum++ +")", 1500);
+sendMsgAfterTime("msg(robotCmd,dispatch,producer,robot,robotCmd(backward)," + msgNum++ +")", 2500);
+sendMsgAfterTime("msg(robotCmd,dispatch,producer,robot,robotCmd(stop)," + msgNum++ +")", 3500);
 
-sendMsgAfterTime("msg(data,dispatch,producer,consumer,item2," + msgNum++ +")", 500);
-sendMsgAfterTime("msg(data,dispatch,producer,consumer,item3,"   + msgNum++ +")", 700);
-sendMsgAfterTime("msg(data,dispatch,producer,consumer,item4," + msgNum++ +")", 1000);
-
-setTimeout(function(){ console.log("SOCKET END");socket.close(); }, 2500);
+setTimeout(function(){ console.log("SOCKET END");socket.close(); }, 4000);
  
 /*
 ----------------------------------------------
 USAGE
-activate it.unibo.qak.consumer.Consumer (ALONE)
-node TcpClientToConsumer.js localhost 8020
+activate MainExecutor
+node ClientToRobotExecuotr.js localhost 8010
 ----------------------------------------------
 */
