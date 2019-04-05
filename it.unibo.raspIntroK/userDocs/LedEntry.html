@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<link rel="stylesheet" type="text/css" href="../../css/issStyle1.css">   
+<script type="text/javascript" src="../../css/issStyle.js"></script>
+<head>
+
+<title>Led</title></head>
+<body > 
+    
+<div class="container wrapper"> 
+
+<div id="top">
+<h1>Led (ISS-DISI-Unibo)</h1>
+</div> 
+
+    
+<div class="wrapper">
+    
+<div id="menubar">
+<img src="electronics_led_diagram.png" alt="show" width="156" height="101"/> 
+<ul id="menulist">
+    <u5>Low level</u5>
+ 
+   <li class="menuitem" onclick="loadWithMsg('A shell Linux that turns on (off) a led (on <tt>GPIO25</tt>)',
+'../../../../it.unibo.buttonLedSystem/raspberry/ledOnOff.sh')">LedOnOff.sh</li>
+
+ 
+    
+   
+    <u5>Test (plans)</u5>
+
+<li class="menuitem" onclick="loadWithMsg('A LED is a state machine with (unmodifiable) color green or red',
+ '../../../../it.unibo.buttonLedSytem.tests/src/it/unibo/buttonLedSytem/tests/TestLed.java')">TestLed.java</li> 
+ 
+     <u5>MODEL</u5>
+    
+  <li class="menuitem" onclick="window.location.href='../Input/input.html'">Device model</li>
+ 
+ 
+        <u5>Led Pi4J in Java</u5>
+<li class="menuitem" onclick="loadWithMsg('A LED implemented using PI4J',
+ '../../../../it.unibo.buttonLedSystem/src/it/unibo/buttonLed/impl/LedPi4j.java')">LedPi4j.java</li> 
+<li class="menuitem" onclick="loadWithMsg('<tt>ILedGpio</tt>',
+ '../../../../it.unibo.buttonLedSystem/src/it/unibo/domain/interfaces/ILedGpio.java')">ILedGpio.java</li> 
+<li class="menuitem" onclick="loadWithMsg('<tt>ILedGpio</tt>',
+ '../../../../it.unibo.buttonLedSystem/src/it/unibo/gpio/base/IGpioPi4j.java')">IGpioPi4j.java</li> 
+<li class="menuitem" onclick="loadWithMsg('<tt>GpioOnPi4j</tt>',
+ '../../../../it.unibo.buttonLedSystem/src/it/unibo/gpio/base/GpioOnPi4j.java')">GpioOnPi4j.java</li> 
+
+</ul>
+    
+</div>
+    
+     
+<div id="menutop">
+<center>
+<button onclick="window.location.href='../../Material/entry.html'">Home</button>
+<button onclick="window.location.href='../ButtonLed/buttonLedEntry.html'">ButtonLed</button>
+<button onclick="window.location.href='../../Hardware/boards.html'">Boards</button>
+<button onclick="window.location.href='../applsEntry.html'">LAB</button>
+</center>
+</div> 
+    
+<div id="main">
+<p> 
+    The Led <b>cathode</b> is the shortest terminal (on the flat site) and must be connected to ground.
+    The other terminal is the <b>anode</b> and must connected to the voltage source 
+    (e.g. pin <tt>25</tt> or pin <tt>18 PWM</tt>).
+</p><p>
+    A Led has a operating voltage (<tt>2.2V</tt>) and a current rating (<tt>18 mA</tt>). 
+    We could need a resistor to bring down the voltage to the current level.
+    For example, if we connect the anode to <tt>5V</tt>, then we need a <tt>155 ohm</tt> ( <tt>(5-2.2)/0.018</tt> ) resistor.
+<h4>Modeling a led (domain model)</h4>
+    <ul>
+    <li>For a software designer, a physical led (as any other any output device) is always associated with some <i id="i">basic software</i> (usually a driver).</li>
+    <li>A driver for an output device usually provides methods that work as <i id="i">state modifiers</i>.</li>
+        <!--
+    <li>Some higher-level library (e.g. <a href="../../Raspberry/pi4j.html" target="code">Pi4J</a>) can provide a button as an observable (in the sense of GOF design pattern) entity </li>
+-->
+   </ul>
+</p>
+</div>
+    
+<div id="sidebar">
+<h3>Readings</h3>
+<!--     -->
+<ul id="menulist">
+<li class="menuitem" onclick="window.location.href='../../NatMolBook/Testing.html'">Testing</li>
+    </ul>     
+
+</div>
+    
+
+<div id="bottom">
+By AN - SG Unibo-DISI    
+</div>
+    
+</div>
+</div>    
+
+</body></html>

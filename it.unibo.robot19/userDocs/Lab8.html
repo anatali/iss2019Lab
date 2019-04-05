@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+ 
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+<head>
+
+<title>Lab8ISS</title></head>
+    
+<div class="body">    
+ 
+
+<h1>72939 - LAB8 |  ButtonLedSystem on a RaspberryPi</h1>
+      
+ 
+<div style="background-color:white; width:100%;float:left;"> 
+<h2>INTRODUCTION</h2>
+<ul>
+    <li><em>Vision</em>: Technology is fundamental, but it should be something to be <tt>properly used</tt>, not something we have to be subjected to. </li>
+    <li><em>Goal</em>: Show how a low-cost computational device like 
+	<a href="../../Raspberry/raspberryEntry.html" target="code">RaspberryPi</a>)   
+	can be included in our reference ButtonLed case study according to a 'message passing' programming style. </li>
+	<li><em>Work</em>: Our starting point will be a very simple introduction to the usage of <tt>RaspberryPi GPIO</tt> by means of bash commands,
+	gpio library and Python: see <a href="../Raspberry/raspberryProjects.html" target="code">Raspberry Low level Projects</a>
+Next we will build systems including a   <a href="../../Appls/ButtonLed/LedEntry.html" target="code">physical Led</a>,
+and  a <a href="../../Appls/ButtonLed/buttonEntry.html" target="code">physical Button</a>. 
+</li>
+</ul>
+ 
+ 
+
+ 
+ <h2>STARTING</h2>
+
+ <ol>
+<li>Download and install <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html"  target="web">PuTTY</a></li>
+<li>Download the unibo <tt>SD</tt>: 
+     <a href="http://137.204.107.10/iss2018/it.unibo.issMaterial/issdocs/Material/2016-02-26-raspbian-jessie-iss.img.zip" 
+target="web">2016-02-26-raspbian-jessie-iss.img.zip</a> (<tt>WARNING: 1GB</tt>)</li>
+<li>Generate your own <a href="https://en.wikipedia.org/wiki/Secure_Digital#Micro" target="web">Secure Digital</a> card </li>
+<li>Consult <a href="../CARD/rpi_sd.pdf" target="code">rpi_sd.pdf</a> e <a href="../CARD/guida_rpi.pdf"  target="code">guida_rpi.pdf</a> </li>
+<li>Insert the <tt>SD</tt> card in the  proper <tt>PC slot</tt>  and look (in the unit <bc>boot</bc>) at the file <bc>mywifi.conf</bc>:
+<pre>
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+ap_scan=1
+eapol_version=1
+fast_reauth=1
+
+network={
+        ssid="natspot"
+        scan_ssid=1
+        key_mgmt=WPA-PSK
+        psk="123456789"
+}    
+    </pre>
+    
+    </li>
+    <li>Insert the <tt>SD</tt> card into the RaspberryPi and <em>extend the file system</em> by running:
+    <pre>
+    sudo raspi-config
+    </pre>
+</li>
+
+<li>Connect the RaspberryPi to the PC via a <a href="http://www.howtogeek.com/210326/not-all-ethernet-cables-are-equal-you-can-get-faster-lan-speeds-by-upgrading/">Ethernet cable </a></li>      
+<li>Open PuTTY and connect to <tt>192.168.137.2</tt> port <tt>22</tt> </li>
+<li>Login with: <tt>pi</tt> pswd= <tt>raspberry</tt></li>
+<li>Look at the output:    
+<pre>
+IP                      192.168.137.2
+Wifi settings           /boot/mywifi.conf
+Web terminal            https://192.168.137.2:4200
+VNC Remote Desktop      192.168.137.2:1 Password:123456
+SMB Network Share       \\192.168.137.2\home_pi\   
+</pre>
+</li>
+
+<li>Access to the RaspberryPi via Windows (connnetti unita di rete):
+<pre>\\192.168.137.2\home_pi\</pre>
+</li>
+</ol>
+ 
+    
+<h2>The hardware</h2>
+ 
+ 
+           
+ Connect the hardware :<br/> 
+<img src="butLedRasp.jpg" alt="show" width="301" height="302"/>
+    <h3>Resistors</h3>
+    If we need some resistor:
+    <a href="../../../docs/imgs/devices/Resistor-Colour-Code.gif" target="code">Resistor-Colour-Code</a>,
+<a href="../../../docs/imgs/devices/resistor-color-code-all.gif" target="code">resistor-color-code-all</a>,
+<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">evalColor</a>
+<br/>
+The Raspberry Pi has internal <em>pull-up</em> and <em>pull-down</em> resistors that can be specified when the pin declarations are made.
+
+<h3>Links (introduction to GPIO control)</h3>         
+<ul>        
+<li><a href="https://www.youtube.com/watch?v=D-cTUEKbJJA" target="web">VIDEO: Raspberry Pi GPIO with Java</a></li>
+<li>About pins: <a href="http://elinux.org/RPi_Low-level_peripherals" target="web">RPi_Low-level_peripherals</a></li>
+<li>About Raspberry Pi GPIOs control: <a href="http://elinux.org/RPi_GPIO_Code_Samples" target="web">RPi GPIO Code Samples</a></li>
+<li><a href="http://wiringpi.com/the-gpio-utility/" target="web">Command-line utility gpio  (used by Wiringpi)</a></li>
+    <li><a href="http://makezine.com/projects/tutorial-raspberry-pi-gpio-pins-and-python/" target="web">gpio-pins-and-python</a></li>
+<li><a href="http://wiringpi.com//" target="web">Wiringpi</a></li>
+<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_Setup/RaspberryPi_Setup.html" target="web">Oracle java/RaspberryPi_Setup</a>  </li>         
+<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_GPIO/RaspberryPi_GPIO.html" target="web">Oracle java/RaspberryPi_GPIO</a>  </li>   
+<li>Java <a href="https://bitbucket.org/sbub/raspberry-pi-gpio-web-control/overview" target="web">gpio-web-control</a></li>    
+</ul>                
+ 
+ 
+<h2 >Basic Experiments (interactive) </h2> 
+           
+<table style="width:98%">
+<tbody>	
+ 
+  <tr>
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/led25OnOff.sh">led25OnOff.sh</a>
+      <pre>
+echo Unexporting.
+echo 25 > /sys/class/gpio/unexport #
+echo 25 > /sys/class/gpio/export #
+cd /sys/class/gpio/gpio25 #
+
+echo Setting direction to out.
+echo out > direction #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #
+sleep 1 #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #      
+      </pre>
+      
+</td>
+<td><a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a>
+      <pre>
+gpio readall #
+echo Setting direction to out
+gpio mode 6 out #
+echo Write 1
+gpio write 6 1 #
+sleep 1 #
+echo Write 0
+gpio write 6 0 #    
+      </pre>
+      
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a>
+<br/><br/>  
+        The newest version of Raspbian has the <br/>
+        RPi.GPIO library pre-installed. 
+        <pre>
+sudo python
+>>> import RPi.GPIO as GPIO
+>>> GPIO.VERSION
+>>> GPIO.setmode(GPIO.BCM) 
+>>> GPIO.setup(25,GPIO.OUT)
+>>> while True:
+>>>     GPIO.output(25,GPIO.HIGH)
+>>>     time.sleep(1)
+>>>     GPIO.output(25,GPIO.LOW)
+>>>     time.sleep(1)
+>>> quit()
+</pre> </td>
+   </tr>
+ </table> 
+            
+<h3>Fron file</h3>           
+<table style="width:98%">
+<tbody>	
+<tr>
+ 
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/led25OnOff.sh">led25OnOff.sh</a><br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonOn24Click.sh">buttonOn24Click.sh</a>  
+<br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonLed.sh">buttonLed.sh</a>          
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo//bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a><br/>
+<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/button24Gpio.sh">button24Gpio.sh</a>  
+        
+      </td> 
+    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a><br/>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/buttonPython24.py">buttonPython24.py</a>
+<br/>
+        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/gpio/python/buttonLedPython.py">buttonLedPython.py</a>
+ </td>
+   </tr>
+ </table>          
+<br>
+            
+Other <a href="../../Raspberry/raspberryProjects.html" target="code">Basic experiment</a> 
+<br/>
+<!--
+(with the fundamental <a href="'../../../../Tools/WiringPi/wriringpiIntro.html">WiringPi</a> library):
+-->
+         
+</li>
+        
+<li>
+
+<h3>Using Pi4J in Java</h3> 
+ <h3>Useful links (introduction to Pi4J)</h3> 
+    <a href="../../Raspberry/rpi-java-8-savage-devoxx.pdf" target="code">Java8+Pi4j (pdf)</a> ,        
+    <a href="http://pi4j.com/"  target="code">Pi4j site</a>    
+
+    
+  <h3>Pi4J (project <i>it.unibo.buttonLedSystem.raspberry</i>)</h3>           
+<table id="robots">
+  <tr>
+    <th>Led</th>
+    <th>Button</th>
+    </tr>
+  <tr class="alt">
+    <td> <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceLedPi4j.java" target="code"><img src="../../Material/source.gif">DeviceLedPi4j</a>   
+<br/>specializes the 'standard implementation': 
+<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceLedImpl.java" target="code"><img src="../../Material/source.gif">DeviceLedImpl</a>
+      </td> 
+    <td>
+        <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceButtonPi4J.java" target="code"><img src="../../Material/source.gif">DeviceButtonPi4J</a><br/>specializes the 'standard implementation': 
+<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceButtonImpl.java" target="code"><img src="../../Material/source.gif">DeviceButtonImpl</a>   
+      </td> 
+ 
+ </table>              
+</li>
+
+<li>
+<h3>Connect the RaspberryPi to a PC  with Wifi (future applications).</h3>    
+<ol>
+<li>Insert a WIFI adapter (e.g. EDUP - Adattatore Wifi Mini USB,150MBps) in a USB slot.</li>    
+<li>Activate an hot spot (e.g by using a smart device) with name <b>natspot</b> and password <b>123456789</b></li>
+<li>Turn on the RaspberryPi. It will acquire an address (<tt>192.168.43.xxx</tt>) as shown by the command <b>ifconfig</b> </li>  
+<li>Open PuTTY and connect to <tt>192.168.43.xxx</tt> on port <tt>22</tt></li>
+</ol>    
+
+</li>
+
+</ol>
+ 
+      <br/> <br/>
+</div>    
+    
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div>    
+
+</body></html>

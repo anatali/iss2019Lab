@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../issStart2019/userDocs/Lab0.html" beforeDir="false" afterPath="$PROJECT_DIR$/../issStart2019/userDocs/Lab0.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab1.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab3.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/TcpClientToConsumer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/BasicRobotExecutor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/BasicRobotExecutor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/RobotCmds.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/RobotCmds.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/clientWenvTcp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/clientWenvTcp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/Lab5.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab5.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab6.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab7.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -43,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="14" column="48" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="48" />
+              <caret line="14" column="48" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -97,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
-              <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="42" />
+              <caret line="10" column="42" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -849,7 +850,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="42" />
+          <caret line="10" column="42" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -870,7 +871,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="14" column="48" lean-forward="true" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="48" />
+          <caret line="14" column="48" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="48" />
         </state>
       </provider>
     </entry>

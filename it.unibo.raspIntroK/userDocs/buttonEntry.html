@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<link rel="stylesheet" type="text/css" href="../../css/issStyle1.css">   
+<script type="text/javascript" src="../../css/issStyle.js"></script>
+<head>
+
+<title>Button</title></head>
+<body  > 
+    
+<div class="container wrapper"> 
+
+<div id="top">
+<h1>Button (ISS-DISI-Unibo)</h1>
+</div> 
+
+    
+<div class="wrapper">
+    
+<div id="menubar">
+<img src="joystick.jpg" alt="show" width="119" height="105"/> 
+<ul id="menulist">
+    <u5>Low level</u5>
+ 
+   <li class="menuitem" onclick="loadWithMsg('A shell Linux that reads the state of a button (on <tt>GPIO24</tt>)',
+'../../../../it.unibo.buttonLedSystem/raspberry/buttonClick.sh')">buttonClick.sh</li>
+
+ 
+    
+    <u5>Test (plans)</u5>
+<li class="menuitem" onclick="loadWithMsg('Testing the button as an <b>Observable</b>',
+ '../../../../it.unibo.buttonLedSytem.tests/src/it/unibo/buttonLedSytem/tests/TestButton.java')">TestButton.java</li> 
+ 
+   
+    <u5>MODEL</u5>
+    
+  <li class="menuitem" onclick="window.location.href='../Input/input.html'">Device model</li>
+    </ul>
+</div>
+    
+     
+<div id="menutop">
+<center>
+<button onclick="window.location.href='../../Material/entry.html'">Home</button>
+<button onclick="window.location.href='../../Frameworks/FramwCustomAppl.html'">ApplicationFramework</button>    
+<button onclick="window.location.href='../../Raspberry/raspberryEntry.html'">Pi4J on RaspberryPi</button>
+<button onclick="window.location.href='../ButtonLed/buttonLedEntry.html'">ButtonLed</button>
+<button onclick="window.location.href='../../Hardware/boards.html'">Boards</button>
+<button onclick="window.location.href='../applsEntry.html'">LAB</button>
+</center>
+</div> 
+     
+<div id="main">
+<p> 
+<h4>A button on the RaspberryPi</h4>
+A button is an input device that, like any input device on Raspberry, <b>MUST</b> have a terminale connected to a <tt>3.3V</tt>  pin 
+(and <b>NOT</b> to a <tt>5V</tt> pin).
+ </p> 
+    <table>
+    <tr>
+        <td><img src="buttonScheme.jpg" alt="show" width="219" height="133"/></td>
+        <td>The other terminal should be connected to a pin used as input, e.g. the <tt>GPIO-24</tt> pin.
+ To avoid floating connections (and random input values) it is appropiate to connect the input side of the
+    button to the <b>GND</b> pin through a resistor of <tt>10K</tt> ohm (marron, black, orange) in order to allow the current
+   to flow (when  the button is pressed) along a path with lower resistance via the input pin <tt>GPIO-24</tt> .    
+</td>
+    </tr>
+        <tr>
+        <td><img src="joystick.jpg" alt="show" width="208" height="208"/> </td>
+            <td>Joystick</td>
+        </tr>
+    </table>
+ 
+    
+    </p>
+<h4>Modelling a button (domain model)</h4>
+    <ul>
+    <li>For a software deisgner, a physical button (as any other any input device) is always associated with some <i id="i">basic software</i> (usually a driver).</li>
+        <li>A driver usually provides the button state via <i id="i">polling</i> or via <i id="i">interrupt</i>.</li>
+    <li>Some higher-level library (e.g. <a href="../../Raspberry/pi4j.html" target="code">Pi4J</a>) can provide a button as an observable (in the sense of GOF design pattern) entity </li>
+   </ul>
+</div>
+    
+<div id="sidebar">
+<h3>Readings</h3>
+<!--     -->
+<ul id="menulist">
+<li class="menuitem" onclick="window.location.href='../../NatMolBook/Testing.html'">Testing</li>
+<li class="menuitem" onclick="loadInMain('button.pdf')">button.pdf</li>
+</ul>     
+
+</div>
+    
+
+<div id="bottom">
+By AN - SG Unibo-DISI    
+</div>
+    
+</div>
+</div>    
+
+</body></html>
