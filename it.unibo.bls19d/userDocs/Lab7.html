@@ -1,0 +1,473 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>Lab6ISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LAB7 | The QActor metamodel</h1> 
+<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+
+  
+
+
+<h2><a id="metamodel"/>The metamodel </h2>
+<em>QActor</em> is the name given to the custom meta-model inspired to the actor model, as supported by the <bc>Akka</bc> library.
+<br/><br/>
+The leading <em>Q/q</em> in the <tt>QActor</tt> word, means 'quasi' since the <tt>QActor</tt> meta-model does introduce (with respect to <tt>Akka</tt>) 
+its own peculiarities, including reactive actions, even-driven programming concepts and a support for distribution in heterogeneous systems. 
+<br/>
+The addition of a <em>k</em> to the prefix (e.g. <bc>qak, Qak</bc>) means that we are making reference to the version implemented in <bc>Kotlin</bc>.
+<br/><br/>
+Let us summarize the main features of a <tt>qa-system</tt>:
+
+<ul>
+<li>A <em>QA-System</em> is a collection of active entities (<tt>QActors</tt>) each working in a computational node (<tt>Context</tt>). 
+A QActor can interact with other <tt>QActors</tt> using <a href="#messages">Messages</a> of different types (<tt>Dispatch,
+Request, Invitation, ...</tt>) and <a href="#events">Events</a>.</li>
+ 
+<li>The <em>configuration</em> of a <tt>QA-System</tt> is explicitly represented by a set of 'facts' written in tuProlog syntax
+replicated in each <tt>Context</tt> (Context Knowledge Base or simply <em>ContextKB</em>). A <tt>QA-System</tt>
+con be configured in a static or in a dynamic way. In case of dynamic configuration, the knowledge about
+the configuration is dynamically updated in each <tt>Context</tt> of the system .
+</li>
+
+<li>The <em>start-up</em> of a distributed <tt>QA-System</tt> (i.e. a system made of two or more Contexts) is handled by
+the run-time support. In particular, the Application code (i.e. the code written into the actors) begins to
+run only when all the <tt>Contexts</tt> are activated.
+</li>
+<li>The <em>exchange of information</em> among the <tt>QActors</tt> is implemented by the <bc>QA-Infrastructure</bc>.
+ The <tt>QA-Infrastructure</tt> supports interaction among <tt>QActors</tt
+working in the same <tt>Context</tt> and/or in different Contexts. In the latter case, the <tt>QA-Infrastructure</tt>
+exploits the <tt>ContextKB</tt> in order to deliver a message from the <tt>Context</tt> of the sender to the Context of the
+destination. An event raised in some <tt>Context</tt>, is delivered to all the other <tt>Contexts</tt> of the system.
+</li>
+
+<li>To <em>deliver information</em> among the Contexts, the <tt>QA-Infrastructure</tt> can use pairwise <tt>TCP</tt> connections
+between the <tt>Contexts</tt> or a <bc>MQTT</bc> broker. The choice is up to the Application designer.</li>
+
+<li>Each <tt>QActor</tt> <em>behaves</em> as a (Moore's) Finite State Automaton (<tt>FSM</tt>). 
+While in a state, a <tt>QActor</tt> can execute
+both synchronous and asynchronous actions. An asynchronous action terminates immediately and emits
+an event when it terminates.
+</li>
+
+<li>A <tt>QActor</tt> is able to execute a set of pre-defined actions</li>
+
+<li>A <tt>QActor</tt> is associated to a <em>private knowledge-base</em> (<bc>QaKB</bc>) written in Prolog that can be
+dynamically extended by the Application designer.</li>
+</ul>
+
+<h3 id="messages">Messages</h3>
+In the QActor metamodel, a message is intended as information sent in asynchronous way by some source to
+some specific destination.
+<br/><br/>
+For </bc>asynchronous</bc> transmission we intend that the messages can be 'buffered' by the infrastructure,
+while the 'unbuffered' transmission is said to be <bc>synchronous</bc>.
+ <br/><br/>
+A message does not force the execution of code: a message <tt>m</tt> sent from an actor sender to an actor receiver
+can trigger a state transition in the receiver. If the receiver is not 'waiting' for a
+transition including <tt>m</tt> the message is enqueued in the receiver queue.
+<br/><br/>
+At application-level, we say that a QActor works according to a <bc>message-based</bc> behaviour, while at the
+lower level (in the infrastructure) it works according to the <bc>massage-driven</bc> behaviour.
+ 
+
+<h3 id="events">Events</h3>
+In the QActor metamodel, an event is intended as information emitted by some source without any explicit
+destination. Events can be emitted by the QActors that compose a actor-system or by sources external to the
+system.
+<br/><br/>
+The occurrence of an event can put in execution some code devoted to the management of that event. We
+qualify this kind of behaviour as event-driven behaviour, since the event 'forces' the execution of code.
+<br/><br/>
+An event can also trigger state transitions in components, usually working as Finite state machines. We
+qualify this kind of behaviour as <bc>event-based</bc> behaviour, since the event is 'lost' if no actor is in a state
+waiting for it.
+
+<h3 id="">OLD</h3>
+<ol>
+<li>The system should be built by starting form a proper <em>system description</em>. For example:
+
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<h5>Description</h5>
+<pre>
+context(ctxButton,  "localhost", "TCP", 8010).
+context(ctxLeds,    "localhost", "TCP", 8020).
+
+qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
+
+qactor( control, ctxLeds, "it.unibo.bls19d.chain.ControlActor").
+qactor( led1, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led2, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led3, ctxLeds, "it.unibo.bls19d.qak.LedActork" ).
+
+</pre>
+
+<m>
+<ul>
+<li>The description is stored in file (<a href="../src/main/kotlin/it/unibo/bls19d/chain/sysDescr.pl" target="code">sysDescr.pl</a>) 
+ and is a knowledge-base written in <tt>tuProlog</tt> syntax.</li>
+<li>A set of built-in rules written in Prolog 
+(<a href="../src/main/kotlin/it/unibo/kactor/sysRules.pl" target="code">sysRules.pl</a>) 
+is used to facilitate the access to the description-kb</li>
+<li>An example of usage can be found in <a href="../src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt" target="code">MainSys0.kt</a></li>
+</ul>
+
+ 
+ </m>
+</td>
+<td>
+<h5>Meaning of the description</h5>
+<ol>
+<li>The system is composed of two computational nodes (<bc>context</bc>) and a set of actors (<bc>qactor</bc>).</li>
+<li>Eeach <tt>context</tt> provides (on the specified host) an <tt>input-port</tt> for messages 
+(of class <a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage</a>)
+sent via <bc>TCP</bc> </li>
+<li>Eeach <tt>qactor</tt> has a name, works within a  <tt>context</tt> and is implemented by the specififed (Kotlin) class.</li>
+</ol>
+Thus, the description is related to our <em>Two-node</em> configuration:
+
+<img src="./chain0.png" alt="chain0" width="80%" height="40%"></td>
+</tr>
+
+<tr>
+<td>
+<h5>Description</h5>
+<pre>
+context(ctxButton,"localhost", "TCP", 8010).
+context(ctxLeds1, "localhost", "TCP", 8020).
+context(ctxLeds2, "localhost", "TCP", 8030).
+
+qactor( button,  ctxButton, "it.unibo.bls19d.chain.ButtonGuiActork").
+qactor( control, ctxButton, "it.unibo.bls19d.chain.ControlActor").
+
+qactor( led1, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led2, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led3, ctxLeds1, "it.unibo.bls19d.qak.LedActork" ).
+
+qactor( led4, ctxLeds2, "it.unibo.bls19d.qak.LedActork" ).
+qactor( led5, ctxLeds2, "it.unibo.bls19d.qak.LedActork" ).
+
+</pre>
+
+
+</td>
+<td><h5>Meaning of the description</h5>
+<ol>
+<li>The system is composed of three computational nodes.</li>
+<li>The <tt>control</tt> works in the same context of the <tt>button</tt>. </li>
+<li>The <tt>leds</tt> are spread on two different nodes.</li>
+</ol>
+Thus, the description is related to our <em>More than two nodes</em> configuration:
+
+<img src="./chain2.png" alt="chain2" width="100%" height="30%"> 
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+
+</li>
+<li>The system is built by a component able to read and understand the system description. More specifically, the
+static operation <bc>createContexts( hostName:String, ... )</bc> 
+in <a href="../src/main/kotlin/it/unibo/kactor/QakContext.kt" target="code">QakContext.kt</a>.
+ looks at the description and, <i><b>for each 
+context</b></i> working on the given <tt>hostName</tt>:
+	<ol>
+	
+	<li>Creates (see <tt>createTheContext(hostName:String)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>) the context and stores a reference to it in the 
+	<bc>sysUtil.ctxActorMap</bc>. Each context is  
+	implemented by an actor of class
+	<a href="../src/main/kotlin/it/unibo/kactor/QakContext.kt" target="code">QakContext.kt</a>
+that creates a <a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
+on  the <tt>port</tt> given in the description.  </li>
+	
+	<li>Creates (see <tt>createTheActors(ctx: QakContext)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>)  the actors that belong to that context.</li>
+	
+	<li>Creates (see <tt>addProxyToOtherCtxs(ctxsList : List<String>)</tt> in  
+	<a href="../src/main/kotlin/it/unibo/kactor/sysUtil.kt" target="code">sysUtil.kt</a>) a <tt>proxy</tt> 
+	to the context-server of all the other contexts and  stores a reference to it in <bc>QakContext.proxyMap</bc>.</li>
+	</ol>
+
+</li>
+
+<li>The basic actor class  <a href="../src/main/kotlin/it/unibo/kactor/ActorBasic.kt" target="code">ActorBasic.kt</a> provides
+the  operation <bc>forward</bc> to send a dispatch to an destination actor, given its name, by looking at the <tt>QakContext.proxyMap</tt>
+to find the proper <tt>proxy</tt> when the destination is into another context.
+<pre>
+    suspend fun forward( msgId : String, msg: String, destName: String) {
+         val actor = context!!.hasActor(destName)
+         if( actor is ActorBasic   ) {//local
+            forward( msgId, msg, actor)
+        }else{ //remote
+             val ctx   = sysUtil.getActorContext(destName)
+             val proxy = QakContext.proxyMap.get(ctx)
+              if( proxy is ActorBasic )
+                proxy!!.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+            else println("       ActorBasic $name | proxy of $ctx is null ")
+          }
+    }
+</pre>
+
+</li>
+
+<li>Each message sent from a <tt>proxy</tt> to a <tt>context-server</tt> is a dispatch of class
+<a href="../src/main/kotlin/it/unibo/kactor/ApplMessage.kt" target="code">ApplMessage.kt</a>
+that contains the name of the reciver. Thus, the work or the 
+<a href="../src/main/kotlin/it/unibo/kactor/QakContextServer.kt" target="code">QakContextServer.kt</a>
+is to 'redirect' any received message to the proper destination actor. 
+
+<center>
+<img src="./qakCtxProxy.png" alt="qakCtxProxy" width="60%" height="60%"> 
+</center> 
+</li>
+  
+<li>
+
+<div class="remark">
+When the system is composed of many contexts (spread on many nodes), the infrastructure activates the actors within
+each context only when all the contexts that compose the system are activated.</div>
+</li>
+</ol> 
+
+<h2>EXAMPLE: a producer-consumer distributed (qak) system</h2>
+<center><table style="width:90%">
+<tbody>	
+
+<tr>
+<td style="width:55%">
+<pre>
+context(ctxProducer,"192.168.1.3",    "TCP", 8010).
+context(ctxConsumer,"192.168.1.10", "TCP", 8020).
+
+%%qactor( button,   ctxProducer, "it.unibo.qak.producer.ButtonGuiActork").
+qactor( producer, ctxProducer, "it.unibo.qak.producer.Producer").
+qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
+
+</pre>
+ </td>
+<td><em>System description </em>
+<center>
+<img src="./prodCons.png" alt="prodCons" width="80%" height="80%"> 
+</center>
+ 
+  </td>
+</tr>
+
+<tr>
+<td><pre>
+package it.unibo.qak.producer
+...
+    QakContext.createContexts(
+        "192.168.1.10", this,
+        "src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl",
+        "src/main/kotlin/it/unibo/qak/prodCons/sysRules.pl"
+    )
+	val producer = QakContext.getActor("producer")
+    MsgUtil.sendMsg("start", "start", producer!!)
+}</pre></td>
+<td><m><em>Main of the producer</em><br/>
+The application designer focuses on input-message handling:</m>
+<pre>
+class Producer( name : String ) : ActorBasic( name ) {
+    override suspend fun actorBody(msg: ApplMessage) {
+        for( i in 1..3 ) {
+            delay( 500 )
+            forward("data", "item$i", "consumer")
+        }
+    }
+}
+</pre></td>
+</tr> 
+
+
+ <tr>
+<td><pre>
+package it.unibo.qak.consumer
+...
+fun main() = runBlocking {
+    QakContext.createContexts(
+            "192.168.1.10",this,
+            "src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl",
+            "src/main/kotlin/it/unibo/qak/prodCons/sysRules.pl"
+    )
+}</pre></td>
+<td><m><em>Main of the consumer</em><br/>
+The application designer focuses on input-message handling:</m>
+<pre>
+class Consumer( name : String ) : ActorBasic( name ) {
+    override suspend fun actorBody(msg: ApplMessage) {
+        println("   Consumer $name |  receives msg= $msg ")
+    }
+}
+</pre>
+</td>
+</tr> 
+
+<tr>
+<td></td>
+<td></td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+ 
+
+</p>
+<!--
+ <h2>BLSD7Segm (Work to do)</h2>
+ <div class="req">
+Design and build a <tt>Distributed</tt> software system in which
+<ul>
+<li>A </li>
+<li>shows the value on <bc>Seven-Segment Display</bc>
+</li>
+</ul>
+-->
+
+ 
+</div>	 
+
+
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../issStart2019/userDocs/Lab0.html" beforeDir="false" afterPath="$PROJECT_DIR$/../issStart2019/userDocs/Lab0.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab1.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab3.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userDocs/Lab5.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab5.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab6.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab7.html" afterDir="false" />
-    </list>
+    <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -476,6 +467,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="4" width="1038" height="661" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31697342" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
