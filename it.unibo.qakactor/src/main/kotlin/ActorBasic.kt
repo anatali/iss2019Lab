@@ -11,25 +11,24 @@ import kotlinx.coroutines.channels.actor
  */
 
 abstract class  ActorBasic(val name: String,
+                           val confined : Boolean = false,
                            val ioBound : Boolean = false,
-                           val channelSize : Int = 5,
-                           val confined : Boolean = false ) {
-    val cpus = Runtime.getRuntime().availableProcessors();
+                           val channelSize : Int = 5
+                            ) {
+    //val cpus = Runtime.getRuntime().availableProcessors();
     lateinit var context : QakContext  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
-
-    protected val dispatcher =
-        if( confined )
-        newSingleThreadContext("qaksingle")
-        else
-            if( ioBound )
-                newFixedThreadPoolContext(64, "qakiopool")
-            else newFixedThreadPoolContext(cpus, "qakpool")
-
     protected var count = 1;
 
-    val  actor = GlobalScope.actor<ApplMessage>(
+    protected val dispatcher =
+        if( confined ) sysUtil.singleThreadContext
+        else  if( ioBound ) sysUtil.ioBoundThreadContext
+              else sysUtil.cpusThreadContext
+
+
+    val actor = GlobalScope.actor<ApplMessage>(
             dispatcher, capacity=channelSize ) {
+        //println("   ActorBasic $name |  RUNNING IN $dispatcher"  )
         for( msg in channel ) {
             //println("   ActorBasic $name |  msg= $msg "  )
             actorBody( msg )
@@ -67,12 +66,34 @@ Messaging
             forward( msgId, msg, actor)
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
-             val proxy = QakContext.proxyMap.get(ctx)
+             val proxy = context.proxyMap.get(ctx)
              println("       ActorBasic $name | forward $msgId : $msg to external $destName IN context=${ctx} " )
              //WARNING: destName must be the original and not the proxy
             if( proxy is ActorBasic )
                 proxy.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
             else println("       ActorBasic $name | proxy of $ctx is null ")
           }
+    }//forward
+
+
+    suspend fun emit( msgId : String, msg : String) {
+        val event = MsgUtil.buildEvent(name,msgId, msg)
+        //PROPAGATE TO LOCAL ACTORS
+        context.actorMap.forEach{
+            //val destName  = it.key
+            val destActor = it.value
+            destActor.actor.send( event )
+        }
+         //PROPAGATE TO REMOTE ACTORS
+        sysUtil.ctxsMap.forEach{
+            val ctxName  = it.key
+            //val ctx      = it.value
+            val proxy      = context.proxyMap.get(ctxName)
+            if( proxy is ActorBasic ){
+                //println("       ActorBasic $name | emit $event  towards $ctxName " )
+                proxy.actor.send( event )
+            }
+            //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
+        }
     }
 }

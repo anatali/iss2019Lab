@@ -20,6 +20,10 @@ var count = 1;
         return ApplMessage(msgId, ApplMessageType.dispatch.toString(),
             actor, dest, "$content", "${count++}")
     }
+    fun buildEvent( actor: String, msgId : String , content : String  ) : ApplMessage {
+        return ApplMessage(msgId, ApplMessageType.event.toString(),
+            actor, "none", "$content", "${count++}")
+    }
 
     suspend fun sendMsg( sender : String, msgId: String, msg: String, destActor: ActorBasic) {
         val dispatchMsg = buildDispatch(sender, msgId, msg, destActor.name)

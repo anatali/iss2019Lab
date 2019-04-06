@@ -28,7 +28,7 @@ class QakContextServer(val ctx: QakContext,
 
     suspend protected fun waitForConnection() {
         //We could handle several connections
-        //GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             try {
                 while (true) {
                     //println("       QakContextServer $name | WAIT FOR CONNECTION")
@@ -38,7 +38,7 @@ class QakContextServer(val ctx: QakContext,
             } catch (e: Exception) {
                  println("      QakContextServer $name | WARNING: ${e.message}")
             }
-        //}
+        }
     }
 /*
 EACH CONNECTION WORKS IN ITS OWN COROUTINE
@@ -51,6 +51,10 @@ EACH CONNECTION WORKS IN ITS OWN COROUTINE
                     val msg = conn.receiveALine()       //BLOCKING
                     //println("       QakContextServer  $name | receives:$msg in ${sysUtil.curThread()}")
                     val inputmsg = ApplMessage(msg)
+                    if( inputmsg.msgType() == ApplMessageType.event.toString() ){
+                        propagateEvent(inputmsg)
+                        continue
+                    }
                     val dest     = inputmsg.msgReceiver()
                     val actor    = ctx.hasActor( dest )
                     if( actor is ActorBasic ) MsgUtil.sendMsg(inputmsg, actor )
@@ -60,6 +64,13 @@ EACH CONNECTION WORKS IN ITS OWN COROUTINE
                 println("       QakContextServer $name | handleConnection WARNING: ${e.message}")
             }
         }
+    }//handleConnection
+
+    suspend fun propagateEvent(event : ApplMessage){
+         ctx.actorMap.forEach{
+           // println("       QakContextServer $name | in ${ctx.name} propag $event to ${it.key} in ${it.value.context.name}")
+           it.value.actor.send(event)
+         }
     }
 }
 

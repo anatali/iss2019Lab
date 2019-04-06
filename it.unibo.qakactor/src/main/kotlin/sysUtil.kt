@@ -1,12 +1,20 @@
 package it.unibo.kactor
 import alice.tuprolog.*
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.newSingleThreadContext
 import java.io.FileInputStream
 
+//A module in kotlin is a set of Kotlin files compiled together
 object sysUtil{
 	private val pengine = Prolog()
-	private val ctxsMap :      MutableMap<String, QakContext> = mutableMapOf<String, QakContext>()
-	private val ctxActorMap :  MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
+	internal val ctxsMap :      MutableMap<String, QakContext> = mutableMapOf<String, QakContext>()
+	internal val ctxActorMap :  MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
 	val ctxOnHost =  mutableListOf<QakContext>()
+
+	val cpus                   = Runtime.getRuntime().availableProcessors()
+	val singleThreadContext    = newSingleThreadContext("qaksingle")
+	val ioBoundThreadContext   = newFixedThreadPoolContext(64, "qakiopool")
+	val cpusThreadContext      = newFixedThreadPoolContext(cpus, "qakcpuspool")
 
 	fun getPrologEngine() : Prolog = pengine
 	fun curThread() : String = "thread=${Thread.currentThread().name}"
@@ -27,26 +35,22 @@ object sysUtil{
 			//context( CTX, HOST, PROTOCOL, PORT )
 			val ctxsList = strRepToList(ctxs!!)
 			//waits for all the other context before activating the actors
-			ctxsList.forEach { ctx ->
-				createTheContext(ctx, hostName = hostName)
-				//if( newctx is QakContext) createTheActors( newctx )
+			ctxsList.forEach { ctx -> createTheContext(ctx, hostName = hostName)
 			}//foreach ctx
 			addProxyToOtherCtxs(ctxsList)  //here could wait in polling ...
-		    //DONE IN QakContext
-			//ctxOnHost.forEach { ctx -> createTheActors(ctx)  }//foreach ctx
 	}//createContexts
 
 	fun createTheContext(  ctx : String, hostName : String  ) : QakContext?{
-		println("sysUtil | $ctx host=$hostName  ")
+		//println("sysUtil | $ctx host=$hostName  ")
 		val ctxHost : String?  = solve("getCtxHost($ctx,H)","H")
-		println("sysUtil | ctxHost=$ctxHost  ")
+		//println("sysUtil | $ctx ctxHost=$ctxHost  ")
 		if( ! ctxHost.equals(hostName) ) return null
 		val ctxProtocol : String? = solve("getCtxProtocol($ctx,P)","P")
 		val ctxPort : String?     = solve("getCtxPort($ctx,P)","P")
 		println("sysUtil | $ctx host=$ctxHost port = $ctxPort protocol=$ctxProtocol")
 		val portNum = Integer.parseInt(ctxPort)
 		//CREATE AND MEMO THE CONTEXT
-		val newctx = QakContext( "$ctx", "$ctxHost", portNum)
+		val newctx = QakContext( "$ctx", "$ctxHost", portNum) //ActorBasic
 		ctxsMap.put("$ctx", newctx)
 		ctxOnHost.add(newctx)
 		return newctx
@@ -71,7 +75,7 @@ object sysUtil{
 						val ctxHost : String?     = solve("getCtxHost($it,H)","H")
  						val ctxProtocol : String? = solve("getCtxProtocol($it,P)","P")
 						val ctxPort : String?     = solve("getCtxPort($it,P)","P")
-						QakContext.addCtxProxy( it, ctxProtocol!!, ctxHost!!, ctxPort!! )
+						curCtx.addCtxProxy( it, ctxProtocol!!, ctxHost!!, ctxPort!! )
 					}
 				}
 			} //else{ println("sysUtil | WARNING: $ctx NOT ACTIVATED ") }
@@ -103,7 +107,7 @@ object sysUtil{
 				val className = actorClass!!.replace("'","")
 				val clazz = Class.forName(className)	//Class<?>
 				val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
-				val actor = ctor.newInstance("$it") as ActorBasic
+				val actor = ctor.newInstance("$it" ) as ActorBasic
 				ctx.addActor(actor)
 				actor.context = ctx
 				//MEMO THE ACTOR
