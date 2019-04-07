@@ -1377,15 +1377,16 @@ The locking here is fine-grained and the execution is quite slow. However, it ca
 </m> </td>
 </tr>
 
-<tr>
+<tr id="producer">
 <td><pre>
-val simpleProducer = produce {
+val simpleProducer = GlobalScope.produce {
         send(1)
 }
 println(simpleProducer.receive()) //1
-
+------------------------------------------------------------
 val context = newSingleThreadContext("myThread")
-val typedProducer: ReceiveChannel<Any> = produce(context){
+val typedProducer: ReceiveChannel&lt;Any> = 
+	     GlobalScope.produce(context){
 	send(5)
 	send("a")
 	send(100)
@@ -1399,13 +1400,19 @@ typedProducer.consumeEach {
 </pre> </td>
 <td><m>A <em>Producer</em> works as follows:
 <ul>
-<li>suspends after a value s produced and  resumes when a new value is requested (similar to suspending sequences anmd iterators)</li>
-<li>can be built with a specific <tt>CoroutineContext</tt> (as with <tt>launch</tt> or <tt>async</tt>) </li>
+<li>suspends after a value s produced and  resumes when a new value is requested (similar to suspending sequences and iterators)</li>
+<li>can be built with the coroutine builder <bc>produce</bc> and 
+a specific <tt>CoroutineContext</tt> (as with <tt>launch</tt> or <tt>async</tt>) </li>
 <li>the body of the suspending lambda that is passed can suspend at any point</li>
 <li>a value from a producer can only be received in a suspending computation </li>
+<li> The channel has no buffer by default is closed when the coroutine completes</li>
 </ul>
 
-A producer is associated with the channel that it sends elements to (a <bc>ReceiveChannel</bc>) .
+A producer is associated with the channel that it sends elements to (a <bc>ReceiveChannel</bc>).
+
+<br/></br>
+For other examples see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#kprod" target="code">Lab7.html#kprod</a>
+
 </m> </td>
 </tr>
 
@@ -2128,6 +2135,97 @@ must be nested in the superclass </m>
 </tbody>	
 </table></center>
 
+<h3 id="sequence">SEQUENCES and SUSPENDABLE SEQUENCES</h3>
+
+<center><table style="width:95%">
+<tbody>	
+ <tr>
+<td style="width:45%">
+<pre>
+data class Person(val name: String, val age: Int)
+
+val persons = listOf(
+    Person("Peter", 16),
+    Person("Alice", 23),
+    Person("Anna",  25),
+    Person("Anna",  28),
+    Person("Sonya", 39)
+)
+
+val names = persons
+    .asSequence()
+    .filter { it.age > 18 }
+    .map { it.name }
+    .distinct()
+    .sorted()
+    .toList()
+
+fun main(){
+    println(names)
+}	
+</pre>
+</td>
+<td><m>
+<em>Sequences</em> are a key abstraction to functional programming in Kotlin, a concept quite similar to <tt>Java 8</tt> <em>Streams</em>.
+<br/>
+The <tt>OUTPUT</tt> of the example is:</m>
+<pre>
+[Alice, Anna, Sonya]
+BYE
+</pre>
+<m>Sequences are <bc>stateless</bc> and they reset after being used.</m>
+</td>
+</tr>
+
+<tr id="yield">
+<td>
+<pre> 
+val fiboSeq = sequence{
+    var a = 0
+    var b = 1 
+    yield(1)           //first
+    while (true) {
+        yield(a + b)   //next
+        val tmp = a + b
+        a = b
+        b = tmp
+    }
+}
+
+ fun main() {
+    println("BEGINS")
+    val v = fibonacciSeq.elementAt(2)
+    println("v=$v")
+    val firstNums = fibonacciSeq.take(5)  //calculated later 
+    println("firstNums=${firstNums}")
+    println("firstNums=${firstNums.joinToString()}")
+    println("ENDS")
+}
+</pre> 
+</td>
+
+<td><m>We known that a <em>suspend function</em> can suspend its execution while waiting for the execution of one or more computations to happen.
+<br/><br/>
+Instead, a <em>suspendable sequence</em> is a coroutine builder that can suspend between invocation by using the <bc>yield()</bc> function.
+<br/>
+The <tt>OUTPUT</tt> of the example is:</m>
+<pre>
+BEGINS
+v=2
+firstNums=kotlin.sequences.TakeSequence@726f3b58
+firstNums=1, 1, 2, 3, 5
+ENDS
+</pre>
+
+For other examples of suspendable sequence, see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#yield" target="code">Lab7.html#yield</a>
+
+</m> 
+</td>
+</tr> 
+
+</tbody>	
+</table></center>
+
 <h3>OTHER</h3>
 
 <center><table style="width:95%">
@@ -2332,56 +2430,6 @@ when the thread is further released.
 </m> </td>
 </tr>
 
-
- 
- 
- 
- 
-<tr>
-<td><pre>
-
-
-val fibonacciSeq = buildSequence {
-    var a = 0
-    var b = 1
- 
-    yield(1)
- 
-    while (true) {
-        yield(a + b)
- 
-        val tmp = a + b
-        a = b
-        b = tmp
-    }
-}
-
- fun main() {
-    println("BEGINS")
-    printSequence()
-    val v = sequence.elementAt(2)
-    println("v=$v")
-//Sequences are stateless and they reset after being used
-    val firstTwo = sequence.take(2)   //calculated at later tine
-    println("firstTwo=${firstTwo.joinToString()}")
-    println("ENDS")
-}
-
- 
-
-//OUPUT
-BEGINS
- 
-ENDS
-</pre> </td>
-<td><m>A suspend function can suspend its execution while waiting for the execution of one or more computations to happen.
-<br/><br/>
-Instead, a 
-<em> suspendable sequence </em> is a coroutine builder taht can suspend between invocation by using the <bc>yield()</bc> function.
-
-
-</m> </td>
-</tr> 
 
 </tbody>	
 </table></center>

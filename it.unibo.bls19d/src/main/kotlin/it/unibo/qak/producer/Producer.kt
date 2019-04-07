@@ -1,19 +1,23 @@
 package it.unibo.qak.producer
 
 import it.unibo.kactor.*
+import it.unibo.qak.prodCons.DataItem
 import kotlinx.coroutines.delay
 
 class Producer( name : String ) : ActorBasic( name ) {
-    init{
-         println("   Producer $name |  init: EXISTS NOW ")
-    }
-
+var n = 1
     override suspend fun actorBody(msg: ApplMessage) {
-        println("   Producer $name |  receives msg= $msg ")
-        for( i in 1..3 ) {
-            delay( 500 )
-            println("   Producer $name |  sends item$i ")
-            forward("data", "item$i", "consumer")
+        //println("   Producer $name |  receives msg= $msg ")
+        when ( msg.msgId() ) {
+            "start" -> {
+                //println("   Producer $name |  receives msg= $msg ")
+                //for (i in 1..2) {
+                    val d = DataItem( "data${n++}")
+                    //forward("data", "item$i", "consumer")
+                    emit(d.id, d.item)
+                //}
+            }
+            else -> println("   Producer $name |  msg= $msg ")
         }
     }
 }

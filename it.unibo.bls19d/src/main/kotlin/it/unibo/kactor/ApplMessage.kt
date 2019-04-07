@@ -4,7 +4,7 @@ import alice.tuprolog.Struct
 import alice.tuprolog.Term
 
 enum class ApplMessageType{
-    dispatch, request, invitation
+    event, dispatch, request, invitation
 }
 
 open class ApplMessage  {
