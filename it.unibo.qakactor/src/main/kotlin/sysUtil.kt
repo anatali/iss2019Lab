@@ -103,18 +103,22 @@ object sysUtil{
 		actorList.forEach{
 			if( it.length > 0 ){
 				val actorClass = solve("qactor($it,_,CLASS)","CLASS")
-				//println("sysUtil | CREATE actor=$it in context:${ctx.name}  class=$actorClass"   )
 				val className = actorClass!!.replace("'","")
-				val clazz = Class.forName(className)	//Class<?>
-				val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
-				val actor = ctor.newInstance("$it" ) as ActorBasic
-				ctx.addActor(actor)
-				actor.context = ctx
-				//MEMO THE ACTOR
-				ctxActorMap.put("$it",actor  )
-			}
+				createActor( ctx, it, className)
+ 			}
 		}
 	}//createTheActors
+
+	fun createActor( ctx: QakContext, actorName: String, className : String  ){
+		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
+		val clazz = Class.forName(className)	//Class<?>
+		val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
+		val actor = ctor.newInstance(actorName ) as ActorBasic
+		ctx.addActor(actor)
+		actor.context = ctx
+		//MEMO THE ACTOR
+		ctxActorMap.put(actorName,actor  )
+	}
 
 	fun solve( goal: String, resVar: String  ) : String? {
 		//println("sysUtil $name | solveGoal ${goal}" );
