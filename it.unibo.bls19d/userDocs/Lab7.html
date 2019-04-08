@@ -412,25 +412,34 @@ We could define a producer-consumer system based on suspendable sequence
 <pre>
 val seqProd  = sequence{
     var v = 1
-    while(true){
-        println( "seqProd produces $v in ${sysUtil.curThread()}")
-        yield( v++ )
+    for(i in 1..3){
+        yield( v  )
+        //println( "seqProd produced $v in ${sysUtil.curThread()}")
+        v++
     }
+    //println( "seqProd generateSequence  ")
+    yieldAll( generateSequence(2) { it * 2  } )
 }
 
 suspend fun seqcons1( scope : CoroutineScope){
-	println("seqcons1 STARTS")
+    println("seqcons1 STARTS")
     scope.launch {
-        val vlist = seqProd.take(3).toList()
-        println("seqcons1 receives $vlist in ${sysUtil.curThread()}")
+        for( i in 0 .. 5 ) {
+            val v = seqProd.elementAt(i)
+            println("seqcons1 $i receives $v in ${sysUtil.curThread()}")
+            delay(100) //release control
+        }
     }
 }
 
 suspend fun seqcons2( scope : CoroutineScope ){
-	println("seqcons2 STARTS")
+    println("seqcons2 STARTS")
     scope.launch {
-        val vlist = seqProd.take(7).filter { it % 2 != 0 }.toList()
-        println("seqcons2 receives $vlist in ${sysUtil.curThread()}")
+        for( i in 1 .. 3 ) {
+            val vlist = seqProd.take(i*3).filter { it % 2 == 0 }.toList()
+            println("seqcons2 receives $vlist in ${sysUtil.curThread()}")
+            delay(100) //release control
+        }
     }
 }
 
@@ -443,23 +452,21 @@ fun main() = runBlocking{
 </td>
 <td>
 <m>The full code is in <a href="../src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" target="code">prodSequenceKotlin.kt</a>.
-<br/>The <tt>OUTPUT</tt> is:</m>
+<br/><br/>
+The <tt>OUTPUT</tt> is:</m>
 <pre>
 seqcons1 STARTS
 seqcons2 STARTS
 BYE
-seqProd produces 1 in thread=main
-seqProd produces 2 in thread=main
-seqProd produces 3 in thread=main
-seqcons1 receives [1, 2, 3] in thread=main
-seqProd produces 1 in thread=main
-seqProd produces 2 in thread=main
-seqProd produces 3 in thread=main
-seqProd produces 4 in thread=main
-seqProd produces 5 in thread=main
-seqProd produces 6 in thread=main
-seqProd produces 7 in thread=main
-seqcons2 receives [1, 3, 5, 7] in thread=main
+seqcons1 0 receives 1 in thread=main
+seqcons2 receives [2] in thread=main
+seqcons1 1 receives 2 in thread=main
+seqcons2 receives [2, 2, 4, 8] in thread=main
+seqcons1 2 receives 3 in thread=main
+seqcons2 receives [2, 2, 4, 8, 16, 32, 64] in thread=main
+seqcons1 3 receives 2 in thread=main
+seqcons1 4 receives 4 in thread=main
+seqcons1 5 receives 8 in thread=main
 </pre>
 </td>
 </tr>
@@ -472,7 +479,7 @@ seqcons2 receives [1, 3, 5, 7] in thread=main
 The problem is that our producer does not recompute the values when needed by the consumers.
 
 <h4 id="yield">Producer as event emitter</h4>
-
+The pro
 
 <h2>...</h2>
 <center><table style="width:98%">

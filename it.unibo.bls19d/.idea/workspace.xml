@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="" />
+    <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -31,11 +34,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="21" column="30" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="30" />
+            <state relative-caret-position="126">
+              <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
               <folding>
                 <element signature="e#37#407#0" expanded="true" />
               </folding>
@@ -64,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/Producer.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="253">
@@ -109,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="122" column="91" selection-start-line="122" selection-start-column="91" selection-end-line="122" selection-end-column="91" />
+            <state relative-caret-position="105">
+              <caret line="106" column="60" lean-forward="true" selection-start-line="106" selection-start-column="16" selection-end-line="106" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -244,13 +247,13 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodConsYiledKotlin.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodManyConsKotlin.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodConsYieldKotlin.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/consumer/MainConsumer.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/MainProducer.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/Producer.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" />
       </list>
     </option>
   </component>
@@ -353,6 +356,16 @@
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
               <item name="unibo" type="462c0819:PsiDirectoryNode" />
               <item name="qak" type="462c0819:PsiDirectoryNode" />
+              <item name="prodConsKotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.bls19d" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.bls19d" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="unibo" type="462c0819:PsiDirectoryNode" />
+              <item name="qak" type="462c0819:PsiDirectoryNode" />
               <item name="producer" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -363,7 +376,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554657481155" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554707662526" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/oldbackup" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -410,7 +423,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.it.unibo.qak.producer.MainProducerKt">
+  <component name="RunManager" selected="Kotlin.it.unibo.qak.prodConsKotlin.ProdSequenceKotlinKt">
     <configuration name="it.unibo.qak.prodConsKotlin.ProdConsKotlinKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <module name="it.unibo.bls19d.main" />
       <option name="VM_PARAMETERS" />
@@ -478,8 +491,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.it.unibo.qak.producer.MainProducerKt" />
         <item itemvalue="Kotlin.it.unibo.qak.prodConsKotlin.ProdSequenceKotlinKt" />
+        <item itemvalue="Kotlin.it.unibo.qak.producer.MainProducerKt" />
         <item itemvalue="Kotlin.it.unibo.qak.prodConsKotlin.ProdManyConsKotlinKt" />
         <item itemvalue="Kotlin.it.unibo.qak.prodConsKotlin.ProdConsKotlinKt" />
         <item itemvalue="Kotlin.it.unibo.qak.prodConsKotlin.SimpleProducerKotlinKt" />
@@ -502,7 +515,7 @@
   <component name="ToolWindowManager">
     <frame x="66" y="4" width="1275" height="719" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26502058" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26502058" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -511,7 +524,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32575756" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49744028" visible="true" weight="0.33617747" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49744028" visible="true" weight="0.5255973" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -856,16 +869,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/ButtonGuiActork.kt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="21" column="30" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="30" />
-          <folding>
-            <element signature="e#37#407#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-272">
@@ -887,13 +890,6 @@
           <folding>
             <element signature="e#31#99#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="122" column="91" selection-start-line="122" selection-start-column="91" selection-end-line="122" selection-end-column="91" />
         </state>
       </provider>
     </entry>
@@ -921,6 +917,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
           <caret line="18" column="13" lean-forward="true" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="106" column="60" lean-forward="true" selection-start-line="106" selection-start-column="16" selection-end-line="106" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+          <folding>
+            <element signature="e#37#407#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
