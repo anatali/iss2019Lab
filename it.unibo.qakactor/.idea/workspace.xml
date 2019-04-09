@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="" />
+    <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ButtonGuiActork.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerShow.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/MainQakProducerStream.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ObservableActor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ProducerStream.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/sysDescr.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/sysRules.pl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/qacontexts.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/qactor.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/QakContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/QakContextServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/QakContextServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsKotlin/prodSequenceKotlin.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/ButtonGuiActork.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/Producer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/Producer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/QakContextServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/QakContextServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -31,28 +60,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Producer.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
               <caret line="17" selection-start-line="8" selection-end-line="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/QakContextServer.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="40" column="8" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -67,31 +78,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/ContextProxy.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="107" column="8" lean-forward="true" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/MsgUtil.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="22" column="18" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/ApplMessage.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="86" column="44" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
-              <folding>
-                <element signature="e#25#80#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="68">
+              <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -101,18 +91,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
               <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/QakContext.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="53" column="16" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="16" />
-              <folding>
-                <element signature="e#25#130#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -237,7 +215,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554707935593" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554805879926" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -246,9 +224,10 @@
       <recent name="it.unibo.kactor.test.chain" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin" />
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test\chain" />
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -368,7 +347,7 @@
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32977098" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32850242" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.34299517" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -427,13 +406,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="22" column="18" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Consumer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -499,6 +471,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="107" column="8" lean-forward="true" selection-start-line="107" selection-start-column="8" selection-end-line="107" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Consumer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ContextProxy.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
         </state>
       </provider>
     </entry>

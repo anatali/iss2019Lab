@@ -15,7 +15,7 @@ Java does not support multiple inheritance among classes.
 class ButtonAsGui : Observable(), IButtonObservable, ActionListener {
     private val frame: Frame? = null
     private val cmd: String? = null
-    override//from Observable and IButtonObservable
+    override//from ObservableActor and IButtonObservable
     fun addObserver(observer: IObserver) {
         super.addObserver(observer)
     }

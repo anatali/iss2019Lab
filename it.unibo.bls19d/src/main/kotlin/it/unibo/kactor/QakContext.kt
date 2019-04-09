@@ -1,6 +1,7 @@
 package it.unibo.kactor
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,7 +37,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
         println("QakContext $name | INIT on port=$portNum CREATES the QakContextServer gui=$gui")
         if( gui ){
         }
-        QakContextServer( this, "server$name", Protocol.TCP )
+        QakContextServer( this, GlobalScope, "server$name", Protocol.TCP )
     }
 
     override suspend fun actorBody(msg : ApplMessage){

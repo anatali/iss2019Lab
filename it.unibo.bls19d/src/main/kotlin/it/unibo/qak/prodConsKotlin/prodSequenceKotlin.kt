@@ -25,18 +25,19 @@ val fiboSeq = sequence{
 val seqProd  = sequence{
     var v = 1
     for(i in 1..3){
+        //println( "seqProd produced $v in ${sysUtil.curThread()}")
         yield( v  )
         //println( "seqProd produced $v in ${sysUtil.curThread()}")
         v++
     }
     //println( "seqProd generateSequence  ")
-    yieldAll( generateSequence(2) { it * 2  } )
+    yieldAll( generateSequence(2) { println("generate $it"); it * 2  } )
 }
 
 suspend fun seqcons1( scope : CoroutineScope){
     println("seqcons1 STARTS")
     scope.launch {
-        for( i in 0 .. 5 ) {
+        for( i in 1 .. 5 ) {
             val v = seqProd.elementAt(i)
             //val vlist = seqProd.take(3).toList()
             println("seqcons1 $i receives $v in ${sysUtil.curThread()}")
@@ -58,7 +59,7 @@ suspend fun seqcons2( scope : CoroutineScope ){
 
 
 fun main() = runBlocking{
-    seqcons1(this)
+    //seqcons1(this)
     seqcons2(this)
     println( "BYE")
 }

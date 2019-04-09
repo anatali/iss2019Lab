@@ -5,6 +5,7 @@ import it.unibo.bls.devices.gui.ButtonAsGui
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.ApplMessage
 import it.unibo.kactor.MsgUtil
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -21,7 +22,7 @@ class ButtonGuiObserver( val buttonActor : ActorBasic) : IObserver {
 /*
 ButtonGuiActork KNOWS that must talk with the actor named "control"
  */
-class ButtonGuiActork( name : String ) : ActorBasic( name ){
+class ButtonGuiActork( name : String, scope: CoroutineScope) : ActorBasic( name, scope ){
     var working = true
 
     init{

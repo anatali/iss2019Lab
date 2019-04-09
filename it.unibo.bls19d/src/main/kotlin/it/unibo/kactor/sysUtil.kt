@@ -1,5 +1,7 @@
 package it.unibo.kactor
 import alice.tuprolog.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.newSingleThreadContext
 import java.io.FileInputStream
@@ -105,15 +107,6 @@ object sysUtil{
 				val actorClass = solve("qactor($it,_,CLASS)","CLASS")
 				//println("sysUtil | CREATE actor=$it in context:${ctx.name}  class=$actorClass"   )
 				val className = actorClass!!.replace("'","")
-				/*
-				val clazz = Class.forName(className)	//Class<?>
-				val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
-				val actor = ctor.newInstance("$it" ) as ActorBasic
-				ctx.addActor(actor)
-				actor.context = ctx
-				//MEMO THE ACTOR
-				ctxActorMap.put("$it",actor  )
-				*/
 				createActor( ctx, it, className)
 			}
 		}
@@ -122,8 +115,8 @@ object sysUtil{
 	fun createActor( ctx: QakContext, actorName: String, className : String  ){
 		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
 		val clazz = Class.forName(className)	//Class<?>
-		val ctor  = clazz.getConstructor(String::class.java)  //Constructor<?>
-		val actor = ctor.newInstance(actorName ) as ActorBasic
+ 		val ctor  = clazz.getConstructor(String::class.java, CoroutineScope::class.java )  //Constructor<?>
+		val actor = ctor.newInstance(actorName, GlobalScope ) as ActorBasic
 		ctx.addActor(actor)
 		actor.context = ctx
 		//MEMO THE ACTOR

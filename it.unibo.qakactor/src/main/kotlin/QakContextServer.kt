@@ -8,15 +8,15 @@ import kotlinx.coroutines.*
 Works at node level
 */
 
-class QakContextServer(val ctx: QakContext,
-                       name:String, val protocol: Protocol ) : ActorBasic( name, true) {
+class QakContextServer(val ctx: QakContext, scope: CoroutineScope,
+                       name:String, val protocol: Protocol ) : ActorBasic( name, scope) {
     protected var hostName: String? = null
     protected var factoryProtocol: FactoryProtocol?
 
     init {
         System.setProperty("inputTimeOut", "600000")  //10 minuti
         factoryProtocol = MsgUtil.getFactoryProtocol(protocol)
-         GlobalScope.launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             autoMsg( "start", "startQakContextServer" )
         }
     }
