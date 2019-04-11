@@ -16,7 +16,7 @@ abstract class  ActorBasic(val name:         String,
                            val ioBound :     Boolean = false,
                            val channelSize : Int = 50
                         ) {
-    //val cpus = Runtime.getRuntime().availableProcessors();
+
     var context : QakContext? = null  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
     protected var count = 1;
@@ -105,4 +105,15 @@ Messaging
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }
     }
+
+    fun machineExec(cmd: String) : Process {
+        try {
+            return sysUtil.runtimeEnvironment.exec(cmd)
+        } catch (e: Exception) {
+            println("       ActorBasic $name | machineExec ERROR $e ")
+            throw e
+        }
+    }
+
+
 }

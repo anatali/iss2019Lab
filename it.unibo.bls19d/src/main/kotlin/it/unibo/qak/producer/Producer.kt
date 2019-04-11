@@ -2,6 +2,7 @@ package it.unibo.qak.producer
 
 import it.unibo.kactor.*
 import it.unibo.qak.prodCons.DataItem
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
 val fiboSeq = sequence{
@@ -17,7 +18,7 @@ val fiboSeq = sequence{
     }
 }
 
-class Producer( name : String ) : ActorBasic( name ) {
+class Producer( name : String, scope: CoroutineScope) : ActorBasic( name, scope ) {
 var n = 1
     override suspend fun actorBody(msg: ApplMessage) {
         //println("   Producer $name |  receives msg= $msg ")

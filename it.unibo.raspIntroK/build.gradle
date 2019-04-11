@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'application'
 }
 
 version '1.0'
@@ -20,6 +21,9 @@ dependencies {
 //ARDUINO
     // https://mvnrepository.com/artifact/org.scream3r/jssc
     compile group: 'org.scream3r', name: 'jssc', version: '2.8.0'
+//Pi4j
+    // https://mvnrepository.com/artifact/com.pi4j/pi4j-core
+    compile group: 'com.pi4j', name: 'pi4j-core', version: '1.2'
 
 //JSON
     // https://mvnrepository.com/artifact/org.json/json
@@ -41,3 +45,21 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+// Define the main class for the application.
+//ext {
+    mainClassName = 'it.unibo.qak.sonar.SonarShowKt'
+//}
+/*
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin/'
+}
+*/
+jar {
+    println("executing jar")
+    manifest {
+        attributes 'Main-Class': "it.unibo.qak.sonar.SonarShowKt"
+    }
+}
+
+ 

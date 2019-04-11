@@ -130,7 +130,7 @@ table, th, td {
 <div class="body"> 
 
 <h1>72939 - LAB7 | The QActor metamodel</h1> 
-<a href="http://infolab.ingce.unibo.it/iss2018/it.unibo.issMaterial/issdocs/Material/LectureBologna1819.html" target="isslm">LabSS-lectures site</a></font> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
 
   
 
@@ -142,7 +142,7 @@ The leading <em>Q/q</em> in the <tt>QActor</tt> word, means 'quasi' since the <t
 its own peculiarities, including reactive actions, even-driven programming concepts and a support for distribution in heterogeneous systems. 
 <br/>
 The addition of a <em>k</em> to the prefix (e.g. <bc>qak, Qak</bc>) means that we are making reference to the version implemented in <bc>Kotlin</bc>,
-without using any bc>Akka</bc> support.
+without using any <tt>Akka</tt> support.
 <br/><br/>
 Let us summarize the main features of a <tt>qa-system</tt>:
 
@@ -191,6 +191,7 @@ an event when it terminates.
 <li><pre>forward( msgId : String, msg: String, destActor: ActorBasic)</pre></li>
 <li><pre>forward( msgId : String, msg: String, destName: String)</pre></li>
 <li><pre>emit( msgId : String, msg : String)</pre></li>
+<li><pre>machineExec(cmd: String) </pre></li>
 
 </ul>
 </li>
@@ -635,13 +636,91 @@ qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 </tr>
 
 
+</tbody>	
+</table></center>
+ 
+ 
+
+ 
+<h2 id="Executable">Executable jars</h2>
+
+
+<center><table style="width:98%">
+
+<tbody>	
+
+<tr>
+<td style="width:45%">
+<pre>
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'application'
+}
+...
+mainClassName = 'it.unibo.qak.sonar.SonarShowKt'
+
+jar {
+    println("executing jar")
+    manifest {
+        attributes 'Main-Class': "it.unibo.qak.sonar.SonarShowKt"
+    }
+}
+</pre>
+</td>
+<td><m>The build file is in 
+<a href="../build.gradle" target="code">build.gradle</a> 
+<br/><br/>
+The main we use for this example is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodCons/mainProdConsLocal.kt" target="code">mainProdConsLocal.kt</a>
+<br/><br/>
+<b><tt>Note that</tt></b> the main class is named <bc>it.unibo.qak.prodCons.MainProdConsLocalKt</bc>
+</m> 
+</td>
+</tr>
+
 <tr>
 <td>
 <pre>
+context(ctxProducer,"localhost",    "TCP", 8010).
+context(ctxConsumer,"localhost", "TCP", 8020).
+
+qactor( button,   ctxProducer, "it.unibo.qak.producer.ButtonGuiActork").
+qactor( producer, ctxProducer, "it.unibo.qak.producer.Producer").
+qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 </pre>
 </td>
-<td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/consumer/Producer.kt" target="code">...</a>
+<td><m>The system description is now written in in the main directory of the project:
+<a href="../sysDescr.pl" target="code">sysDescr.pl</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+gradle build jar
+</pre>
+</td>
+<td><m>Generates the <em>distribution file</em> is the directory <bc>build/distributions</bc> 
+<a href="../build/distributions" target="code">it.unibo.bls19d-1.0.zip</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td><m>
+<ol>
+<li>unzip the distribution file in some dir</li>
+<li>work in the <bc>bin</bc> directory</li>
+<li><bc>copy</bc> in this directory the files <a href="../sysDescr.pl" target="code">sysDescr.pl</a> and 
+<a href="../sysRules.pl" target="code">sysRules.pl</a></li>
+
+</ol>
+</m>
+</td>
+<td><m>Activate the system by running: <bc>it.unibo.bls19d.bat</bc
+ 
 </m>
 </td>
 </tr>
@@ -649,16 +728,8 @@ qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 
 </tbody>	
 </table></center>
- 
 
  
-</tbody>	
-</table></center>
-
- 
-
- 
-
 </p>
 <!--
  <h2>BLSD7Segm (Work to do)</h2>

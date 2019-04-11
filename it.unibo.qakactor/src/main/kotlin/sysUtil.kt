@@ -13,7 +13,9 @@ object sysUtil{
 	internal val ctxActorMap :  MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
 	val ctxOnHost =  mutableListOf<QakContext>()
 
-	val cpus                   = Runtime.getRuntime().availableProcessors()
+	val runtimeEnvironment     = Runtime.getRuntime()
+
+	val cpus                   = runtimeEnvironment.availableProcessors()
 	val singleThreadContext    = newSingleThreadContext("qaksingle")
 	val ioBoundThreadContext   = newFixedThreadPoolContext(64, "qakiopool")
 	val cpusThreadContext      = newFixedThreadPoolContext(cpus, "qakcpuspool")

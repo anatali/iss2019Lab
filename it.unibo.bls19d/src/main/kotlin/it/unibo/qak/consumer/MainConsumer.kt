@@ -8,8 +8,8 @@ import kotlinx.coroutines.runBlocking
 fun main() = runBlocking {
     QakContext.createContexts(
             "localhost",this,
-            "src/main/kotlin/it/unibo/qak/prodCons/sysDescr.pl",
-            "src/main/kotlin/it/unibo/qak/prodCons/sysRules.pl"
+            "sysDescr.pl",
+            "sysRules.pl"
     )
 
  //   val ctx = sysUtil.getContext("ctxConsumer")

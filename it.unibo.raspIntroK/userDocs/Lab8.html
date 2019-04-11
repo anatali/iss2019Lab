@@ -140,11 +140,11 @@ table, th, td {
 	can be included in our heterogeneous distributed systems applications, according on to a <bc>message passing</bc> programming style. </li>
 	<li><em>Work</em>: 
 	<ol>
-	<li>Our starting point will be a very simple introduction to the usage of <tt>RaspberryPi GPIO</tt> by means of bash commands,
-	GPIO library and Python: see <a href="../Raspberry/raspberryProjects.html" target="code">Raspberry Low level Projects</a>.
+	<li>A very simple introduction to the usage of <tt>RaspberryPi GPIO</tt> by means of bash commands,
+	<tt>GPIO</tt> library and <tt>Python</tt>: see <a href="../Raspberry/raspberryProjects.html" target="code">Raspberry Low level Projects</a>.
 	</li>
 	<li>Design ad development of a  distributed, heterogeneous system with one producer and many consumers.</li>
-	<li>Next, we will build physical systems including a   <a href="LedEntry.html" target="code">physical Led</a>,
+	<li>Using physical devices  including a   <a href="LedEntry.html" target="code">physical Led</a>,
   a <a href="buttonEntry.html" target="code">physical Button</a> and motors. </li>
 	</ol>
 	
@@ -159,11 +159,16 @@ table, th, td {
 
  <ol>
 <li>Download and install <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html"  target="web">PuTTY</a></li>
-<li>Download the unibo <tt>SD</tt>: 
+<li>Raspberry <bc>BEFORE PiB+</bc>: Download the unibo <tt>SD</tt> image: 
      <a href="http://137.204.107.10/iss2018/it.unibo.issMaterial/issdocs/Material/2016-02-26-raspbian-jessie-iss.img.zip" 
 target="web">2016-02-26-raspbian-jessie-iss.img.zip</a> (<tt>WARNING: 1GB</tt>)</li>
+<li>Raspberry <bc>PiB+</bc>: Download the unibo <tt>SD</tt> image: 
+     <a href="http://137.204.107.10/iss2018/it.unibo.issMaterial/issdocs/Material/pierfederici.zip" 
+target="web">pi3b+.zip</a> (<tt>WARNING: 2GB</tt>)</li>
+
 <li>Generate your own <a href="https://en.wikipedia.org/wiki/Secure_Digital#Micro" target="web">Secure Digital</a> card </li>
-<li>Consult <a href="../CARD/rpi_sd.pdf" target="code">rpi_sd.pdf</a> e <a href="../CARD/guida_rpi.pdf"  target="code">guida_rpi.pdf</a> </li>
+<li>Consult <a href="../CARD/rpi_sd.pdf" target="code">rpi_sd.pdf</a> , <a href="../CARD/guida_rpi.pdf"  target="code">guida_rpi.pdf</a> 
+and <a href="https://www.raspberrypi.org/documentation/installation/installing-images/linux.md">Installing operating system images on Linux</a></li>
 <li>Insert the <tt>SD</tt> card in the  proper <tt>PC slot</tt>  and look (in the unit <bc>boot</bc>) at the file <bc>mywifi.conf</bc>:
 <pre>
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -203,22 +208,57 @@ SMB Network Share       \\192.168.137.2\home_pi\
 <li>Access to the RaspberryPi via Windows (connnetti unita di rete):
 <pre>\\192.168.137.2\home_pi\</pre>
 </li>
-</ol>
+
+<li>
+<h4>Connect the RaspberryPi to a PC  with Wifi (future applications).</h4>    
+<ol>
+<li>Insert a <tt>WIFI</tt> adapter (e.g. <tt>EDUP</tt> - Adattatore Wifi Mini <tt>USB</tt>,150MBps) in a <tt>USB</tt> slot.</li>    
+<li>Activate an hot spot (e.g by using a smart device) with name <b>natspot</b> and password <b>123456789</b></li>
+<li>Turn on the RaspberryPi. It will acquire an address (<tt>192.168.43.xxx</tt>) as shown by the command <b>ifconfig</b> </li>  
+<li>Open <bc>PuTTY</bc> and connect to <tt>192.168.43.xxx</tt> on port <tt>22</tt></li>
+<li>Useful reading: <a href="https://www.digikey.com/en/maker/blogs/raspberry-pi-3---how-to-connect-wi-fi-and-bluetooth" target="web">
+PiB Wi-Fi/Bluetooth</a></li>
+<li>
+Useful commands:
+<pre>
+sudo iwlist wlan0 scan
+sudo cat /etc/wpa_supplicant/wpa_supplicant.conf
+</pre>
+</li>
+</ol>    
+</li>
+
  
+</ol>
+
+
+
+
     
 <h2>The hardware</h2>
  
  
            
- Connect the hardware :<br/> 
-<img src="butLedRasp.jpg" alt="show" width="301" height="302"/>
-    <h3>Resistors</h3>
-    If we need some resistor:
-    <a href="../../../docs/imgs/devices/Resistor-Colour-Code.gif" target="code">Resistor-Colour-Code</a>,
-<a href="../../../docs/imgs/devices/resistor-color-code-all.gif" target="code">resistor-color-code-all</a>,
-<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">evalColor</a>
-<br/>
+Connect the hardware :
+
+<table style="width:98%">
+<tbody>	
+<tr><td><em>ButtonLed</em></td><td><em>Motors</em></td></tr>
+<tr>
+<td><img src="butLedRasp.jpg" alt="butLedRasp" width="301" height="302"/></td>
+<td><img src="robotConnections.png" alt="robotConnections" height="30%"/></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>Resistors</h3>
+
 The Raspberry Pi has internal <em>pull-up</em> and <em>pull-down</em> resistors that can be specified when the pin declarations are made.
+ <br/>
+ If we need some resistor:
+     
+<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">resistor color code</a>
 
 <h3>Links (introduction to GPIO control)</h3>         
 <ul>        
@@ -269,7 +309,7 @@ echo 0 > value #
       </pre>
       
 </td>
-<td><a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a>
+<td><a href="../src/bls/bash/gpio/led25Gpio.sh" target="code">led25Gpio.sh</a>
       <pre>
 gpio readall #
 echo Setting direction to out
@@ -282,10 +322,10 @@ gpio write 6 0 #
       </pre>
       
       </td> 
-    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a>
+    <td>    <a href="../src/bls/python/ledPython25.py" target="code">ledPython25.py</a>
 <br/><br/>  
         The newest version of Raspbian has the <br/>
-        RPi.GPIO library pre-installed. 
+        <tt>RPi.GPIO</tt> library pre-installed. 
         <pre>
 sudo python
 >>> import RPi.GPIO as GPIO
@@ -302,7 +342,7 @@ sudo python
    </tr>
  </table> 
             
-<h3>Fron file</h3>           
+<h3>ButtonLed Code</h3>           
 <table style="width:98%">
 <tbody>	
 <tr>
@@ -313,71 +353,42 @@ sudo python
     </tr>
   <tr class="alt">
     <td>
-<a href="../src/it/unibo/bls/bash/led25OnOff.sh" target="code">led25OnOff.sh</a><br/>
-<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonOn24Click.sh">buttonOn24Click.sh</a>  
+<a href="../src/bls/bash/led25OnOff.sh" target="code">led25OnOff.sh</a><br/>
+<a href="../src/bls/bash/buttonOn24Click.sh" target="code">buttonOn24Click.sh</a>  <br/>
+<a href="../src/bls/bash/buttonLed.sh" target="code">buttonLed.sh</a>          
+</td> 
+<td>    <a href="../src/bls/bash/gpio/led25Gpio.sh" target="code">led25Gpio.sh</a><br/>
+<a href="../src/bls/bash/gpio/button24Gpio.sh " target="code">button24Gpio.sh</a>  
+</td> 
+<td>    <a href="../src/bls/python/ledPython25.py" target="code">ledPython25.py</a><br/>
+        <a href="../src/bls/python/buttonPython24.py" target="code">buttonPython24.py</a>
 <br/>
-<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/buttonLed.sh">buttonLed.sh</a>          
-      </td> 
-    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo//bls/bash/gpio/led25Gpio.sh">led25Gpio.sh</a><br/>
-<a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/bash/gpio/button24Gpio.sh">button24Gpio.sh</a>  
-        
-      </td> 
-    <td>    <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/ledPython25.py">ledPython25.py</a><br/>
-        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/python/buttonPython24.py">buttonPython24.py</a>
-<br/>
-        <a href="../../../../it.unibo.raspIntro/src/it/unibo/bls/gpio/python/buttonLedPython.py">buttonLedPython.py</a>
+        <a href="../src/bls/gpio/python/buttonLedPython.py" target="code">buttonLedPython.py</a>
  </td>
-   </tr>
+</tr>
  </table>          
-<br>
-            
-Other <a href="../../Raspberry/raspberryProjects.html" target="code">Basic experiment</a> 
-<br/>
-<!--
-(with the fundamental <a href="'../../../../Tools/WiringPi/wriringpiIntro.html">WiringPi</a> library):
--->
-         
-</li>
-        
-<li>
 
-<h3>Using Pi4J in Java</h3> 
- <h3>Useful links (introduction to Pi4J)</h3> 
-    <a href="../../Raspberry/rpi-java-8-savage-devoxx.pdf" target="code">Java8+Pi4j (pdf)</a> ,        
+ 
+ <h3>Using Pi4J : useful links</h3> 
+    <a href="http://www.austinjug.org/presentations/RaspberryPi-AustinJUG.pdf" target="code">Java8+Pi4j (pdf)</a> <br/>        
     <a href="http://pi4j.com/"  target="code">Pi4j site</a>    
 
-    
-  <h3>Pi4J (project <i>it.unibo.buttonLedSystem.raspberry</i>)</h3>           
-<table id="robots">
-  <tr>
-    <th>Led</th>
-    <th>Button</th>
-    </tr>
-  <tr class="alt">
-    <td> <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceLedPi4j.java" target="code"><img src="../../Material/source.gif">DeviceLedPi4j</a>   
-<br/>specializes the 'standard implementation': 
-<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceLedImpl.java" target="code"><img src="../../Material/source.gif">DeviceLedImpl</a>
-      </td> 
-    <td>
-        <a href="../../../../it.unibo.buttonLedSystem.raspberry/src/it/unibo/bls/raspberry/components/DeviceButtonPi4J.java" target="code"><img src="../../Material/source.gif">DeviceButtonPi4J</a><br/>specializes the 'standard implementation': 
-<a href="../../../../it.unibo.buttonLedSystemHL/src/it/unibo/buttonLed/components/DeviceButtonImpl.java" target="code"><img src="../../Material/source.gif">DeviceButtonImpl</a>   
-      </td> 
- 
- </table>              
-</li>
+	
+<h2>Sensors</h2>  
+<bc>HC-SR04</bc>  <tt>UltraSonic Distance Measure Module Range Sensor</tt>.<br/>
+<a href="../src/sensors/SonarAlone.c" target="code">SonarAlone.c</a><br/>
 
-<li>
-<h3>Connect the RaspberryPi to a PC  with Wifi (future applications).</h3>    
-<ol>
-<li>Insert a WIFI adapter (e.g. EDUP - Adattatore Wifi Mini USB,150MBps) in a USB slot.</li>    
-<li>Activate an hot spot (e.g by using a smart device) with name <b>natspot</b> and password <b>123456789</b></li>
-<li>Turn on the RaspberryPi. It will acquire an address (<tt>192.168.43.xxx</tt>) as shown by the command <b>ifconfig</b> </li>  
-<li>Open PuTTY and connect to <tt>192.168.43.xxx</tt> on port <tt>22</tt></li>
-</ol>    
+<h2>Motors</h2>  
 
-</li>
+<img src="robotSkeleton.png" alt="robotSkeleton" width="70%"/>
+<br/><br/>	
+<a href="../src/motors/nanoMotorDriveA.sh" target="code">nanoMotorDriveA.sh</a><br/>
+<a href="../src/motors/nanoMotorDriveB.sh" target="code">nanoMotorDriveB.sh</a><br/>
 
-</ol>
+	   
+
+         
+
  
       <br/> <br/>
 </div>    
