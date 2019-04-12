@@ -24,9 +24,13 @@ object sysUtil{
 	fun getContext( ctxName : String ) : QakContext?  { return ctxsMap.get(ctxName)}
 	fun getActor( actorName : String ) : ActorBasic? { return ctxActorMap.get(actorName)}
 
-	fun getActorContext( actorName : String): String?{
+	fun getActorContextName( actorName : String): String?{
 		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
 		return ctxName
+	}
+	fun getActorContext ( actorName : String): QakContext?{
+		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
+		return ctxsMap.get( ctxName )
 	}
 	fun createContexts(  hostName : String,
 					desrFilePath:String, rulesFilePath:String){
@@ -48,11 +52,17 @@ object sysUtil{
 		//println("sysUtil | $ctx ctxHost=$ctxHost  ")
 		if( ! ctxHost.equals(hostName) ) return null
 		val ctxProtocol : String? = solve("getCtxProtocol($ctx,P)","P")
-		val ctxPort : String?     = solve("getCtxPort($ctx,P)","P")
+		val useMqtt = ctxProtocol!!.toLowerCase() == "mqtt"
+		var mqttAddr = ""
+		if( useMqtt ){
+			mqttAddr = "tcp://$ctxHost:1883"
+		}
+		val ctxPort     : String? = solve("getCtxPort($ctx,P)","P")
 		println("sysUtil | $ctx host=$ctxHost port = $ctxPort protocol=$ctxProtocol")
 		val portNum = Integer.parseInt(ctxPort)
 		//CREATE AND MEMO THE CONTEXT
-		val newctx = QakContext( "$ctx", "$ctxHost", portNum) //ActorBasic
+		val newctx = QakContext( "$ctx", "$ctxHost", portNum, "") //isa ActorBasic
+		newctx.mqttAddr = mqttAddr //!!!!!! INJECTION !!!!!!
 		ctxsMap.put("$ctx", newctx)
 		ctxOnHost.add(newctx)
 		return newctx

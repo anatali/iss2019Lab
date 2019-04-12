@@ -1,4 +1,4 @@
-package it.unibo.qak.producer
+package it.unibo.qak.prodConsMqtt
 
 import it.unibo.`is`.interfaces.IObserver
 import it.unibo.bls.devices.gui.ButtonAsGui
@@ -12,7 +12,7 @@ import java.util.*
 
 class ButtonGuiObserver( val buttonActor : ActorBasic) : IObserver {
       override fun update(o: Observable?, arg: Any?) {
-        //println("   ButtonGuiObserver  | UPDATE $arg in ${sysUtil.curThread()} $buttonActor" )
+        //println("   ButtonGuiObserver  | UPDATE $arg in $buttonActor" )
         GlobalScope.launch{
             MsgUtil.sendMsg("click", "click", buttonActor)
         }
@@ -33,7 +33,8 @@ class ButtonGuiActork( name : String, scope: CoroutineScope ) : ActorBasic( name
         //println("   ButtonGuiActork $name |  msg= $msg working=$working "  )
         when( msg.msgId() ){
             "click" -> {
-                forward( "start", "start", "producer")
+                //forward( "start", "start", "producer")
+                emit("local_start", "local_start")
               }
              //else -> println("   ButtonGuiActork $name | $msg UNKNOWN working=$working")
         }//when

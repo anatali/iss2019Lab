@@ -19,9 +19,11 @@ abstract class  ActorBasic(val name:         String,
     //val cpus = Runtime.getRuntime().availableProcessors();
     var context : QakContext? = null  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
+    val mqtt    = MqttUtils()
+    var mqttConnected = false
     protected var count = 1;
 
-    protected val dispatcher =
+     protected val dispatcher =
         if( confined ) sysUtil.singleThreadContext
         else  if( ioBound ) sysUtil.ioBoundThreadContext
               else sysUtil.cpusThreadContext
@@ -71,11 +73,22 @@ Messaging
             forward( msgId, msg, actor)
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
-             val proxy = context!!.proxyMap.get(ctx)
+             val m      = MsgUtil.buildDispatch(name,msgId, msg, destName)
+             //println("       ActorBasic $name | forward mqttAddr= ${ctx!!.mqttAddr}")
+             if( ctx!!.mqttAddr.length > 0  ) {
+                 //The producer should be connected to the MQTT broker
+                 if( ! mqttConnected ){
+                     mqtt.connect(name, ctx!!.mqttAddr)
+                     mqttConnected = true
+                 }
+                 mqtt.sendMsg(m, "unibo/qak/$destName")
+                 return
+             }
+             val proxy = context!!.proxyMap.get(ctx.name)
              println("       ActorBasic $name | forward $msgId : $msg to external $destName IN context=${ctx} " )
              //WARNING: destName must be the original and not the proxy
             if( proxy is ActorBasic )
-                proxy.actor.send(MsgUtil.buildDispatch(name,msgId, msg, destName))
+                proxy.actor.send( m )
             else println("       ActorBasic $name | proxy of $ctx is null ")
           }
     }//forward
@@ -83,21 +96,32 @@ Messaging
 
     suspend fun emit( msgId : String, msg : String) {
         val event = MsgUtil.buildEvent(name,msgId, msg)
-        //PROPAGATE TO LOCAL ACTORS
-        if( context == null ){
+         if( context == null ){
             //println("WARNING emit: there is no QakContext")
             return
         }
+        //PROPAGATE TO LOCAL ACTORS
         context!!.actorMap.forEach{
             //val destName  = it.key
             val destActor = it.value
             destActor.actor.send( event )
         }
          //PROPAGATE TO REMOTE ACTORS
+        if( msgId.startsWith("local")) return       //local_ => no propagation
+
         sysUtil.ctxsMap.forEach{
             val ctxName  = it.key
-            //val ctx      = it.value
-            val proxy      = context!!.proxyMap.get(ctxName)
+            val ctx      = it.value
+            //println("       ActorBasic $name | ${ctxName} emit mqttAddr= ${ctx!!.mqttAddr} mqttConnected=$mqttConnected")
+            if( ctx!!.mqttAddr.length > 0) {
+                if( ! mqttConnected ){
+                    mqtt.connect(name, ctx!!.mqttAddr)
+                    mqttConnected = true
+                }
+                mqtt.sendMsg(event, "unibo/qak/events")
+                return
+            }
+            val proxy  = context!!.proxyMap.get(ctxName)
             if( proxy is ActorBasic ){
                 //println("       ActorBasic $name | emit $event  towards $ctxName " )
                 proxy.actor.send( event )
@@ -105,4 +129,19 @@ Messaging
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }
     }
+
+/*
+--------------------------------------------
+MQTT
+--------------------------------------------
+ */
+    fun checkMqtt(){
+        if( context!!.mqttAddr.length > 0  ){
+            mqtt.connect(name,context!!.mqttAddr)
+            mqttConnected = true
+            mqtt.subscribe(this, "unibo/qak/$name")
+            mqtt.subscribe(this, "unibo/qak/events")
+        }
+    }
+
 }

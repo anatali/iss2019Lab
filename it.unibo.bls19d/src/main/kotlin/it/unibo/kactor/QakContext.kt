@@ -6,6 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 open class QakContext(name: String, val hostAddr: String, val portNum: Int,
+                      var mqttAddr : String = "",
                       val gui : Boolean = false ) : ActorBasic(name){
 
     internal val actorMap : MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
@@ -55,6 +56,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
     fun addActor( actor: ActorBasic ) {
         actor.context = this
         actorMap.put( actor.name, actor )
+        actor.checkMqtt()
         //println("QakContext $name | addActor ${actor.name}")
     }
 

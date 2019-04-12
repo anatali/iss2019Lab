@@ -12,6 +12,6 @@ fun main() = runBlocking {
             "sysRules.pl"
     )
 
- //   val ctx = sysUtil.getContext("ctxConsumer")
- //   sysUtil.createActor(ctx!!, "consumerNew", "it.unibo.qak.consumer.Consumer")
+   val ctx = sysUtil.getContext("ctxConsumer")
+   sysUtil.createActor(ctx!!, "consumerNew", "it.unibo.qak.consumer.Consumer")
 }
