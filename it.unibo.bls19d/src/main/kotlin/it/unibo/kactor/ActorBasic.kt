@@ -2,20 +2,23 @@
 
 import alice.tuprolog.Prolog
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
-/*
-    Implements an abstract actor able to receive an ApplMessage and
-    to delegate its processing to the abstract method actorBody
- */
+
+    /*
+        Implements an abstract actor able to receive an ApplMessage and
+        to delegate its processing to the abstract method actorBody
+     */
 
 abstract class  ActorBasic(val name:         String,
                            val scope:        CoroutineScope = GlobalScope,
                            val confined :    Boolean = false,
                            val ioBound :     Boolean = false,
                            val channelSize : Int = 50
-                        ) {
+                        ) : MqttCallback {
     //val cpus = Runtime.getRuntime().availableProcessors();
     var context : QakContext? = null  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
@@ -143,5 +146,19 @@ MQTT
             mqtt.subscribe(this, "unibo/qak/events")
         }
     }
+
+    override fun messageArrived(topic: String, msg: MqttMessage) {
+        //println("       ActorBasic $name |  messageArrived on "+ topic + ": "+msg.toString());
+        val m = ApplMessage( msg.toString() )
+        this.scope.launch{ actor.send( m ) }
+
+    }
+    override fun connectionLost(cause: Throwable?) {
+        println("       ActorBasic $name | connectionLost $cause " )
+    }
+    override fun deliveryComplete(token: IMqttDeliveryToken?) {
+//		println("       ActorBasic $name |  deliveryComplete token= "+ token );
+    }
+
 
 }

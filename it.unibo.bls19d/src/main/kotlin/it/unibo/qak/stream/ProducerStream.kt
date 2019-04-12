@@ -24,7 +24,7 @@ class ProducerStream( name:String, scope:CoroutineScope ) : ObservableActor(name
                 val d   = DataItem("${v}")
                 val msg = MsgUtil.buildEvent(name, d.id,d.item )
                 //println("   ProducerStream $name | PRODUCES ${v} ")
-                emitLocalEvent( msg )  //local
+                emitLocalStreamEvent( msg )  //local
                 emit(msg.msgId(), msg.msgContent()) //remote ALSO TO ITSELF
                 v++
              }
@@ -38,7 +38,7 @@ class ProducerStream( name:String, scope:CoroutineScope ) : ObservableActor(name
          println("   ProducerStream $name | COMPLETED ")
          val d = DataItem("completed")
         val msg = MsgUtil.buildEvent(name, d.id,d.item  )
-        emitLocalEvent( msg )
+        emitLocalStreamEvent( msg )
         emit(msg.msgId(), msg.msgContent()) //remote
 */
     }

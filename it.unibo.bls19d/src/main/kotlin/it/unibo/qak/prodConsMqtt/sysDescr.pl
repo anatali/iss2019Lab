@@ -1,4 +1,4 @@
-context(ctxProducer,"localhost", "TCP", 8010).
+context(ctxProducer,"localhost", "MQTT", 1883).
 context(ctxConsumer,"localhost", "MQTT", 1883).
 
 qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").

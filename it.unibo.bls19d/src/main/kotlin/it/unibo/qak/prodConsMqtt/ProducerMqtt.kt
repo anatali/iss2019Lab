@@ -13,8 +13,7 @@ class ProducerMqtt( name : String, scope: CoroutineScope) : ActorBasic( name, sc
             "local_start" -> {
                  //println("   Producer $name |  receives msg= $msg ")
                 val d = DataItem( "data(${n})")
-                    //forward("data", "item$i", "consumer")
-                    emit(d.id, d.item)
+                emit(d.id, d.item)
                 n++
             }
             else -> println("   Producer $name |  msg= $msg ")

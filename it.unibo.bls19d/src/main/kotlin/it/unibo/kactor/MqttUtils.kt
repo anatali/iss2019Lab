@@ -3,7 +3,7 @@ package it.unibo.kactor
 import kotlinx.coroutines.*
 import org.eclipse.paho.client.mqttv3.*
 
-class MqttUtils : MqttCallback {
+class MqttUtils  {
 	//protected var clientid: String? = null
 	protected var eventId: String? = "mqtt"
 	protected var eventMsg: String? = ""
@@ -29,7 +29,6 @@ class MqttUtils : MqttCallback {
 		}
 	}
 
-
 	fun disconnect() {
 		try {
 			println("	%%% MqttUtils disconnect " + client)
@@ -44,7 +43,8 @@ class MqttUtils : MqttCallback {
 		println("	%%% MqttUtils ${actor.name} subscribe to topic=$topic client=$client "  )
 		try {
 			this.workActor = actor
-			client.setCallback(this)
+			//client.setCallback(this)
+			client.setCallback(actor)
 			client.subscribe(topic)
 		}catch( e: Exception ){
 			println("	%%% MqttUtils ${actor.name} subscribe topic=$topic ERROR=$e "  )
@@ -66,7 +66,7 @@ class MqttUtils : MqttCallback {
 		//println(" ************ SENDING VIA MQTT mout=$msg on $topic" )
 		publish( topic, msg.toString(), 1, RETAIN);
 	}
-
+/*
 	override fun connectionLost(cause: Throwable?) {
 		println("	%%% MqttUtils connectionLost $cause " )
 	}
@@ -74,7 +74,12 @@ class MqttUtils : MqttCallback {
  	override fun deliveryComplete(token: IMqttDeliveryToken?) {
 //		println("			%%% MqttUtils deliveryComplete token= "+ token );
 	}
+	override fun messageArrived(topic: String, msg: MqttMessage) {
+		println("	%%% MqttUtils messageArrived on "+ topic + ": "+msg.toString());
+		sendMsgToWorkActor( msg.toString() )
+	}
 
+*/
 	/*
          * sends to a tpoic a content of the form
          * 	 msg( MSGID, MSGTYPE, SENDER, RECEIVER, CONTENT, SEQNUM )
@@ -97,11 +102,7 @@ class MqttUtils : MqttCallback {
 		}
 	}
 
-	override fun messageArrived(topic: String, msg: MqttMessage) {
-		//println("	%%% MqttUtils messageArrived on "+ topic + ": "+msg.toString());
-		sendMsgToWorkActor( msg.toString() )
-	}
-	
+
 	fun sendMsgToWorkActor( msg: String ){
 		workActor.scope.launch{
 			val m = ApplMessage( msg )

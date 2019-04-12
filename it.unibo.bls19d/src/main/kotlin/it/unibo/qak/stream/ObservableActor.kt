@@ -11,7 +11,7 @@ abstract class ObservableActor(name:String, scope: CoroutineScope) : ActorBasic(
         subscribers.add(a)
     }
 
-    open protected suspend fun emitLocalEvent( v: ApplMessage ){
+    open protected suspend fun emitLocalStreamEvent(v: ApplMessage ){
         subscribers.forEach { it.actor.send(v) }
     }
 

@@ -52,14 +52,16 @@ object sysUtil{
 		//println("sysUtil | $ctx ctxHost=$ctxHost  ")
 		if( ! ctxHost.equals(hostName) ) return null
 		val ctxProtocol : String? = solve("getCtxProtocol($ctx,P)","P")
-		val useMqtt = ctxProtocol!!.toLowerCase() == "mqtt"
-		var mqttAddr = ""
-		if( useMqtt ){
-			mqttAddr = "tcp://$ctxHost:1883"
-		}
 		val ctxPort     : String? = solve("getCtxPort($ctx,P)","P")
 		println("sysUtil | $ctx host=$ctxHost port = $ctxPort protocol=$ctxProtocol")
 		val portNum = Integer.parseInt(ctxPort)
+
+		val useMqtt = ctxProtocol!!.toLowerCase() == "mqtt"
+		var mqttAddr = ""
+		if( useMqtt ){
+			mqttAddr = "tcp://$ctxHost:$ctxPort"
+		}
+
 		//CREATE AND MEMO THE CONTEXT
 		val newctx = QakContext( "$ctx", "$ctxHost", portNum, "") //isa ActorBasic
 		newctx.mqttAddr = mqttAddr //!!!!!! INJECTION !!!!!!

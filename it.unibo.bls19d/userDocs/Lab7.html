@@ -590,7 +590,7 @@ established by the requirements. Thus we must analyze the possible alternatives:
 </li>
 </ol>
 
-<h3 id="">Modelling the producer</h3>
+<h3 id="">A solution</h3>
 
 <center><table style="width:98%">
 <tbody>	
@@ -631,6 +631,59 @@ qactor( consumer, ctxConsumer, "it.unibo.qak.consumer.Consumer").
 </td>
 <td><m>The code is in 
 <a href="../src/main/kotlin/it/unibo/qak/producer/MainProducer.kt" target="code">MainProducer.kt</a>
+</m>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+ 
+
+ <h3 id="">A solution based on MQTT</h3>
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:45%">
+<pre>
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ProducerMqtt.kt" target="code">ProducerMqtt.kt</a>
+
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ConsumerMqtt.kt" target="code">ConsumerMqtt.kt</a>
+</m>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<pre>
+context(ctxProducer,"localhost", "MQTT", 1883).
+context(ctxConsumer,"localhost", "MQTT", 1883).
+
+qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").
+qactor( producer,  ctxProducer, "it.unibo.qak.prodConsMqtt.ProducerMqtt").
+qactor( consumer1, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
+%%qactor( consumer2, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/MainProdConsMqtt.kt" target="code">MainProdConsMqtt.kt</a><br/><br/>
+Remember to activate a <tt>MQTT broker</tt> (e.g. <a href="https://mosquitto.org/" target="web">Mosquitto</a>) on the <tt>localhost</tt>.
 </m>
 </td>
 </tr>
