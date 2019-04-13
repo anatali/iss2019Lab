@@ -25,14 +25,11 @@ var n = 1
         when ( msg.msgId() ) {
             "start" -> {
                 //println("   Producer $name |  receives msg= $msg ")
-                //for (i in 1..2) {
-                    val v = fiboSeq.elementAt(n)
-                    println("   Producer $name |  fibo v= $v ")
-                    val d = DataItem( "data(fibo($n,${v}))")
-                    //forward("data", "item$i", "consumer")
-                    emit(d.id, d.item)
-                    n++
-                //}
+                val v = fiboSeq.elementAt(n++)      //RECOMPUTES!!!
+                println("   Producer $name |  n=${n-1} fibo v= $v ")
+                val d = DataItem( "data(fibo($n,${v}))")
+                //forward("data", "item$i", "consumer")
+                emit(d.id, d.item)
             }
             else -> println("   Producer $name |  msg= $msg ")
         }

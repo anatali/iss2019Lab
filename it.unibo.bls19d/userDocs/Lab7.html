@@ -235,7 +235,9 @@ Design and build a <tt>Distributed</tt> software system made of <tt>np, np>=1</t
 and <tt>nc, nc>=1</tt> <bc>QKActors</bc> that work as information <em>Consumer</em>. 
 A producer is logically related to an <bc>input sensor</bc> and generates a sequence of <bc>DataItem</bc> objects:
 <pre>
-data class  DataItem( val item: String, val id : String = "dataItem" ){}
+data class  DataItem( val item: String, val id : String = DataItem.id ){
+    companion object { val id = "dataItem"  }
+}
 </pre>   
 
 <hr/> 
@@ -562,7 +564,8 @@ Reactive programming allows to <i>propagates event changes</i> to registered obs
 <pre>
 </pre>
 </td>
-<td><m> 
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/stream/MainQakProducerStream.kt" target="code">MainQakProducerStream.kt</a>
 </m>
 </td>
 </tr>

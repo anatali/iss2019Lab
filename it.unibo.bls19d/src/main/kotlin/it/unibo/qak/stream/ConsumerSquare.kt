@@ -10,8 +10,7 @@ class ConsumerSquare(name:String, scope: CoroutineScope) : ObservableActor( name
         println("   ConsumerSquare $name |  receives msg= $msg ")
         val vs = msg.msgContent()
         if( vs.contains("completed")){
-            val m = MsgUtil.buildEvent(name, "","completed" )
-            emitLocalStreamEvent( m )
+            emitLocalStreamEvent( msg )
             return
         }
         var v = Integer.parseInt( msg.msgContent() )

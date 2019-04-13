@@ -109,7 +109,7 @@ Messaging
             val destActor = it.value
             destActor.actor.send( event )
         }
-         //PROPAGATE TO REMOTE ACTORS
+        //PROPAGATE TO REMOTE ACTORS
         if( msgId.startsWith("local")) return       //local_ => no propagation
 
         sysUtil.ctxsMap.forEach{

@@ -8,17 +8,17 @@ import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking{
     println("   MainProducerStream STARTS ")
+
     val prod  = ProducerStream("prod",  this)
     val cons1 = ConsumerSquare("consSquare", this)
     val cons2 = ConsumerShow("consShow", this)
 
-    prod.subscribe(cons1)
-    cons1.subscribe(cons2)
+    prod.subscribe(cons1).subscribe(cons2)
 
-    val msg = MsgUtil.buildEvent("main", "start", "start"  )
+    val msgStart = MsgUtil.buildEvent("main", "start", "start"  )
     for( i in 1..5 ) {
-        prod.actor.send(msg)
-        delay(500)
+        prod.actor.send(msgStart)
+        //delay(500)
     }
 
 

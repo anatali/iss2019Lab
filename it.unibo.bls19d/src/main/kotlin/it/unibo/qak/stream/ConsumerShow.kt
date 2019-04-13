@@ -7,6 +7,7 @@ class ConsumerShow(name:String, scope: CoroutineScope) : ObservableActor( name, 
 
     override suspend fun actorBody(msg : ApplMessage){
         println("   ConsumerShow $name |  receives msg= $msg ")
+        println()
      }
 
 
