@@ -33,7 +33,7 @@ class ButtonGuiActork( name : String, scope: CoroutineScope ) : ActorBasic( name
         //println("   ButtonGuiActork $name |  msg= $msg working=$working "  )
         when( msg.msgId() ){
             "click" -> {
-                forward( "start", "start", "producer")
+                emit( "local_start", "10" )
               }
              //else -> println("   ButtonGuiActork $name | $msg UNKNOWN working=$working")
         }//when

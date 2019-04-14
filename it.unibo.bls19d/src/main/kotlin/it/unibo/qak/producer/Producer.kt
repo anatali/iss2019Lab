@@ -5,33 +5,46 @@ import it.unibo.qak.prodCons.DataItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
-val fiboSeq = sequence{
-    var a = 0
-    var b = 1
-    yield(1)   //first
-    while (true) {
-        val tmp = a + b
-        println("   fiboSeq |  called with ${tmp} ")
-        yield(tmp)   //next
-        a = b
-        b = tmp
-    }
-}
-
 class Producer( name : String, scope: CoroutineScope) : ActorBasic( name, scope ) {
-var n = 1
-    override suspend fun actorBody(msg: ApplMessage) {
+    var max = 10
+    override suspend fun actorBody(msg : ApplMessage){
         //println("   Producer $name |  receives msg= $msg ")
-        when ( msg.msgId() ) {
-            "start" -> {
-                //println("   Producer $name |  receives msg= $msg ")
-                val v = fiboSeq.elementAt(n++)      //RECOMPUTES!!!
-                println("   Producer $name |  n=${n-1} fibo v= $v ")
-                val d = DataItem( "data(fibo($n,${v}))")
-                //forward("data", "item$i", "consumer")
-                emit(d.id, d.item)
+        when( msg.msgId()){
+            "local_start"     -> {
+                max = Integer.parseInt( msg.msgContent() )
+                produce(1)
             }
-            else -> println("   Producer $name |  msg= $msg ")
+            "local_${DataItem.id}"  -> {
+                if( msg.msgContent().contains("completed")) return
+                val v = Integer.parseInt( msg.msgContent() )
+                if( v < max ) produce(v+1) else dataCompleted() }
+            //else ->  println("   Producer $name |  receives msg= $msg ")
         }
     }
+
+    suspend fun produce(v:Int){
+        //if( subscribers.size > 0) {  //NO subscriber => no production
+        val msg = MsgUtil.buildEvent(name, DataItem.id, "${v}")
+        //println("   Producer $name | PRODUCES ${v} ")
+        /*
+        PRODUCER AS OBSERVABLE
+         */
+        emitLocalStreamEvent(msg)
+        /*
+        PRODUCER AS EVENT EMITTER
+         */
+        emit("local_${msg.msgId()}", msg.msgContent()) //Used as an auto-stimulation
+        emit(msg.msgId(), msg.msgContent()) //Used to propagate info (also to the logger!)
+        //}else println("   Producer $name | NO OBSERVERS ")
+        delay(200)
+    }
+
+    suspend fun dataCompleted(){
+        val d   = DataItem("completed")
+        val msg = MsgUtil.buildEvent(name, d.id,d.item  )
+        emitLocalStreamEvent( msg )
+        emit( "local_${msg.msgId()}", msg.msgContent())
+        println("   Producer $name | COMPLETED ")
+    }
+
 }
