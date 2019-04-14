@@ -1,6 +1,7 @@
     package it.unibo.kactor
 
 import alice.tuprolog.Prolog
+import it.unibo.qak.stream.ObservableActor
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -23,6 +24,7 @@ abstract class  ActorBasic(val name:         String,
     var context : QakContext? = null  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
     val mqtt    = MqttUtils()
+    protected val subscribers = mutableListOf<ActorBasic>()
     var mqttConnected = false
     protected var count = 1;
 
@@ -101,6 +103,7 @@ Messaging
         val event = MsgUtil.buildEvent(name,msgId, msg)
          if( context == null ){
             //println("WARNING emit: there is no QakContext")
+            this.actor.send(event)  //AUTOMSG
             return
         }
         //PROPAGATE TO LOCAL ACTORS
@@ -132,6 +135,23 @@ Messaging
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }
     }
+
+/*
+ --------------------------------------------
+ OBSERVABLE
+ --------------------------------------------
+*/
+    fun subscribe( a : ActorBasic) : ActorBasic {
+        subscribers.add(a)
+        return a
+    }
+    fun unsubscribe( a : ActorBasic) {
+        subscribers.remove(a)
+    }
+    protected suspend fun emitLocalStreamEvent(v: ApplMessage ){
+        subscribers.forEach { it.actor.send(v) }
+    }
+
 
 /*
 --------------------------------------------

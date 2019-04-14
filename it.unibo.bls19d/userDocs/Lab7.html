@@ -501,7 +501,7 @@ seqcons1 5 receives 8 in thread=main
 The problem is that our producer does not recompute the values when needed by the consumers.
 
 
-<h3 id="yield">Producer as a stream of data</h3>
+<h2 id="actorasstream">Actors as observable producers</h3>
 
   
 <em>Reactive programming</em> is a combination of the best ideas from the <bc>Observer</bc> pattern, 
@@ -511,23 +511,89 @@ In <tt>reactive programming</tt>, the consumer reacts to the data as it comes in
 This is the reason why asynchronous programming is also called reactive programming. 
 Reactive programming allows to <i>propagates event changes</i> to registered observers.
 <br/><br/>
+Let us add the following properties to our <tt>ActorBasic</tt>
+<pre>
+abstract class  ActorBasic( ... ) : MqttCallback {
+protected val subscribers = mutableListOf<ActorBasic>()
+
+    fun subscribe( a : ActorBasic) : ActorBasic {
+        subscribers.add(a)
+        return a
+    }
+    fun unsubscribe( a : ActorBasic) {
+        subscribers.remove(a)
+    }
+
+    suspend fun emitLocalStreamEvent(v: ApplMessage ){
+        subscribers.forEach { it.actor.send(v) }
+    }
+</pre>
+
+From now on we can use an <tt>ActorBasic</tt> as an observable producer of data that can be observed by other actors
+subscribed to it. Each subscriber will process the data 'in parallel' with the others and can work as an observable in its turn.
 
 <center><table style="width:98%">
 <tbody>	
 
+
+
 <tr>
 <td style="width:45%">
+<m></m>
 <pre>
+fun main() = runBlocking{
+    println("   MainProducerStream STARTS ")
+
+    val prod   = ProducerStream("prod", this )
+    val filter = Filter("filter",this )
+    filter.setFilterFunction (  { v: Int -> v %2  != 0 } )
+    val square = ConsumerSquare("square", this)
+    val sink   = Sink("sink", this)
+
+    prod.subscribe(filter).subscribe(square).subscribe(sink)
+
+    val msgStart = MsgUtil.buildEvent("main", "start", "8"  )
+    prod.actor.send(msgStart)
+    println("   MainProducerStream ENDS ")
+}
 </pre>
 </td>
 <td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/stream/ObservableActor.kt" target="code">ObservableActor.kt</a>
+<a href="../src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" target="code">MainProducerStream.kt</a>.<br/>
+The <tt>OUTPUT</tt> is:
 </m>
+<pre>
+   MainProducerStream STARTS 
+   MainProducerStream ENDS 
+   filter |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   square |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   sink |  receives msg= msg(dataItem,event,square,none,1,4) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,2,5) 
+   filter |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   square |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   sink |  receives msg= msg(dataItem,event,square,none,9,9) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,4,10) 
+   filter |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   square |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   sink |  receives msg= msg(dataItem,event,square,none,25,14) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,6,15) 
+   filter |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   ProducerStream prod | COMPLETED 
+   square |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   sink |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+  </pre>
 </td>
 </tr>
 
 <tr>
-<td style="width:45%">
+<td><m>The <tt>ProducerStream</tt> starts when it receives the message <tt>"start"</tt> 
+with the length of the sequence (<tt>max</tt>) to generate.
+From now on, it generates the sequence of natural numbers from <tt>1</tt> to <tt>max</tt>,
+by using <bc>emit</bc> to generate an auto-stimulation event to continue the work.
+</m>
 <pre>
 </pre>
 </td>
@@ -538,7 +604,7 @@ Reactive programming allows to <i>propagates event changes</i> to registered obs
 </tr>
 
 <tr>
-<td>
+<td><m>The <tt>ConsumerSquare</tt> generates the square of the natural numbers received in input.</m>
 <pre>
 </pre>
 </td>
@@ -549,34 +615,55 @@ Reactive programming allows to <i>propagates event changes</i> to registered obs
 </tr>
 
 <tr>
-<td>
+<td><m>The <tt>ConsumerSquare</tt> generates the square of the natural numbers received in input.</m>
 <pre>
 </pre>
 </td>
 <td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" target="code">MainProducerStream.kt</a>
+<a href="../src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" target="code">ConsumerSquare.kt</a>
 </m>
 </td>
 </tr>
 
-<tr>
-<td>
-<pre>
-</pre>
-</td>
-<td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/stream/MainQakProducerStream.kt" target="code">MainQakProducerStream.kt</a>
-</m>
-</td>
-</tr>
+
+
+
 
 
 </tbody>	
 </table></center>
 
-<br/><br/>
+<br/> 
 <a href="https://www.vogella.com/tutorials/RxJava/article.html">Reactive Extensions (Rx) in Java</a> (<bc>RxJava</bc>)
  is based on the same principles and allows us to compose and consume sequences of data.
+
+ <h3>The same system with qak</h3>
+ 
+ <center><table style="width:98%">
+<tbody>	
+
+ <tr>
+<td style="width:45%">
+<pre>
+context(ctxProducer,"localhost",    "TCP", 8010).
+context(ctxConsumer,"localhost", "TCP", 8020).
+
+qactor( button,   ctxProducer, "it.unibo.qak.stream.ButtonGuiActork").
+qactor( producer, ctxProducer, "it.unibo.qak.stream.ProducerStream").
+qactor( consumer, ctxConsumer, "it.unibo.qak.stream.ConsumerSquare").
+</pre>
+</td>
+ 
+
+
+<td><m>The code is in <br/>
+<a href="../src/main/kotlin/it/unibo/qak/stream/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>,<br/>
+<a href="../src/main/kotlin/it/unibo/qak/stream/MainQakProducerStream.kt" target="code">MainQakProducerStream.kt</a>
+</m>
+</td>
+</tr>
+</tbody>	
+</table></center>
 
 <h2 id="analysis12">Back to problem analysis</h2>
 The main problems posed by the application can be summarized as follows:

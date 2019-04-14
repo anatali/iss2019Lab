@@ -1,7 +1,6 @@
 package it.unibo.qak.stream
 
 import it.unibo.kactor.MsgUtil
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 //MainProducerStream
@@ -9,17 +8,15 @@ import kotlinx.coroutines.runBlocking
 fun main() = runBlocking{
     println("   MainProducerStream STARTS ")
 
-    val prod  = ProducerStream("prod",  this)
-    val cons1 = ConsumerSquare("consSquare", this)
-    val cons2 = ConsumerShow("consShow", this)
+    val prod   = ProducerStream("prod", this )
+    val filter = Filter("filter",this )
+    filter.setFilterFunction (  { v: Int -> v %2  != 0 } )
+    val square = ConsumerSquare("square", this)
+    val sink   = Sink("sink", this)
 
-    prod.subscribe(cons1).subscribe(cons2)
+    prod.subscribe(filter).subscribe(square).subscribe(sink)
 
-    val msgStart = MsgUtil.buildEvent("main", "start", "start"  )
-    for( i in 1..5 ) {
-        prod.actor.send(msgStart)
-        //delay(500)
-    }
-
-
+    val msgStart = MsgUtil.buildEvent("main", "start", "6"  )
+    prod.actor.send(msgStart)
+    println("   MainProducerStream ENDS ")
 }

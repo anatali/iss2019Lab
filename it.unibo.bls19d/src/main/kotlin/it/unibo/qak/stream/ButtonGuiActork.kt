@@ -18,9 +18,6 @@ class GuiObserver( val buttonActor : ActorBasic) : IObserver {
     }
 }
 
-/*
-ButtonGuiActork KNOWS that must talk with the actor named "control"
- */
 class ButtonGuiActork( name : String, scope: CoroutineScope) : ActorBasic( name, scope ){
     var working = true
 
@@ -32,8 +29,7 @@ class ButtonGuiActork( name : String, scope: CoroutineScope) : ActorBasic( name,
         //println("   ButtonGuiActork $name |  msg= $msg working=$working "  )
         when( msg.msgId() ){
             "click" -> {
-
-                forward( "start", "start", "producer")
+                forward( "start", "5", "producer")
               }
              //else -> println("   ButtonGuiActork $name | $msg UNKNOWN working=$working")
         }//when
