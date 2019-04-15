@@ -1804,7 +1804,7 @@ class Person private constructor( val name: String ){
     val isAdult: Boolean
         get(){ return age >= 18} //custom getter
     companion object {
-        val personList = mutableListOf<Person>()
+        val personList = mutableListOf&lt;Person>()
         fun createPerson( name: String ) : Person {
             val p = Person( name.toUpperCase() )
             personList.add(p)
@@ -1815,7 +1815,7 @@ class Person private constructor( val name: String ){
 println( "name=${it.name}, age=${it.age}, married=${it.married} ") }
         }
     }
-    object About {
+    object Info {
         fun showAllAdults(){
             val p = Person("aa")
             personList.forEach {
@@ -1827,7 +1827,7 @@ println( "name=${it.name}, age=${it.age}, married=${it.married} ") }
         }
 
     }
-    object NameComparator : Comparator<Person>{
+    object NameComparator : Comparator&lt;Person>{
         override fun compare(p1:Person, p2:Person):Int =
             p1.name.compareTo(p2.name)
     }
@@ -1862,7 +1862,8 @@ The example shows also a (singleton) <tt>Object</tt> declared into the class.
 <pre>
 //OUTPUT
 name=BOB, age=20, married=false 
-name=ALICE, age=15, married=false 
+name=ALICE, age=15, married=false
+name=BOB, age=0, married=false 
 ADULT BOB of age=20 
 </pre>
  </td>

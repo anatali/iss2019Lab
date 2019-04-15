@@ -1,7 +1,6 @@
 package it.unibo.qak.stream
 
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
 
 class Filter(name:String, scope: CoroutineScope ) : ActorBasic( name, scope ){

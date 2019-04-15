@@ -34,7 +34,7 @@ sealed class Expr{
 }
 
 
-
+/*
 data class Person(val name: String) {
     var age : Int = 0     //public
     var married = false   //public
@@ -50,6 +50,7 @@ fun main(){
     println( "p1=${p1}, p3=${p3} ")
     println( "equals:  ${p1.equals(p3)}" )
 }
+*/
     /*
     Person.showAllPersons()
     Person.About.showAllAdults()

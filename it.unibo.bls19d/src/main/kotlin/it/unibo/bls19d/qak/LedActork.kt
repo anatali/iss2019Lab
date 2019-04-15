@@ -1,7 +1,6 @@
 package it.unibo.bls19d.qak
 
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.*
 
 class LedActork( name : String ) : ActorBasic( name ){
     val concreteLed = LedSegm()

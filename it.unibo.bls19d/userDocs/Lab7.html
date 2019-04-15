@@ -152,38 +152,40 @@ A QActor can interact with other <tt>QActors</tt> using <a href="#messages">Mess
 Request, Invitation, ...</tt>) and <a href="#events">Events</a>. 
 
 <center><img src="./qacontexts.png" alt="qacontexts" width="60%" height="60%"></center>
- 
+ <br/><br/>
 </li>
  
 <li>The <em>configuration</em> of a <tt>QA-System</tt> is explicitly represented by a set of 'facts' written in tuProlog syntax
-replicated in each <tt>Context</tt> (Context Knowledge Base or simply <em>ContextKB</em>). A <tt>QA-System</tt>
+replicated in each <tt>Context</tt> (<tt>Context Knowledge Base</tt> or simply <em>ContextKB</em>). A <tt>QA-System</tt>
 con be configured in a static or in a dynamic way. In case of dynamic configuration, the knowledge about
-the configuration is dynamically updated in each <tt>Context</tt> of the system .
+the configuration is dynamically updated in each <tt>Context</tt> of the system (not yet implemented in <bc>qak</bc>).<br/><br/>
 </li>
 
-<li>The <em>start-up</em> of a distributed <tt>QA-System</tt> (i.e. a system made of two or more Contexts) is handled by
+<li>The <em>start-up</em> of a distributed <tt>QA-System</tt> (i.e. a system made of two or more <tt>Contexts</tt>) is handled by
 the run-time support. In particular, the Application code (i.e. the code written into the actors) begins to
-run only when all the <tt>Contexts</tt> are activated.
+run only when all the <tt>Contexts</tt> are activated.<br/><br/>
 </li>
 
-<li>The <em>exchange of information</em> among the <tt>QActors</tt> is implemented by the <bc>QA-Infrastructure</bc>.
- The <tt>QA-Infrastructure</tt> supports interaction among <tt>QActors</tt
-working in the same <tt>Context</tt> and/or in different Contexts. In the latter case, the <tt>QA-Infrastructure</tt>
+<li>The <em>exchange of information</em> among the <tt>QActors</tt> is implemented by the <bc>Qak-Infrastructure</bc>.
+ The <tt>Qak-Infrastructure</tt> supports interaction among <tt>QActors</tt>
+working in the same <tt>Context</tt> and/or in different Contexts. In the latter case, the <tt>Qak-Infrastructure</tt>
 exploits the <tt>ContextKB</tt> in order to deliver a message from the <tt>Context</tt> of the sender to the Context of the
 destination. An event raised in some <tt>Context</tt>, is delivered to all the other <tt>Contexts</tt> of the system.
 
 <center><img src="./qactor.jpg" alt="qactor" width="60%" height="60%"></center>
- 
+ <br/><br/>
 
 </li>
 
 <li>To <em>deliver information</em> among the Contexts, the <tt>QA-Infrastructure</tt> can use pairwise <tt>TCP</tt> connections
-between the <tt>Contexts</tt> or a <bc>MQTT</bc> broker. The choice is up to the Application designer.</li>
+between the <tt>Contexts</tt> or a <bc>MQTT</bc> broker (see <a href="#mqtt">Using MQTT</a>). The choice is up to the Application designer.
+<br/><br/>
+</li>
 
 <li>Each <tt>QActor</tt> logically <em>behaves</em> as a (<tt>Moore</tt>'s) Finite State Automaton (<bc>FSM</bc>). 
 While in a state, a <tt>QActor</tt> can execute
 both synchronous and asynchronous actions. An asynchronous action terminates immediately and emits
-an event when it terminates.
+an event when it terminates.<br/><br/>
 </li>
 
 <li>A <tt>QKActor</tt> is able to execute a set of pre-defined actions, including:
@@ -191,13 +193,20 @@ an event when it terminates.
 <li><pre>forward( msgId : String, msg: String, destActor: ActorBasic)</pre></li>
 <li><pre>forward( msgId : String, msg: String, destName: String)</pre></li>
 <li><pre>emit( msgId : String, msg : String)</pre></li>
-<li><pre>machineExec(cmd: String) </pre></li>
-
+<li><pre>machineExec(cmd: String) </pre>
+</li>
 </ul>
+<br/>
 </li>
 
-<li>A <tt>QActor</tt> is associated to a <em>private knowledge-base</em> (<bc>QaKB</bc>) written in <tt>Prolog</tt> that can be
-dynamically extended by the Application Designer.</li>
+<li>A <tt>QActor</tt> is associated to a <em>private knowledge-base</em> (<tt>Actor Knowledge Base</tt> or simply <bc>QaKB</bc>) written in <tt>Prolog</tt> that can be
+dynamically extended.
+The Application Designer must remember to provide the prefixed set of rules required by the <tt>qak-infrastructure</tt>. These rule can be found
+in <a href="../sysRules.pl" target="code">sysRules.pl</a>.
+
+<br/><br/>
+
+</li>
 </ul>
 
 <h3 id="messages">Messages</h3>
@@ -502,19 +511,19 @@ seqcons1 5 receives 8 in thread=main
 The problem is that our producer does not recompute the values when needed by the consumers.
 
 
-<h2 id="actorasstream">Actors as observable producers</h3>
+<h2 id="actorasstream">Observable Actors</h3>
 
   
 <em>Reactive programming</em> is a combination of the best ideas from the <bc>Observer</bc> pattern, 
 the <bc>Iterator</bc> pattern, and <bc>functional programming</bc>.
-<br/><br/>
+<br/>
 In <tt>reactive programming</tt>, the consumer reacts to the data as it comes in. 
 This is the reason why asynchronous programming is also called reactive programming. 
 Reactive programming allows to <i>propagates event changes</i> to registered observers.
 <br/><br/>
-Let us add the following properties to our <tt>ActorBasic</tt>
+Let us add the following properties to our <tt>ActorBasic</tt>:
 <pre>
-abstract class  ActorBasic( ... ) : MqttCallback {
+abstract class  ActorBasic( ... ) {
 protected val subscribers = mutableListOf<ActorBasic>()
 
     fun subscribe( a : ActorBasic) : ActorBasic {
@@ -530,65 +539,21 @@ protected val subscribers = mutableListOf<ActorBasic>()
     }
 </pre>
 
-From now on we can use an <tt>ActorBasic</tt> as an observable producer of data that can be observed by other actors
+From now on, we can use an <tt>ActorBasic</tt> as an <bc>observable producer</bc> of data; it can be observed by other actors
 subscribed to it. Each subscriber will process the data 'in parallel' with the others and can work as an observable in its turn.
 
+<div class="remark"> 
+<a href="https://www.vogella.com/tutorials/RxJava/article.html">Reactive Extensions (Rx) in Java</a> (<bc>RxJava</bc>)
+ is based on the same principles and allows us to compose components into <bc>pipelines</bc>  
+ according to the <a href="https://en.wikipedia.org/wiki/Stream_(computing)">Stream computing</a> paradigm.
+</div>
+ 
+
+
+
+<h3 id="">Producer as an observable actor</h3>
 <center><table style="width:98%">
 <tbody>	
-
-
-
-<tr>
-<td style="width:45%">
-<m></m>
-<pre>
-fun main() = runBlocking{
-    println("   MainProducerStream STARTS ")
-
-    val prod   = ProducerStream("prod", this )
-    val filter = Filter("filter",this )
-    filter.setFilterFunction (  { v: Int -> v %2  != 0 } )
-    val square = ConsumerSquare("square", this)
-    val sink   = Sink("sink", this)
-
-    prod.subscribe(filter).subscribe(square).subscribe(sink)
-
-    val msgStart = MsgUtil.buildEvent("main", "start", "8"  )
-    prod.actor.send(msgStart)
-    println("   MainProducerStream ENDS ")
-}
-</pre>
-</td>
-<td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" target="code">MainProducerStream.kt</a>.<br/>
-The <tt>OUTPUT</tt> is:
-</m>
-<pre>
-   MainProducerStream STARTS 
-   MainProducerStream ENDS 
-   filter |  receives msg= msg(dataItem,event,prod,none,1,2) 
-   square |  receives msg= msg(dataItem,event,prod,none,1,2) 
-   sink |  receives msg= msg(dataItem,event,square,none,1,4) 
-
-   filter |  receives msg= msg(dataItem,event,prod,none,2,5) 
-   filter |  receives msg= msg(dataItem,event,prod,none,3,7) 
-   square |  receives msg= msg(dataItem,event,prod,none,3,7) 
-   sink |  receives msg= msg(dataItem,event,square,none,9,9) 
-
-   filter |  receives msg= msg(dataItem,event,prod,none,4,10) 
-   filter |  receives msg= msg(dataItem,event,prod,none,5,12) 
-   square |  receives msg= msg(dataItem,event,prod,none,5,12) 
-   sink |  receives msg= msg(dataItem,event,square,none,25,14) 
-
-   filter |  receives msg= msg(dataItem,event,prod,none,6,15) 
-   filter |  receives msg= msg(dataItem,event,prod,none,completed,17) 
-   ProducerStream prod | COMPLETED 
-   square |  receives msg= msg(dataItem,event,prod,none,completed,17) 
-   sink |  receives msg= msg(dataItem,event,prod,none,completed,17) 
-  </pre>
-</td>
-</tr>
-
 <tr>
 <td><m>The <tt>ProducerStream</tt> starts when it receives the message <tt>"start"</tt> 
 with the length of the sequence (<tt>max</tt>) to generate.
@@ -626,20 +591,94 @@ by using <bc>emit</bc> to generate an auto-stimulation event to continue the wor
 </td>
 </tr>
 
-
-
-
-
+<tr>
+<td><m></m>
+<pre>
+class Sink(name:String, scope: CoroutineScope) : ActorBasic( name, scope ){
+    override suspend fun actorBody(msg : ApplMessage){
+        println("   $name |  receives msg= $msg ")
+        println()
+     }
+}
+</pre>
+</td>
+<td><m>The <a href="../src/main/kotlin/it/unibo/qak/stream/Sink.kt" target="code">Sink.kt</a>
+simply shows the natural number received in input.
+</m>
+</td>
+</tr>
 
 </tbody>	
 </table></center>
 
-<br/> 
-<a href="https://www.vogella.com/tutorials/RxJava/article.html">Reactive Extensions (Rx) in Java</a> (<bc>RxJava</bc>)
- is based on the same principles and allows us to compose and consume sequences of data.
+<br/><br/>
+According to the <a href="https://en.wikipedia.org/wiki/Stream_(computing)">Stream computing</a> paradigm, a producer
+can be viewed as the generator of a <bc>stream</bc> of data that works in <bc>pipeline</bc> with consumers. 
+For example, the line of code :
+<pre>
+prod.subscribe(filter).subscribe(square).subscribe(sink)
+</pre>
+ 
+defines a system architecture that shows the square of the first <tt>max</tt> odd natural numbers. The full example
+is reported hereunder.
+is reported hereunder.
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:45%">
+<m></m>
+<pre>
+fun main() = runBlocking{
+    println("   MainProducerStream STARTS ")
 
+    val prod   = ProducerStream("prod", this )
+    val filter = Filter("filter",this )
+    filter.setFilterFunction (  { v: Int -> v %2  != 0 } )
+    val square = ConsumerSquare("square", this)
+    val sink   = Sink("sink", this)
+	
+	//prod.subscribe(sink)  //(1)
+    prod.subscribe(filter).subscribe(square).subscribe(sink)
 
+    val msgStart = MsgUtil.buildEvent("main", "start", "8"  )
+    prod.actor.send(msgStart)
+    println("   MainProducerStream ENDS ")
+}
+</pre>
+<m>If we eliminate the comment on <bc>(1)</bc>, we activate another pipeline that work in parallel with the previous one.</m>
+</td>
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" target="code">MainProducerStream.kt</a>.<br/>
+The <tt>OUTPUT</tt> is:
+</m>
+<pre>
+   MainProducerStream STARTS 
+   MainProducerStream ENDS 
+   filter |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   square |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   sink |  receives msg= msg(dataItem,event,square,none,1,4) 
 
+   filter |  receives msg= msg(dataItem,event,prod,none,2,5) 
+   filter |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   square |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   sink |  receives msg= msg(dataItem,event,square,none,9,9) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,4,10) 
+   filter |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   square |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   sink |  receives msg= msg(dataItem,event,square,none,25,14) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,6,15) 
+   filter |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   ProducerStream prod | COMPLETED 
+   square |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   sink |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+  </pre>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
 <h2 id="analysis12">Back to problem analysis</h2>
 The main problems posed by the application can be summarized as follows: <br><br/>
 
@@ -734,13 +773,24 @@ fun main() = runBlocking {
 </table></center>
 
 
-<h3 id="">A solution based on the qak-infrastrcture</h3>
+<h3 id="">A solution based on the qak-infrastructure</h3>
 
 <center><table style="width:98%">
 <tbody>	
  
 
-
+<tr>
+<td>
+<m>At each 'click', the button emits the <tt>qak-event</tt> <bc>start</bc> with content <bc>5</bc> (the number of data to be produced)
+</m>
+<pre>
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>
+</m>
+</td>
+</tr>
 
 <tr>
 <td style="width:65%">
@@ -754,22 +804,134 @@ qactor( consumer1,  ctxConsumer, "it.unibo.qak.consumer.Consumer").
 qactor( consumer2,  ctxConsumer, "it.unibo.qak.consumer.Consumer").
 qactor( logger,     ctxConsumer, "it.unibo.qak.logger.logDevice").
 </pre>
+<m>A <tt>producer</tt> and two consumers work in two different contexts. A logger runs in the <tt>ctxConsumer</tt>.<br/>
+Each <tt>consumer</tt> is an observable actor that does not emit <tt>qak-events</tt>; thus the <tt>logger</tt> is subscribed to it.
+Since the  <tt>producer</tt> emits the a <tt>qak-event</tt> with identifier <bc>DataItem.id</bc>, the <tt>logger</tt> receives 
+also the data generated by the <tt>producer</tt>.
+</m>
 </td>
-<td><m>The code is in 
+<td>
+<pre>
+fun main()= runBlocking {
+    QakContext.createContexts(
+        "localhost", this,
+        "src/main/kotlin/it/unibo/qak/producer/sysDescr.pl",
+        "sysRules.pl"
+    )
+    val consumer1 = QakContext.getActor("consumer1")
+    val consumer2 = QakContext.getActor("consumer2")
+    val logger    = QakContext.getActor("logger")
+    consumer1!!.subscribe( logger!! )
+    consumer2!!.subscribe( logger!! )
+    println("END")
+</pre>
+<m>The code is in 
 <a href="../src/main/kotlin/it/unibo/qak/producer/MainProducerQak.kt" target="code">MainProducerQak.kt</a><br/>
-<a href="../src/main/kotlin/it/unibo/qak/producer/Producer.kt" target="code">Producer.kt</a><br/>
+<a href="../src/main/kotlin/it/unibo/qak/producer/sysDescr.pl" target="code">sysDescr.pl</a> ,
+<a href="../src/main/kotlin/it/unibo/qak/producer/Producer.kt" target="code">Producer.kt</a> , 
 <a href="../src/main/kotlin/it/unibo/qak/consumer/Consumer.kt" target="code">Consumer.kt</a>
 </m>
 </td>
 </tr>
 
-
 </tbody>	
 </table></center>
-
+<br/>
+When we <b>click</b> on the button, the <tt>OUTPUT</tt> is:
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td>With <bc>delay</bc> in producer</td>
+<td><bc>Without delay</bc> in producer</td>
+</tr>
+<tr>
+<td>
+ <pre>
+   logger |  receives 1 from producer 
+   logger |  receives 1 from consumer1 
+   logger |  receives 1 from consumer2 
+   logger |  receives 2 from producer 
+   logger |  receives 2 from consumer1 
+   logger |  receives 2 from consumer2 
+   logger |  receives 3 from producer 
+   logger |  receives 3 from consumer1 
+   logger |  receives 3 from consumer2 
+   logger |  receives 4 from producer 
+   logger |  receives 4 from consumer1 
+   logger |  receives 4 from consumer2 
+   logger |  receives 5 from producer 
+   logger |  receives 5 from consumer1 
+   logger |  receives 5 from consumer2 
+   Producer producer | COMPLETED 
+   logger |  receives completed from producer 
+   logger |  receives completed from consumer1 
+   logger |  receives completed from consumer2 
+ </pre>
+ </td>
+<td>
+<pre>
+   Producer producer | COMPLETED 
+   logger |  receives 1 from producer 
+   logger |  receives 2 from producer 
+   logger |  receives 3 from producer 
+   logger |  receives 1 from consumer2 
+   logger |  receives 1 from consumer1 
+   logger |  receives 2 from consumer1 
+   logger |  receives 3 from consumer1 
+   logger |  receives 2 from consumer2 
+   logger |  receives 3 from consumer2 
+   logger |  receives 4 from producer 
+   logger |  receives 4 from consumer1 
+   logger |  receives 4 from consumer2 
+   logger |  receives 5 from producer 
+   logger |  receives 5 from consumer1 
+   logger |  receives 5 from consumer2 
+   logger |  receives completed from producer 
+   logger |  receives completed from consumer2 
+   logger |  receives completed from consumer1 
+ </pre>
+</td>
+</tr>
+</tbody>	
+</table></center>
  
 
-<h3 id="">A solution based on MQTT</h3>
+ 
+ 
+<h2 id="mqtt">Using MQTT</h2>
+In several situations, it could be preferable to manage the interaction among the actors working on different nodes by using the
+publish-subscribe <a href="https://it.wikipedia.org/wiki/MQTT" target="web">MQTT</a> (<i>Message Queue Telemetry Transport</i>) 
+protocol rather than the built-in <tt>qak-infrastructure</tt>.
+
+<br/><br/>
+Let us add the following properties to our <tt>ActorBasic</tt>:
+<pre>
+abstract class  ActorBasic( ... ) : MqttCallback {
+    fun checkMqtt(){
+        if( context!!.mqttAddr.length > 0  ){
+            mqtt.connect(name,context!!.mqttAddr)
+            mqttConnected = true
+            mqtt.subscribe(this, "unibo/qak/$name")
+            mqtt.subscribe(this, "unibo/qak/events")
+        }
+    }
+
+    override fun messageArrived(topic: String, msg: MqttMessage) {
+        val m = ApplMessage( msg.toString() )
+        this.scope.launch{ actor.send( m ) }
+
+    }
+    override fun connectionLost(cause: Throwable?) {
+        println("       ActorBasic $name | connectionLost $cause " )
+    }
+    override fun deliveryComplete(token: IMqttDeliveryToken?) {
+		//println("       ActorBasic $name |  deliveryComplete token= "+ token );
+    }
+</pre>
+
+Now, the <tt>qak-infrastructure</tt> can be extended to support system descriptions like that shown in the following example:
+
 
 <center><table style="width:98%">
 <tbody>	
@@ -820,9 +982,9 @@ Remember to activate a <tt>MQTT broker</tt> (e.g. <a href="https://mosquitto.org
 
 </tbody>	
 </table></center>
- 
- 
-
+<div class="remark">
+Look again at <a href="Lab6.html#heterog"  target="web">Lab6 - Heterogeneous distributed systems</a>.
+</div>
  
 <h2 id="Executable">Executable jars</h2>
 

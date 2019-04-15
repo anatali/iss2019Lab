@@ -2,9 +2,7 @@ package it.unibo.qak.producer
 
 import it.unibo.`is`.interfaces.IObserver
 import it.unibo.bls.devices.gui.ButtonAsGui
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
-import it.unibo.kactor.MsgUtil
+import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,9 +17,6 @@ class ButtonGuiObserver( val buttonActor : ActorBasic) : IObserver {
     }
 }
 
-/*
-ButtonGuiActork KNOWS that must talk with the actor named "control"
- */
 class ButtonGuiActork( name : String, scope: CoroutineScope ) : ActorBasic( name, scope ){
     var working = true
 
@@ -33,7 +28,7 @@ class ButtonGuiActork( name : String, scope: CoroutineScope ) : ActorBasic( name
         //println("   ButtonGuiActork $name |  msg= $msg working=$working "  )
         when( msg.msgId() ){
             "click" -> {
-                emit( "local_start", "10" )
+                emit( "local_start", "5" )
               }
              //else -> println("   ButtonGuiActork $name | $msg UNKNOWN working=$working")
         }//when

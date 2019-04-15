@@ -36,7 +36,7 @@ class Producer( name : String, scope: CoroutineScope) : ActorBasic( name, scope 
         emit("local_${msg.msgId()}", msg.msgContent()) //Used as an auto-stimulation
         emit(msg.msgId(), msg.msgContent()) //Used to propagate info (also to the logger!)
         //}else println("   Producer $name | NO OBSERVERS ")
-        delay(200)
+        //delay(200)
     }
 
     suspend fun dataCompleted(){
@@ -44,6 +44,7 @@ class Producer( name : String, scope: CoroutineScope) : ActorBasic( name, scope 
         val msg = MsgUtil.buildEvent(name, d.id,d.item  )
         emitLocalStreamEvent( msg )
         emit( "local_${msg.msgId()}", msg.msgContent())
+        emit(msg.msgId(), msg.msgContent())
         println("   Producer $name | COMPLETED ")
     }
 

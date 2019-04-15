@@ -2,39 +2,36 @@ package it.unibo.qak.sonar
 
 import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
-data class SonarData( val distance: Int)
-
-val data = listOf(
-    SonarData( 16),
-    SonarData( 23),
-    SonarData( 25),
-    SonarData( 28),
-    SonarData( 39)
-)
-
-class sonarShow( name : String, scope: CoroutineScope) : ActorBasic( name, scope ) {
+class sonarOnRaspShow( name : String, scope: CoroutineScope) : ActorBasic( name, scope ) {
 
      override suspend fun actorBody(msg: ApplMessage) {
         when( msg.msgId() ){
-            "start" -> scope.launch{  simulateInputData() }  //run in parallel
+            "start" -> scope.launch{  readInputData() }
             else -> println("   sonarShow $name |  receives $msg ")
         }
     }
 
-    suspend fun simulateInputData(){
+    suspend fun readInputData(){
         val numData = 8
         var dataCounter = 1
-        data.forEach{
-              println("data ${dataCounter++} = $it " )
-                val m = MsgUtil.buildEvent(name, "sonar", "sonar($dataCounter, ${it.distance})")
+        val p : Process = machineExec("sudo ./SonarAlone")
+        val reader = BufferedReader(InputStreamReader(p.getInputStream()))
+        while( true ){
+             var data = reader.readLine()    //blocking
+              println("data ${dataCounter++} = $data " )
+             if( dataCounter % numData == 0 ) { //every numData ...
+                //println("EMIT sonar($dataCounter, $data)"  )
+                 val m = MsgUtil.buildEvent(name, "sonar", "sonar($dataCounter, $data)")
                 emitLocalStreamEvent( m  )
                 emit(m.msgId(), m.msgContent())
-                delay(100)
+            }
         }
+
     }
 
 }
@@ -47,8 +44,6 @@ fun main() = runBlocking {
         "sysRules.pl"
     )
 
-    val sink = Sink("sink", this)
     val sonar = QakContext.getActor("sonarShow")
-    sonar!!.subscribe(sink)
     MsgUtil.sendMsg("start", "start", sonar!!)
 }

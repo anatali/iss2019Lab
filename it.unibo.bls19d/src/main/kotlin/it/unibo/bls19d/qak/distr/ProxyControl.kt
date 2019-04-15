@@ -1,9 +1,7 @@
 package it.unibo.bls19d.qak.distr
 
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
-import it.unibo.kactor.MsgUtil
+import it.unibo.kactor.*
 import it.unibo.kactor.Protocol
 
 class ProxyControl( name : String, val protocol: Protocol,

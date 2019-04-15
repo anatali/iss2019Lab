@@ -1,7 +1,6 @@
     package it.unibo.kactor
 
 import alice.tuprolog.Prolog
-import it.unibo.qak.stream.ObservableActor
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -60,7 +59,8 @@ Messaging
     suspend fun autoMsg( msgId : String, msg : String) {
         actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
     }
-    suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
+
+     suspend fun forward( msgId : String, msg: String, destActor: ActorBasic) {
         //println("       ActorBasic $name | forward $msgId:$msg to ${destActor.name} in ${sysUtil.curThread() }")
         destActor.actor.send(
             MsgUtil.buildDispatch(name, msgId, msg, destActor.name ) )
@@ -98,10 +98,8 @@ Messaging
           }
     }//forward
 
-
-    suspend fun emit( msgId : String, msg : String) {
-        val event = MsgUtil.buildEvent(name,msgId, msg)
-         if( context == null ){
+    suspend fun emit( event : ApplMessage ) {
+        if( context == null ){
             //println("WARNING emit: there is no QakContext")
             this.actor.send(event)  //AUTOMSG
             return
@@ -113,7 +111,7 @@ Messaging
             destActor.actor.send( event )
         }
         //PROPAGATE TO REMOTE ACTORS
-        if( msgId.startsWith("local")) return       //local_ => no propagation
+        if( event.msgId().startsWith("local")) return       //local_ => no propagation
 
         sysUtil.ctxsMap.forEach{
             val ctxName  = it.key
@@ -134,6 +132,11 @@ Messaging
             }
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }
+    }
+
+    suspend fun emit( msgId : String, msg : String) {
+        val event = MsgUtil.buildEvent(name,msgId, msg)
+        emit( event )
     }
 
 /*
@@ -180,5 +183,18 @@ MQTT
 //		println("       ActorBasic $name |  deliveryComplete token= "+ token );
     }
 
+/*
+--------------------------------------------
+machineExec
+--------------------------------------------
+ */
+    fun machineExec(cmd: String) : Process {
+        try {
+            return sysUtil.runtimeEnvironment.exec(cmd)
+        } catch (e: Exception) {
+            println("       ActorBasic $name | machineExec ERROR $e ")
+            throw e
+        }
+    }
 
 }

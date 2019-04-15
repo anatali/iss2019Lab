@@ -14,6 +14,7 @@ fun main() = runBlocking{
     val square = ConsumerSquare("square", this)
     val sink   = Sink("sink", this)
 
+    prod.subscribe(sink)
     prod.subscribe(filter).subscribe(square).subscribe(sink)
 
     val msgStart = MsgUtil.buildEvent("main", "start", "6"  )

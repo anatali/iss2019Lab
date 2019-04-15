@@ -1,7 +1,6 @@
 package it.unibo.qak.logger
 
-import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
 
 class logDevice(name : String, scope: CoroutineScope) : ActorBasic( name, scope ) {
