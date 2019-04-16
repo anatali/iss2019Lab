@@ -69,16 +69,17 @@ Messaging
     suspend fun forward( msgId : String, msg: String, destName: String) {
         //println("       ActorBasic $name |  forward $msgId to $destName -  ${sysUtil.curThread()}")
         if( context == null ){
-            //println("WARNING forward : there is no QakContext")
+            println("WARNING forward : there is no QakContext")
             return
         }
         val actor = context!!.hasActor(destName)
-        //println("forward $msgId : $msg to $destName IN context=${context.name} actor=$actor" )
+        //println("forward $msgId : $msg to $destName IN context=${context!!.name} actor=$actor" )
          if( actor is ActorBasic   ) {//local
             forward( msgId, msg, actor)
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
-             val m      = MsgUtil.buildDispatch(name,msgId, msg, destName)
+             //println("       ActorBasic $name | forward ctx= ${ctx}")
+             val m = MsgUtil.buildDispatch(name,msgId, msg, destName)
              //println("       ActorBasic $name | forward mqttAddr= ${ctx!!.mqttAddr}")
              if( ctx!!.mqttAddr.length > 0  ) {
                  //The producer should be connected to the MQTT broker
@@ -90,7 +91,7 @@ Messaging
                  return
              }
              val proxy = context!!.proxyMap.get(ctx.name)
-             println("       ActorBasic $name | forward $msgId : $msg to external $destName IN context=${ctx} " )
+             //println("       ActorBasic $name | forward $msgId : $msg to external $destName IN context=${ctx} " )
              //WARNING: destName must be the original and not the proxy
             if( proxy is ActorBasic )
                 proxy.actor.send( m )

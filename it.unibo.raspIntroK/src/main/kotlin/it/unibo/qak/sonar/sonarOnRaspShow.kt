@@ -40,7 +40,7 @@ fun main() = runBlocking {
 
     QakContext.createContexts(
         "localhost",this,
-        "sysDescr.pl",
+        "sonarSysDescr.pl",
         "sysRules.pl"
     )
 

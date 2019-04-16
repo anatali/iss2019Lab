@@ -36,7 +36,7 @@ dependencies {
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'uniboInterfaces.jar')
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: '2p301.jar')
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.qakactor-1.0.jar')
-    //compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
+    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
     //compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19d-1.0.jar')
     //For p2p two-way connections (TCP, UDP, BTH, Serial ...)
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'unibonoawtsupports.jar')
@@ -51,7 +51,8 @@ compileTestKotlin {
 
 // Define the main class for the application.
 //ext {
-    mainClassName = 'it.unibo.qak.sonar.SonarShowKt'
+    //mainClassName = 'it.unibo.qak.sonar.SonarShowKt'
+    mainClassName = 'it.unibo.qak.led.MainLedOnRaspKt'
 //}
 /*
 sourceSets {
@@ -61,7 +62,7 @@ sourceSets {
 jar {
     println("executing jar")
     manifest {
-        attributes 'Main-Class': "it.unibo.qak.sonar.SonarShowKt"
+        attributes 'Main-Class': "$mainClassName"
     }
 }
 

@@ -2,127 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6556fa3b-4282-4c84-8b4b-5404c869db91" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/experiment/Person.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/experiment/Person.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/experiment/demo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/src/main/kotlin/experiment/demo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19Local/userDocs/Lab4.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LectureBologna1819.html" beforeDir="false" afterPath="$PROJECT_DIR$/../LectureBologna1819.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/button-tcplocalhost1883/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/consumer-tcplocalhost1883/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/consumer1-tcplocalhost1883/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/consumer2-tcplocalhost1883/.lck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ControlActor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/chain/ControlActor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/ControlActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/distr/ProxyControl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/distr/ServerControl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/ActorBasic.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/prodConsCustomMqtt/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/prodConsCustomMqtt/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/prodConsCustomMqtt/ConsumerMqtt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/prodConsCustomMqtt/ConsumerMqtt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/consumer/Consumer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/consumer/Consumer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/logger/logDevice.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/logger/logDevice.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ConsumerMqtt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ConsumerMqtt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/Producer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/producer/Producer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ButtonGuiActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ButtonGuiActork.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/Filter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/Filter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ObservableActor.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ProducerStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ProducerStream.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/Sink.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/Sink.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic$actor$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic$actor$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic$emit$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic$emit$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/ActorBasic.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion$CtxMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion$CtxMsg.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion$createContexts$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion$createContexts$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext$Companion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/QakContext.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/sysUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/classes/kotlin/main/it/unibo/kactor/sysUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/build-history.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/build-history.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/last-build.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/compileKotlin/last-build.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/ituniboqakactor10jar-classes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/kotlin/ituniboqakactor10jar-classes.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/build/libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/build/libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/QakContext.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/sysUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -135,80 +28,105 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/META-INF/it.unibo.raspIntroK.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/META-INF/it.unibo.raspIntroK.kotlin_module" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/SonarShowKt$main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/SonarShowKt$main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/SonarShowKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/SonarShowKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/sonarShow$actorBody$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/sonarShow$actorBody$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/sonarShow$readInputData$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/sonarShow.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/qak/sonar/sonarShow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/build-history.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/build-history.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/package-parts.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/proto.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/source-to-classes.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/subtypes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/jvm/kotlin/supertypes.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/counters.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/file-to-id.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.s" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/last-build.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/last-build.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarShow.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarShow.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sysDescr.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sysRaspDescr.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/Lab8.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab8.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/CARD/esempio-procedura.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/CARD/guida_rpi.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/CARD/istruzioni-aggiornate-raspi-linux.odt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/CARD/istruzioni-aggiornate-raspi-linux.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/CARD/rpi_sd.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app.apk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/androidTest/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/ExampleInstrumentedTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/OutputChannel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/io/ConnectionListener.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/io/TCPClient.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/io/TCPEndPoint.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/utils/PreferencesHelper.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/app/src/test/java/com/pierfrancescosoffritti/configurablethreejsapp/testclient/ExampleUnitTest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/AndroidClient/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/ClientExamples/NodeClient/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/SceneManager.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/SocketIO.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/controls/CollisionManager.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/controls/PlayerControls.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/eventBus/EventBus.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/eventBus/events.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/libs/Tween.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneConfig.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/Floor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/GeneralLights.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/MovingObstacles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/Player.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/Sonars.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/sceneSubjects/StaticObstacles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/utils/SceneConfigUtils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/js/utils/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/models/spaceship.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/sceneConfig.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/sceneConfigEmpty.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/sceneConfigObstacle.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/WebGLScene/sceneConfigOld.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/install.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/pictures/androidapp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/pictures/scene_description.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/src/TCPServer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/src/WebpageServer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/src/cmd.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/server/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/WEnv/startServer.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/node/clientToWenv.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/BasicRobotExecutor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/ClientToRobotExecutor.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/MainExecutor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/RobotCmds.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/clientWenvTcp.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/executorDescr.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/src/main/kotlin/it/unibo/robot19/sysRules.pl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab8.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/Lab9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/UsingRobots2018.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/butLedRasp.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/customDevs.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/robot2018a.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/robotConnections.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/robotSkeleton.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/virtualRobot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/wenvscene.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robot19/userDocs/wenvscene1.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -228,60 +146,106 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarShow.kt">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
+            <state relative-caret-position="72">
+              <caret line="64" column="35" selection-start-line="64" selection-start-column="35" selection-end-line="64" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="98">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
-                <element signature="e#28#164#0" expanded="true" />
+                <element signature="e#26#168#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ButtonGuiActork.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="221">
+              <caret line="31" column="72" selection-start-line="31" selection-start-column="72" selection-end-line="31" selection-end-column="72" />
+              <folding>
+                <element signature="e#26#267#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gradle.properties">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ControlActork.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="115">
+              <caret line="13" column="33" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="33" />
+              <folding>
+                <element signature="e#26#82#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/settings.gradle">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sysDescr.pl">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sysRaspDescr.pl">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/BlsCmds.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="16" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="16" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-107">
-              <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+            <state relative-caret-position="629">
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
+              <folding>
+                <element signature="e#28#227#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/Sink.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainLedOnRasp.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+            <state relative-caret-position="153">
+              <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+              <folding>
+                <element signature="e#26#128#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainButtonOnPc.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sonarSysDescr..pl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ledOnRaspSysDescr.pl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -316,17 +280,26 @@
         <option value="$PROJECT_DIR$/src/main/java/sensorsActuators/SonarMain.java" />
         <option value="$PROJECT_DIR$/src/sensors/SonarAlone.c" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarHandler.kt" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/Sink.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarShow.kt" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/BlsCmds.java" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt" />
+        <option value="$PROJECT_DIR$/sonarSysDescr..pl" />
+        <option value="$PROJECT_DIR$/ledOnRaspSysDescr..pl" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainLedOnRasp.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainButtonOnPc.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ControlActork.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ButtonGuiActork.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt" />
+        <option value="$PROJECT_DIR$/ledOnRaspSysDescr.pl" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="244" />
-    <option name="width" value="1068" />
+    <option name="x" value="68" />
+    <option name="width" value="1244" />
     <option name="height" value="698" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -346,6 +319,79 @@
               <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
               <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="distributions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="libs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="bls" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="qak" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="qak" type="462c0819:PsiDirectoryNode" />
+              <item name="led" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="qak" type="462c0819:PsiDirectoryNode" />
+              <item name="sonar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="sensors" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -353,7 +399,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555335974637" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555410977604" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/backup" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -365,14 +411,15 @@
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\backup" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="it.unibo.qak.led" />
       <recent name="it.unibo.qak.sonar" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\sonar" />
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\led" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK" />
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\java\sensorsActuators" />
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\rasp" />
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\sensors" />
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\bls\bash\gpio" />
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\userDocs" />
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\sonar" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -387,7 +434,33 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Kotlin.it.unibo.qak.led.MainButtonOnPcKt">
+    <configuration name="it.unibo.qak.led.MainButtonOnPcKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="it.unibo.raspIntroK.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="it.unibo.qak.led.MainButtonOnPcKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="it.unibo.qak.led.MainLedOnRaspKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="it.unibo.raspIntroK.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="it.unibo.qak.led.MainLedOnRaspKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="it.unibo.qak.sonar.SonarShowKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <module name="it.unibo.raspIntroK.main" />
       <option name="VM_PARAMETERS" />
@@ -403,6 +476,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.it.unibo.qak.led.MainButtonOnPcKt" />
+        <item itemvalue="Kotlin.it.unibo.qak.led.MainLedOnRaspKt" />
         <item itemvalue="Kotlin.it.unibo.qak.sonar.SonarShowKt" />
       </list>
     </recent_temporary>
@@ -421,10 +496,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="244" y="0" width="1068" height="698" extended-state="0" />
+    <frame x="68" y="0" width="1244" height="698" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29662699" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2525338" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -433,7 +508,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32920355" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.28141594" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.38938054" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -483,9 +558,6 @@
     <entry file="file://$PROJECT_DIR$/userDocs/buttonEntry.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/bls/bash/gpio/led25Gpio.sh">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/userDocs/Lab8.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -499,37 +571,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar!/it/unibo/kactor/ActorBasic.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="44" column="29" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sysDescr.pl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sysRaspDescr.pl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-107">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/Sink.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -551,8 +596,138 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="255">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bls/bash/buttonLed.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bls/bash/utils.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bls/bash/gpio/led25GpioTurnOn.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bls/bash/gpio/led25Gpio.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/bls/bash/led25OnOff.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/Sink.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="10" selection-start-line="6" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/BlsCmds.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/BlsCmds.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sonarSysDescr.pl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sonarSysDescr..pl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sysRaspDescr.pl">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainLedOnRasp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="20" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+          <folding>
+            <element signature="e#26#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="64" column="35" selection-start-line="64" selection-start-column="35" selection-end-line="64" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainButtonOnPc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ButtonGuiActork.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="31" column="72" selection-start-line="31" selection-start-column="72" selection-end-line="31" selection-end-column="72" />
+          <folding>
+            <element signature="e#26#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ControlActork.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="13" column="33" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="33" />
+          <folding>
+            <element signature="e#26#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarOnRaspShow.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#28#227#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="e#26#168#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ledOnRaspSysDescr.pl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>
