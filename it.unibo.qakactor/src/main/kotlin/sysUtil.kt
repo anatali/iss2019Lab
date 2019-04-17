@@ -20,6 +20,9 @@ object sysUtil{
 	val ioBoundThreadContext   = newFixedThreadPoolContext(64, "qakiopool")
 	val cpusThreadContext      = newFixedThreadPoolContext(cpus, "qakcpuspool")
 
+	var mqttBrokerIP : String? = ""
+	var mqttBrokerPort : String? = ""
+
 	fun getPrologEngine() : Prolog = pengine
 	fun curThread() : String = "thread=${Thread.currentThread().name}"
 
@@ -32,20 +35,22 @@ object sysUtil{
 	}
 	fun getActorContext ( actorName : String): QakContext?{
 		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
-		println("       sysUtil | getActorContext ctxName=${ctxName} - ${ctxsMap.get( ctxName )}")
+		//println("       sysUtil | getActorContext ctxName=${ctxName} - ${ctxsMap.get( ctxName )}")
 		return ctxsMap.get( ctxName )
 	}
 	fun createContexts(  hostName : String,
 					desrFilePath:String, rulesFilePath:String){
-		//loadTheory( "src/main/kotlin/it/unibo/kactor/sysRules.pl" )
 		loadTheory( desrFilePath )
 		loadTheory( rulesFilePath )
+
+		mqttBrokerIP = solve("mqttBroker(IP,_)", "IP")
+		mqttBrokerPort = solve("mqttBroker(_,PORT)", "PORT")
+
 			val ctxs: String? = solve("getCtxNames(X)", "X")
 			//context( CTX, HOST, PROTOCOL, PORT )
 			val ctxsList = strRepToList(ctxs!!)
 			//waits for all the other context before activating the actors
-			ctxsList.forEach { ctx -> createTheContext(ctx, hostName = hostName)
-			}//foreach ctx
+			ctxsList.forEach { ctx -> createTheContext(ctx, hostName = hostName) }//foreach ctx
 			addProxyToOtherCtxs(ctxsList)  //here could wait in polling ...
 	}//createContexts
 
@@ -61,7 +66,9 @@ object sysUtil{
 		val useMqtt = ctxProtocol!!.toLowerCase() == "mqtt"
 		var mqttAddr = ""
 		if( useMqtt ){
-			mqttAddr = "tcp://$ctxHost:$ctxPort"
+			println("sysUtil | context $ctx WORKS WITH MQTT")
+			if( mqttBrokerIP != null ) mqttAddr = "tcp://$mqttBrokerIP:$mqttBrokerPort"
+			else{ throw Exception("no MQTT broker declared")  }
 		}
 		//CREATE AND MEMO THE CONTEXT
 		val newctx = QakContext( ctx, "$ctxHost", portNum, "") //isa ActorBasic
@@ -82,12 +89,13 @@ object sysUtil{
 				val ctxs = strRepToList(others!!)
  					//others!!.replace("[", "").replace("]", "").split(",")
 				ctxs.forEach {
- 					if( it.length==0 ) return
+ 					if( it.length==0  ) return
 					val ctxOther = ctxsMap.get("$it")
 					if (ctxOther is QakContext) {
 						//println("FOR ACTIVATED CONTEXT ${ctxOther!!.name}: ADDING A PROXY to ${curCtx!!.name} ")
 						ctxOther.addCtxProxy(curCtx)
 					}else{
+						if( ctxOther!!.mqttAddr.length > 1 )  return //NO PROXY for MQTT ctx
 						println("sysUtil | WARNING: CONTEXT ${it} NOT ACTIVATED: " +
 					 			"WE SHOULD WAIT FOR IT, TO SET THE PROXY in ${curCtx.name}")
 						val ctxHost : String?     = solve("getCtxHost($it,H)","H")

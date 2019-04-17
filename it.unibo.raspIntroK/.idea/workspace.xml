@@ -167,7 +167,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-2" />
     <option name="width" value="1038" />
     <option name="height" value="698" />
@@ -188,94 +188,6 @@
             <path>
               <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
               <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="distributions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="libs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="bls" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="bls" type="462c0819:PsiDirectoryNode" />
-              <item name="bash" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="bls" type="462c0819:PsiDirectoryNode" />
-              <item name="bash" type="462c0819:PsiDirectoryNode" />
-              <item name="gpio" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-              <item name="led" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-              <item name="sonar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sensors" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -381,7 +293,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="0" width="1038" height="698" extended-state="1" />
+    <frame x="-2" y="0" width="1038" height="698" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31186095" />
