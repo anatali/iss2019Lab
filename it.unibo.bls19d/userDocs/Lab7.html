@@ -988,8 +988,8 @@ override suspend fun actorBody(msg: ApplMessage) {
 }
 </pre>
 </td>
-<td><m>At each 'click' of the <a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>,
-the producer receives a <bc>local_start</bc> event by emtting an event with new natural number.
+<td><m>At each <tt>'click'</tt> of the <a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>,
+the producer receives a <bc>local_start</bc> event and emits a new <tt>DataItem</tt> event.
 <br/><br/>
 
 The code is in 
