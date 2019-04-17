@@ -66,6 +66,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
     }
 
     fun addCtxProxy( ctx : QakContext ){
+        if( ctx.mqttAddr.length > 1 ) return
         println("QakContext $name | addCtxProxy ${ctx.name}")
         val proxy = NodeProxy("proxy${ctx.name}", Protocol.TCP, ctx.hostAddr, ctx.portNum)
         proxyMap.put( ctx.name, proxy )

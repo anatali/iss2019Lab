@@ -937,11 +937,62 @@ Now, the <tt>qak-infrastructure</tt> can be extended to support system descripti
 <tbody>	
 
 <tr>
-<td style="width:45%">
+<td style="width:60%">
 <pre>
+mqttBroker( "localhost",  1883 ).
+
+context(ctxProducer,"localhost", "TCP", 8010).
+context(ctxConsumer,"localhost", "MQTT", 0). %%The port is not considered here
+
+qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").
+qactor( producer,  ctxProducer, "it.unibo.qak.prodConsMqtt.ProducerMqtt").
+qactor( consumer1, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
+qactor( consumer2, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
 </pre>
 </td>
 <td><m>The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/MainProdConsMqtt.kt" target="code">MainProdConsMqtt.kt</a><br/><br/>
+Remember to activate a <tt>MQTT broker</tt> (e.g. <a href="https://mosquitto.org/" target="web">Mosquitto</a>) on the <tt>localhost</tt>.
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+data class  DataItem( val item: String, val id : String = DataItem.id ){
+    companion object { val id = "dataItem"  }
+}
+</pre>
+</td>
+<td><m>The producer generates data of type <bc>DataItem</bc> .<br/>
+ The code is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodCons/DataItem.kt" target="code">DataItem.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td style="width:45%">
+<pre>
+override suspend fun actorBody(msg: ApplMessage) {
+  println("   Producer $name |  receives msg= $msg ")
+  when ( msg.msgId() ) {
+	"local_start" -> {
+		val d = DataItem( "data(${n})")
+		emit(d.id, d.item)
+		n++
+	}
+	else -> println("   Producer $name |  msg= $msg ")
+  }
+}
+</pre>
+</td>
+<td><m>At each 'click' of the <a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>,
+the producer receives a <bc>local_start</bc> event by emtting an event with new natural number.
+<br/><br/>
+
+The code is in 
 <a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ProducerMqtt.kt" target="code">ProducerMqtt.kt</a>
 
 </m>
@@ -951,30 +1002,15 @@ Now, the <tt>qak-infrastructure</tt> can be extended to support system descripti
 <tr>
 <td>
 <pre>
+override suspend fun actorBody(msg: ApplMessage) {
+	println("   Consumer $name |  receives msg= $msg ")
+	forward("answer", msg.msgContent(), msg.msgSender())
+}
 </pre>
 </td>
-<td><m>The code is in 
+<td><m>The consumer sends an asnwer to the sender.<br/>
+ The code is in 
 <a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/ConsumerMqtt.kt" target="code">ConsumerMqtt.kt</a>
-</m>
-</td>
-</tr>
-
-
-<tr>
-<td>
-<pre>
-context(ctxProducer,"localhost", "MQTT", 1883).
-context(ctxConsumer,"localhost", "MQTT", 1883).
-
-qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").
-qactor( producer,  ctxProducer, "it.unibo.qak.prodConsMqtt.ProducerMqtt").
-qactor( consumer1, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
-%%qactor( consumer2, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
-</pre>
-</td>
-<td><m>The code is in 
-<a href="../src/main/kotlin/it/unibo/qak/prodConsMqtt/MainProdConsMqtt.kt" target="code">MainProdConsMqtt.kt</a><br/><br/>
-Remember to activate a <tt>MQTT broker</tt> (e.g. <a href="https://mosquitto.org/" target="web">Mosquitto</a>) on the <tt>localhost</tt>.
 </m>
 </td>
 </tr>

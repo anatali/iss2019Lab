@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="6556fa3b-4282-4c84-8b4b-5404c869db91" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab6.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.robots19/userDocs/Lab9.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robots19/userDocs/Lab9.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -382,6 +382,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="0" width="1038" height="698" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31186095" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
