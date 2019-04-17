@@ -9,6 +9,7 @@ build
 
 #Ignore
 .idea
+.idea/workspace.xml
 *.iml
 *.xml
 

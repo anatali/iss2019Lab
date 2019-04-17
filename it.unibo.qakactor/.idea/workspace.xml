@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Consumer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Producer.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/prodCons.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/sysDescr.pl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/sysRules.pl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.gitignore" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -182,7 +167,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555514360335" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555514412257" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
