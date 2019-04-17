@@ -43,9 +43,12 @@ object sysUtil{
 		loadTheory( desrFilePath )
 		loadTheory( rulesFilePath )
 
-		mqttBrokerIP = solve("mqttBroker(IP,_)", "IP")
-		mqttBrokerPort = solve("mqttBroker(_,PORT)", "PORT")
-
+		try {
+			mqttBrokerIP = solve("mqttBroker(IP,_)", "IP")
+			mqttBrokerPort = solve("mqttBroker(_,PORT)", "PORT")
+		}catch(e: Exception){
+			println("sysUtil | NO MQTT borker FOUND")
+		}
 			val ctxs: String? = solve("getCtxNames(X)", "X")
 			//context( CTX, HOST, PROTOCOL, PORT )
 			val ctxsList = strRepToList(ctxs!!)
