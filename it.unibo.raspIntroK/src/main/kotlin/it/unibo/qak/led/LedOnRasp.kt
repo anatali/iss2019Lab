@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 
 class LedOnRasp(name:String, scope: CoroutineScope) : ActorBasic( name, scope ){
 
-    //val concreteLed
     override suspend fun actorBody(msg : ApplMessage){
         //println("   $name |  receives msg= $msg ")
         when( msg.msgId() ){

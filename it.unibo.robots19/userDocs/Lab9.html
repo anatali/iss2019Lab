@@ -138,7 +138,15 @@ Our company (<tt>Unibo</tt>) has developed  a virtual environment (named <em>WEn
 The virtual environment  has been mainly built by <i>Pierfrancesco Soffritti</i> using the
 <a href=" https://threejs.org/">three.js</a> JavaScript library (see
 <a href="https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp">ConfigurableThreejsApp</a> ) .
-
+<h3>Starting</h3>
+The reference project for this introduction is <tt>it.unibo.robots19</tt>.
+<ol>
+<li>Install <bc>Node.js</bc></tt>
+<li>Open a terminal on <bc>it.unibo.robots19\node\WEnv\server</bc> and execute <pre>npm install</tt></pre></li>
+<li>In the directory <bc>it.unibo.robots19\node\WEnv\WebGLScene</bc>  execute <pre>npm install</tt></pre></li>
+<li>In the directory  <bc>it.unibo.robots19\node\WEnv\server\src</bc>  execute <pre>node main 8999</tt></pre></li>
+<li>Open a browser on <pre>localhost:8090</pre></li>
+</ol>
  
 <h3>SCENE</h3>  
 The scene of the <tt>WEnv</tt> is built from a description can be easily defined by an application designer.
@@ -225,7 +233,7 @@ The commands are described in the file <tt>README.md</tt>.
 <pre>
 moveForward : `{ "type": "moveForward", "arg": 300 }`
 moveBackward : `{ "type": "moveBackward", "arg": 300 }`
-3
+ 
 turnRight : `{ "type": "turnRight", "arg": 300 }`
 turnLeft : `{ "type": "turnLeft", "arg": 300 }`
 
