@@ -3,11 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="6556fa3b-4282-4c84-8b4b-5404c869db91" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/kactor/sysUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/userDocs/Lab7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ApplMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ApplMessage.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -168,7 +173,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
+    <option name="x" value="141" />
+    <option name="y" value="2" />
     <option name="width" value="1038" />
     <option name="height" value="698" />
   </component>
@@ -188,6 +194,11 @@
             <path>
               <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
               <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="userDocs" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -293,7 +304,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="0" width="1038" height="698" extended-state="0" />
+    <frame x="141" y="2" width="1038" height="698" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31186095" />

@@ -77,6 +77,13 @@ open class ApplMessage  {
         return getDefaultRep()
     }
 
+    fun isEvent(): Boolean{
+        return msgType == ApplMessageType.event.toString()
+    }
+    fun isDispatch(): Boolean{
+        return msgType == ApplMessageType.dispatch.toString()
+    }
+
     fun getDefaultRep(): String {
         return if (msgType == null)
             "msg(none,none,none,none,none,0)"

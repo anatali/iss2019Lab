@@ -1,11 +1,13 @@
-    package it.unibo.kactor
+package it.unibo.kactor
 
 import alice.tuprolog.Prolog
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import java.util.NoSuchElementException
 
 
     /*
@@ -22,6 +24,8 @@ abstract class  ActorBasic(val name:         String,
     //val cpus = Runtime.getRuntime().availableProcessors();
     var context : QakContext? = null  //to be injected
     val pengine = Prolog()      //USED FOR LOCAL KB
+    val NoMsg = MsgUtil.buildEvent(name, "noMsg", "noMsg")
+
     val mqtt    = MqttUtils()
     protected val subscribers = mutableListOf<ActorBasic>()
     var mqttConnected = false
@@ -35,9 +39,9 @@ abstract class  ActorBasic(val name:         String,
 
     val actor = scope.actor<ApplMessage>(
             dispatcher, capacity=channelSize ) {
-        //println("   ActorBasic $name |  RUNNING IN $dispatcher"  )
+        //println("ActorBasic $name |  RUNNING IN $dispatcher"  )
         for( msg in channel ) {
-            //println("   ActorBasic $name |  msg= $msg "  )
+            //println("ActorBasic $name |  msg= $msg "  )
             actorBody( msg )
         }
     }
@@ -53,9 +57,10 @@ Messaging
 --------------------------------------------
  */
     suspend fun autoMsg(  msg : ApplMessage) {
-    //println("ActorBasic $name | autoMsg $msg ")
+     //println("ActorBasic $name | autoMsg $msg actor=${actor}")
      actor.send( msg )
     }
+
     suspend fun autoMsg( msgId : String, msg : String) {
         actor.send( MsgUtil.buildDispatch(name, msgId, msg, this.name) )
     }
@@ -197,5 +202,7 @@ machineExec
             throw e
         }
     }
+
+
 
 }

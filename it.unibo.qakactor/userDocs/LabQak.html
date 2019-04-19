@@ -1,0 +1,779 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LABQakISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LABQak | The QActor metamodel</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
+
+  
+<h2><a id="metamodel"/>The metamodel </h2>
+<em>QActor</em> is the name given to the custom meta-model inspired to the actor model, as supported by the <bc>Akka</bc> library.
+<br/><br/>
+The leading <em>Q/q</em> in the <tt>QActor</tt> word, means 'quasi' since the <tt>QActor</tt> meta-model does introduce (with respect to <tt>Akka</tt>) 
+its own peculiarities, including reactive actions, even-driven programming concepts and a support for distribution in heterogeneous systems. 
+<br/>
+The addition of a <em>k</em> to the prefix (e.g. <bc>qak, Qak</bc>) means that we are making reference to the version implemented in <bc>Kotlin</bc>,
+without using any <tt>Akka</tt> support.
+
+<div class="remark">
+The metamodel is supported by the <tt>qak-infrastructure</tt> deployed in <bc>iss2019Lab/libs/it.unibo.qakactor-1.0.jar</bc>.
+</div>
+
+<h3>Overview</h3>
+Let us summarize the main features of a <tt>qa-system</tt>:
+
+<ul>
+<li>A <em>QA-System</em> is a collection of active entities (<tt>QActors</tt>) each working in a computational node (<tt>Context</tt>). 
+A QActor can interact with other <tt>QActors</tt> using <a href="#messages">Messages</a> of different types (<tt>Dispatch,
+Request, Invitation, ...</tt>) and <a href="#events">Events</a>. 
+
+<center><img src="./qacontexts.png" alt="qacontexts" width="60%" height="60%"></center>
+ <br/><br/>
+</li>
+ 
+<li>The <em>configuration</em> of a <tt>QA-System</tt> is explicitly represented by a set of 'facts' written in tuProlog syntax
+replicated in each <tt>Context</tt> (<tt>Context Knowledge Base</tt> or simply <em>ContextKB</em>). A <tt>QA-System</tt>
+con be configured in a static or in a dynamic way. In case of dynamic configuration, the knowledge about
+the configuration is dynamically updated in each <tt>Context</tt> of the system (not yet implemented in <bc>qak</bc>).<br/><br/>
+</li>
+
+<li>The <em>start-up</em> of a distributed <tt>QA-System</tt> (i.e. a system made of two or more <tt>Contexts</tt>) is handled by
+the run-time support. In particular, the Application code (i.e. the code written into the actors) begins to
+run only when all the <tt>Contexts</tt> are activated.<br/><br/>
+</li>
+
+<li>The <em>exchange of information</em> among the <tt>QActors</tt> is implemented by the <bc>Qak-Infrastructure</bc>.
+ The <tt>Qak-Infrastructure</tt> supports interaction among <tt>QActors</tt>
+working in the same <tt>Context</tt> and/or in different Contexts. In the latter case, the <tt>Qak-Infrastructure</tt>
+exploits the <tt>ContextKB</tt> in order to deliver a message from the <tt>Context</tt> of the sender to the Context of the
+destination. An event raised in some <tt>Context</tt>, is delivered to all the other <tt>Contexts</tt> of the system.
+
+<center><img src="./qactor.jpg" alt="qactor" width="60%" height="60%"></center>
+ <br/><br/>
+
+</li>
+
+<li>To <em>deliver information</em> among the Contexts, the <tt>QA-Infrastructure</tt> can use pairwise <tt>TCP</tt> connections
+between the <tt>Contexts</tt> or a <bc>MQTT</bc> broker (see <a href="#mqtt">Using MQTT</a>). The choice is up to the Application designer.
+<br/><br/>
+</li>
+
+<li>Each <tt>QActor</tt> logically <em>behaves</em> as a (<tt>Moore</tt>'s) Finite State Automaton (<bc>FSM</bc>). 
+While in a state, a <tt>QActor</tt> can execute
+both synchronous and asynchronous actions. An asynchronous action terminates immediately and emits
+an event when it terminates.<br/><br/>
+</li>
+
+<li>A <tt>QKActor</tt> is able to execute a set of pre-defined actions, including:
+<ul>
+<li><pre>forward( msgId : String, msg: String, destActor: ActorBasic)</pre></li>
+<li><pre>forward( msgId : String, msg: String, destName: String)</pre></li>
+<li><pre>emit( msgId : String, msg : String)</pre></li>
+<li><pre>machineExec(cmd: String) </pre>
+</li>
+</ul>
+<br/>
+</li>
+
+<li>A <tt>QActor</tt> is associated to a <em>private knowledge-base</em> (<tt>Actor Knowledge Base</tt> or simply <bc>QaKB</bc>) written in <tt>Prolog</tt> that can be
+dynamically extended.
+The Application Designer must remember to provide the prefixed set of rules required by the <tt>qak-infrastructure</tt>. These rule can be found
+in <a href="../sysRules.pl" target="code">sysRules.pl</a>.
+
+<br/><br/>
+
+</li>
+</ul>
+
+<h3 id="messages">Messages</h3>
+In the QActor metamodel, a message is intended as information sent in asynchronous way by some source to
+some specific destination.
+<br/><br/>
+For </bc>asynchronous</bc> transmission we intend that the messages can be 'buffered' by the infrastructure,
+while the 'unbuffered' transmission is said to be <bc>synchronous</bc>.
+ <br/><br/>
+A message does not force the execution of code: a message <tt>m</tt> sent from an actor sender to an actor receiver
+can trigger a state transition in the receiver. If the receiver is not 'waiting' for a
+transition including <tt>m</tt> the message is enqueued in the receiver queue.
+<br/><br/>
+At application-level, we say that a QActor works according to a <bc>message-based</bc> behaviour, while at the
+lower level (in the infrastructure) it works according to the <bc>massage-driven</bc> behaviour.
+ 
+
+<h3 id="events">Events</h3>
+In the QActor metamodel, an event is intended as information emitted by some source without any explicit
+destination. Events can be emitted by the QActors that compose a actor-system or by sources external to the
+system.
+<br/><br/>
+The occurrence of an event can put in execution some code devoted to the management of that event. We
+qualify this kind of behaviour as event-driven behaviour, since the event 'forces' the execution of code.
+<br/><br/>
+An event can also trigger state transitions in components, usually working as Finite state machines. We
+qualify this kind of behaviour as <bc>event-based</bc> behaviour, since the event is 'lost' if no actor is in a state
+waiting for it.
+<br/><br/>
+Events whose identifier start with the prefix <bc>local_</bc/> are not propagated outside the context in which they are generated.
+
+<h2 id="actorasstream">Observable Actors</h3>
+
+  
+<em>Reactive programming</em> is a combination of the best ideas from the <bc>Observer</bc> pattern, 
+the <bc>Iterator</bc> pattern, and <bc>functional programming</bc>.
+<br/>
+In <tt>reactive programming</tt>, the consumer reacts to the data as it comes in. 
+This is the reason why asynchronous programming is also called reactive programming. 
+Reactive programming allows to <i>propagates event changes</i> to registered observers.
+<br/><br/>
+Let us add the following properties to our <tt>ActorBasic</tt>:
+<pre>
+abstract class  ActorBasic( ... ) {
+protected val subscribers = mutableListOf<ActorBasic>()
+
+    fun subscribe( a : ActorBasic) : ActorBasic {
+        subscribers.add(a)
+        return a
+    }
+    fun unsubscribe( a : ActorBasic) {
+        subscribers.remove(a)
+    }
+
+    suspend fun emitLocalStreamEvent(v: ApplMessage ){
+        subscribers.forEach { it.actor.send(v) }
+    }
+</pre>
+
+From now on, we can use an <tt>ActorBasic</tt> as an <bc>observable producer</bc> of data; it can be observed by other actors
+subscribed to it. Each subscriber will process the data 'in parallel' with the others and can work as an observable in its turn.
+
+<div class="remark"> 
+<a href="https://www.vogella.com/tutorials/RxJava/article.html">Reactive Extensions (Rx) in Java</a> (<bc>RxJava</bc>)
+ is based on the same principles and allows us to compose components into <bc>pipelines</bc>  
+ according to the <a href="https://en.wikipedia.org/wiki/Stream_(computing)">Stream computing</a> paradigm.
+</div>
+ 
+<h3 id="">Producer as an observable actor</h3>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td><m>The <tt>ProducerStream</tt> starts when it receives the message <tt>"start"</tt> 
+with the length of the sequence (<tt>max</tt>) to generate.
+From now on, it generates the sequence of natural numbers from <tt>1</tt> to <tt>max</tt>,
+by using <bc>emit</bc> to generate an auto-stimulation event to continue the work.
+</m>
+<pre>
+</pre>
+</td>
+<!-- it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ProducerStream.kt -->
+<td><m>The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ProducerStream.kt" target="code">ProducerStream.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td><m>The <tt>ConsumerSquare</tt> generates the square of the natural numbers received in input.</m>
+<pre>
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" target="code">ConsumerSquare.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td><m>The <tt>ConsumerSquare</tt> generates the square of the natural numbers received in input.</m>
+<pre>
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/ConsumerSquare.kt" target="code">ConsumerSquare.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td><m></m>
+<pre>
+class Sink(name:String, scope: CoroutineScope) : ActorBasic( name, scope ){
+    override suspend fun actorBody(msg : ApplMessage){
+        println("   $name |  receives msg= $msg ")
+        println()
+     }
+}
+</pre>
+</td>
+<td><m>The <a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/Sink.kt" target="code">Sink.kt</a>
+simply shows the natural number received in input.
+</m>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<br/>
+According to the <a href="https://en.wikipedia.org/wiki/Stream_(computing)">Stream computing</a> paradigm, a producer
+can be viewed as the generator of a <bc>stream</bc> of data that works in <bc>pipeline</bc> with consumers. 
+For example, the line of code :
+<pre>
+prod.subscribe(filter).subscribe(square).subscribe(sink)
+</pre>
+ 
+defines a system architecture that shows the square of the first <tt>max</tt> odd natural numbers. The full example
+is reported hereunder.
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:45%">
+<m></m>
+<pre>
+fun main() = runBlocking{
+    println("   MainProducerStream STARTS ")
+
+    val prod   = ProducerStream("prod", this )
+    val filter = Filter("filter",this )
+    filter.setFilterFunction (  { v: Int -> v %2  != 0 } )
+    val square = ConsumerSquare("square", this)
+    val sink   = Sink("sink", this)
+	
+	//prod.subscribe(sink)  //(1)
+    prod.subscribe(filter).subscribe(square).subscribe(sink)
+
+    val msgStart = MsgUtil.buildEvent("main", "start", "8"  )
+    prod.actor.send(msgStart)
+    println("   MainProducerStream ENDS ")
+}
+</pre>
+<m>If we eliminate the comment on <bc>(1)</bc>, we activate another pipeline that work in parallel with the previous one.</m>
+</td>
+<td><m>The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/stream/MainProducerStream.kt" target="code">MainProducerStream.kt</a>.<br/>
+The <tt>OUTPUT</tt> is:
+</m>
+<pre>
+   MainProducerStream STARTS 
+   MainProducerStream ENDS 
+   filter |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   square |  receives msg= msg(dataItem,event,prod,none,1,2) 
+   sink |  receives msg= msg(dataItem,event,square,none,1,4) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,2,5) 
+   filter |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   square |  receives msg= msg(dataItem,event,prod,none,3,7) 
+   sink |  receives msg= msg(dataItem,event,square,none,9,9) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,4,10) 
+   filter |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   square |  receives msg= msg(dataItem,event,prod,none,5,12) 
+   sink |  receives msg= msg(dataItem,event,square,none,25,14) 
+
+   filter |  receives msg= msg(dataItem,event,prod,none,6,15) 
+   filter |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   ProducerStream prod | COMPLETED 
+   square |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+   sink |  receives msg= msg(dataItem,event,prod,none,completed,17) 
+  </pre>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+<h2 id="mqtt">Using MQTT</h2>
+In several situations, it could be preferable to manage the interaction among the actors working on different nodes by using the
+publish-subscribe <a href="https://it.wikipedia.org/wiki/MQTT" target="web">MQTT</a> (<i>Message Queue Telemetry Transport</i>) 
+protocol rather than the built-in <tt>qak-infrastructure</tt>.
+
+<br/><br/>
+Let us add the following properties to our <tt>ActorBasic</tt>:
+<pre>
+abstract class  ActorBasic( ... ) : MqttCallback {
+    fun checkMqtt(){
+        if( context!!.mqttAddr.length > 0  ){
+            mqtt.connect(name,context!!.mqttAddr)
+            mqttConnected = true
+            mqtt.subscribe(this, "unibo/qak/$name")
+            mqtt.subscribe(this, "unibo/qak/events")
+        }
+    }
+
+    override fun messageArrived(topic: String, msg: MqttMessage) {
+        val m = ApplMessage( msg.toString() )
+        this.scope.launch{ actor.send( m ) }
+
+    }
+    override fun connectionLost(cause: Throwable?) {
+        println("       ActorBasic $name | connectionLost $cause " )
+    }
+    override fun deliveryComplete(token: IMqttDeliveryToken?) {
+		//println("       ActorBasic $name |  deliveryComplete token= "+ token );
+    }
+</pre>
+
+Now, the <tt>qak-infrastructure</tt> can be extended to support system descriptions like that shown in the following example:
+
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:60%">
+<pre>
+mqttBroker( "localhost",  1883 ).
+
+context(ctxProducer,"localhost", "TCP", 8010).
+context(ctxConsumer,"localhost", "MQTT", 0). %%The port is not considered here
+
+qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").
+qactor( producer,  ctxProducer, "it.unibo.qak.prodConsMqtt.ProducerMqtt").
+qactor( consumer1, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
+qactor( consumer2, ctxConsumer, "it.unibo.qak.prodConsMqtt.ConsumerMqtt").
+</pre>
+</td>
+<td><m>The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/MainProdConsMqtt.kt" target="code">MainProdConsMqtt.kt</a><br/><br/>
+Remember to activate a <tt>MQTT broker</tt> (e.g. <a href="https://mosquitto.org/" target="web">Mosquitto</a>) on the <tt>localhost</tt>.
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+data class  DataItem( val item: String, val id : String = DataItem.id ){
+    companion object { val id = "dataItem"  }
+}
+</pre>
+</td>
+<td><m>The producer generates data of type <bc>DataItem</bc> .<br/>
+ The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodCons/DataItem.kt" target="code">DataItem.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td style="width:45%">
+<pre>
+override suspend fun actorBody(msg: ApplMessage) {
+  println("   Producer $name |  receives msg= $msg ")
+  when ( msg.msgId() ) {
+	"local_start" -> {
+		val d = DataItem( "data(${n})")
+		emit(d.id, d.item)
+		n++
+	}
+	else -> println("   Producer $name |  msg= $msg ")
+  }
+}
+</pre>
+</td>
+<td><m>At each <tt>'click'</tt> of the <a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ButtonGuiActork.kt" target="code">ButtonGuiActork.kt</a>,
+the producer receives a <bc>local_start</bc> event and emits a new <tt>DataItem</tt> event.
+<br/><br/>
+
+The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ProducerMqtt.kt" target="code">ProducerMqtt.kt</a>
+
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+override suspend fun actorBody(msg: ApplMessage) {
+	println("   Consumer $name |  receives msg= $msg ")
+	forward("answer", msg.msgContent(), msg.msgSender())
+}
+</pre>
+</td>
+<td><m>The consumer sends an asnwer to the sender.<br/>
+ The code is in 
+<a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/qak/prodConsMqtt/ConsumerMqtt.kt" target="code">ConsumerMqtt.kt</a>
+</m>
+</td>
+</tr>
+
+
+</tbody>	
+</table></center>
+
+<h2 id="mqtt">QActor as Finite State Machine</h2>
+
+So far, the behavior of a <tt>Qakactor</tt> is <bc>message-driven</bc>, i.e. the actor works as a consumer  
+of its input messages in <tt>FIFO</tt> order.
+<br/> 
+An an alternative, we could conceive the the behavior of a <tt>Qakactor</tt> as a
+<a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a> (<bc>FSM</bc>) based on the following
+concepts:
+
+<ol>
+<li>A fsm-actor can be described as a 5-tuple:
+<div class="remark">
+(States, Inputs, Outputs, Transitions, InitialState)
+</div>
+
+<ul>
+<li><em>States</em>: Set of possible states (called state space)</li>
+<li><em>Inputs</em>: Set of possible input elements (called input alphabet)</li>
+<li><em>Outputs</em>: Set of possible output elements (called output alphabet) </li>
+<li><em>Transition</em>: A Transition defines the new state and output given the current state and input.
+It is often expressed by two functions:
+<pre>
+nextState:      States x Inputs -> States
+output:         States x Inputs -> Outputs
+</pre>
+</li>
+<li><em>InitialState</em>: The initial state</li>
+</ul>
+ 
+
+</li>
+<li>A fsm-actor is a <bc>Moore FSM</bc>, that generates output while it is in a particular state (output depends on state only).
+Thus, when the fsm-actor is in state, it first executes a sequence of terminating <bc>Actions</bc> and then  checks 
+for the possibility to 'fire' a transition among the set of the active transitions related to that state. </li>
+</ol>
+
+
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<h3>State</h3>
+</td>
+<td>
+<h3>Edge</h3>
+</td>
+</tr>
+
+<tr>
+<td >
+<pre>
+class State(val name: String) {
+    private val edgeList          = mutableListOf<Edge>()
+    private val stateEnterAction  = mutableListOf<(State) -> Unit>()
+
+    fun edge(name: String, targetState: String, cond: Edge.() -> Unit) {
+        val edge = Edge(name, targetState)
+        edge.cond() //set eventHandler (given by user) See fireIf
+        edgeList.add(edge)
+    }
+    fun action( a: (State) -> Unit) {
+         stateEnterAction.add(a)
+    }
+    fun addAction (action: (State) -> Unit) {
+        stateEnterAction.add(action)
+    }
+    fun enterState() {
+        stateEnterAction.forEach {  it(this)  }
+    }
+
+    fun getEdgeForMessage(msg: ApplMessage): Edge? {
+        val first = edgeList.firstOrNull {it.canHandleMessage(msg)}
+        return first
+    }
+}
+</pre>
+</td>
+<td>
+<pre>
+class Edge(val name: String, val targetState: String) {
+
+    lateinit var edgeEventHandler: (ApplMessage) -> Boolean
+    private val actionList = mutableListOf<(Edge) -> Unit>()
+
+    fun action(action: (Edge) -> Unit) { //MEALY (not used)
+        actionList.add(action)
+    }
+    fun enterEdge(retrieveState: (String) -> State): State {
+        actionList.forEach { it(this) }  //MEALY (not used)
+        return retrieveState(targetState)
+    }
+    fun canHandleMessage(msg: ApplMessage): Boolean {
+        return edgeEventHandler(msg)
+    }
+}
+</pre>
+</td>
+</tr>
+</tbody>	
+</table></center>
+
+<h3>Behavior</h3>
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+
+<pre>
+class ActorBasicFsm( name:         String,
+        scope: CoroutineScope = GlobalScope,
+        val initialStateName: String,
+        val buildbody: ActorBasicFsm.() -> Unit,
+		... ) : ActorBasic( name, scope, ... )
+private lateinit var currentState: State
+...
+init {
+        println("ActorBasicFsm $name | STARTS ")
+        buildbody()            //Build the structural part
+        currentState = getStateByName(initialStateName)
+        scope.launch { autoMsg(NoMsg) }  //auto-start
+    }
+
+    override suspend fun actorBody(msg: ApplMessage) {
+        println("ActorBasicFsm $name STARTED")
+        fsmwork()
+    }
+
+suspend fun fsmwork() {
+          do {
+            currentState.enterState()
+            val nextState = checkTransition(NoMsg) //EMPTY MOVE
+            if (nextState is State) currentState = nextState
+            else currentState = transition()
+        } while (true)
+}	
+</pre>
+ </pre>
+</td>
+<td><m>
+<pre>ActorBasicFsm.() -> Unit</pre> is a Kotlin <bc>lambda with receiver</bc>
+(see <a href="../../it.unibo.kotlin.dsl/userDocs/LabDsl.html" target="lecture">LabDsl.html</a>)
+.
+
+<br/><br/>
+The code is in 
+<a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td style="width:50%">
+<h3>STRUCTURAL</h3>
+<pre>
+    fun state(name: String, build: State.() -> Unit) {
+        val state = State(name)
+        state.build()
+        stateList.add(state)
+    }
+
+    private fun getStateByName(name: String): State {
+        return stateList.firstOrNull { it.name == name }
+            ?: throw NoSuchElementException(name)
+    }
+
+</pre>
+ </pre>
+</td>
+<td><m>
+The code is in 
+<a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a>
+</m>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<pre>
+
+</pre>
+</td>
+<td><m>
+The code is in 
+<a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">ActorBasicFsm.kt</a>
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<h3>Example</h3>
+<pre>
+fun main() = runBlocking {
+    val qa = ActorBasicFsm("qa", this, "init", {
+        state(name = "init") {
+            action { println("hello init") }
+            action { scope.launch{ autoMsg( NoMsg ) } }
+            edge(name = "e1", targetState = "s1", cond=goto())
+        }
+        state(name = "s1") {
+            action { println("$currentMsg") }
+            //edge(name="e1", targetState="s2", cond=fireIf{it.isEvent() )
+        }
+    }
+    )
+}
+</pre>
+</td>
+<td>
+</td>
+</tr>
+
+</tbody>	
+</table></center>
+
+
+ 
+ 
+</p>
+<!--
+ <h2>BLSD7Segm (Work to do)</h2>
+ <div class="req">
+Design and build a <tt>Distributed</tt> software system in which
+<ul>
+<li>A </li>
+<li>shows the value on <bc>Seven-Segment Display</bc>
+</li>
+</ul>
+-->
+
+ 
+</div>	 
+
+
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>
