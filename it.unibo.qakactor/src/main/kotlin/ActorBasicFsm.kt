@@ -1,9 +1,6 @@
 package it.unibo.kactor
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.NoSuchElementException
 
 /*
@@ -11,9 +8,10 @@ import java.util.NoSuchElementException
  STATE
 ================================================================
  */
-class State(val stateName : String) {
+class State(val stateName : String ) {
     private val edgeList          = mutableListOf<Edge>()
-    private val stateEnterAction  = mutableListOf<(State) -> Unit>()
+    private val stateEnterAction  = mutableListOf< (State) -> Unit>()
+    private val myself : State    = this
 
     fun edge(edgeName: String, targetState: String, cond: Edge.() -> Unit) {
         val edge = Edge(edgeName, targetState)
@@ -22,19 +20,16 @@ class State(val stateName : String) {
         edgeList.add(edge)
     }
     //Add an action which will be called when the state is entered
-    fun action( a: (State) -> Unit) {
+    fun action(  a:  (State) -> Unit) {
         //println("State $stateName    | add action  $a")
-        stateEnterAction.add(a)
+        stateEnterAction.add( a )
     }
-    operator fun plus (action: (State) -> Unit) {
-        stateEnterAction.add(action)
-    }
-    fun addAction (action: (State) -> Unit) {
+    fun addAction (action:  (State) -> Unit) {
         stateEnterAction.add(action)
     }
     fun enterState() {
-        stateEnterAction.forEach {  it(this)  }
-    }
+        stateEnterAction.forEach {  it(this) }
+     }
 
     //Get the appropriate Edge for the Message
     fun getEdgeForMessage(msg: ApplMessage): Edge? {
@@ -78,13 +73,13 @@ class Edge(val edgeName: String, val targetState: String) {
 ================================================================
  */
 class ActorBasicFsm(  qafsmname:  String,
-                      scope: CoroutineScope = GlobalScope,
+                      fsmscope: CoroutineScope = GlobalScope,
                       val initialStateName: String,
                       val buildbody: ActorBasicFsm.() -> Unit,
                       confined :    Boolean = false,
                       ioBound :     Boolean = false,
                       channelSize : Int = 50
-                    ): ActorBasic(  qafsmname, scope, confined, ioBound, channelSize ) {
+                    ): ActorBasic(  qafsmname, fsmscope, confined, ioBound, channelSize ) {
 
     val autoStartMsg = MsgUtil.buildDispatch(name, "autoStartSysMsg", "start", name)
     private var isStarted = false
@@ -93,11 +88,11 @@ class ActorBasicFsm(  qafsmname:  String,
 
     private val stateList = mutableListOf<State>()
     private val msgQueueStore = mutableListOf<ApplMessage>()
-    internal val msgQueue     = Channel<ApplMessage>(100) //LinkedListChannel
+    //internal val msgQueue     = Channel<ApplMessage>(100) //LinkedListChannel
 
     //================================== STRUCTURAL =======================================
     fun state(stateName: String, build: State.() -> Unit) {
-        val state = State(stateName)
+        val state = State(stateName )
         state.build()
         stateList.add(state)
     }
@@ -112,40 +107,118 @@ class ActorBasicFsm(  qafsmname:  String,
         buildbody()            //Build the structural part
         currentState = getStateByName(initialStateName)
         //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")
-        scope.launch { autoMsg(autoStartMsg) }  //auto-start
+        fsmscope.launch { autoMsg(autoStartMsg) }  //auto-start
     }
 
     override suspend fun actorBody(msg: ApplMessage) {
-        println("ActorBasicFsm $name | msg=$msg")
+        //println("ActorBasicFsm $name | msg=$msg")
         if( msg.msgId() == autoStartMsg.msgId() && ! isStarted ) {
             isStarted = true
-            scope.launch{ fsmwork() }
+            //scope.launch{ fsmwork() } //The actot must continue to receive msgs
+            fsmStartWork()
+            //println("ActorBasicFsm $name | BACK TO MAIN ACTOR AFTER INIT")
         }else{
-            msgQueue.send(msg)
+            fsmwork(msg)
+            //println("ActorBasicFsm $name | BACK TO MAIN ACTOR")
         }
     }
 
+    fun hanldeCurrentMessage(msg : ApplMessage, nextState : State?, memo : Boolean = true) : Boolean{
+        //println("ActorBasicFsm $name | hanldeCurrentMessage in ${currentState.stateName} msg=${msg.msgId()}")
+        if (nextState is State) {
+            currentMsg   = msg
+            currentState = nextState
+            return true
+        } else { //EXCLUDE EVENTS FROM msgQueueStore
+            if( ! memo ) return false
+            if (!(msg.isEvent()) ) {
+                msgQueueStore.add(msg)
+                println("ActorBasicFsm $name |  added $msg in msgQueueStore")
+             } else  println("ActorBasicFsm $name | DISCARDING THE EVENT: $msg")
+            return false
+        }
+    }
 
-
-    suspend fun fsmwork() {
-        //println("ActorBasicFsm $name | work in STATE ${currentState.stateName}")
-        //GlobalScope.launch {
-        do {
+    fun checkDoEmptyMove(){
+        var nextState = checkTransition(NoMsg) //EMPTY MOVE
+        while (nextState is State) {
+            currentMsg   = NoMsg
+            currentState = nextState
             currentState.enterState()
-            //println("ActorBasicFsm $name | TRANSITION in STATE ${currentState.stateName}")
-            //EMPTY MOVE
-            val nextState = checkTransition(NoMsg)
-            if (nextState is State) currentState = nextState
-            else currentState = transition()
-        } while (true)
-        //}
+            nextState = checkTransition(NoMsg) //EMPTY MOVE
+        }
+    }
+
+    fun fsmStartWork() {
+        //println("ActorBasicFsm $name | fsmStartWork in STATE ${currentState.stateName}")
+        currentState.enterState()
+        checkDoEmptyMove()
+    }
+
+    fun fsmwork(msg : ApplMessage) {
+        //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
+        var nextState = checkTransition(msg)
+        var b = hanldeCurrentMessage( msg, nextState )
+        while(  b  ){ //handle previous messages
+            currentState.enterState()
+            checkDoEmptyMove()
+            val nextState = lookAtMsgQueueStore()
+            b = hanldeCurrentMessage( msg, nextState, memo=false )
+         }
+    }
+
+    private fun lookAtMsgQueueStore(): State? {
+        //println("ActorBasicFsm $name | lookAtMsgQueueStore :${msgQueueStore.size}")
+        msgQueueStore.forEach {
+            val state = checkTransition(it)
+            if (state is State) {
+                msgQueueStore.remove(it)
+                return state
+            }
+        }
+        return null
+    }
+
+    private fun checkTransition(msg: ApplMessage): State? {
+        val edge = currentState.getEdgeForMessage(msg)
+        //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
+        return if (edge is Edge) {
+            edge.enterEdge { getStateByName(it) }
+        } else {
+            //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
+            null
+        }
+    }
+
+    fun myautoMsg(  msg : ApplMessage) {
+        //println("ActorBasic $name | autoMsg $msg actor=${actor}")
+        scope.launch{ actor.send( msg ) }
+    }
+
+    /*
+    //Returns the next state by looking at th messages so far received or waits on infochannel
+    @kotlinx.coroutines.ExperimentalCoroutinesApi
+    suspend fun transition(): State {
+        //println("ActorBasicFsm $name | transition in:${currentState.stateName}")
+        val state = lookAtMsgQueueStore()
+        if (state is State) {
+            //println("ActorBasicFsm $name | transition state from msgQueueStore:${state.stateName}")
+            return state
+        }else return State("nostate",scope)
+        //lookAtMsgQueue => terminate
+
+        val (msg, newstate) = lookAtMsgQueue()
+        currentMsg = msg
+        return newstate
+
     }
 
     private suspend fun lookAtMsgQueue(): Pair<ApplMessage, State> {
         var nextState: State?
         do {
+            println("ActorBasicFsm $name | lookAtMsgQueue in:${currentState.stateName}")
             val msg = msgQueue.receive()
-            //println("ActorBasicFsm $name | lookAtMsgQueue received  $msg")
+            println("ActorBasicFsm $name | lookAtMsgQueue received  $msg")
             nextState = checkTransition(msg)
             if (nextState is State) {
                 return Pair(msg, nextState)
@@ -160,44 +233,8 @@ class ActorBasicFsm(  qafsmname:  String,
         } while (true)
     }
 
-    private fun checkTransition(msg: ApplMessage): State? {
-        val edge = currentState.getEdgeForMessage(msg)
-        //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
-        return if (edge is Edge) {
-            edge.enterEdge { getStateByName(it) }
-        } else {
-            //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
-            null
-        }
-    }
+*/
 
-    //Returns the next state by looking at th messages so far received or waits on infochannel
-    @kotlinx.coroutines.ExperimentalCoroutinesApi
-    suspend fun transition(): State {
-        //println("ActorBasicFsm $name | transition in:${currentState.stateName}")
-        val state = lookAtMsgQueueStore()
-        if (state is State) {
-            //println("ActorBasicFsm $name | transition state from msgQueueStore:${state.stateName}")
-            return state
-        }
-        println("ActorBasicFsm $name | WAITS in:${currentState.stateName}")
-        val (msg, newstate) = lookAtMsgQueue() //infochannel.receive()
-        println("ActorBasicFsm $name | RESUMES to:${newstate.stateName} from:${currentState.stateName} since:$msg")
-        currentMsg = msg
-        return newstate
-    }
-
-    private fun lookAtMsgQueueStore(): State? {
-        //println("ActorBasicFsm $name | lookAtMsgQueueStore :${msgQueueStore.size}")
-        msgQueueStore.forEach {
-            val state = checkTransition(it)
-            if (state is State) {
-                msgQueueStore.remove(it)
-                return state
-            }
-        }
-        return null
-    }
 
     /*
     fun isEvent( ev: Message, evName: String, v:String ) : Boolean{

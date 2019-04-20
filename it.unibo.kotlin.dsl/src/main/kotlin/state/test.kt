@@ -1,27 +1,61 @@
 package state
 
 import it.unibo.kactor.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-val mymsg = MsgUtil.buildDispatch("qa", "mySysMsg", "info", "qa")
+val mymsg = MsgUtil.buildDispatch("qa", "userMsg", "info", "qa")
 
 fun main() = runBlocking {
     val qa = ActorBasicFsm("qa", this, "init", {
         state( "init") {
-            action { println("hello init") }
-            action { scope.launch{ println("Automessage ... "); autoMsg( mymsg ) }  }
-            edge("e1", targetState = "s1", cond = whenDispatch( mymsg.msgId() )  )//whenEvent( NoMsg.msgId()) doswitch()
+             action {
+                 println("hello init")
+                 launch {
+                     delay(1000)
+                     println("$name in state $stateName AUTO SEND")
+                     autoMsg(mymsg)
+                 }
+             }
+            edge("e1", targetState = "s1", cond = doswitch()   )
         }
         state( "s1") {
             action { println("$name in state $stateName currentMsg=$currentMsg") }
-            //edge(name="e1", targetState="s2", cond=fireIf{it.isEvent() )
+            edge("e1", targetState = "s2", cond = doswitch()  )
+        }
+        state( "s2") {
+            action { println("$name in state $stateName currentMsg=$currentMsg") }
+            edge("e2", targetState = "s3", cond = whenDispatch( mymsg.msgId() )  )
+        }
+        state( "s3") {
+            action { println("$name in state $stateName currentMsg=$currentMsg") }
+            //edge(name="e3", targetState="s2", cond=fireIf{it.isEvent() )
         }
     }
     )
 
-    //delay(2000)
-    println("BYE")
+    val qb = ActorBasicFsm("qb", this, "init", {
+        state( "init") {
+            action {
+                launch {
+                    delay( 500 )
+                    println("$name in state $stateName SEND")
+                    forward( mymsg.msgId(),"hello from qb","qa")
+                    delay( 500 )
+                    println("$name in state $stateName EMIT")
+                    emit( "alarm", "fire")
+                }
+            }
+            edge("e1", targetState = "s1", cond = whenEvent("alarm")   )
+        }
+        state( "s1") {
+            action { println("$name in state $stateName currentMsg=$currentMsg") }
+            //edge("e1", targetState = "s2", cond = doswitch()  )
+        }
+
+    }
+    )
+
+
 }

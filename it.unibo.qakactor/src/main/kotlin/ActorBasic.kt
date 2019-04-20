@@ -56,7 +56,7 @@ abstract class  ActorBasic(val name:         String,
 Messaging
 --------------------------------------------
  */
-    suspend fun autoMsg(  msg : ApplMessage) {
+    suspend open fun autoMsg(  msg : ApplMessage) {
      //println("ActorBasic $name | autoMsg $msg actor=${actor}")
      actor.send( msg )
     }
