@@ -16,7 +16,8 @@ enum class Protocol {
 object MsgUtil {
 var count = 1;
 
-    fun buildDispatch( actor: String, msgId : String , content : String, dest: String ) : ApplMessage {
+    fun buildDispatch( actor: String, msgId : String ,
+                       content : String, dest: String ) : ApplMessage {
         return ApplMessage(msgId, ApplMessageType.dispatch.toString(),
             actor, dest, "$content", "${count++}")
     }

@@ -2,12 +2,10 @@ package it.unibo.kactor
 
 import alice.tuprolog.Prolog
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
-import java.util.NoSuchElementException
 
 
     /*

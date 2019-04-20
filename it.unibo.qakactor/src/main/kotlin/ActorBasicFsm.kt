@@ -9,15 +9,15 @@ import java.util.NoSuchElementException
 ================================================================
  */
 class State(val stateName : String ) {
-    private val edgeList          = mutableListOf<Edge>()
+    private val edgeList          = mutableListOf<Transition>()
     private val stateEnterAction  = mutableListOf< (State) -> Unit>()
     private val myself : State    = this
 
-    fun edge(edgeName: String, targetState: String, cond: Edge.() -> Unit) {
-        val edge = Edge(edgeName, targetState)
-        //println("                     edge $name $targetState")
-        edge.cond() //set eventHandler (given by user) See fireIf
-        edgeList.add(edge)
+    fun transition(edgeName: String, targetState: String, cond: Transition.() -> Unit) {
+        val trans = Transition(edgeName, targetState)
+        //println("      trans $name $targetState")
+        trans.cond() //set eventHandler (given by user) See fireIf
+        edgeList.add(trans)
     }
     //Add an action which will be called when the state is entered
     fun action(  a:  (State) -> Unit) {
@@ -32,8 +32,8 @@ class State(val stateName : String ) {
      }
 
     //Get the appropriate Edge for the Message
-    fun getEdgeForMessage(msg: ApplMessage): Edge? {
-        //println("State $name       | getEdgeForMessage  $msg  list=${edgeList.size} ")
+    fun getTransitionForMessage(msg: ApplMessage): Transition? {
+        //println("State $name       | getTransitionForMessage  $msg  list=${edgeList.size} ")
         val first = edgeList.firstOrNull { it.canHandleMessage(msg) }
         return first
     }
@@ -44,25 +44,25 @@ class State(val stateName : String ) {
  EDGE
 ================================================================
  */
-class Edge(val edgeName: String, val targetState: String) {
+class Transition(val edgeName: String, val targetState: String) {
 
     lateinit var edgeEventHandler: (ApplMessage) -> Boolean
-    private val actionList = mutableListOf<(Edge) -> Unit>()
+    private val actionList = mutableListOf<(Transition) -> Unit>()
 
-    fun action(action: (Edge) -> Unit) { //MEALY?
-        //println("Edge  | add ACTION:  $action")
+    fun action(action: (Transition) -> Unit) { //MEALY?
+        //println("Transition  | add ACTION:  $action")
         actionList.add(action)
     }
 
-    //Invoke when you go down the edge to another state
-    fun enterEdge(retrieveState: (String) -> State): State {
-        //println("Edge  | enterEdge  retrieveState: ${retrieveState} actionList=$actionList")
+    //Invoke when you go down the transition to another state
+    fun enterTransition(retrieveState: (String) -> State): State {
+        //println("Transition  | enterEdge  retrieveState: ${retrieveState} actionList=$actionList")
         actionList.forEach { it(this) }         //MEALY?
         return retrieveState(targetState)
     }
 
     fun canHandleMessage(msg: ApplMessage): Boolean {
-        //println("Edge  | canHandleMessage: ${msg}  ${msg is Message.Event}" )
+        //println("Transition  | canHandleMessage: ${msg}  ${msg is Message.Event}" )
         return edgeEventHandler(msg)
     }
 }
@@ -72,10 +72,10 @@ class Edge(val edgeName: String, val targetState: String) {
  ActorBasicFsm
 ================================================================
  */
-class ActorBasicFsm(  qafsmname:  String,
+abstract class ActorBasicFsm(  qafsmname:  String,
                       fsmscope: CoroutineScope = GlobalScope,
-                      val initialStateName: String,
-                      val buildbody: ActorBasicFsm.() -> Unit,
+                      //val initialStateName: String,
+                      //val buildbody: ActorBasicFsm.() -> Unit,
                       confined :    Boolean = false,
                       ioBound :     Boolean = false,
                       channelSize : Int = 50
@@ -85,6 +85,8 @@ class ActorBasicFsm(  qafsmname:  String,
     private var isStarted = false
     private lateinit var currentState: State
     var currentMsg = NoMsg
+    lateinit var mybody : ActorBasicFsm.() -> Unit
+
 
     private val stateList = mutableListOf<State>()
     private val msgQueueStore = mutableListOf<ApplMessage>()
@@ -104,10 +106,25 @@ class ActorBasicFsm(  qafsmname:  String,
     //===========================================================================================
 
     init {
+        println("ActorBasicFsm INIT")
+        setBody( getBody(), getInitialState() )
+        /*
         buildbody()            //Build the structural part
         currentState = getStateByName(initialStateName)
         //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")
         fsmscope.launch { autoMsg(autoStartMsg) }  //auto-start
+        */
+    }
+
+    abstract fun getBody() : (ActorBasicFsm.() -> Unit)
+    abstract fun getInitialState() : String
+
+    fun setBody( buildbody: ActorBasicFsm.() -> Unit,
+                         initialStateName: String ){
+        buildbody()            //Build the structural part
+        currentState = getStateByName( initialStateName )
+        //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")
+        scope.launch { autoMsg(autoStartMsg) }  //auto-start
     }
 
     override suspend fun actorBody(msg: ApplMessage) {
@@ -180,20 +197,16 @@ class ActorBasicFsm(  qafsmname:  String,
     }
 
     private fun checkTransition(msg: ApplMessage): State? {
-        val edge = currentState.getEdgeForMessage(msg)
+        val trans = currentState.getTransitionForMessage(msg)
         //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
-        return if (edge is Edge) {
-            edge.enterEdge { getStateByName(it) }
+        return if (trans is Transition) {
+            trans.enterTransition { getStateByName(it) }
         } else {
             //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
             null
         }
     }
 
-    fun myautoMsg(  msg : ApplMessage) {
-        //println("ActorBasic $name | autoMsg $msg actor=${actor}")
-        scope.launch{ actor.send( msg ) }
-    }
 
     /*
     //Returns the next state by looking at th messages so far received or waits on infochannel
@@ -259,19 +272,19 @@ class ActorBasicFsm(  qafsmname:  String,
     }
 */
 
-    fun doswitch(): Edge.() -> Unit {
+    fun doswitch(): Transition.() -> Unit {
         return { edgeEventHandler = { true } }
     }
-    fun fireIf(cond: (ApplMessage) -> Boolean): Edge.() -> Unit {
+    fun fireIf(cond: (ApplMessage) -> Boolean): Transition.() -> Unit {
         return {
             edgeEventHandler = cond }
     }
-    fun whenEvent(evName: String): Edge.() -> Unit {
+    fun whenEvent(evName: String): Transition.() -> Unit {
         return {
             edgeEventHandler = { it.isEvent() && it.msgId() == evName } }
     }
 
-    fun whenDispatch(msgName: String): Edge.() -> Unit {
+    fun whenDispatch(msgName: String): Transition.() -> Unit {
         return {
             edgeEventHandler = { it.isDispatch() && it.msgId() == msgName }}
     }

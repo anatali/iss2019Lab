@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 val mymsg = MsgUtil.buildDispatch("qa", "userMsg", "info", "qa")
-
+/*
 fun main() = runBlocking {
     val qa = ActorBasicFsm("qa", this, "init", {
         state( "init") {
@@ -18,19 +18,19 @@ fun main() = runBlocking {
                      autoMsg(mymsg)
                  }
              }
-            edge("e1", targetState = "s1", cond = doswitch()   )
+            transition("e1", targetState = "s1", cond = doswitch()   )
         }
         state( "s1") {
             action { println("$name in state $stateName currentMsg=$currentMsg") }
-            edge("e1", targetState = "s2", cond = doswitch()  )
+            transition("e1", targetState = "s2", cond = doswitch()  )
         }
         state( "s2") {
             action { println("$name in state $stateName currentMsg=$currentMsg") }
-            edge("e2", targetState = "s3", cond = whenDispatch( mymsg.msgId() )  )
+            transition("e2", targetState = "s3", cond = whenDispatch( mymsg.msgId() )  )
         }
         state( "s3") {
             action { println("$name in state $stateName currentMsg=$currentMsg") }
-            //edge(name="e3", targetState="s2", cond=fireIf{it.isEvent() )
+            //transition(name="e3", targetState="s2", cond=fireIf{it.isEvent() )
         }
     }
     )
@@ -47,11 +47,11 @@ fun main() = runBlocking {
                     emit( "alarm", "fire")
                 }
             }
-            edge("e1", targetState = "s1", cond = whenEvent("alarm")   )
+            transition("e1", targetState = "s1", cond = whenEvent("alarm")   )
         }
         state( "s1") {
             action { println("$name in state $stateName currentMsg=$currentMsg") }
-            //edge("e1", targetState = "s2", cond = doswitch()  )
+            //transition("e1", targetState = "s2", cond = doswitch()  )
         }
 
     }
@@ -59,3 +59,4 @@ fun main() = runBlocking {
 
 
 }
+        */

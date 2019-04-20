@@ -533,7 +533,7 @@ override suspend fun actorBody(msg: ApplMessage) {
 So far, the behavior of a <tt>Qakactor</tt> is <bc>message-driven</bc>, i.e. the actor works as a consumer  
 of its input messages in <tt>FIFO</tt> order.
 <br/> 
-An an alternative, we could conceive the the behavior of a <tt>Qakactor</tt> as a
+An an alternative, we could conceive the behavior of a <tt>Qakactor</tt> as a
 <a href="https://en.wikipedia.org/wiki/Finite-state_machine" target="web">Finite State Machine</a> (<bc>FSM</bc>) based on the following
 concepts:
 
@@ -545,16 +545,16 @@ concepts:
 
 <ul>
 <li><em>States</em>: Set of possible states (called state space)</li>
-<li><em>Inputs</em>: Set of possible input elements (called input alphabet)</li>
-<li><em>Outputs</em>: Set of possible output elements (called output alphabet) </li>
-<li><em>Transition</em>: A Transition defines the new state and output given the current state and input.
+<li><em>Inputs</em>: Set of possible input elements (called <tt>input alphabet</tt>; in our case <i>messages</i>)</li>
+<li><em>Outputs</em>: Set of possible output elements (called <tt>output alphabet</tt>; in our case <i>actions</i> ) </li>
+<li><em>InitialState</em>: The initial state</li>
+<li><em>Transition</em>: A <tt>Transition</tt> defines the new state and output given the current state and input.
 It is often expressed by two functions:
 <pre>
 nextState:      States x Inputs -> States
 output:         States x Inputs -> Outputs
 </pre>
 </li>
-<li><em>InitialState</em>: The initial state</li>
 </ul>
  
 
