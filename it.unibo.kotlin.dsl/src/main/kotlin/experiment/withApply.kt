@@ -48,16 +48,18 @@ fun alphabet4() = buildString {
     for (letter in 'A'..'Z') {
         append(letter)
     }
-    append("\nNow I know the alphabet!")
+
 }
 
 
 fun main(args: Array<String>) {
     println(alphabet0())
+    /*
     println(alphabet1())
     println(alphabet2())
     println(alphabet3())
     println(alphabet4())
+    */
 }
 
 /*

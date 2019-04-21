@@ -135,13 +135,96 @@ table, th, td {
   
 
 
-<h2 id="dsl">extension function type</h2>
+<h2 id="dsl">Lambda with receiver - extension function type</h2>
 
 <center><table style="width:98%">
 <tbody>	
 
 <tr>
-<td style="width:50%">
+<td style="width:40%">
+<pre>
+class Counter{
+var v = 0
+    fun inc(): Int{
+        return ++v
+    }
+}
+<h3>Extension functions</h3>
+fun Counter.show() : String{
+    return "counter($v)"
+}
+fun Counter.dec(): Int{
+    this.v--
+    return v
+}
+
+fun main() {
+    val c1 = Counter()
+    println( c1.show() ) // counter(0)
+    c1.inc();c1.inc();c1.dec()
+    println( c1.show() ) // counter(1)
+}
+
+</pre>
+</td>
+<td><m>
+<h2>Extension function</h2>
+A way of extending the abilities of a Kotlin  class without actually inheriting the class.<br/>
+An <em>extension function</em> <tt>ef</tt> for a class <tt>C</tt> in package <tt>P</tt> :
+<ul>
+<li>is declared as a <b>top-level</b> function and it is compiled to a <b>static</b> method that <i>accepts the receiver object as its first argument</i>; </li>
+<li>can directly access visible properties and methods of <tt>C</tt>;</li>
+<li>can use in its body the key-word <bc>this</bc>;</li>
+<li>needs to be imported, e.g. <bc>import P.ef</bc> or <bc>import P.ef as xx </bc> (to change the name ); </li>
+<li>cannot be overloaded;</li>
+</ul>
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+<h3>Extension function</h3>
+fun String.lastChar() : Char = this.get(this.length-1)
+println( "hello!".lastChar() ) // !
+
+<h3>Extension property</h3>
+val String.lastCharProp : Char
+	get() = get( length-1 )
+
+println( "hello!".lastCharProp ) // !	
+
+----------------------------------------
+
+var Counter.value : Int
+    get() = v
+    set( x : Int ){ v = x }
+
+c1.value = 10
+println( c1.value ) // counter(10)		
+</pre>
+</td>
+<td><m>
+Given a class included in a library <b>compiled</b> in Java, we can  always add our extensions to the class 
+without the need of the source code. <br/><br/>
+Extensions can be related to methods and properties (without state).<br/><br/>
+When the extension is a property, the <bc>get</bc> (and <bc>set</bc> for modifiable) method must be always defined because there is non backing field.
+</m>
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+</pre>
+</td>
+<td><h2>Lambda with receiver</h2>
+</td>
+</tr>
+
+<tr>
+<td >
 <pre>
 fun buildString0(
     builderAction: (StringBuilder) -> Unit ): String {
@@ -150,33 +233,30 @@ fun buildString0(
         return sb.toString()
 }
 
-fun run0() {
+fun main() {
     val s = buildString0 {
         it.append("Hello, ")
         it.append("World!")
     }
-     println(s)     //Hello, World!
+    println(s)     //Hello, World!
 }
 </pre>
 </td>
-<td>
+<td><em>Conventional function-type</em>: a function (<tt>buildString0</tt>) receives as input a function of function-type <bc>(StringBuilder) -> Unit )</bc>
+to be applied to a locally created <tt>StringBuilder</tt>, and returns a <tt>String</tt>.
 </td>
 </tr>
 
 <tr>
-<td style="width:50%">
+<td >
 <pre>
-fun buildString1(
-/*
-    Use extension function type that describes a block of code
-    that can be called as an extension function
-*/
-    builderAction: StringBuilder.() -> Unit ) : String {
+fun buildString1(    
+	builderAction: StringBuilder.() -> Unit ) : String {
         val sb = StringBuilder()
         sb.builderAction()
         return sb.toString()
 }
-fun run1() {
+fun main() {
     val s = buildString1 {
         this.append("Hello, ")
         append("World!")
@@ -185,34 +265,33 @@ fun run1() {
 }
 </pre>
 </td>
-<td>
+<td><m>
+<h3>Extension function type</h3>
+A function (<tt>buildString1</tt>) receives as input a function of <tt>extension function type</tt>
+<bc>StringBuilder.() -> Unit</bc>. 
+ <br/>
+An <em>Extension function type</em>  describes a block of code that can be called as an <tt>extension function</tt>.
+<br/><br/>
+
+Now we substitute the lambda with a <em>Lambda with a receiver</em> that gives to one of the parameters the  special status
+of receiver, letting us the possibility to refer to its members directly. <br/>
+The <bc>this</bc> keyword (if used) refers to the receiver instance.
+
+<div class="remark"><font size="3">
+<bc>lambda</bc>: a way to define behavior similar to a regular function.<br/>
+<bc>lambda with receiver</bc>: a way to define behavior similar to an extension function.</font>
+</div>
+</m>
 </td>
 </tr>
 
 
 <tr>
-<td style="width:50%">
+<td>
 <pre>
-fun buildString1(
-/*
-    Use extension function type that describes a block of code
-    that can be called as an extension function
-*/
-    builderAction: StringBuilder.() -> Unit ) : String {
-        val sb = StringBuilder()
-        sb.builderAction()
-        return sb.toString()
-}
-fun run1() {
-    val s = buildString1 {
-        this.append("Hello, ")
-        append("World!")
-    }
-    println(s)  //Hello, World!
-}
 </pre>
 </td>
-<td>
+<td><h2>With and Apply</h2>
 </td>
 </tr>
 
@@ -221,67 +300,74 @@ fun run1() {
 <pre>
 fun alphabet0(): String {
     val result = StringBuilder()
-    for (letter in 'A'..'Z') {
-        result.append(letter)
-    }
-    result.append("\nNow I know the alphabet!")
+    for (letter in 'A'..'Z') result.append(letter)
     return result.toString()
 }
 
-/*
-WITH
-return the result of the lambda
-*/
-fun alphabet1(): String {
-    val stringBuilder = StringBuilder()
-    return with(stringBuilder) {
-        for (letter in 'A'..'Z') {
-            this.append(letter)
-        }
-        append("\nNow I know the alphabet!")
-        this.toString()
-    }
-}
+println(alphabet0())
+</pre>
+</td>
+<td><m>The function <tt>alphabet0</tt> prints the alphabet by using a <bc>StringBuilder</bc> object.<br/>
+The <tt>OUTPUT</tt> is:</m>
+<pre>
+ABCDEFGHIJKLMNOPQRSTUVWXYZ    
+</pre>
+<m>In this version we calls several times the <bc>result</bc> instance.</m>
+</td>
+</tr>
 
-fun alphabet2() = with(StringBuilder()) {
-    for (letter in 'A'..'Z') {
-        append(letter)
-    }
-    append("\nNow I know the alphabet!")
-    toString()
+<tr>
+<td>
+<pre>
+fun alphabet1(): String {
+  val stringBuilder = StringBuilder()
+  return 
+  with(stringBuilder) {
+        for (letter in 'A'..'Z') this.append(letter)
+        toString()
+  }
 }
-/*
-APPLY
-return the object passed to it as argument
- */
-fun alphabet3() = StringBuilder().apply {
-    for (letter in 'A'..'Z') {
-        append(letter)
-    }
-    append("\nNow I know the alphabet!")
+ 
+println(alphabet1())
+-------------------------------------------
+We could write also:
+ 
+with( stringBuilder, {...})
+</pre>
+</td>
+<td><h3>With</h3>
+The <em>with</em> is a <i>lambda with receiver</i> function that allows us to access the receiver methods and properties 
+without any qualifier (or via <bc>this</bc>).<br/>
+The result is the <i>last expression</i> of the lambda.<br/<br/>
+
+<div class="remark"><font size="3">
+When we put the lambda outside of the parentheses, the entire invokation looks like
+a built-in feature of the language.</font>
+</div>
+
+
+
+</td>
+</tr>
+
+<tr>
+<td>
+<pre>
+fun alphabet2() = StringBuilder().apply {
+    for (letter in 'A'..'Z') { append(letter) }
 }.toString()
 
-//buildString : standard library function
-//creates a StringBuilder and calls to String
-fun alphabet4() = buildString {
-    for (letter in 'A'..'Z') {
-        append(letter)
-    }
-    append("\nNow I know the alphabet!")
-}
-
-
-fun main(args: Array<String>) {
-    println(alphabet0())
-    println(alphabet1())
-    println(alphabet2())
-    println(alphabet3())
-    println(alphabet4())
+fun alphabet3() = buildString {
+    for (letter in 'A'..'Z') { append(letter) }
 }
 
 </pre>
 </td>
-<td>
+<td><h3>Apply</h3>
+<em>Apply</em> works as <tt>with</tt> but returns the object passed to it as agument, i.e. the receiver object.
+<br/><br/>
+The standard library function <bc>buildString</bc> takes care of creating a <tt>StringBuilder</tt> and calling <tt> toString</tt>.
+
 </td>
 </tr>
 

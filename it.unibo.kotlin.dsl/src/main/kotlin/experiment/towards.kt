@@ -1,4 +1,42 @@
-package it.unibo.robots19.experiment
+package it.unibo.kotlin.experiment
+
+class Counter{
+var v = 0
+    fun inc(): Int{
+        return ++v
+    }
+}
+fun Counter.show() : String{
+    return "counter($v)"
+}
+fun Counter.dec(): Int{
+    this.v--
+    return v
+}
+
+var Counter.value : Int
+    get() = v
+    set( x : Int ){ v = x }
+
+
+fun String.lastChar() : Char = this.get(this.length-1)
+val String.lastCharProp : Char
+    get() = get( length-1 )
+
+fun runCounter() {
+    val c1 = Counter()
+    println( c1.show() ) // counter(0)
+    c1.inc();c1.inc();c1.dec()
+    println( c1.show() ) // counter(1)
+
+    c1.value = 10
+    println( c1.value ) // counter(10)
+
+    println( "hello!".lastChar() ) // !
+    println( "hello!".lastCharProp ) // !
+
+}
+
 
 fun buildString0(
     builderAction: (StringBuilder) -> Unit ): String {
@@ -15,11 +53,11 @@ fun run0() {
      println(s)     //Hello, World!
 }
 //------------------------------------------------
-fun buildString1(
 /*
     Use extension function type that describes a block of code
     that can be called as an extension function
 */
+fun buildString1(
     builderAction: StringBuilder.() -> Unit ) : String {
         val sb = StringBuilder()
         sb.builderAction()
@@ -73,9 +111,12 @@ fun myrun() {
 }
 
 fun main(args: Array<String>) {
+    runCounter()
+    /*
     run0()
     run1()
     run2()
     run4()
     myrun()
+    */
 }
