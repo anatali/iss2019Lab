@@ -106,7 +106,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     //===========================================================================================
 
     init {
-        println("ActorBasicFsm INIT")
+        //println("ActorBasicFsm INIT")
         setBody( getBody(), getInitialState() )
         /*
         buildbody()            //Build the structural part
@@ -130,7 +130,6 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     override suspend fun actorBody(msg: ApplMessage) {
         //println("ActorBasicFsm $name | msg=$msg")
         if( msg.msgId() == autoStartMsg.msgId() && ! isStarted ) {
-            isStarted = true
             //scope.launch{ fsmwork() } //The actot must continue to receive msgs
             fsmStartWork()
             //println("ActorBasicFsm $name | BACK TO MAIN ACTOR AFTER INIT")
@@ -167,6 +166,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     }
 
     fun fsmStartWork() {
+        isStarted = true
         //println("ActorBasicFsm $name | fsmStartWork in STATE ${currentState.stateName}")
         currentState.enterState()
         checkDoEmptyMove()

@@ -574,34 +574,36 @@ for the possibility to 'fire' a transition among the set of the active transitio
 <h3>State</h3>
 </td>
 <td>
-<h3>Edge</h3>
+<h3>Transition</h3>
 </td>
 </tr>
 
 <tr>
 <td >
 <pre>
-class State(val name: String) {
-    private val edgeList          = mutableListOf<Edge>()
-    private val stateEnterAction  = mutableListOf<(State) -> Unit>()
+class State(val stateName : String ) {
+    private val edgeList          = mutableListOf<Transition>()
+    private val stateEnterAction  = mutableListOf< (State) -> Unit>()
+    private val myself : State    = this
 
-    fun edge(name: String, targetState: String, cond: Edge.() -> Unit) {
-        val edge = Edge(name, targetState)
-        edge.cond() //set eventHandler (given by user) See fireIf
-        edgeList.add(edge)
+    fun transition( edgeName: String, 
+		targetState: String, cond: Transition.() -> Unit) {
+        val trans = Transition(edgeName, targetState)
+        trans.cond() //set eventHandler (given by user) See fireIf
+        edgeList.add(trans)
     }
-    fun action( a: (State) -> Unit) {
-         stateEnterAction.add(a)
+     fun action(  a:  (State) -> Unit) {
+          stateEnterAction.add( a )
     }
-    fun addAction (action: (State) -> Unit) {
+    fun addAction (action:  (State) -> Unit) {
         stateEnterAction.add(action)
     }
     fun enterState() {
-        stateEnterAction.forEach {  it(this)  }
-    }
+        stateEnterAction.forEach {  it(this) }
+     }
 
-    fun getEdgeForMessage(msg: ApplMessage): Edge? {
-        val first = edgeList.firstOrNull {it.canHandleMessage(msg)}
+     fun getTransitionForMessage(msg: ApplMessage): Transition? {
+        val first = edgeList.firstOrNull { it.canHandleMessage(msg) }
         return first
     }
 }
@@ -609,23 +611,25 @@ class State(val name: String) {
 </td>
 <td>
 <pre>
-class Edge(val name: String, val targetState: String) {
+class Transition(val edgeName: String, val targetState: String) {
 
     lateinit var edgeEventHandler: (ApplMessage) -> Boolean
-    private val actionList = mutableListOf<(Edge) -> Unit>()
+    private val actionList = mutableListOf<(Transition) -> Unit>()
 
-    fun action(action: (Edge) -> Unit) { //MEALY (not used)
+    fun action(action: (Transition) -> Unit) { //MEALY?
         actionList.add(action)
     }
-    fun enterEdge(retrieveState: (String) -> State): State {
-        actionList.forEach { it(this) }  //MEALY (not used)
+
+    //Invoke when you go down the transition to another state
+    fun enterTransition(retrieveState: (String) -> State): State {
+        actionList.forEach { it(this) }         //MEALY?
         return retrieveState(targetState)
     }
+
     fun canHandleMessage(msg: ApplMessage): Boolean {
-        return edgeEventHandler(msg)
+         return edgeEventHandler(msg)
     }
-}
-</pre>
+}</pre>
 </td>
 </tr>
 </tbody>	
@@ -639,33 +643,50 @@ class Edge(val name: String, val targetState: String) {
 <td style="width:50%">
 
 <pre>
-class ActorBasicFsm( name:         String,
+abstract class ActorBasicFsm( name: String,
         scope: CoroutineScope = GlobalScope,
         val initialStateName: String,
         val buildbody: ActorBasicFsm.() -> Unit,
-		... ) : ActorBasic( name, scope, ... )
-private lateinit var currentState: State
+		... ) :      ActorBasic( name, scope, ... )
+ 
+  val autoStartMsg = MsgUtil.buildDispatch(
+			name, "autoStartSysMsg", "start", name)
+  private var isStarted = false
+  private lateinit var currentState: State
+  var currentMsg = NoMsg
+  lateinit var mybody : ActorBasicFsm.() -> Unit
 ...
-init {
+	init {
         println("ActorBasicFsm $name | STARTS ")
-        buildbody()            //Build the structural part
-        currentState = getStateByName(initialStateName)
-        scope.launch { autoMsg(NoMsg) }  //auto-start
-    }
+        setBody( getBody(), getInitialState() )
+	}
+    abstract fun getBody() : (ActorBasicFsm.() -> Unit)
+    abstract fun getInitialState() : String
 
     override suspend fun actorBody(msg: ApplMessage) {
-        println("ActorBasicFsm $name STARTED")
-        fsmwork()
-    }
+        //println("ActorBasicFsm $name | msg=$msg")
+        if( msg.msgId() == autoStartMsg.msgId() && ! isStarted ) {          
+            fsmStartWork()
+         }else{
+            fsmwork(msg)
+         }
+	}
+    fun fsmStartWork() {
+		isStarted = true
+        currentState.enterState()
+        checkDoEmptyMove()
+	}
 
-suspend fun fsmwork() {
-          do {
+    fun fsmwork(msg : ApplMessage) {
+        var nextState = checkTransition(msg)
+        var b = hanldeCurrentMessage( msg, nextState )
+        while(  b  ){ //handle previous messages
             currentState.enterState()
-            val nextState = checkTransition(NoMsg) //EMPTY MOVE
-            if (nextState is State) currentState = nextState
-            else currentState = transition()
-        } while (true)
-}	
+            checkDoEmptyMove()
+            val nextState = lookAtMsgQueueStore()
+            b = hanldeCurrentMessage( msg, nextState, memo=false )
+         }
+	}
 </pre>
  </pre>
 </td>
@@ -685,17 +706,23 @@ The code is in
 <td style="width:50%">
 <h3>STRUCTURAL</h3>
 <pre>
-    fun state(name: String, build: State.() -> Unit) {
+	fun state(name: String, build: State.() -> Unit) {
         val state = State(name)
         state.build()
         stateList.add(state)
-    }
+	}
 
-    private fun getStateByName(name: String): State {
+	private fun getStateByName(name: String): State {
         return stateList.firstOrNull { it.name == name }
             ?: throw NoSuchElementException(name)
-    }
-
+	}
+	
+	fun setBody( buildbody: ActorBasicFsm.() -> Unit,
+                         initialStateName: String ){
+        buildbody()            //Build the structural part
+        currentState = getStateByName( initialStateName )
+        scope.launch { autoMsg(autoStartMsg) }  //auto-start
+	}
 </pre>
  </pre>
 </td>
@@ -734,11 +761,10 @@ fun main() = runBlocking {
         state(name = "init") {
             action { println("hello init") }
             action { scope.launch{ autoMsg( NoMsg ) } }
-            edge(name = "e1", targetState = "s1", cond=goto())
+            transition(name = "e1", targetState = "s1", cond=goto())
         }
         state(name = "s1") {
             action { println("$currentMsg") }
-            //edge(name="e1", targetState="s2", cond=fireIf{it.isEvent() )
         }
     }
     )

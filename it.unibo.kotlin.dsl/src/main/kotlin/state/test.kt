@@ -5,7 +5,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-val mymsg = MsgUtil.buildDispatch("qa", "userMsg", "info", "qa")
+
+
+fun main() = runBlocking {
+    val qa = Qak1("qa", this)
+}
 /*
 fun main() = runBlocking {
     val qa = ActorBasicFsm("qa", this, "init", {

@@ -5,10 +5,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.newSingleThreadContext
 import java.io.FileInputStream
+/*
+ECLIPSE KOTLIN
+https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/last/
+*/
 
 //A module in kotlin is a set of Kotlin files compiled together
 object sysUtil{
 	private val pengine = Prolog()
+    internal val dispatchMap :  MutableMap<String,Struct> = mutableMapOf<String,Struct>()
 	internal val ctxsMap :      MutableMap<String, QakContext> = mutableMapOf<String, QakContext>()
 	internal val ctxActorMap :  MutableMap<String, ActorBasic> = mutableMapOf<String, ActorBasic>()
 	val ctxOnHost =  mutableListOf<QakContext>()
@@ -44,11 +49,18 @@ object sysUtil{
 		loadTheory( rulesFilePath )
 
 		try {
-			mqttBrokerIP = solve("mqttBroker(IP,_)", "IP")
+			mqttBrokerIP   = solve("mqttBroker(IP,_)", "IP")
 			mqttBrokerPort = solve("mqttBroker(_,PORT)", "PORT")
 		}catch(e: Exception){
 			println("sysUtil | NO MQTT borker FOUND")
 		}
+        //Create the messages
+        try {
+            val dispatcNames = solve("getDispatchIds(D)", "D")
+            val dispatchNamesList = strRepToList(dispatcNames!!)
+            dispatchNamesList.forEach { d -> createDispatch(d) }
+        }catch( e : Exception){ println("NO DISPATCH FOUND")}
+        //Create the contexts
 			val ctxs: String? = solve("getCtxNames(X)", "X")
 			//context( CTX, HOST, PROTOCOL, PORT )
 			val ctxsList = strRepToList(ctxs!!)
@@ -57,6 +69,12 @@ object sysUtil{
 			addProxyToOtherCtxs(ctxsList)  //here could wait in polling ...
 	}//createContexts
 
+    fun createDispatch(  d : String )  {
+         val dd  = solve("dispatch($d,C)", "C")
+         val dt = ( Term.createTerm("dispatch($d,$dd)") )
+         //println("sysUtil | dispatch $dt  ")
+         dispatchMap.put( d, dt as Struct )
+     }
 	fun createTheContext(  ctx : String, hostName : String  ) : QakContext?{
 		//println("sysUtil | $ctx host=$hostName  ")
 		val ctxHost : String?  = solve("getCtxHost($ctx,H)","H")
@@ -126,7 +144,7 @@ object sysUtil{
 		return liststrRep.replace("[","")
 			.replace("]","").split(",")
 	}
-	fun createTheActors( ctx: QakContext ){
+ 	fun createTheActors( ctx: QakContext ){
 		val actorList = getAllActorNames(ctx.name)
 		//println("sysUtil | createTheActors ${ctx.name} actorList=$actorList "   )
 		actorList.forEach{
@@ -151,7 +169,7 @@ object sysUtil{
 	}
 
 	fun solve( goal: String, resVar: String  ) : String? {
-		//println("sysUtil $name | solveGoal ${goal}" );
+		//println("sysUtil  | solveGoal ${goal}" );
 		val sol = pengine.solve( "$goal.")
 		if( sol is SolveInfo ) {
 			val result = sol.getVarValue(resVar)  //Term

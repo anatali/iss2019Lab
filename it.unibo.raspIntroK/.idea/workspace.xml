@@ -3,10 +3,22 @@
   <component name="ChangeListManager">
     <list default="true" id="6556fa3b-4282-4c84-8b4b-5404c869db91" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/towards.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/towards.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/withApply.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/withApply.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/userDocs/LabDsl.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/userDocs/LabDsl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/controlFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/controlFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/ledFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/ledFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/state/test.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/state/test.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysDescr.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysRules.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/QakContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/userDocs/LabQak.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/userDocs/LabQak.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />

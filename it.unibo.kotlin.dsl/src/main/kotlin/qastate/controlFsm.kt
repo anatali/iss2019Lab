@@ -4,7 +4,7 @@ import it.unibo.kactor.ActorBasicFsm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import state.mymsg
+
 
 /*
 class controlFsm(name:String, scope: CoroutineScope  ) :

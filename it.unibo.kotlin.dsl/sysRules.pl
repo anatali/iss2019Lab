@@ -10,6 +10,8 @@ getTheContexts(CTXS) :-
 getTheActors(ACTORS) :-
 	findall( qactor( A, CTX ), qactor( A, CTX ), ACTORS).
 
+getDispatchIds( D ) :-
+    findall( ID, dispatch( ID,CONTENT ), D ).
 
 getOtherContexts(OTHERCTXS, MYSELF) :-
 	findall( 
@@ -23,11 +25,7 @@ getOtherContextNames(OTHERCTXS, MYSELF) :-
 		(context( CTX, HOST, PROTOCOL, PORT ), CTX \== MYSELF),
 		OTHERCTXS
 	).
-/*
-	stdout <- println(CTXS),
-	'$tolist'(CTXS,OTHERCTXS),
-	stdout <- println( aaa(OTHERCTXS) ).
-*/
+
 	
 getTheActors(ACTORS,CTX) :-
 	findall( qactor( A, CTX, CLASS ), qactor( A, CTX, CLASS ),   ACTORS).

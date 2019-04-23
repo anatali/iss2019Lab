@@ -3,10 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/towards.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/towards.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/withApply.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/experiment/withApply.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/userDocs/LabDsl.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/userDocs/LabDsl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/controlFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/controlFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/ledFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/qastate/ledFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/state/test.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/src/main/kotlin/state/test.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysDescr.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.kotlin.dsl/sysRules.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/LabQak.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/LabQak.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -62,11 +69,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="124" column="55" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
+            <state relative-caret-position="54">
+              <caret line="108" column="10" selection-start-line="108" selection-start-column="10" selection-end-line="108" selection-end-column="10" />
               <folding>
                 <element signature="e#25#92#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/QakContext.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="969">
+              <caret line="60" selection-start-line="60" selection-end-line="60" />
             </state>
           </provider>
         </entry>
@@ -95,8 +111,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="50" column="9" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
+            <state relative-caret-position="294">
+              <caret line="171" column="10" selection-start-line="171" selection-start-column="10" selection-end-line="171" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -184,20 +200,20 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/sysDescr.pl" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/prodCons.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Producer.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/QakContextServer.kt" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/StateEdge.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/ApplMessage.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/MsgUtil.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1358" />
     <option name="y" value="-8" />
     <option name="width" value="1040" />
@@ -261,7 +277,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555772042364" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556017960316" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -382,7 +398,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1358" y="-8" width="1040" height="754" extended-state="7" />
+    <frame x="1358" y="-8" width="1040" height="754" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2489796" />
@@ -454,13 +470,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/prodCons.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Producer.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/Consumer.kt" />
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/QakContext.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/test/sysDescr.pl" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/experiment/towards.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt">
@@ -505,13 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="50" column="9" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -519,10 +521,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/QakContext.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="171" column="10" selection-start-line="171" selection-start-column="10" selection-end-line="171" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="124" column="55" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
+        <state relative-caret-position="54">
+          <caret line="108" column="10" selection-start-line="108" selection-start-column="10" selection-end-line="108" selection-end-column="10" />
           <folding>
             <element signature="e#25#92#0" expanded="true" />
           </folding>
