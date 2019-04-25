@@ -8,9 +8,9 @@ import java.util.NoSuchElementException
  STATE
 ================================================================
  */
-class State(val stateName : String ) {
+class State(val stateName : String, val scope: CoroutineScope ) {
     private val edgeList          = mutableListOf<Transition>()
-    private val stateEnterAction  = mutableListOf< (State) -> Unit>()
+    private val stateEnterAction  = mutableListOf< suspend (State) -> Unit>()
     private val myself : State    = this
 
     fun transition(edgeName: String, targetState: String, cond: Transition.() -> Unit) {
@@ -20,16 +20,24 @@ class State(val stateName : String ) {
         edgeList.add(trans)
     }
     //Add an action which will be called when the state is entered
-    fun action(  a:  (State) -> Unit) {
+    fun action(  a:  suspend (State) -> Unit) {
         //println("State $stateName    | add action  $a")
         stateEnterAction.add( a )
     }
-    fun addAction (action:  (State) -> Unit) {
+    /*
+    fun addAction (action:  suspend (State) -> Unit) {
         stateEnterAction.add(action)
     }
-    fun enterState() {
-        stateEnterAction.forEach {  it(this) }
-     }
+    */
+    suspend fun enterState() {
+        val myself = this
+        scope.launch {
+            //println(" --- | State $stateName    | enterState ${myself.stateName} ")
+            stateEnterAction.get(0)( myself )
+        }.join()
+        //println(" --- | State $stateName    | enterState DONE ")
+        //stateEnterAction.forEach {  it(this) }
+    }
 
     //Get the appropriate Edge for the Message
     fun getTransitionForMessage(msg: ApplMessage): Transition? {
@@ -73,9 +81,7 @@ class Transition(val edgeName: String, val targetState: String) {
 ================================================================
  */
 abstract class ActorBasicFsm(  qafsmname:  String,
-                      fsmscope: CoroutineScope = GlobalScope,
-                      //val initialStateName: String,
-                      //val buildbody: ActorBasicFsm.() -> Unit,
+                      val fsmscope: CoroutineScope = GlobalScope,
                       confined :    Boolean = false,
                       ioBound :     Boolean = false,
                       channelSize : Int = 50
@@ -83,9 +89,9 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     val autoStartMsg = MsgUtil.buildDispatch(name, "autoStartSysMsg", "start", name)
     private var isStarted = false
-    private lateinit var currentState: State
-    var currentMsg = NoMsg
-    lateinit var mybody : ActorBasicFsm.() -> Unit
+    protected lateinit var currentState: State
+    protected var currentMsg = NoMsg
+    lateinit protected var mybody : ActorBasicFsm.() -> Unit
 
 
     private val stateList = mutableListOf<State>()
@@ -94,7 +100,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     //================================== STRUCTURAL =======================================
     fun state(stateName: String, build: State.() -> Unit) {
-        val state = State(stateName )
+        val state = State(stateName, fsmscope )
         state.build()
         stateList.add(state)
     }
@@ -128,7 +134,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     }
 
     override suspend fun actorBody(msg: ApplMessage) {
-        //println("ActorBasicFsm $name | msg=$msg")
+        println(" --- | ActorBasicFsm $name | msg=$msg")
         if( msg.msgId() == autoStartMsg.msgId() && ! isStarted ) {
             //scope.launch{ fsmwork() } //The actot must continue to receive msgs
             fsmStartWork()
@@ -136,6 +142,24 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         }else{
             fsmwork(msg)
             //println("ActorBasicFsm $name | BACK TO MAIN ACTOR")
+        }
+    }
+    suspend fun fsmStartWork() {
+        isStarted = true
+        //println("ActorBasicFsm $name | fsmStartWork in STATE ${currentState.stateName}")
+        currentState.enterState()
+        checkDoEmptyMove()
+    }
+
+    suspend fun fsmwork(msg : ApplMessage) {
+        //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
+        var nextState = checkTransition(msg)
+        var b         = hanldeCurrentMessage( msg, nextState )
+        while(  b  ){ //handle previous messages
+            currentState.enterState()
+            checkDoEmptyMove()
+            val nextState = lookAtMsgQueueStore()
+            b = hanldeCurrentMessage( msg, nextState, memo=false )
         }
     }
 
@@ -155,7 +179,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         }
     }
 
-    fun checkDoEmptyMove(){
+    suspend fun checkDoEmptyMove(){
         var nextState = checkTransition(NoMsg) //EMPTY MOVE
         while (nextState is State) {
             currentMsg   = NoMsg
@@ -163,25 +187,6 @@ abstract class ActorBasicFsm(  qafsmname:  String,
             currentState.enterState()
             nextState = checkTransition(NoMsg) //EMPTY MOVE
         }
-    }
-
-    fun fsmStartWork() {
-        isStarted = true
-        //println("ActorBasicFsm $name | fsmStartWork in STATE ${currentState.stateName}")
-        currentState.enterState()
-        checkDoEmptyMove()
-    }
-
-    fun fsmwork(msg : ApplMessage) {
-        //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
-        var nextState = checkTransition(msg)
-        var b = hanldeCurrentMessage( msg, nextState )
-        while(  b  ){ //handle previous messages
-            currentState.enterState()
-            checkDoEmptyMove()
-            val nextState = lookAtMsgQueueStore()
-            b = hanldeCurrentMessage( msg, nextState, memo=false )
-         }
     }
 
     private fun lookAtMsgQueueStore(): State? {
