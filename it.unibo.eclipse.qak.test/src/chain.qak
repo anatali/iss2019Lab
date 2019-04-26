@@ -24,11 +24,11 @@ QActor button context ctxButton {
 }
 QActor control context ctxButton {
 	State s0 initial {		 
-		printCurrentMessage	            
+		printCurrentMessage	             
 	} 
 	Transition t0 whenMsg buttonCmd -> sOn    
 	 
-	State sOn{ 
+	State sOn{  
 		printCurrentMessage
 		emit -e ledCmd : ledCmd(on)
 	}
