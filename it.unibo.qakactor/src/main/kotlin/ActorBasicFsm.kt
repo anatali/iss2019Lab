@@ -293,4 +293,18 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         return {
             edgeEventHandler = { it.isDispatch() && it.msgId() == msgName }}
     }
+
+    var timerCount = 0
+    var timerEventName = ""
+    fun whenTimeout(time: Int): Transition.() -> Unit {
+        //val evName = "local_tout${timerCount++}"
+        //val ctx = sysUtil.getActorContext(this.name)
+        //val timer=TimerActor("timer", scope, ctx!!, evName, time.toLong())
+        return {
+            edgeEventHandler = {
+                //println("whenTimeoutt $it")
+                it.isEvent() && it.msgId() == timerEventName }
+        }
+    }
+
 }

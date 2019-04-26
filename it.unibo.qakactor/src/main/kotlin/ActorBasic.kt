@@ -104,7 +104,7 @@ Messaging
 
     suspend fun emit( event : ApplMessage ) {
         if( context == null ){
-            //println("WARNING emit: there is no QakContext")
+            println("WARNING emit: there is no QakContext")
             this.actor.send(event)  //AUTOMSG
             return
         }
