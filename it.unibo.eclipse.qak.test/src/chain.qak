@@ -11,7 +11,7 @@ Context ctxButton ip [host="localhost" port=8010]
 Context ctxLeds1  ip [host="localhost" port=8020]
 
 QActor button context ctxButton {	
-	State s0 initial {
+	State s0 initial { 
 		run resources.buttonForChain.create()                      
 	} 
 	Transition t0 whenMsg click -> s1  
@@ -26,25 +26,22 @@ QActor control context ctxButton {
 	State s0 initial {		 
 		printCurrentMessage	            
 	} 
-	Transition t0 whenMsg buttonCmd -> s1    
+	Transition t0 whenMsg buttonCmd -> sOn    
 	 
-	State s1{
+	State sOn{ 
 		printCurrentMessage
 		emit -e ledCmd : ledCmd(on)
-		delay 200
- 		emit -e ledCmd : ledCmd(off) 
-		delay 200
- 		forward control -m m1 : m1(a)
 	}
-	Transition t1 whenMsg buttonCmd -> s2
-	               whenMsg m1 -> s1
+	Transition t1 whenTime 200 -> sOff 
+				  whenMsg buttonCmd -> s0              
  
-	State s2{  }
-	Transition t2 whenMsg buttonCmd -> s3
-	
-	State s3{  }
-	Transition t3  whenMsg m1 -> s1
-  		          	
+	State sOff{  
+		printCurrentMessage
+		emit -e ledCmd : ledCmd(off)
+	}
+	Transition t2 	whenTime 200 -> sOn  
+					whenMsg buttonCmd -> s0
+   		          	
 }   
 
 QActor led context ctxLeds1 { 
