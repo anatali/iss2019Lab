@@ -2,6 +2,7 @@
 package it.unibo.led1
 
 import it.unibo.kactor.*
+import alice.tuprolog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,23 +18,29 @@ class Led1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope)
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						resources.myLedSegm.create(  )
 					}
-					 transition(edgeName="ta13",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="ta17",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 				state("s1") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
-						resources.myLedSegm.turnOn(  )
+						curT = Term.createTerm("ledCmd(on)")
+						if( currentMsg.msgId()=="ledCmd" && 
+							pengine.unify(curT, Term.createTerm("ledCmd(X)")) && 
+							pengine.unify(curT, Term.createTerm( currentMsg.msgContent() ) )){ 
+								resources.myLedSegm.turnOn(  )
+						}
+						curT = Term.createTerm("ledCmd(off)")
+						if( currentMsg.msgId()=="ledCmd" && 
+							pengine.unify(curT, Term.createTerm("ledCmd(X)")) && 
+							pengine.unify(curT, Term.createTerm( currentMsg.msgContent() ) )){ 
+								resources.myLedSegm.turnOff(  )
+						}
 					}
-					 transition(edgeName="tb14",targetState="s2",cond=whenEvent("ledCmd"))
-				}	 
-				state("s2") { //this:State
-					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
-						resources.myLedSegm.turnOff(  )
-					}
-					 transition(edgeName="tb15",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="tb18",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 			}
 		}

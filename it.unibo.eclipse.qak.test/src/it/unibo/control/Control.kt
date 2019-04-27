@@ -2,6 +2,7 @@
 package it.unibo.control
 
 import it.unibo.kactor.*
+import alice.tuprolog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
 					 transition(edgeName="t02",targetState="sOn",cond=whenDispatch("buttonCmd"))
@@ -24,6 +26,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				}	 
 				state("sOn") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 						emit("ledCmd","ledCmd(on)") 
 						timerEventName = "local_tout${timerCount++}"
@@ -35,6 +38,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				}	 
 				state("sOff") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 						emit("ledCmd","ledCmd(off)") 
 						timerEventName = "local_tout${timerCount++}"

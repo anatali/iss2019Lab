@@ -58,21 +58,26 @@ import alice.tuprolog.*
                 "send"  -> sendMsg( msg.msgContent() )
                 else -> println("clientWenvTcp $msg UNKNOWN ")
             }
-        }
+        } 
 
         fun sendMsg(v: String) {
-			println("clientWenvTcp | sendMsg $v   ")
-			/*
+			//println("clientWenvTcp | sending Msg $v   ")
+			var outS = "{'type': 'alarm', 'arg': 0 }"
 			val t = Term.createTerm(v) as Struct
-			val vjson = t.getArg(0).toString()
-            val jsonString = vjson.replace("'{","{").replace("}'","}")
-            println("clientWenvTcp | sendMsg $jsonString   ")
-            val jsonObject = JSONObject(jsonString)
-            val msg = "$sep${jsonObject.toString()}$sep"
-            outToServer?.println(msg)
+			val ts = t.getArg(0).toString()
+			when( ts ){
+				"moveforward"   -> outS = "{'type': 'moveForward',  'arg': -1 }"
+    			"movebackward"  -> outS = "{'type': 'moveBackward', 'arg': -1 }"
+				"moveleft"      -> outS = "{'type': 'turnLeft', 'arg': 400 }"
+ 				"moveright"     -> outS = "{'type': 'turnRight', 'arg': 400 }"
+   			     "stop"         -> outS = "{'type': 'alarm', 'arg': 0 }"
+ 			}
+			val jsonObject = JSONObject(outS)
+			val msg= "$sep${jsonObject.toString()}$sep"
+			println("clientWenvTcp | sendMsg $msg   ")
+			outToServer?.println(msg)
             outToServer?.flush()
- */
-        }
+         }
 
         private fun startTheReader(   ) {
             GlobalScope.launch {
@@ -92,7 +97,7 @@ import alice.tuprolog.*
                                 val sonarName = jsonArg.getString("sonarName")
                                 val distance = jsonArg.getInt("distance")
                                 println("clientWenvTcp | sonarName=$sonarName distance=$distance")
-                                val m = MsgUtil.buildEvent("tcp", sonarName,""+distance )
+                                val m = MsgUtil.buildEvent("tcp", sonarName,"$sonarName($distance)" )
                                 emitLocalStreamEvent( m )
                                 emit( m )
                             }
@@ -108,7 +113,9 @@ import alice.tuprolog.*
                             }
                         }
                     } catch (e: IOException) {
-                        e.printStackTrace()
+                        //e.printStackTrace()
+						println("clientWenvTcp | ERROR $e   ")
+						System.exit(1)
                     }
                 }
             }

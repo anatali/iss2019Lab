@@ -55,40 +55,33 @@ CodedQActor clienttcp context ctxButton className "resources.clientWenvTcp"
 
 QActor robotControl context ctxButton{ 
 	State s0 initial {		 
-		printCurrentMessage	   
-		//run resources.clientWenvTcp.create( )          
-	}   
-	Transition t0 whenEvent local_buttonCmd -> move 
+		printCurrentMessage	
+ 	}   
+	Transition t0 whenEvent local_buttonCmd -> moveAhead 
 	
-	State move{
+	State moveAhead{
 		forward clienttcp -m send : msg( moveforward )
-		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'moveForward', 'arg': -1 }\"" )
-		delay 1500
-		forward clienttcp -m send : msg( movebackward  )
-		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'moveBackward', 'arg': -1 }\"" )
-		//delay 1500
-		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'alarm', 'arg': 0 }\"" )
 	}
-	Transition t1 whenEvent local_buttonCmd -> move 
+	Transition t1 whenTime  1500 -> moveBack  
+				  whenEvent local_buttonCmd -> s0 
+		          whenEvent collision -> handleCollision
+
+	State moveBack{
+		forward clienttcp -m send : msg( movebackward  )		
+	}
+	Transition t1 whenTime  1500 -> moveAhead  
+				  whenEvent local_buttonCmd -> s0 
 		          whenEvent collision -> handleCollision
 		          
 	State handleCollision{
 		printCurrentMessage
-		/*  
-		run resources.clientWenvTcp.sendMsg( "\"{'type': 'alarm', 'arg': 0 }\"" )
-		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
-		delay 400
-		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnRight', 'arg': 400 }\"" )
-		delay 400
-		//Rotate 180
-		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
-		delay 400
-		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
-		delay 400
-		*/
-	}
-	Goto move
-}
+		forward clienttcp -m send : msg( stop  )
+		forward clienttcp -m send : msg( moveleft  )
+		//forward clienttcp -m send : msg( moveleft  )
+ 	}
+	Goto s0
+	
+ }
 
 /*
  * LED
@@ -101,16 +94,10 @@ QActor led1 context ctxLeds1 {
  	
 	State s1   {           
 		 printCurrentMessage  
-		 //onMsg ledCmd:ledCmd(on) -> resources.myLedSegm.turnOn()
- 		 run resources.myLedSegm.turnOn()
+		 onMsg ( ledCmd:ledCmd(on) ){ run resources.myLedSegm.turnOn() }
+ 		 onMsg ( ledCmd:ledCmd(off) ){ run resources.myLedSegm.turnOff() }
 	} 
-	Transition tb whenEvent ledCmd -> s2            
- 	
- 	State s2   {            
-		 printCurrentMessage  
-		 run resources.myLedSegm.turnOff()
-	} 
-	Transition tb whenEvent ledCmd -> s1            	
+ 	Transition tb whenEvent ledCmd -> s1            	
 } 
 
 /* 

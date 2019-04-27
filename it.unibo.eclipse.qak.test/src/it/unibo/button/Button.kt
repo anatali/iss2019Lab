@@ -2,6 +2,7 @@
 package it.unibo.button
 
 import it.unibo.kactor.*
+import alice.tuprolog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,12 +18,14 @@ class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						resources.buttonForChain.create(  )
 					}
 					 transition(edgeName="t00",targetState="s1",cond=whenDispatch("click"))
 				}	 
 				state("s1") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 						forward("buttonCmd","buttonCmd","control" ) 
 					}

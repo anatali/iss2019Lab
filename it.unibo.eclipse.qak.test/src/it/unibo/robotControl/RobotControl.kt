@@ -2,6 +2,7 @@
 package it.unibo.robotControl
 
 import it.unibo.kactor.*
+import alice.tuprolog.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,24 +18,41 @@ class RobotControl ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
-					 transition(edgeName="t010",targetState="move",cond=whenEvent("local_buttonCmd"))
+					 transition(edgeName="t010",targetState="moveAhead",cond=whenEvent("local_buttonCmd"))
 				}	 
-				state("move") { //this:State
+				state("moveAhead") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						forward("send","msg(moveforward)","clienttcp" ) 
-						delay(1500) 
-						forward("send","msg(movebackward)","clienttcp" ) 
+						timerEventName = "local_tout${timerCount++}"
+						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
 					}
-					 transition(edgeName="t111",targetState="move",cond=whenEvent("local_buttonCmd"))
-					transition(edgeName="t112",targetState="handleCollision",cond=whenEvent("collision"))
+					 transition(edgeName="t111",targetState="moveBack",cond=whenTimeout(1500))
+					transition(edgeName="t112",targetState="s0",cond=whenEvent("local_buttonCmd"))
+					transition(edgeName="t113",targetState="handleCollision",cond=whenEvent("collision"))
+				}	 
+				state("moveBack") { //this:State
+					action { //it:State
+						var curT : Term //used by onMsg
+						forward("send","msg(movebackward)","clienttcp" ) 
+						timerEventName = "local_tout${timerCount++}"
+						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
+					}
+					 transition(edgeName="t114",targetState="moveAhead",cond=whenTimeout(1500))
+					transition(edgeName="t115",targetState="s0",cond=whenEvent("local_buttonCmd"))
+					transition(edgeName="t116",targetState="handleCollision",cond=whenEvent("collision"))
 				}	 
 				state("handleCollision") { //this:State
 					action { //it:State
+						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
+						forward("send","msg(stop)","clienttcp" ) 
+						forward("send","msg(moveleft)","clienttcp" ) 
 					}
-					 transition( edgeName="goto",targetState="move", cond=doswitch() )
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}
