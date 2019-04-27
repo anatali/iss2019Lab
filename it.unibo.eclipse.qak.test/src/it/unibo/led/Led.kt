@@ -19,21 +19,21 @@ class Led ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 				state("s0") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="ta7",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="ta10",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 				state("s1") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						led.turnOn()
 					}
-					 transition(edgeName="tb8",targetState="s2",cond=whenEvent("ledCmd"))
+					 transition(edgeName="tb11",targetState="s2",cond=whenEvent("ledCmd"))
 				}	 
 				state("s2") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						led.turnOff()
 					}
-					 transition(edgeName="tb9",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="tb12",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 			}
 		}

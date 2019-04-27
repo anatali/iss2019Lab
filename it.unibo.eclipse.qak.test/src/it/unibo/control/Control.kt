@@ -20,6 +20,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
 					 transition(edgeName="t02",targetState="sOn",cond=whenDispatch("buttonCmd"))
+					transition(edgeName="t03",targetState="sOn",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("sOn") { //this:State
 					action { //it:State
@@ -28,8 +29,9 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 200.toLong())
 					}
-					 transition(edgeName="t13",targetState="sOff",cond=whenTimeout(200))
-					transition(edgeName="t14",targetState="s0",cond=whenDispatch("buttonCmd"))
+					 transition(edgeName="t14",targetState="sOff",cond=whenTimeout(200))
+					transition(edgeName="t15",targetState="s0",cond=whenDispatch("buttonCmd"))
+					transition(edgeName="t16",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("sOff") { //this:State
 					action { //it:State
@@ -38,8 +40,9 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 200.toLong())
 					}
-					 transition(edgeName="t25",targetState="sOn",cond=whenTimeout(200))
-					transition(edgeName="t26",targetState="s0",cond=whenDispatch("buttonCmd"))
+					 transition(edgeName="t27",targetState="sOn",cond=whenTimeout(200))
+					transition(edgeName="t28",targetState="s0",cond=whenDispatch("buttonCmd"))
+					transition(edgeName="t29",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
 			}
 		}

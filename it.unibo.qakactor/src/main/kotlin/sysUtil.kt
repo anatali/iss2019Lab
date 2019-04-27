@@ -144,7 +144,7 @@ object sysUtil{
 		return liststrRep.replace("[","")
 			.replace("]","").split(",")
 	}
- 	fun createTheActors( ctx: QakContext ){
+ 	fun createTheActors( ctx: QakContext, scope : CoroutineScope ){
 		val actorList = getAllActorNames(ctx.name)
 		//println("sysUtil | createTheActors ${ctx.name} actorList=$actorList "   )
 		actorList.forEach{
@@ -152,16 +152,16 @@ object sysUtil{
 				val actorClass = solve("qactor($it,_,CLASS)","CLASS")
 				//println("sysUtil | CREATE actor=$it in context:${ctx.name}  class=$actorClass"   )
 				val className = actorClass!!.replace("'","")
-				createActor( ctx, it, className)
+				createActor( ctx, it, className, scope)
 			}
 		}
 	}//createTheActors
 
-	fun createActor( ctx: QakContext, actorName: String, className : String  ){
+	fun createActor( ctx: QakContext, actorName: String, className : String, scope : CoroutineScope  ){
 		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
 		val clazz = Class.forName(className)	//Class<?>
  		val ctor  = clazz.getConstructor(String::class.java, CoroutineScope::class.java )  //Constructor<?>
-		val actor = ctor.newInstance(actorName, GlobalScope ) as ActorBasic
+		val actor = ctor.newInstance(actorName, scope ) as ActorBasic
 		ctx.addActor(actor)
 		actor.context = ctx
 		//MEMO THE ACTOR

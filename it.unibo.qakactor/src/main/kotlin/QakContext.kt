@@ -24,7 +24,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
                            desrFilePath: String, rulesFilePath: String ) {
             sysUtil.createContexts(hostName, desrFilePath, rulesFilePath)
             println("QakContext CREATING THE ACTORS on $hostName ")
-            sysUtil.ctxOnHost.forEach { ctx -> sysUtil.createTheActors(ctx)  }
+            sysUtil.ctxOnHost.forEach { ctx -> sysUtil.createTheActors(ctx, scope)  }
             //Avoid premature termination
             scope.launch{
                  println("QakContexts on $hostName CREATED. I will terminate after $workTime msec")

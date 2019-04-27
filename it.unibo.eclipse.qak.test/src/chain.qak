@@ -1,11 +1,12 @@
 System chain
 
 Dispatch click : clicked
-Dispatch m1 : m1(X) 
+Dispatch send  : msg(X)
 
 Event    local_buttonCmd : local_buttonCmd(X)  
 Event    buttonCmd : buttonCmd(X) 
 Event    ledCmd : ledCmd(X)  
+Event    collision : collision(X)
 
 Context ctxButton ip [host="localhost" port=8010]
 Context ctxLeds1  ip [host="localhost" port=8020]
@@ -22,18 +23,22 @@ QActor button context ctxButton {
 	}
 	Transition t1 whenMsg click -> s1            
 }
+/*
+ * CONTROL for LED
+ */
 QActor control context ctxButton {
 	State s0 initial {		 
 		printCurrentMessage	             
 	} 
 	Transition t0 whenMsg buttonCmd -> sOn    
-	 
+	              whenEvent local_buttonCmd -> sOn
 	State sOn{  
 		printCurrentMessage
 		emit -e ledCmd : ledCmd(on)
 	}
 	Transition t1 whenTime 200 -> sOff 
-				  whenMsg buttonCmd -> s0              
+				  whenMsg buttonCmd -> s0   
+				  whenEvent local_buttonCmd -> s0           
  
 	State sOff{  
 		printCurrentMessage
@@ -41,9 +46,74 @@ QActor control context ctxButton {
 	}
 	Transition t2 	whenTime 200 -> sOn  
 					whenMsg buttonCmd -> s0
-   		          	
+   		          	whenEvent local_buttonCmd -> s0
 }   
+/*
+ * ROBOT CONTROL
+ */
+CodedQActor clienttcp context ctxButton className "resources.clientWenvTcp"
 
+QActor robotControl context ctxButton{ 
+	State s0 initial {		 
+		printCurrentMessage	   
+		//run resources.clientWenvTcp.create( )          
+	} 
+	Transition t0 whenEvent local_buttonCmd -> move 
+	
+	State move{
+		forward clienttcp -m send : msg( moveforward )
+		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'moveForward', 'arg': -1 }\"" )
+		delay 1500
+		forward clienttcp -m send : msg( movebackward  )
+		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'moveBackward', 'arg': -1 }\"" )
+		//delay 1500
+		//run resources.clientWenvTcp.sendMsg( "\"{'type': 'alarm', 'arg': 0 }\"" )
+	}
+	Transition t1 whenEvent local_buttonCmd -> move 
+		          whenEvent collision -> handleCollision
+		          
+	State handleCollision{
+		printCurrentMessage
+		/*  
+		run resources.clientWenvTcp.sendMsg( "\"{'type': 'alarm', 'arg': 0 }\"" )
+		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
+		delay 400
+		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnRight', 'arg': 400 }\"" )
+		delay 400
+		//Rotate 180
+		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
+		delay 400
+		run resources.clientWenvTcp.sendMsg( "\"{'type': 'turnLeft', 'arg': 400 }\"" )
+		delay 400
+		*/
+	}
+	Goto move
+}
+
+/*
+ * LED
+ */
+QActor led1 context ctxLeds1 { 
+	State s0 initial {
+		 run resources.myLedSegm.create() 
+	}   
+	Transition ta whenEvent ledCmd -> s1
+ 	
+	State s1   {           
+		 printCurrentMessage  
+		 //onMsg ledCmd:ledCmd(on) -> resources.myLedSegm.turnOn()
+ 		 run resources.myLedSegm.turnOn()
+	} 
+	Transition tb whenEvent ledCmd -> s2            
+ 	
+ 	State s2   {            
+		 printCurrentMessage  
+		 run resources.myLedSegm.turnOff()
+	} 
+	Transition tb whenEvent ledCmd -> s1            	
+} 
+
+/* 
 QActor led context ctxLeds1 { 
 	[ "val led = resources.myLedSegm()" ]
 	State s0 initial {
@@ -66,30 +136,12 @@ QActor led context ctxLeds1 {
 	} 
 	Transition tb whenEvent ledCmd -> s1            	
 }   
-
-QActor led1 context ctxLeds1 { 
-	State s0 initial {
-		 run resources.myLedSegm.create() 
-	}   
-	Transition ta whenEvent ledCmd -> s1
- 	
-	State s1   {           
-		 printCurrentMessage  
-		 //onMsg ledCmd:ledCmd(on) -> resources.myLedSegm.turnOn()
- 		 run resources.myLedSegm.turnOn()
-	} 
-	Transition tb whenEvent ledCmd -> s2            
- 	
- 	State s2   {            
-		 printCurrentMessage  
-		 run resources.myLedSegm.turnOff()
-	} 
-	Transition tb whenEvent ledCmd -> s1            	
-}   
+*/
+  
 
 /*
- * autoMsg
  * check msg content (onMsg ...
+ * autoMsg
  * timeout
  * ID estesi com maiuscole
  */
