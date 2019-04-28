@@ -9,7 +9,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
- 
+protected var timerCount = 0         				 	//used by onMsg
+protected var timerEventName = ""    					//used by onMsg
+
+
 	override fun getInitialState() : String{
 		return "s0"
 	}
@@ -18,7 +21,6 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
 					 transition(edgeName="t02",targetState="sOn",cond=whenDispatch("buttonCmd"))
@@ -26,25 +28,23 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				}	 
 				state("sOn") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
-						emit("ledCmd","ledCmd(on)") 
+						emit("ledCmd", "ledCmd(on)" ) 
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 200.toLong())
 					}
-					 transition(edgeName="t14",targetState="sOff",cond=whenTimeout(200))
+					 transition(edgeName="t14",targetState="sOff",cond=whenTimeout("local_tout${timerCount}"))   
 					transition(edgeName="t15",targetState="s0",cond=whenDispatch("buttonCmd"))
 					transition(edgeName="t16",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("sOff") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
-						emit("ledCmd","ledCmd(off)") 
+						emit("ledCmd", "ledCmd(off)" ) 
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 200.toLong())
 					}
-					 transition(edgeName="t27",targetState="sOn",cond=whenTimeout(200))
+					 transition(edgeName="t27",targetState="sOn",cond=whenTimeout("local_tout${timerCount}"))   
 					transition(edgeName="t28",targetState="s0",cond=whenDispatch("buttonCmd"))
 					transition(edgeName="t29",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 

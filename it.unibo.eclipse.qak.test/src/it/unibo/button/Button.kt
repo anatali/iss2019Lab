@@ -9,7 +9,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
- 
+protected var timerCount = 0         				 	//used by onMsg
+protected var timerEventName = ""    					//used by onMsg
+
+
 	override fun getInitialState() : String{
 		return "s0"
 	}
@@ -18,16 +21,14 @@ class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						resources.buttonForChain.create(  )
 					}
 					 transition(edgeName="t00",targetState="s1",cond=whenDispatch("click"))
 				}	 
 				state("s1") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
-						forward("buttonCmd","buttonCmd","control" ) 
+						forward("buttonCmd", "buttonCmd" ,"control" ) 
 					}
 					 transition(edgeName="t11",targetState="s1",cond=whenDispatch("click"))
 				}	 

@@ -1,5 +1,6 @@
 package it.unibo.kactor
 
+import alice.tuprolog.*
 import kotlinx.coroutines.*
 import java.util.NoSuchElementException
 
@@ -54,7 +55,7 @@ class State(val stateName : String, val scope: CoroutineScope ) {
  */
 class Transition(val edgeName: String, val targetState: String) {
 
-    lateinit var edgeEventHandler: (ApplMessage) -> Boolean
+    lateinit var edgeEventHandler: (String) -> Boolean  //MsgId
     private val actionList = mutableListOf<(Transition) -> Unit>()
 
     fun action(action: (Transition) -> Unit) { //MEALY?
@@ -71,7 +72,7 @@ class Transition(val edgeName: String, val targetState: String) {
 
     fun canHandleMessage(msg: ApplMessage): Boolean {
         //println("Transition  | canHandleMessage: ${msg}  ${msg is Message.Event}" )
-        return edgeEventHandler(msg)
+        return edgeEventHandler(msg.msgId())
     }
 }
 
@@ -91,7 +92,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     private var isStarted = false
     protected lateinit var currentState: State
     protected var currentMsg = NoMsg
-    lateinit protected var mybody : ActorBasicFsm.() -> Unit
+    lateinit protected var mybody: ActorBasicFsm.() -> Unit
 
 
     private val stateList = mutableListOf<State>()
@@ -100,7 +101,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     //================================== STRUCTURAL =======================================
     fun state(stateName: String, build: State.() -> Unit) {
-        val state = State(stateName, fsmscope )
+        val state = State(stateName, fsmscope)
         state.build()
         stateList.add(state)
     }
@@ -113,7 +114,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     init {
         //println("ActorBasicFsm INIT")
-        setBody( getBody(), getInitialState() )
+        setBody(getBody(), getInitialState())
         /*
         buildbody()            //Build the structural part
         currentState = getStateByName(initialStateName)
@@ -122,28 +123,31 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         */
     }
 
-    abstract fun getBody() : (ActorBasicFsm.() -> Unit)
-    abstract fun getInitialState() : String
+    abstract fun getBody(): (ActorBasicFsm.() -> Unit)
+    abstract fun getInitialState(): String
 
-    fun setBody( buildbody: ActorBasicFsm.() -> Unit,
-                         initialStateName: String ){
+    fun setBody(
+        buildbody: ActorBasicFsm.() -> Unit,
+        initialStateName: String
+    ) {
         buildbody()            //Build the structural part
-        currentState = getStateByName( initialStateName )
+        currentState = getStateByName(initialStateName)
         //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")
         scope.launch { autoMsg(autoStartMsg) }  //auto-start
     }
 
     override suspend fun actorBody(msg: ApplMessage) {
-        println(" --- | ActorBasicFsm $name | msg=$msg")
-        if( msg.msgId() == autoStartMsg.msgId() && ! isStarted ) {
+        //println(" --- | ActorBasicFsm $name | msg=$msg")
+        if (msg.msgId() == autoStartMsg.msgId() && !isStarted) {
             //scope.launch{ fsmwork() } //The actot must continue to receive msgs
             fsmStartWork()
             //println("ActorBasicFsm $name | BACK TO MAIN ACTOR AFTER INIT")
-        }else{
+        } else {
             fsmwork(msg)
             //println("ActorBasicFsm $name | BACK TO MAIN ACTOR")
         }
     }
+
     suspend fun fsmStartWork() {
         isStarted = true
         //println("ActorBasicFsm $name | fsmStartWork in STATE ${currentState.stateName}")
@@ -151,38 +155,38 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         checkDoEmptyMove()
     }
 
-    suspend fun fsmwork(msg : ApplMessage) {
+    suspend fun fsmwork(msg: ApplMessage) {
         //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
         var nextState = checkTransition(msg)
-        var b         = hanldeCurrentMessage( msg, nextState )
-        while(  b  ){ //handle previous messages
+        var b = hanldeCurrentMessage(msg, nextState)
+        while (b) { //handle previous messages
             currentState.enterState()
             checkDoEmptyMove()
             val nextState = lookAtMsgQueueStore()
-            b = hanldeCurrentMessage( msg, nextState, memo=false )
+            b = hanldeCurrentMessage(msg, nextState, memo = false)
         }
     }
 
-    fun hanldeCurrentMessage(msg : ApplMessage, nextState : State?, memo : Boolean = true) : Boolean{
+    fun hanldeCurrentMessage(msg: ApplMessage, nextState: State?, memo: Boolean = true): Boolean {
         //println("ActorBasicFsm $name | hanldeCurrentMessage in ${currentState.stateName} msg=${msg.msgId()}")
         if (nextState is State) {
-            currentMsg   = msg
+            currentMsg = msg
             currentState = nextState
             return true
         } else { //EXCLUDE EVENTS FROM msgQueueStore
-            if( ! memo ) return false
-            if (!(msg.isEvent()) ) {
+            if (!memo) return false
+            if (!(msg.isEvent())) {
                 msgQueueStore.add(msg)
                 println("ActorBasicFsm $name |  added $msg in msgQueueStore")
-             } else  println("ActorBasicFsm $name | DISCARDING THE EVENT: $msg")
+            } //else println("ActorBasicFsm $name | DISCARDING THE EVENT: $msg")
             return false
         }
     }
 
-    suspend fun checkDoEmptyMove(){
+    suspend fun checkDoEmptyMove() {
         var nextState = checkTransition(NoMsg) //EMPTY MOVE
         while (nextState is State) {
-            currentMsg   = NoMsg
+            currentMsg = NoMsg
             currentState = nextState
             currentState.enterState()
             nextState = checkTransition(NoMsg) //EMPTY MOVE
@@ -280,31 +284,54 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     fun doswitch(): Transition.() -> Unit {
         return { edgeEventHandler = { true } }
     }
+
+    /*
     fun fireIf(cond: (ApplMessage) -> Boolean): Transition.() -> Unit {
         return {
             edgeEventHandler = cond }
     }
+    */
     fun whenEvent(evName: String): Transition.() -> Unit {
         return {
-            edgeEventHandler = { it.isEvent() && it.msgId() == evName } }
+            edgeEventHandler = {
+                //println("whenEvent $it - $evName");
+                it == evName
+            } //it.isEvent() && it.msgId() == evName }
+        }
     }
 
     fun whenDispatch(msgName: String): Transition.() -> Unit {
-        return {
-            edgeEventHandler = { it.isDispatch() && it.msgId() == msgName }}
+            return {
+                edgeEventHandler = { it == msgName }  //it.isDispatch() && it.msgId() == msgName }
+            }
     }
 
-    var timerCount = 0
-    var timerEventName = ""
-    fun whenTimeout(time: Int): Transition.() -> Unit {
-        //val evName = "local_tout${timerCount++}"
-        //val ctx = sysUtil.getActorContext(this.name)
-        //val timer=TimerActor("timer", scope, ctx!!, evName, time.toLong())
-        return {
-            edgeEventHandler = {
-                //println("whenTimeoutt $it")
-                it.isEvent() && it.msgId() == timerEventName }
+
+    fun whenTimeout( timerEventName : String ): Transition.() -> Unit {
+                return {
+                    edgeEventHandler = {
+                        //println("whenTimeoutt $it")
+                        it == timerEventName
+                    } //it.isEvent() && it.msgId() == timerEventName }
+                }
+    }
+/*
+UTILITIES TO HANDLE MES CONTENT
+ */
+    private var msgArgList = mutableListOf<String>()
+
+    fun checkMsgContent(template : Term, curT : Term,  content : String ) : Boolean{
+        msgArgList = mutableListOf<String>()
+        if( pengine.unify(curT, template ) && pengine.unify(curT, Term.createTerm(content) ) ){
+            val tt   = Term.createTerm( curT.toString() )  as Struct
+            val ttar = tt.arity
+            for( i in 0..ttar-1 ) msgArgList.add( tt.getArg(i).toString().replace("'","") )
+            return true
         }
+        return false
+    }
+    fun  meta_msgArg( n : Int  ) : String{
+        return msgArgList.elementAt(n)
     }
 
 }

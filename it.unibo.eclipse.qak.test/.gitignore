@@ -9,3 +9,7 @@ docker/
 /.metadata/
 /src-gen/
 
+/build_ctxButton.gradle
+/build_ctxLeds1.gradle
+/chain.pl
+/sysRules.pl

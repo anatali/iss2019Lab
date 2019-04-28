@@ -52,11 +52,11 @@ import alice.tuprolog.*
         }
 
         override suspend fun actorBody(msg: ApplMessage) {
-            println("clientWenvTcp | receives $msg   ")
+            //println("clientWenvTcp | receives $msg   ")
             when( msg.msgId() ){
                 "start" -> initClientConn()
                 "send"  -> sendMsg( msg.msgContent() )
-                else -> println("clientWenvTcp $msg UNKNOWN ")
+                //else -> println("clientWenvTcp $msg UNKNOWN ")
             }
         } 
 
@@ -74,7 +74,7 @@ import alice.tuprolog.*
  			}
 			val jsonObject = JSONObject(outS)
 			val msg= "$sep${jsonObject.toString()}$sep"
-			println("clientWenvTcp | sendMsg $msg   ")
+			//println("clientWenvTcp | sendMsg $msg   ")
 			outToServer?.println(msg)
             outToServer?.flush()
          }
@@ -96,10 +96,18 @@ import alice.tuprolog.*
                                 val jsonArg = jsonObject.getJSONObject("arg")
                                 val sonarName = jsonArg.getString("sonarName")
                                 val distance = jsonArg.getInt("distance")
-                                println("clientWenvTcp | sonarName=$sonarName distance=$distance")
+                                //println("clientWenvTcp | sonarName=$sonarName distance=$distance")
                                 val m = MsgUtil.buildEvent("tcp", sonarName,"$sonarName($distance)" )
                                 emitLocalStreamEvent( m )
-                                emit( m )
+                                //emit( m )
+								val m1 = "sonar($sonarName,clientWenvTcp,$distance)"
+								//println( "clientWenvTcp EMIT $m1"   );
+							 emit("sonar", m1);
+								/*
+ "sonar(NAME, player, DISTANCE)"
+										.replace("NAME", sonarName
+										.replace("-", ""))
+										.replace("DISTANCE", (""+distance) )*/
                             }
                             "collision" -> {
                                 //println( "collision"   );
@@ -107,10 +115,13 @@ import alice.tuprolog.*
                                 val objectName = jsonArg.getString("objectName")
                                 //println("clientWenvTcp | collision objectName=$objectName")
                                 val m = MsgUtil.buildEvent( "tcp", "collision","collision($objectName)")
-								println("clientWenvTcp | emit $m")
+								//println("clientWenvTcp | emit $m")
                                 emitLocalStreamEvent( m )
-                                emit( m )
-                            }
+                                //emit( m )
+ 							 emit("sonarDetect","sonarDetect(TARGET)"
+									.replace("TARGET", objectName
+									.replace("-", "")));
+                           }
                         }
                     } catch (e: IOException) {
                         //e.printStackTrace()

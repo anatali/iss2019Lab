@@ -9,7 +9,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class RobotControl ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
- 
+protected var timerCount = 0         				 	//used by onMsg
+protected var timerEventName = ""    					//used by onMsg
+
+
 	override fun getInitialState() : String{
 		return "s0"
 	}
@@ -18,39 +21,35 @@ class RobotControl ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
 					 transition(edgeName="t010",targetState="moveAhead",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("moveAhead") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
-						forward("send","msg(moveforward)","clienttcp" ) 
+						forward("send", "msg(moveforward)" ,"clienttcp" ) 
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
 					}
-					 transition(edgeName="t111",targetState="moveBack",cond=whenTimeout(1500))
+					 transition(edgeName="t111",targetState="moveBack",cond=whenTimeout("local_tout${timerCount}"))   
 					transition(edgeName="t112",targetState="s0",cond=whenEvent("local_buttonCmd"))
 					transition(edgeName="t113",targetState="handleCollision",cond=whenEvent("collision"))
 				}	 
 				state("moveBack") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
-						forward("send","msg(movebackward)","clienttcp" ) 
+						forward("send", "msg(movebackward)" ,"clienttcp" ) 
 						timerEventName = "local_tout${timerCount++}"
 						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
 					}
-					 transition(edgeName="t114",targetState="moveAhead",cond=whenTimeout(1500))
+					 transition(edgeName="t114",targetState="moveAhead",cond=whenTimeout("local_tout${timerCount}"))   
 					transition(edgeName="t115",targetState="s0",cond=whenEvent("local_buttonCmd"))
 					transition(edgeName="t116",targetState="handleCollision",cond=whenEvent("collision"))
 				}	 
 				state("handleCollision") { //this:State
 					action { //it:State
-						var curT : Term //used by onMsg
 						println("$name in ${currentState.stateName} | $currentMsg")
-						forward("send","msg(stop)","clienttcp" ) 
-						forward("send","msg(moveleft)","clienttcp" ) 
+						forward("send", "msg(stop)" ,"clienttcp" ) 
+						forward("send", "msg(moveleft)" ,"clienttcp" ) 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 

@@ -7,6 +7,12 @@ Event    local_buttonCmd : local_buttonCmd(X)
 Event    buttonCmd : buttonCmd(X) 
 Event    ledCmd : ledCmd(X)  
 Event    collision : collision(X)
+Event    sonar  	 : sonar(SONAR, TARGET, DISTANCE)	//From (virtual) sonar
+Event    sonarDetect : sonarDetect(X)					//From (virtual robot) sonar
+Event    realSonar   : sonar( DISTANCE )				//From real sonar on real robot
+Event    polar       : p( Distance, Angle )  
+Event   local_radarReady  : radargui( STATE )  		//STATE = ready|off
+
 
 Context ctxButton ip [host="localhost" port=8010]
 Context ctxLeds1  ip [host="localhost" port=8020]
@@ -34,7 +40,7 @@ QActor control context ctxButton {
 	              whenEvent local_buttonCmd -> sOn
 	State sOn{  
 		printCurrentMessage
-		emit -e ledCmd : ledCmd(on)
+		emit  ledCmd : ledCmd(on)
 	}
 	Transition t1 whenTime 200 -> sOff 
 				  whenMsg buttonCmd -> s0   
@@ -42,14 +48,14 @@ QActor control context ctxButton {
  
 	State sOff{  
 		printCurrentMessage
-		emit -e ledCmd : ledCmd(off)
+		emit   ledCmd : ledCmd(off)
 	}
 	Transition t2 	whenTime 200 -> sOn  
 					whenMsg buttonCmd -> s0
    		          	whenEvent local_buttonCmd -> s0
 }   
 /*
- * ROBOT CONTROL
+ *  CONTROL for ROBOT
  */
 CodedQActor clienttcp context ctxButton className "resources.clientWenvTcp"
 
@@ -79,17 +85,48 @@ QActor robotControl context ctxButton{
 		forward clienttcp -m send : msg( moveleft  )
 		//forward clienttcp -m send : msg( moveleft  )
  	}
-	Goto s0
-	
+	Goto s0 
+	          
+ }
+ 
+ /*
+  * 
+  */
+ QActor sonardetector context ctxButton{
+ 	State init initial{
+		println("sonardetector STARTS ")
+	}         
+	Goto waitForEvents
+	   
+	State waitForEvents{  }      
+   	Transition t1 whenTime 60000 -> endOfJob   
+ 		   whenEvent sonar       ->  sendToRadar
+  		   whenEvent sonarDetect ->  showObstacle
+ 		  //whenEvent realSonar   ->  handleRealSonar
+ 	  
+ 	State sendToRadar{                      
+ 		printCurrentMessage                                        
+ 		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
+			emit polar : p( meta_msgArg(2), 90  )  //90 is the angle
+ 		}
+ 	}
+ 	Goto waitForEvents
+ 	
+ 	State showObstacle{
+ 		println("showObstacle")
+ 	}
+ 	Goto waitForEvents
+ 	
+ 	State endOfJob{}
  }
 
 /*
  * LED
  */
 QActor led1 context ctxLeds1 { 
-	State s0 initial {
+	State s0 initial { 
 		 run resources.myLedSegm.create() 
-	}   
+	}    
 	Transition ta whenEvent ledCmd -> s1
  	
 	State s1   {           
@@ -100,6 +137,32 @@ QActor led1 context ctxLeds1 {
  	Transition tb whenEvent ledCmd -> s1            	
 } 
 
+/*
+ * RADAR
+ */
+   
+ QActor radarControl context ctxButton{
+	State s0 initial {
+		 println("radarControl init the GUI ... ") 
+		 run resources.radarSupport.create()
+		 //emit -e local_radarReady : radargui( ready )
+	}   
+	Goto waitDataToShow
+	 
+	State waitDataToShow{
+		//println("radarControl WAITSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS ... ") 
+	}  
+	Transition t1 whenEvent polar -> handleData
+	   
+	State handleData{ 
+		printCurrentMessage
+		onMsg( polar : p(D,A) ) { 
+			run resources.radarSupport.sendData(   meta_msgArg(0),  meta_msgArg(1) )
+		}
+	} 
+	Goto waitDataToShow
+ 	
+ }
 /* 
 QActor led context ctxLeds1 { 
 	[ "val led = resources.myLedSegm()" ]
