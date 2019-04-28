@@ -1,8 +1,13 @@
 bin
 bin/default
-
 .metadata
  
+ # Ignore Gradle project-specific cache directory
+.gradle
+gradlew
+gradlew.bat
+gradle
+
 /ReadMe.html
 .lck/ 
 docker/

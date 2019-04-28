@@ -142,7 +142,7 @@ QActor led1 context ctxLeds1 {
  */
    
  QActor radarControl context ctxButton{
-	State s0 initial {
+	State s0 initial {  
 		 println("radarControl init the GUI ... ") 
 		 run resources.radarSupport.create()
 		 //emit -e local_radarReady : radargui( ready )
