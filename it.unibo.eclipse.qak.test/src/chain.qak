@@ -1,6 +1,6 @@
-System chain
-
-Dispatch click : clicked
+System chain           
+ 
+Dispatch click : clicked 
 Dispatch send  : msg(X)
 
 Event    local_buttonCmd : local_buttonCmd(X)  

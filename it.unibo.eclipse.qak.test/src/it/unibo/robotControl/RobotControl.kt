@@ -9,10 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class RobotControl ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
-protected var timerCount = 0         				 	//used by onMsg
-protected var timerEventName = ""    					//used by onMsg
-
-
+ 	
 	override fun getInitialState() : String{
 		return "s0"
 	}
@@ -28,20 +25,18 @@ protected var timerEventName = ""    					//used by onMsg
 				state("moveAhead") { //this:State
 					action { //it:State
 						forward("send", "msg(moveforward)" ,"clienttcp" ) 
-						timerEventName = "local_tout${timerCount++}"
-						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
+						TimerActor("timer", scope, context!!, "local_tout_moveAhead", 1500.toLong())
 					}
-					 transition(edgeName="t111",targetState="moveBack",cond=whenTimeout("local_tout${timerCount}"))   
+					 transition(edgeName="t111",targetState="moveBack",cond=whenTimeout("local_tout_moveAhead"))   
 					transition(edgeName="t112",targetState="s0",cond=whenEvent("local_buttonCmd"))
 					transition(edgeName="t113",targetState="handleCollision",cond=whenEvent("collision"))
 				}	 
 				state("moveBack") { //this:State
 					action { //it:State
 						forward("send", "msg(movebackward)" ,"clienttcp" ) 
-						timerEventName = "local_tout${timerCount++}"
-						TimerActor("timer", scope, context!!, timerEventName, 1500.toLong())
+						TimerActor("timer", scope, context!!, "local_tout_moveBack", 1500.toLong())
 					}
-					 transition(edgeName="t114",targetState="moveAhead",cond=whenTimeout("local_tout${timerCount}"))   
+					 transition(edgeName="t114",targetState="moveAhead",cond=whenTimeout("local_tout_moveBack"))   
 					transition(edgeName="t115",targetState="s0",cond=whenEvent("local_buttonCmd"))
 					transition(edgeName="t116",targetState="handleCollision",cond=whenEvent("collision"))
 				}	 

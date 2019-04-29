@@ -1,0 +1,92 @@
+System chain
+
+Dispatch click : clicked
+//Dispatch send  : msg(X)
+
+Event    local_buttonCmd : local_buttonCmd(X)  
+Event    ledCmd : ledCmd(X)  
+
+
+Context ctxButton ip [host="localhost" port=8010]
+Context ctxLeds1  ip [host="192.168.1.17" port=8020]
+Context ctxLeds2  ip [host="192.168.1.18" port=8030]
+
+QActor button context ctxButton {	//generates local_buttonCmd 
+	State s0 initial { 
+		run resources.buttonForChain.create()                      
+	} 
+}
+/*
+ * CONTROL for LED
+ */
+QActor control context ctxButton {
+	State s0 initial {		 
+		printCurrentMessage	             
+	} 
+	Transition t0 whenEvent local_buttonCmd -> sOn
+	State sOn{  
+		printCurrentMessage
+		emit  ledCmd : ledCmd(on)
+	}
+	Transition t1 whenTime 200 -> sOff 
+				  whenEvent local_buttonCmd -> s0           
+ 
+	State sOff{   
+		printCurrentMessage
+		emit   ledCmd : ledCmd(off)
+	}
+	Transition t2 	whenTime 200 -> sOn  
+   		          	whenEvent local_buttonCmd -> s0
+}   
+
+/*
+ * LED
+ */
+QActor led1 context ctxLeds1 { 
+	State s0 initial { 
+		 run resources.myLedSegm.create() 
+	}    
+	Transition t0 whenEvent ledCmd -> s1
+ 	 
+	State s1   {           
+		 printCurrentMessage  
+		 onMsg ( ledCmd:ledCmd(on) ) { run resources.myLedSegm.turnOn()  }
+ 		 onMsg ( ledCmd:ledCmd(off) ){ run resources.myLedSegm.turnOff() }
+	} 
+ 	Transition t1 whenEvent ledCmd -> s1            	
+} 
+ 
+CodedQActor led2 context ctxLeds1 className "resources.LedActork"
+
+CodedQActor led3 context ctxLeds2 className "resources.LedActork"
+
+  
+ 
+
+/* 
+ 
+QActor led context ctxLeds1 { 
+	[ "val led = resources.myLedSegm()" ]
+	State s0 initial {
+		 //run resources.myLedSegm() 
+ 	}   
+	Transition ta whenEvent ledCmd -> s1
+ 	
+	State s1   {           
+		 printCurrentMessage  
+		 //onMsg ledCmd:ledCmd(on) -> resources.myLedSegm.turnOn()
+ 		 //run resources.myLedSegm.turnOn()
+ 		 [ "led.turnOn()" ]
+	} 
+	Transition tb whenEvent ledCmd -> s2            
+ 	
+ 	State s2   {            
+		 printCurrentMessage  
+		 //run resources.myLedSegm.turnOff()
+		 [ "led.turnOff()" ]
+	} 
+	Transition tb whenEvent ledCmd -> s1            	
+}   
+*/
+  
+ 

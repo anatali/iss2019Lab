@@ -20,7 +20,7 @@ class Led1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope)
 					action { //it:State
 						resources.myLedSegm.create(  )
 					}
-					 transition(edgeName="ta20",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="t05",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 				state("s1") { //this:State
 					action { //it:State
@@ -34,7 +34,7 @@ class Led1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope)
 								resources.myLedSegm.turnOff(  )
 						}
 					}
-					 transition(edgeName="tb21",targetState="s1",cond=whenEvent("ledCmd"))
+					 transition(edgeName="t16",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
 			}
 		}

@@ -20,14 +20,6 @@ class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 					action { //it:State
 						resources.buttonForChain.create(  )
 					}
-					 transition(edgeName="t00",targetState="s1",cond=whenDispatch("click"))
-				}	 
-				state("s1") { //this:State
-					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
-						forward("buttonCmd", "buttonCmd" ,"control" ) 
-					}
-					 transition(edgeName="t11",targetState="s1",cond=whenDispatch("click"))
 				}	 
 			}
 		}

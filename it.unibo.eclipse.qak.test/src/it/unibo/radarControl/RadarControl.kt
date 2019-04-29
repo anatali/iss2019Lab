@@ -9,10 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class RadarControl ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
-protected var timerCount = 0         				 	//used by onMsg
-protected var timerEventName = ""    					//used by onMsg
-
-
+ 	
 	override fun getInitialState() : String{
 		return "s0"
 	}

@@ -9,10 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 	
 class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
-protected var timerCount = 0         				 	//used by onMsg
-protected var timerEventName = ""    					//used by onMsg
-
-
+ 	
 	override fun getInitialState() : String{
 		return "init"
 	}
@@ -27,10 +24,9 @@ protected var timerEventName = ""    					//used by onMsg
 				}	 
 				state("waitForEvents") { //this:State
 					action { //it:State
-						timerEventName = "local_tout${timerCount++}"
-						TimerActor("timer", scope, context!!, timerEventName, 60000.toLong())
+						TimerActor("timer", scope, context!!, "local_tout_waitForEvents", 60000.toLong())
 					}
-					 transition(edgeName="t117",targetState="endOfJob",cond=whenTimeout("local_tout${timerCount}"))   
+					 transition(edgeName="t117",targetState="endOfJob",cond=whenTimeout("local_tout_waitForEvents"))   
 					transition(edgeName="t118",targetState="sendToRadar",cond=whenEvent("sonar"))
 					transition(edgeName="t119",targetState="showObstacle",cond=whenEvent("sonarDetect"))
 				}	 
