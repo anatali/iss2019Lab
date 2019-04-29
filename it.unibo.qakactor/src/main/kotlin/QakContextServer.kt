@@ -57,8 +57,13 @@ EACH CONNECTION WORKS IN ITS OWN COROUTINE
                     }
                     val dest     = inputmsg.msgReceiver()
                     val actor    = ctx.hasActor( dest )
-                    if( actor is ActorBasic ) MsgUtil.sendMsg(inputmsg, actor )
-                    else  println("       QakContextServer $name | WARNING!! no local actor ${dest} in ${ctx.name}")
+                    if( actor is ActorBasic ){
+                        try{
+                            MsgUtil.sendMsg(inputmsg, actor )
+                        }catch( e1 : Exception) {
+                            println("       QakContextServer $name | WARNING: ${e1.message}")
+                         }
+                    } else  println("       QakContextServer $name | WARNING!! no local actor ${dest} in ${ctx.name}")
                 }
             } catch (e: Exception) {
                 println("       QakContextServer $name | handleConnection WARNING: ${e.message}")
@@ -69,7 +74,12 @@ EACH CONNECTION WORKS IN ITS OWN COROUTINE
     suspend fun propagateEvent(event : ApplMessage){
          ctx.actorMap.forEach{
            // println("       QakContextServer $name | in ${ctx.name} propag $event to ${it.key} in ${it.value.context.name}")
-           it.value.actor.send(event)
+             val a = it.value
+             try{
+                 a.actor.send(event)
+             }catch( e1 : Exception) {
+                println("       QakContextServer $name | propagateEvent WARNING: ${e1.message}")
+             }
          }
     }
 }

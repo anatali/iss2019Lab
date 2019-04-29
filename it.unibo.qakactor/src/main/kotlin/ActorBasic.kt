@@ -40,14 +40,22 @@ abstract class  ActorBasic(val name:         String,
         //println("ActorBasic $name |  RUNNING IN $dispatcher"  )
         for( msg in channel ) {
             //println("ActorBasic $name |  msg= $msg "  )
-            actorBody( msg )
+            if( msg.msgContent() == "stopTheActor") {
+                channel.close()
+            }
+            else{
+                actorBody( msg )
+            }
         }
     }
     //To be defined by the application designer
     abstract suspend fun actorBody(msg : ApplMessage)
 
     //fun setContext( ctx: QakContext ) //built-in
-
+    fun terminate(){
+        context!!.actorMap.remove(  name )
+        actor.close()
+    }
 
 /*
 --------------------------------------------
