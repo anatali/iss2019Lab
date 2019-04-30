@@ -31,8 +31,8 @@ object sysUtil{
 	fun getPrologEngine() : Prolog = pengine
 	fun curThread() : String = "thread=${Thread.currentThread().name}"
 
-	fun getContext( ctxName : String ) : QakContext?  { return ctxsMap.get(ctxName)}
-	fun getActor( actorName : String ) : ActorBasic? { return ctxActorMap.get(actorName)}
+	fun getContext( ctxName : String ) : QakContext?  { return ctxsMap.get(ctxName.toLowerCase())}
+	fun getActor( actorName : String ) : ActorBasic? { return ctxActorMap.get(actorName.toLowerCase())}
 
 	fun getActorContextName( actorName : String): String?{
 		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
@@ -157,7 +157,8 @@ object sysUtil{
 		}
 	}//createTheActors
 
-	fun createActor( ctx: QakContext, actorName: String, className : String, scope : CoroutineScope  ){
+	fun createActor( ctx: QakContext, actorName: String,
+					 className : String, scope : CoroutineScope = GlobalScope  ) : ActorBasic{
 		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
 		val clazz = Class.forName(className)	//Class<?>
  		val ctor  = clazz.getConstructor(String::class.java, CoroutineScope::class.java )  //Constructor<?>
@@ -166,6 +167,7 @@ object sysUtil{
 		actor.context = ctx
 		//MEMO THE ACTOR
 		ctxActorMap.put(actorName,actor  )
+		return actor
 	}
 
 	fun solve( goal: String, resVar: String  ) : String? {

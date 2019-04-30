@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.InetAddress
 
 open class QakContext(name: String, val hostAddr: String, val portNum: Int,
                       var mqttAddr : String = "",
@@ -23,7 +24,12 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
         suspend fun createContexts(hostName: String, scope: CoroutineScope,
                            desrFilePath: String, rulesFilePath: String ) {
             sysUtil.createContexts(hostName, desrFilePath, rulesFilePath)
-            println("QakContext CREATING THE ACTORS on $hostName ")
+
+            if( sysUtil.ctxOnHost.size == 0 ){
+                val ip = InetAddress.getLocalHost().getHostAddress()
+                println("QakContext CREATING NO ACTORS on $hostName ip=${ip.toString()}")
+            }
+            else println("QakContext CREATING THE ACTORS on $hostName ")
             sysUtil.ctxOnHost.forEach { ctx -> sysUtil.createTheActors(ctx, scope)  }
             //Avoid premature termination
             scope.launch{
