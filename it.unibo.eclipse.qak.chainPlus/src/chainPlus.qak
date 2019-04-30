@@ -14,7 +14,7 @@ QActor button context ctxButton {	//generates local_buttonCmd
 }
 
 QActor control context ctxButton {
-	State s0 initial {		 
+	State s0 initial {		    
 		printCurrentMessage	             
 	} 
 	Transition t0 whenEvent local_buttonCmd -> sOn
