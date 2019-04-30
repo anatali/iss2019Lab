@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/build/kotlin/itunibochain10jar-classes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/build/kotlin/ituniboeclipseqakchain10jar-classes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/build/libs/it.unibo.chain-1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/build/libs/it.unibo.eclipse.qak.chain-1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/build/tmp/jar/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -223,7 +231,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
+    <option name="x" value="-5" />
     <option name="width" value="1332" />
     <option name="height" value="733" />
   </component>
@@ -285,7 +293,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556615224081" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556615496574" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -407,6 +415,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25642964" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
