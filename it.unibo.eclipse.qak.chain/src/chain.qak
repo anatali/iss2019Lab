@@ -6,7 +6,6 @@ Dispatch click : clicked
 Event    local_buttonCmd : local_buttonCmd(X)  
 Event    ledCmd : ledCmd(X)  
 
-
 Context ctxButton ip [host="localhost" port=8010]
 Context ctxLeds1  ip [host="192.168.1.17" port=8020]
 Context ctxLeds2  ip [host="192.168.1.18" port=8030]
