@@ -1,7 +1,8 @@
 bin
 bin/default
 .metadata
- 
+build
+
  # Ignore Gradle project-specific cache directory
 .gradle
 gradlew

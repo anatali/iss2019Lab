@@ -12,7 +12,6 @@ QActor button context ctxButton {	//generates local_buttonCmd
 		run resources.buttonForChain.create()                      
 	} 
 }
-
 QActor control context ctxButton {
 	State s0 initial {		    
 		printCurrentMessage	             
