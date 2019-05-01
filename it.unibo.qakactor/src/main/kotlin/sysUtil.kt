@@ -173,7 +173,7 @@ object sysUtil{
 	fun solve( goal: String, resVar: String  ) : String? {
 		//println("sysUtil  | solveGoal ${goal}" );
 		val sol = pengine.solve( "$goal.")
-		if( sol is SolveInfo ) {
+		if( sol.isSuccess ) {
 			val result = sol.getVarValue(resVar)  //Term
 			var resStr = result.toString()
 			return  strCleaned( resStr )

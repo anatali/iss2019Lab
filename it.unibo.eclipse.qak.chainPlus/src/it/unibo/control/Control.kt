@@ -15,28 +15,36 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		lateinit var ledNames : List<String>
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						solve("consult('chainDescr.pl')","") //set resVar	
+						solve("getLedNames(N)","N") //set resVar	
+						ledNames = sysUtil.strRepToList(resVar!!); println(ledNames)
 					}
-					 transition(edgeName="t00",targetState="sOn",cond=whenEvent("local_buttonCmd"))
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
-				state("sOn") { //this:State
+				state("work") { //this:State
 					action { //it:State
-						emit("ledCmd", "ledCmd(on)" ) 
-						TimerActor("timer", scope, context!!, "local_tout_sOn", 500.toLong())
+						solve("resetLedCounter","") //set resVar	
 					}
-					 transition(edgeName="t11",targetState="sOff",cond=whenTimeout("local_tout_sOn"))   
-					transition(edgeName="t12",targetState="s0",cond=whenEvent("local_buttonCmd"))
+					 transition(edgeName="t00",targetState="blinkChain",cond=whenEvent("local_buttonCmd"))
 				}	 
-				state("sOff") { //this:State
+				state("blinkChain") { //this:State
 					action { //it:State
-						emit("ledCmd", "ledCmd(off)" ) 
-						TimerActor("timer", scope, context!!, "local_tout_sOff", 500.toLong())
+						solve("getNextLedName(LEDNAME)","LEDNAME") //set resVar	
+						 
+						if( solveOk() ){
+						    //println("current led name = $resVar")   
+							forward( "ledCmd", "ledCmd(on)", resVar )
+							delay(200)
+							forward( "ledCmd", "ledCmd(off)", resVar )
+						}else solve("resetLedCounter")
+						TimerActor("timer", scope, context!!, "local_tout_blinkChain", 10.toLong())
 					}
-					 transition(edgeName="t23",targetState="sOn",cond=whenTimeout("local_tout_sOff"))   
-					transition(edgeName="t24",targetState="s0",cond=whenEvent("local_buttonCmd"))
+					 transition(edgeName="t11",targetState="blinkChain",cond=whenTimeout("local_tout_blinkChain"))   
+					transition(edgeName="t12",targetState="work",cond=whenEvent("local_buttonCmd"))
 				}	 
 			}
 		}

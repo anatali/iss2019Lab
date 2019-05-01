@@ -8,7 +8,8 @@ import javax.swing.JFrame
 class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
   
 	companion object{
-		var delta = 100
+		var deltaX = 50
+		var deltaY = 50
 		lateinit var led :  myLedSegm
 		fun turnOn() { led.turnOn() }
 		fun turnOff() { led.turnOff() }
@@ -16,8 +17,8 @@ class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
 			led = myLedSegm()
 			led.turnOff()
 		}
-		fun getX() : Int { delta = delta + 50 ; return   delta }
-		fun getY() : Int { delta = delta + 50 ; return   delta }
+		fun getX() : Int { deltaX = deltaX + 150  ; return   deltaX }
+		fun getY() : Int { return   deltaY }
 	}
  
     init{

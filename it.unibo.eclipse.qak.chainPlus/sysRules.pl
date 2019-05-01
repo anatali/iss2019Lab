@@ -64,12 +64,6 @@ msgContentToAPlan( MSG, [_|R], [_|P], RES ):-
 	%stdout <- println( msgContentToAPlan( MSG, R, P, RES ) ),
 	msgContentToPlan(MSG, R, P, RES).	
 
-/*
---------------------------------
-DEC2018
---------------------------------
-*/
-%% version 1.5.13.1
 removeCtx( CtxName, HOST, PORT ) :-
 	%% stdout <- println( removeCtx(  CtxName ) ),
 	retract( context( CtxName, HOST, _ , PORT ) ),!,
@@ -97,7 +91,20 @@ showListOfElements([]).
 showListOfElements([C|R]):-
 	stdout <- println( C ),
 	showElements(R).
-	
+
+assign( I,V ):- retract( value(I,_) ),!, assert( value( I,V )).
+assign( I,V ):- assert( value( I,V )).
+getVal( I, V ):- value(I,V), !.
+getVal( I, failure ).
+inc(I,K,N):-
+	value( I,V ),
+	N is V + K,
+	assign( I,N ).
+dec(I,K,N):-
+	value( I,V ),
+	N is V - K,
+	assign( I,N ).
+
 %==============================================
 % MEMENTO
 %==============================================

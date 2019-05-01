@@ -20,14 +20,14 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 					action { //it:State
 						TimerActor("timer", scope, context!!, "local_tout_s0", 3000.toLong())
 					}
-					 transition(edgeName="t05",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
+					 transition(edgeName="t00",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
 				}	 
 				state("sAdd") { //this:State
 					action { //it:State
 						resources.ledManager.addNewLed(  )
 						TimerActor("timer", scope, context!!, "local_tout_sAdd", 4000.toLong())
 					}
-					 transition(edgeName="t06",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
+					 transition(edgeName="t01",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
 				}	 
 				state("sRemove") { //this:State
 					action { //it:State

@@ -1,6 +1,7 @@
 package it.unibo.kactor
 
 import alice.tuprolog.Prolog
+import alice.tuprolog.SolveInfo
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -21,8 +22,9 @@ abstract class  ActorBasic(val name:         String,
                         ) : MqttCallback {
     //val cpus = Runtime.getRuntime().availableProcessors();
     var context : QakContext? = null  //to be injected
-    val pengine = Prolog()      //USED FOR LOCAL KB
-    val NoMsg = MsgUtil.buildEvent(name, "noMsg", "noMsg")
+    var resVar  : String? = null  // see solve
+    val pengine     = Prolog()      //USED FOR LOCAL KB
+    val NoMsg       = MsgUtil.buildEvent(name, "noMsg", "noMsg")
 
     val mqtt    = MqttUtils()
     protected val subscribers = mutableListOf<ActorBasic>()
@@ -209,6 +211,22 @@ machineExec
         }
     }
 
+/*
+KNOWLEDGE BASE
+*/
+    fun solve( goal: String, rVar: String ="" ) {
+        //println("       ActorBasic $name | solveGoal ${goal} rVar=$rVar" );
+        val sol = pengine.solve( "$goal.")
+        if(  sol.isSuccess  ) {
+            if( (rVar != "") ) {
+                val resStr = sol.getVarValue(rVar).toString()
+                resVar = sysUtil.strCleaned(resStr)
 
+            }else resVar = "success"
+        } else resVar = "fail"
+    }
+    fun solveOk() : Boolean{
+        return resVar != "fail"
+    }
 
 }
