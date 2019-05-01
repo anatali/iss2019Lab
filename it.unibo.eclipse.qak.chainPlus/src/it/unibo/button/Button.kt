@@ -18,7 +18,7 @@ class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						resources.buttonForChain.create(  )
+						resources.buttonForChain.create()
 					}
 				}	 
 			}

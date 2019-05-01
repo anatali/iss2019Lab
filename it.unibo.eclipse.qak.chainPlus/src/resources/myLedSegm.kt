@@ -6,7 +6,7 @@ import java.awt.GridLayout
 import javax.swing.JFrame
 
 class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
-  
+var frame : JFrame
 	companion object{
 		var deltaX = 50
 		var deltaY = 50
@@ -23,7 +23,7 @@ class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
  
     init{
         JFrame.setDefaultLookAndFeelDecorated(true)
-        val frame = JFrame("Chain")
+        frame = JFrame("Chain")
         frame.setSize( 120, 150)
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.layout = GridLayout(1, 1)
@@ -32,5 +32,10 @@ class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
         frame.add(this)
         frame.isVisible = true		
     }
+	
+	fun hideLed(){
+		frame.setSize( 40, 50)
+		//frame.isVisible = false
+	}
 
 }

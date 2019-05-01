@@ -16,9 +16,11 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		lateinit var ledNames : List<String>
+		var extraChain = mutableListOf<String>()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('chainDescr.pl')","") //set resVar	
 						solve("getLedNames(N)","N") //set resVar	
 						ledNames = sysUtil.strRepToList(resVar!!); println(ledNames)
@@ -27,24 +29,70 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				}	 
 				state("work") { //this:State
 					action { //it:State
-						solve("resetLedCounter","") //set resVar	
+						println(" ----------------- work ---------------------- ")
 					}
 					 transition(edgeName="t00",targetState="blinkChain",cond=whenEvent("local_buttonCmd"))
+					transition(edgeName="t01",targetState="addLed",cond=whenDispatch("ledRegister"))
 				}	 
 				state("blinkChain") { //this:State
+					action { //it:State
+						solve("resetLedCounter","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="doBlinkChain", cond=doswitch() )
+				}	 
+				state("doBlinkChain") { //this:State
 					action { //it:State
 						solve("getNextLedName(LEDNAME)","LEDNAME") //set resVar	
 						 
 						if( solveOk() ){
-						    //println("current led name = $resVar")   
+						    println("current led name = $resVar")   
 							forward( "ledCmd", "ledCmd(on)", resVar )
 							delay(200)
 							forward( "ledCmd", "ledCmd(off)", resVar )
-						}else solve("resetLedCounter")
-						TimerActor("timer", scope, context!!, "local_tout_blinkChain", 10.toLong())
+						}else autoMsg( "chainEnd", "chainEnd(a)" ) 
+						TimerActor("timer", scope, context!!, "local_tout_doBlinkChain", 200.toLong())
 					}
-					 transition(edgeName="t11",targetState="blinkChain",cond=whenTimeout("local_tout_blinkChain"))   
-					transition(edgeName="t12",targetState="work",cond=whenEvent("local_buttonCmd"))
+					 transition(edgeName="t12",targetState="doBlinkChain",cond=whenTimeout("local_tout_doBlinkChain"))   
+					transition(edgeName="t13",targetState="blinkExtraChain",cond=whenDispatch("chainEnd"))
+					transition(edgeName="t14",targetState="removeLed",cond=whenDispatch("ledUnRegister"))
+					transition(edgeName="t15",targetState="work",cond=whenEvent("local_buttonCmd"))
+				}	 
+				state("blinkExtraChain") { //this:State
+					action { //it:State
+						extraChain.forEach{
+						     println("current extra led name = $it")  
+							forward( "ledCmd", "ledCmd(on)", it )
+							delay(200)
+							forward( "ledCmd", "ledCmd(off)", it )
+						    delay(200)
+						}
+						TimerActor("timer", scope, context!!, "local_tout_blinkExtraChain", 10.toLong())
+					}
+					 transition(edgeName="t16",targetState="blinkChain",cond=whenTimeout("local_tout_blinkExtraChain"))   
+					transition(edgeName="t17",targetState="addLed",cond=whenDispatch("ledRegister"))
+					transition(edgeName="t18",targetState="removeLed",cond=whenDispatch("ledUnRegister"))
+					transition(edgeName="t19",targetState="work",cond=whenEvent("local_buttonCmd"))
+				}	 
+				state("addLed") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")
+								sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))
+								extraChain.add(meta_msgArg(0))
+						}
+					}
+					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )
+				}	 
+				state("removeLed") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("REMOVING ${meta_msgArg(0)}")
+								extraChain.remove(meta_msgArg(0))
+						}
+					}
+					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )
 				}	 
 			}
 		}

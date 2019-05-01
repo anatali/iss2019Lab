@@ -22,7 +22,7 @@ abstract class  ActorBasic(val name:         String,
                         ) : MqttCallback {
     //val cpus = Runtime.getRuntime().availableProcessors();
     var context : QakContext? = null  //to be injected
-    var resVar  : String? = null  // see solve
+    var resVar  : String ="fail"      // see solve
     val pengine     = Prolog()      //USED FOR LOCAL KB
     val NoMsg       = MsgUtil.buildEvent(name, "noMsg", "noMsg")
 
@@ -91,6 +91,10 @@ Messaging
             forward( msgId, msg, actor)
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
+             if( ctx == null ) {
+                 println("       ActorBasic $name | context of $destName UNKNOWN ")
+                 return
+             }
              //println("       ActorBasic $name | forward ctx= ${ctx}")
              val m = MsgUtil.buildDispatch(name,msgId, msg, destName)
              //println("       ActorBasic $name | forward mqttAddr= ${ctx!!.mqttAddr}")

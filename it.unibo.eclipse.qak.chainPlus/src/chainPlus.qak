@@ -2,10 +2,14 @@ System chainPlus
 
 Event    local_buttonCmd : local_buttonCmd(X)  
 Event    ledCmd : ledCmd(X)  
-Dispatch ledCmd : ledCmd(X)  
+ 
+Dispatch chainEnd : chainEnd(X) 
+Dispatch ledCmd : ledCmd(X) 
+Dispatch ledRegister   : ledRegister( LEDNAME, CTXNAME ) 
+Dispatch ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) 
    
-Context ctxButton      ip [host="192.168.43.229" port=8010]
-Context ctxLedsPlus    ip [host="192.168.43.229" port=8050]
+Context ctxButton      ip [host="localhost" port=8010]
+Context ctxLedsPlus    ip [host="localhost" port=8050] //192.168.43.229
 //Context ctxLedRasp     ip [host="192.168.43.18"  port=8040]
 
 CodedQActor led1 context ctxLedsPlus className "resources.LedActork"  
@@ -20,35 +24,113 @@ QActor button context ctxButton {	//generates local_buttonCmd
 } 
 
 QActor control context ctxButton {
-["lateinit var ledNames : List<String>"]
+["lateinit var ledNames : List<String>
+var extraChain = mutableListOf<String>()
+"]
 	State s0 initial {		           
-		solve( consult("chainDescr.pl")	 )        
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("chainDescr.pl")	 )  
 		solve( getLedNames(N) , N   )
 		["ledNames = sysUtil.strRepToList(resVar!!); println(ledNames)"]        
 	}     
 	Goto work   
 	 
-	State work{		        
- 		solve( resetLedCounter )	
- 		//println("resetLedCounter result = $resVar")	
+	State work{		println(" ----------------- work ---------------------- ")         		
 	}  
 	Transition t0 whenEvent local_buttonCmd -> blinkChain
-	 
-	State blinkChain{   
-		solve( getNextLedName( LEDNAME ) , LEDNAME  ) 
+	              whenMsg   ledRegister     -> addLed
+	
+	State blinkChain{
+		solve( resetLedCounter )	   
+	}
+	Goto doBlinkChain
+	
+	State doBlinkChain{   
+		//println("doBlinkChain")
+		solve( getNextLedName( LEDNAME ) , LEDNAME  ) 				
 [" 
 if( solveOk() ){
-    //println(\"current led name = $resVar\")   
+    println(\"current led name = $resVar\")   
 	forward( \"ledCmd\", \"ledCmd(on)\", resVar )
 	delay(200)
 	forward( \"ledCmd\", \"ledCmd(off)\", resVar )
-}else solve(\"resetLedCounter\")
+}else autoMsg( \"chainEnd\", \"chainEnd(a)\" ) 
 "]		 
 	}
-	Transition t1 whenTime 10 -> blinkChain 
+	Transition t1 whenTime 200     -> doBlinkChain
+	              whenMsg chainEnd -> blinkExtraChain
+	              whenMsg   ledUnRegister   -> removeLed
 				  whenEvent local_buttonCmd -> work          
-				  
+
+	
+	State blinkExtraChain{ //ASSUMPTION: the extra-chain is SHORT
+["extraChain.forEach{
+     println(\"current extra led name = $it\")  
+	forward( \"ledCmd\", \"ledCmd(on)\", it )
+	delay(200)
+	forward( \"ledCmd\", \"ledCmd(off)\", it )
+    delay(200)
+}"] 
+	}  
+	Transition t1 whenTime 10 -> blinkChain 
+				  //whenMsg chainEnd -> blinkExtraChain
+				  whenMsg   ledRegister     -> addLed
+				  whenMsg   ledUnRegister   -> removeLed
+				  whenEvent local_buttonCmd -> work          
+	
+	State addLed{
+		onMsg( ledRegister : ledRegister( LEDNAME, CTXNAME ) ) {
+			println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")			  
+			//solve( addRule("qactor(${meta_msgArg(0)}, ${meta_msgArg(1)}, _ )") )
+["sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))
+extraChain.add(meta_msgArg(0))"]
+		}
+	}	 
+	Goto blinkChain  //resumeLastPlan
+			  
+	State removeLed{
+		onMsg( ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) ) {
+			println("REMOVING ${meta_msgArg(0)}")
+["extraChain.remove(meta_msgArg(0))"]
+		}
+	}	  
+	Goto blinkChain	 //resumeLastPlan
+} 	
+
+
+
+//JUST FOR TESTING ...	
+QActor dynamo context ctxLedsPlus {
+	State s0 initial{   
+		println("dynamo START")
+	} 
+	Transition t0 whenTime 3000 -> sAdd         
+	    
+	State sAdd{      
+["for(i in 0..1){ 
+	val ledName = resources.ledManager.addNewLed( myself  ) 
+	println(\"ledRegister($ledName, ${context!!.name})\")
+	forward( \"ledRegister\", \"ledRegister($ledName, ${context!!.name})\", \"control\" )
+    delay( 1000 )
+}
+"]
+	}  
+	Transition t0 whenTime 3000 -> sRemove
+	 
+	State sRemove{
+["val led = resources.ledManager.removeLastLed( myself  ) 
+if( led != null ){ 
+  println(\"ledUnRegister(${led.name}, ${context!!.name})\")
+  forward( \"ledUnRegister\", \"ledUnRegister(${led.name}, ${context!!.name} )\", \"control\" )
+  delay( 1000 )
+  led.terminate()     //please complete (normally) what you were doing and terminate
+  //forward( \"ledCmd\", \"ledCmd(out)\",  led  )
+}
+"]
+	} 
+	//Goto s0
 } 
+
 /* 	
 	State sOn{  
  		//emit  ledCmd : ledCmd(on)
@@ -65,23 +147,9 @@ if( solveOk() ){
    		          	whenEvent local_buttonCmd -> work
 }   
 */
-/* 
-QActor dynamo context ctxLedsPlus {
-	State s0 initial{   
-		//println("dynamo START")
-	} 
-	Transition t0 whenTime 3000 -> sAdd         
-	   
-	State sAdd{    
-		run resources.ledManager.addNewLed()
-	} 
-	Transition t0 whenTime 4000 -> sRemove
-	 
-	State sRemove{
-		run resources.ledManager.removeLed()
-	} 
-	Goto s0
+  
+
 	
 	 
  
-*/  
+   

@@ -90,6 +90,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     val autoStartMsg = MsgUtil.buildDispatch(name, "autoStartSysMsg", "start", name)
     private var isStarted = false
+    protected var myself : ActorBasicFsm
     protected lateinit var currentState: State
     protected var currentMsg = NoMsg
     lateinit protected var mybody: ActorBasicFsm.() -> Unit
@@ -113,7 +114,8 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     //===========================================================================================
 
     init {
-        //println("ActorBasicFsm INIT")
+        //println("ActorBasicFsm INIT")private val
+        myself  = this
         setBody(getBody(), getInitialState())
         /*
         buildbody()            //Build the structural part
@@ -208,7 +210,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     private fun checkTransition(msg: ApplMessage): State? {
         val trans = currentState.getTransitionForMessage(msg)
         //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
-        return if (trans is Transition) {
+        return if (trans != null) {
             trans.enterTransition { getStateByName(it) }
         } else {
             //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
@@ -302,7 +304,9 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     fun whenDispatch(msgName: String): Transition.() -> Unit {
             return {
-                edgeEventHandler = { it == msgName }  //it.isDispatch() && it.msgId() == msgName }
+                edgeEventHandler = {
+                    //println("ActorBasicFsm $name | ${currentState.stateName} whenDispatch $it  $msgName")
+                    it == msgName }  //it.isDispatch() && it.msgId() == msgName }
             }
     }
 

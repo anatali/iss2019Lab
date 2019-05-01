@@ -38,6 +38,12 @@ object sysUtil{
 		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
 		return ctxName
 	}
+	fun setActorContextName( actorName : String, ctxName : String ) {
+		//if does not exists ...
+		val res = solve( "qactor($actorName,$ctxName,_)", "" )
+		if( res == "success") println("$actorName already set in $ctxName")
+		else solve( "assertz( qactor($actorName,$ctxName,_) )", "" )
+	}
 	fun getActorContext ( actorName : String): QakContext?{
 		val ctxName = solve( "qactor($actorName,CTX,_)", "CTX" )
 		//println("       sysUtil | getActorContext ctxName=${ctxName} - ${ctxsMap.get( ctxName )}")
@@ -174,6 +180,7 @@ object sysUtil{
 		//println("sysUtil  | solveGoal ${goal}" );
 		val sol = pengine.solve( "$goal.")
 		if( sol.isSuccess ) {
+			if( resVar.length == 0 ) return "success"
 			val result = sol.getVarValue(resVar)  //Term
 			var resStr = result.toString()
 			return  strCleaned( resStr )
