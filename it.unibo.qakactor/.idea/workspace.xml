@@ -2,14 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../LectureBologna1819.html" beforeDir="false" afterPath="$PROJECT_DIR$/../LectureBologna1819.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/chainDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/chainDescr.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/dynamo/Dynamo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/dynamo/Dynamo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/LedActork.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/LedActork.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ide_1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ide_1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ui_1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ui_1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork_1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork_1.0.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -44,20 +49,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1728">
-              <caret line="64" column="25" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
+            <state relative-caret-position="108">
+              <caret line="56" column="17" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="307" column="22" selection-start-line="307" selection-start-column="22" selection-end-line="307" selection-end-column="22" />
+            <state relative-caret-position="108">
+              <caret line="231" column="37" selection-start-line="231" selection-start-column="28" selection-end-line="231" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -147,7 +152,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>hanldeCurrentMessage</find>
       <find>fsmStartWork</find>
       <find>CREATING THE ACTORS</find>
       <find>ctxsMap</find>
@@ -177,6 +181,7 @@
       <find>noMsg</find>
       <find>lookAtMsgQueueStore</find>
       <find>msgQueueStore</find>
+      <find>terminate</find>
     </findStrings>
     <replaceStrings>
       <replace>kactor.test.chain.</replace>
@@ -293,10 +298,13 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556740426911" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556791613634" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
+    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="" />
       <recent name="it.unibo.kactor.test.chain" />
@@ -307,9 +315,6 @@
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test\chain" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -416,7 +421,7 @@
   <component name="ToolWindowManager">
     <frame x="158" y="39" width="1134" height="647" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23929237" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23929237" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -430,7 +435,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.21789883" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.21789883" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Build" order="10" weight="0.3993559" />
@@ -556,17 +561,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1728">
-          <caret line="64" column="25" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
+        <state relative-caret-position="108">
+          <caret line="231" column="37" selection-start-line="231" selection-start-column="28" selection-end-line="231" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="307" column="22" selection-start-line="307" selection-start-column="22" selection-end-line="307" selection-end-column="22" />
+        <state relative-caret-position="108">
+          <caret line="56" column="17" selection-start-line="56" selection-start-column="8" selection-end-line="56" selection-end-column="17" />
         </state>
       </provider>
     </entry>

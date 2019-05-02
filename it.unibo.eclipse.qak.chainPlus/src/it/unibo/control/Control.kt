@@ -16,7 +16,6 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		lateinit var ledNames : List<String>
-		var extraChain = mutableListOf<String>()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -49,37 +48,21 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 							forward( "ledCmd", "ledCmd(on)", resVar )
 							delay(200)
 							forward( "ledCmd", "ledCmd(off)", resVar )
-						}else autoMsg( "chainEnd", "chainEnd(a)" ) 
+						}
 						TimerActor("timer", scope, context!!, "local_tout_doBlinkChain", 200.toLong())
 					}
 					 transition(edgeName="t12",targetState="doBlinkChain",cond=whenTimeout("local_tout_doBlinkChain"))   
-					transition(edgeName="t13",targetState="blinkExtraChain",cond=whenDispatch("chainEnd"))
+					transition(edgeName="t13",targetState="addLed",cond=whenDispatch("ledRegister"))
 					transition(edgeName="t14",targetState="removeLed",cond=whenDispatch("ledUnRegister"))
 					transition(edgeName="t15",targetState="work",cond=whenEvent("local_buttonCmd"))
-				}	 
-				state("blinkExtraChain") { //this:State
-					action { //it:State
-						extraChain.forEach{
-						     println("current extra led name = $it")  
-							forward( "ledCmd", "ledCmd(on)", it )
-							delay(200)
-							forward( "ledCmd", "ledCmd(off)", it )
-						    delay(200)
-						}
-						TimerActor("timer", scope, context!!, "local_tout_blinkExtraChain", 10.toLong())
-					}
-					 transition(edgeName="t16",targetState="blinkChain",cond=whenTimeout("local_tout_blinkExtraChain"))   
-					transition(edgeName="t17",targetState="addLed",cond=whenDispatch("ledRegister"))
-					transition(edgeName="t18",targetState="removeLed",cond=whenDispatch("ledUnRegister"))
-					transition(edgeName="t19",targetState="work",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("addLed") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")
-								sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))
-								extraChain.add(meta_msgArg(0))
+								solve("addLed('${meta_msgArg(0)}')","") //set resVar	
+								sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))  //update system knowledge
 						}
 					}
 					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )
@@ -89,7 +72,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 						if( checkMsgContent( Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("REMOVING ${meta_msgArg(0)}")
-								extraChain.remove(meta_msgArg(0))
+								solve("removeLed('${meta_msgArg(0)}')","") //set resVar	
 						}
 					}
 					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )

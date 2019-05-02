@@ -21,7 +21,7 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						println("dynamo START")
 						TimerActor("timer", scope, context!!, "local_tout_s0", 3000.toLong())
 					}
-					 transition(edgeName="t010",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
+					 transition(edgeName="t06",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
 				}	 
 				state("sAdd") { //this:State
 					action { //it:State
@@ -29,11 +29,11 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 							val ledName = resources.ledManager.addNewLed( myself  ) 
 							println("ledRegister($ledName, ${context!!.name})")
 							forward( "ledRegister", "ledRegister($ledName, ${context!!.name})", "control" )
-						    delay( 1000 )
+						    delay( 1000 ) 
 						}
 						TimerActor("timer", scope, context!!, "local_tout_sAdd", 3000.toLong())
 					}
-					 transition(edgeName="t011",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
+					 transition(edgeName="t07",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
 				}	 
 				state("sRemove") { //this:State
 					action { //it:State
@@ -43,7 +43,6 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						  forward( "ledUnRegister", "ledUnRegister(${led.name}, ${context!!.name} )", "control" )
 						  delay( 1000 )
 						  led.terminate()     //please complete (normally) what you were doing and terminate
-						  //forward( "ledCmd", "ledCmd(out)",  led  )
 						}
 					}
 				}	 

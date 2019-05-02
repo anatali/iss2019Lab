@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>Lab7bISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LAB7AfterChain | The impact of DSL and (meta)models</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
+
+  
+
+
+<h2><a id=""/>Overview</h2>
+
+<ol>
+<li><em>Logic first</em>: technology aware but technology agnostic. We could start from a model of the <bc>logical architecture</bc> of the system.<br/><br/></li>
+
+<li>The model of the logical architecture of a software should describe <bc>essentials aspects</bc>  about 
+<em>structure, interaction and behaviour</em> of the system starting from the <em>requirements</em>.<br/><br/></li>
+
+<li>Any model is based on a <em>meta-model</em> (see <a href="https://en.wikipedia.org/wiki/Metamodeling" target="web">Metamodeling</a>).<br/><br/></li>
+
+ <li>In the context of agile development processes like 
+ <a href="https://en.wikipedia.org/wiki/Scrum_(software_development)" target="web">SCRUM (wikipedia)</a>
+ (<a href="https://www.scrumguides.org/" target="web">SCRUM guide</a>),
+ a model of the logical architecture of the system can be useful to organize the work of the team.
+ <ul>
+<li><a href="https://en.wikipedia.org/wiki/Model-driven_engineering" target="web">Model-driven engineering</a> </li>
+<li><a href="https://en.wikipedia.org/wiki/Model-driven_architecture" target="web">Model-driven architecture</a></li>
+ </ul>
+ 
+<br/></li>
+ <li>An <em>executable model</em> is supposed to increase ease of reuse and to lower the cost of software development
+(see for example <a href="https://en.wikipedia.org/wiki/Executable_UML" target="web">Executable UML</a>).  <br/><br/></li>
+<li>
+Executable models can be written by introducing an (<em>Internal and External</em>)
+
+<a href="https://en.wikipedia.org/wiki/Domain-specific_language" target="web">Domain-specific language</a>
+<ul>
+<li><a href="https://martinfowler.com/bliki/DslQandA.html" target="web">What is a Domain Specific Language? (Fowler)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Domain-specific_modeling" target="web">Domain-specific modeling</a></li>
+</ul>
+
+<br/></li>
+
+<li>Kotlin provides support for writing <em>internal DSL</em> (see
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.kotlin.dsl/userDocs/LabDsl.html" 
+target="lecture">LABDsl | Kotlin Internal DSL</a>).
+ 
+ <br/><br/></li>
+
+<li>An <em>external DSL</em> could  help the work of application designers.
+Let us experiment with the custom <em>QakDSL</em> built by using the  
+<a href="https://www.eclipse.org/Xtext/" target="web">Xtext</a> Technology.
+
+See the project <tt>it.unibo.eclipse.qak.chainPlus</tt>
+
+ <br/><br/></li>
+</ol> 
+  
+
+
+</div>  
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

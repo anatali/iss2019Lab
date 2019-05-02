@@ -8,7 +8,7 @@ class LedActork( name : String, scope: CoroutineScope=GlobalScope ) : ActorBasic
     val concreteLed = myLedSegm()
 
     override suspend fun actorBody(msg : ApplMessage){
-        println("   LedActork $name |  msg= $msg "  )
+        //println("   LedActork $name |  msg= $msg "  )
         when( msg.msgContent() ){
             "ledCmd(on)"  -> concreteLed.turnOn()
             "ledCmd(off)" -> concreteLed.turnOff()

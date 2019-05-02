@@ -1,21 +1,21 @@
 System chainPlus
+//mqttBroker "localhost" : 1883
 
 Event    local_buttonCmd : local_buttonCmd(X)  
 Event    ledCmd : ledCmd(X)  
  
-Dispatch chainEnd : chainEnd(X) 
 Dispatch ledCmd : ledCmd(X) 
 Dispatch ledRegister   : ledRegister( LEDNAME, CTXNAME ) 
 Dispatch ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) 
-   
-Context ctxButton      ip [host="localhost" port=8010]
-Context ctxLedsPlus    ip [host="localhost" port=8050] //192.168.43.229
+    
+Context ctxButton      ip [host="localhost" port=8010]  
+Context ctxLedsPlus    ip [host="localhost" port=8050]  //192.168.43.229
 //Context ctxLedRasp     ip [host="192.168.43.18"  port=8040]
 
 CodedQActor led1 context ctxLedsPlus className "resources.LedActork"  
 CodedQActor led2 context ctxLedsPlus className "resources.LedActork"  
-//CodedQActor led2 context ctxLedsPlus className "resources.LedOnArduinoActork" 
-//CodedQActor led3 context ctxLedRasp  className "resources.LedOnRasp" 
+//CodedQActor ledArduino context ctxLedsPlus className "resources.LedOnArduinoActork" 
+//CodedQActor ledRasp context ctxLedRasp  className "resources.LedOnRasp" 
 
 QActor button context ctxButton {	//generates local_buttonCmd 
 	State s0 initial { 
@@ -24,9 +24,7 @@ QActor button context ctxButton {	//generates local_buttonCmd
 } 
 
 QActor control context ctxButton {
-["lateinit var ledNames : List<String>
-var extraChain = mutableListOf<String>()
-"]
+["lateinit var ledNames : List<String>"]
 	State s0 initial {		           
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("chainDescr.pl")	 )  
@@ -46,7 +44,6 @@ var extraChain = mutableListOf<String>()
 	Goto doBlinkChain
 	
 	State doBlinkChain{   
-		//println("doBlinkChain")
 		solve( getNextLedName( LEDNAME ) , LEDNAME  ) 				
 [" 
 if( solveOk() ){
@@ -54,36 +51,19 @@ if( solveOk() ){
 	forward( \"ledCmd\", \"ledCmd(on)\", resVar )
 	delay(200)
 	forward( \"ledCmd\", \"ledCmd(off)\", resVar )
-}else autoMsg( \"chainEnd\", \"chainEnd(a)\" ) 
+}
 "]		 
 	}
 	Transition t1 whenTime 200     -> doBlinkChain
-	              whenMsg chainEnd -> blinkExtraChain
+	              whenMsg   ledRegister     -> addLed
 	              whenMsg   ledUnRegister   -> removeLed
-				  whenEvent local_buttonCmd -> work          
-
-	
-	State blinkExtraChain{ //ASSUMPTION: the extra-chain is SHORT
-["extraChain.forEach{
-     println(\"current extra led name = $it\")  
-	forward( \"ledCmd\", \"ledCmd(on)\", it )
-	delay(200)
-	forward( \"ledCmd\", \"ledCmd(off)\", it )
-    delay(200)
-}"] 
-	}  
-	Transition t1 whenTime 10 -> blinkChain 
-				  //whenMsg chainEnd -> blinkExtraChain
-				  whenMsg   ledRegister     -> addLed
-				  whenMsg   ledUnRegister   -> removeLed
 				  whenEvent local_buttonCmd -> work          
 	
 	State addLed{
 		onMsg( ledRegister : ledRegister( LEDNAME, CTXNAME ) ) {
 			println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")			  
-			//solve( addRule("qactor(${meta_msgArg(0)}, ${meta_msgArg(1)}, _ )") )
-["sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))
-extraChain.add(meta_msgArg(0))"]
+			solve( addLed("${meta_msgArg(0)}") )
+["sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))  //update system knowledge"]
 		}
 	}	 
 	Goto blinkChain  //resumeLastPlan
@@ -91,7 +71,7 @@ extraChain.add(meta_msgArg(0))"]
 	State removeLed{
 		onMsg( ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) ) {
 			println("REMOVING ${meta_msgArg(0)}")
-["extraChain.remove(meta_msgArg(0))"]
+ 		    solve( removeLed("${meta_msgArg(0)}") )
 		}
 	}	  
 	Goto blinkChain	 //resumeLastPlan
@@ -111,7 +91,7 @@ QActor dynamo context ctxLedsPlus {
 	val ledName = resources.ledManager.addNewLed( myself  ) 
 	println(\"ledRegister($ledName, ${context!!.name})\")
 	forward( \"ledRegister\", \"ledRegister($ledName, ${context!!.name})\", \"control\" )
-    delay( 1000 )
+    delay( 1000 ) 
 }
 "]
 	}  
@@ -124,29 +104,12 @@ if( led != null ){
   forward( \"ledUnRegister\", \"ledUnRegister(${led.name}, ${context!!.name} )\", \"control\" )
   delay( 1000 )
   led.terminate()     //please complete (normally) what you were doing and terminate
-  //forward( \"ledCmd\", \"ledCmd(out)\",  led  )
 }
 "]
 	} 
 	//Goto s0
 } 
 
-/* 	
-	State sOn{  
- 		//emit  ledCmd : ledCmd(on)
- 		["forward( \"ledCmd\", \"ledCmd(on)\", curLedName )"]	
-	}
-	Transition t1 whenTime 200 -> sOff 
-				  whenEvent local_buttonCmd -> work           
- 
-	State sOff{   
- 		//emit   ledCmd : ledCmd(off)
- 		["forward( \"ledCmd\", \"ledCmd(off)\", curLedName )"]
-	}
-	Transition t2 	whenTime 200 -> sOn  
-   		          	whenEvent local_buttonCmd -> work
-}   
-*/
   
 
 	

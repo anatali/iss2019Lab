@@ -5,27 +5,27 @@ chain(2, led2 ).
 getLedNames(LEDNAMES) :-
 	findall( NAME, chain(  _, NAME ), LEDNAMES),
 	length(LEDNAMES, NUM),
-	assert( staticChainLedNum(NUM) ).
-
+	assign( currentChainLedNum, NUM ),
+	assign( staticChainLedNum, NUM ).
+	
 getNextLedName( LedName ) :-
 	value( stepcounter,V ),
-	chain(V,LedName),
-	stdout <- println(  getNextLedName(LedName,V)  ),
+	chain(V,LedName),!,
+	%% stdout <- println(  getNextLedName(LedName,V)  ),
 	inc( stepcounter,1,V1).
-	
+getNextLedName( reset ) :- resetLedCounter, fail.
+	 
 resetLedCounter :- assign( stepcounter,1  ).	 %%create value( counter,1 )
 
 addLed( LedName ):-
-	getVal( counter, V ),
-	assertz( chain(V,LedName) ),
-	outtput( addLed( chain(V,LedName) ) ),
-	inc( counter,1,_).
+	inc( currentChainLedNum,1,V),
+	stdout <- println( addLed( chain(V,LedName) ) ),
+	assertz( chain(V,LedName) ).
 removeLed( LedName ):-
-	staticChainLedNum( N ),
-	getVal( counter, V ),
-	V > N,
+	value( staticChainLedNum,  N ),
+	value( currentChainLedNum, V ),
+	V > N,!,
 	retract( chain(POS,LedName) ),
-	dec( counter,1,_),
-	%%output( removeLed( chain(POS,LedName) ) ),
-	!.
+	stdout <- println( removeLed( chain(POS,LedName) ) ),
+	dec( currentChainLedNum,1,_).
 removeLed( _  ).
