@@ -1,0 +1,17 @@
+/*
+ * WARNING:
+ * this is a quite inappropriate model for the BLS system.
+ * 
+ * But it works by reusing already written code (actors)
+ * with a very limited set of changes.
+ * 
+ * For a better model see blsBetter.qak
+ */
+
+System bls
+
+Context ctxBls ip [host="localhost" port=8090]
+
+CodedQActor button  context ctxBls className "resources.bls.ButtonActork"
+CodedQActor control context ctxBls className "resources.bls.ControlActork"
+CodedQActor led     context ctxBls className "resources.LedActork" 

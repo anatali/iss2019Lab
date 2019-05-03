@@ -1,0 +1,46 @@
+/*
+ * This model gives essential and relevant information about
+ * 	     STRUCTURE, INTERACTION and BEHAVIOR
+ * about the ButtonLed system
+ * 
+ * The model is EXECUTABLE
+ * 
+ * The generation of a distributed system is easy
+ */
+
+System blsBetter
+
+Event    local_buttonCmd : local_buttonCmd(X) 
+Event    ledCmd : ledCmd(X)  
+
+//Context ctxBlsBetter ip [host="localhost" port=8075]		//used for testing
+
+Context ctxBlsBetterConsole ip [host="localhost" port=8075]		
+Context ctxBlsBetterLed     ip [host="192.168.1.18" port=8065]		
+
+QActor button context ctxBlsBetterConsole {	//generates local_buttonCmd 
+	State s0 initial { 
+		run resources.bls.better.buttonEventEmitter.create()                      
+	}    
+} 
+
+QActor blscontrol context ctxBlsBetterConsole {
+	State s0 initial { 
+		
+	}
+	Transition t0 whenEvent local_buttonCmd -> turnOn 
+	
+	State turnOn{
+		forward led -m ledCmd : ledCmd(on)		
+	}
+	Transition t1 whenTime 200 -> turnOff
+				  whenEvent local_buttonCmd -> s0
+	
+	State turnOff{
+		forward led -m ledCmd : ledCmd(off)		
+	}
+	Transition t1 whenTime 200 -> turnOn
+		          whenEvent local_buttonCmd -> s0
+}	
+
+CodedQActor led  context ctxBlsBetterLed className "resources.LedActork" 

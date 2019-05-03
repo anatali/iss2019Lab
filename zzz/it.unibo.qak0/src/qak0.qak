@@ -1,0 +1,9 @@
+System qak0 
+
+Context ctxButton  ip [host="localhost" port=8010] 
+
+QActor button context ctxButton {
+	State s0 initial{
+		println("hello world")
+	}
+} 
