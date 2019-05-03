@@ -154,7 +154,7 @@ QActor led1 context ctxLeds1 {
 	}  
 	Transition t1 whenEvent polar -> handleData
 	   
-	State handleData{ 
+	State handleData{   
 		printCurrentMessage
 		onMsg( polar : p(D,A) ) { 
 			run resources.radarSupport.sendData(   meta_msgArg(0),  meta_msgArg(1) )

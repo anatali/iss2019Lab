@@ -4,6 +4,13 @@
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/button/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/button/Button.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led1/Led1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led1/Led1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led2/Led2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led2/Led2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/sysRules.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.test/src/chain.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.test/src/chain.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -219,7 +226,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="158" />
     <option name="y" value="39" />
     <option name="width" value="1134" />
@@ -409,7 +416,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="158" y="39" width="1134" height="647" extended-state="1" />
+    <frame x="158" y="39" width="1134" height="647" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24394786" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />

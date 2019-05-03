@@ -18,7 +18,7 @@ class Led1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope)
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						resources.myLedSegm.create(  )
+						resources.myLedSegm.create()
 					}
 					 transition(edgeName="t05",targetState="s1",cond=whenEvent("ledCmd"))
 				}	 
@@ -27,11 +27,11 @@ class Led1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope)
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(on)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.myLedSegm.turnOn(  )
+								resources.myLedSegm.turnOn()
 						}
 						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(off)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.myLedSegm.turnOff(  )
+								resources.myLedSegm.turnOff()
 						}
 					}
 					 transition(edgeName="t16",targetState="s1",cond=whenEvent("ledCmd"))

@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/button/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/button/Button.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led1/Led1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led1/Led1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led2/Led2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/src/it/unibo/led2/Led2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chain/sysRules.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -65,13 +70,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonActork.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
               <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
               <folding>
                 <element signature="e#29#184#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+              <folding>
+                <element signature="e#29#311#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -223,11 +240,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="158" />
-    <option name="y" value="39" />
-    <option name="width" value="1134" />
-    <option name="height" value="647" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-7" />
+    <option name="y" value="111" />
+    <option name="width" value="1197" />
+    <option name="height" value="622" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -298,7 +315,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556870986864" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556889881104" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/oldbackup" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
@@ -439,7 +456,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25642964" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -586,16 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
-          <folding>
-            <element signature="e#29#311#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -856,6 +863,16 @@
           <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
           <folding>
             <element signature="e#29#184#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/ButtonAsGui.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding>
+            <element signature="e#29#311#0" expanded="true" />
           </folding>
         </state>
       </provider>

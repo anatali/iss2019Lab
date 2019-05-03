@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="377ce33d-a117-473f-b326-3ec456d0fa96" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/button/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/button/Button.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/led1/Led1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/led1/Led1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/led2/Led2.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/led2/Led2.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sysRules.pl" beforeDir="false" afterPath="$PROJECT_DIR$/sysRules.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -15,13 +20,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
               <caret line="17" selection-start-line="17" selection-end-line="17" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/chain.qak">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -36,7 +46,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="140" />
     <option name="y" value="20" />
     <option name="width" value="1146" />
@@ -58,6 +68,11 @@
             <path>
               <item name="it.unibo.chain" type="b2602c69:ProjectViewProjectNode" />
               <item name="it.unibo.eclipse.qak.chain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="it.unibo.chain" type="b2602c69:ProjectViewProjectNode" />
+              <item name="it.unibo.eclipse.qak.chain" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -96,7 +111,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="140" y="20" width="1146" height="588" extended-state="1" />
+    <frame x="140" y="20" width="1146" height="588" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2596685" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -141,6 +157,9 @@
           <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/chain.qak">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

@@ -1,0 +1,88 @@
+System robotBasic   
+
+Event    local_buttonCmd : local_buttonCmd(X)  
+Event    collision : collision(X)
+Event    sonar  	 : sonar(SONAR, TARGET, DISTANCE)	//From (virtual) sonar
+Event    sonarDetect : sonarDetect(X)					//From (virtual robot) sonar
+Event    realSonar   : sonar( DISTANCE )				//From real sonar on real robot
+Event    polar       : p( Distance, Angle )  
+
+Dispatch sendToRobot : msg(X)
+Dispatch robotCmd    : robotCmd(X)
+
+Context ctxRobot ip [host="localhost" port=8010]
+
+CodedQActor clienttcp context ctxRobot className "resources.clientWenvTcp"
+
+QActor button context ctxRobot {	
+	State s0 initial { 
+		run resources.buttonEventEmitter.create()  //generates local_buttonCmd                     
+	}  
+	Goto waitForUserCommand
+	
+	State waitForUserCommand{} 
+	Transition t0 whenEvent local_buttonCmd -> handleCmd  
+	
+	State handleCmd{
+		printCurrentMessage
+		onMsg ( local_buttonCmd : local_buttonCmd(CMD) ){
+			forward robotcontrol -m robotCmd : robotCmd( meta_msgArg(0)  )
+		}		
+	}
+	Goto waitForUserCommand
+} 
+
+QActor robotcontrol context ctxRobot{ 
+	State s0 initial {		 
+ 	}   
+	Transition t0 whenMsg robotCmd -> handleCmd  
+	
+ 	State handleCmd{
+ 		printCurrentMessage
+		onMsg ( robotCmd : robotCmd(CMD) ){
+			forward clienttcp -m sendToRobot : msg( meta_msgArg(0)  )
+		}
+	}
+ 	Transition t1  whenEvent robotCmd  -> handleCmd 
+		           whenEvent collision -> handleCollision
+		          
+	State handleCollision{
+		printCurrentMessage
+		forward clienttcp -m sendToRobot : msg( stop  )
+		forward clienttcp -m sendToRobot : msg( moveleft  )
+		//forward clienttcp -m send : msg( moveleft  )
+ 	}
+	Goto s0 
+	          
+ }
+ 
+ /*
+  * 
+  */
+ QActor sonardetector context ctxRobot{
+ 	State init initial{
+		println("sonardetector STARTS ")
+	}         
+	Goto waitForEvents
+	   
+	State waitForEvents{  }      
+   	Transition t1 whenTime 60000 -> endOfJob   
+ 		   whenEvent sonar       ->  sendToRadar
+  		   whenEvent sonarDetect ->  showObstacle
+ 		  //whenEvent realSonar   ->  handleRealSonar
+ 	  
+ 	State sendToRadar{                      
+ 		printCurrentMessage                                        
+ 		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
+			emit polar : p( meta_msgArg(2), 90  )  //90 is the angle
+ 		}
+ 	}
+ 	Goto waitForEvents
+ 	
+ 	State showObstacle{
+ 		println("sonardetector showObstacle")
+ 	}
+ 	Goto waitForEvents
+ 	
+ 	State endOfJob{}
+ }
