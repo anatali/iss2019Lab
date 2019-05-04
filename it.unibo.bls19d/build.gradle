@@ -28,9 +28,10 @@ dependencies {
 //CUSTOM
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'uniboInterfaces.jar')
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: '2p301.jar')
-    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
+    //compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
    //For p2p two-way connections (TCP, UDP, BTH, Serial ...)
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'unibonoawtsupports.jar')
+    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.qakactor-1.0.jar')
 } 
 
 compileKotlin {

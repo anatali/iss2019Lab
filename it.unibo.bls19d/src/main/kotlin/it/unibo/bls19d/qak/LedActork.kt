@@ -5,6 +5,10 @@ import it.unibo.kactor.*
 class LedActork( name : String ) : ActorBasic( name ){
     val concreteLed = LedSegm()
 
+    init{
+        SystemKb.blsActorMap.put( name, this )
+    }
+
     override suspend fun actorBody(msg : ApplMessage){
         //println("   LedActork $name |  msg= $msg "  )
         when( msg.msgContent() ){

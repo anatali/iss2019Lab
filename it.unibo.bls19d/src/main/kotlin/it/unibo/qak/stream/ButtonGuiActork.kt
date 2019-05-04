@@ -1,7 +1,7 @@
 package it.unibo.qak.stream
 
+import devices.gui.ButtonAsGui
 import it.unibo.`is`.interfaces.IObserver
-import it.unibo.bls.devices.gui.ButtonAsGui
 import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope

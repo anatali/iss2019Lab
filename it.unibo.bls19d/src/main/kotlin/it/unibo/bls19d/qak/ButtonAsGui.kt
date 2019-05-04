@@ -1,9 +1,8 @@
 package it.unibo.bls19d.qak
 
-import it.unibo.bls.devices.gui.ButtonBasic
-import it.unibo.bls.interfaces.IButtonObservable
-import it.unibo.bls.interfaces.IObserver
-import it.unibo.bls.utils.Utils
+import devices.interfaces.IButtonObservable
+import devices.interfaces.IObserver
+import devices.utils.Utils
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
@@ -29,8 +28,8 @@ class ButtonAsGui : Observable(), IButtonObservable, ActionListener {
 
     companion object {
         //Factory method
-        fun createButton(cmd: String): it.unibo.bls.devices.gui.ButtonAsGui {
-            val button = it.unibo.bls.devices.gui.ButtonAsGui()
+        fun createButton(cmd: String): devices.gui.ButtonAsGui {
+            val button = devices.gui.ButtonAsGui()
             val bb = ButtonBasic(Utils.initFrame(200, 200), cmd, button)    //button is the listener
             return button
         }

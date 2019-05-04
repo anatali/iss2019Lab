@@ -1,13 +1,12 @@
 package it.unibo.bls19d.qak
 
-import it.unibo.bls.interfaces.ILed
-import it.unibo.bls19d.chain.getLedLocation
-import it.unibo.chain.segment7.LedSegmHorizontal
+
+import devices.gui.segm7.LedSegmentHorizontal
 import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
 
-class LedSegm : LedSegmHorizontal("ledSegm", 110, 180) {
+class LedSegm : LedSegmentHorizontal("ledSegm", 110, 180) {
 
     init{
         JFrame.setDefaultLookAndFeelDecorated(true)
@@ -15,7 +14,7 @@ class LedSegm : LedSegmHorizontal("ledSegm", 110, 180) {
         frame.setSize( 120, 150)
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         frame.layout = GridLayout(1, 1)
-        frame.setLocation(getLedLocation(),200)
+        frame.setLocation(100,200)
         frame.contentPane.background = Color.BLUE
         //segm = LedSegmHorizontal(name, 110, 180)
         //segm = LedSegmVerticalRight(name, 110, 180)

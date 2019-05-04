@@ -12,6 +12,16 @@ System bls
 
 Context ctxBls ip [host="localhost" port=8090]
 
+QActor welcome context ctxBls{
+	State s0 initial{
+		println("---------------------------------------------------")
+		println("Welcome to the BLS system described in qak (DSL)")
+		println("---------------------------------------------------")
+	} 
+}
+  
 CodedQActor button  context ctxBls className "resources.bls.ButtonActork"
 CodedQActor control context ctxBls className "resources.bls.ControlActork"
 CodedQActor led     context ctxBls className "resources.LedActork" 
+
+ 

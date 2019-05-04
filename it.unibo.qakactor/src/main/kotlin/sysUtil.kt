@@ -5,6 +5,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.newSingleThreadContext
 import java.io.FileInputStream
+import java.lang.reflect.Constructor
+
 /*
 ECLIPSE KOTLIN
 https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/last/
@@ -167,8 +169,14 @@ object sysUtil{
 					 className : String, scope : CoroutineScope = GlobalScope  ) : ActorBasic{
 		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
 		val clazz = Class.forName(className)	//Class<?>
- 		val ctor  = clazz.getConstructor(String::class.java, CoroutineScope::class.java )  //Constructor<?>
-		val actor = ctor.newInstance(actorName, scope ) as ActorBasic
+        var actor  : ActorBasic
+        try {
+            val ctor = clazz.getConstructor(String::class.java, CoroutineScope::class.java)  //Constructor<?>
+            actor = ctor.newInstance(actorName, scope ) as ActorBasic
+        } catch( e : Exception ){
+            val ctor = clazz.getConstructor( String::class.java )  //Constructor<?>
+            actor = ctor.newInstance( actorName  ) as ActorBasic
+        }
 		ctx.addActor(actor)
 		actor.context = ctx
 		//MEMO THE ACTOR

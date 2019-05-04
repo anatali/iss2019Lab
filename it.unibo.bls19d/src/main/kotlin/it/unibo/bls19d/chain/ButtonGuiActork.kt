@@ -1,6 +1,6 @@
 package it.unibo.bls19d.chain
 
-import it.unibo.bls.interfaces.IObserver
+import it.unibo.`is`.interfaces.IObserver
 import it.unibo.bls19d.qak.BlsCmds
 import it.unibo.bls19d.qak.ButtonAsGui
 import it.unibo.kactor.*

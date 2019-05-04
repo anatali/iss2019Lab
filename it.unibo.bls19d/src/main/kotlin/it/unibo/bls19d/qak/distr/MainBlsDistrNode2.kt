@@ -16,7 +16,7 @@ class BlsDistrNode2{
     fun configure(){
         val led     = LedActork("led")
         SystemKb.blsActorMap.put(led.name, led )
-        val  control = ControlActork("control", led.name)
+        val  control = ControlActork("control" )
         SystemKb.blsActorMap.put(control.name, control )
         val servercontrol = ServerControl(
             "serverControl", Protocol.TCP, SystemKb.portNumber, control.name )
