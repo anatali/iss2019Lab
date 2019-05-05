@@ -235,8 +235,8 @@ Under the pressure of 'saving time' we could decide to reuse actors that we alre
 <h3><a id=""/>A first (inappropriate) model</h3>
 
 <p>
-Since we have several actors already working, our first approach should be that of reusing these actors that in we have included
-in the jar 
+With reference to the actors developed in the project <bc>it.unibo.bls19d</bc>, we can extend the model as follows:
+
 
 <pre>
 System bls
@@ -251,14 +251,87 @@ QActor welcome context ctxBls{
 	} 
 }
   
-CodedQActor led context ctxBls className "it.unibo.bls19d.qak.LedActork"        //FIRST
+CodedQActor led     context ctxBls className "it.unibo.bls19d.qak.LedActork"        //FIRST
 CodedQActor control context ctxBls className "it.unibo.bls19d.qak.ControlActork" 
-CodedQActor button context ctxBls className "it.unibo.bls19d.qak.ButtonActork"   //LAST
+CodedQActor button  context ctxBls className "it.unibo.bls19d.qak.ButtonActork"   //LAST
  
 </pre>
+This description says that:
+<ol>
+<li>Our system (<tt>bls</tt>) is composed of four actors (<tt>welcome, led, control, button</tt>). </li>
+<li>All the actors work in a same computational node (<tt>ctxBls</tt>). </li>
+<li>The actor <tt>welcome</tt> describes its behavior, while the other actors are directly expressed as <tt>Kotlin</tt> code.
+Thus, we have to add in the file <bc>build_ctxBls.gradle</bc> a dependency to the library that includes such a code (<bc>it.unibo.bls19d-1.0.jar</bc>).
+</li>
+</ol>
+
+If we save the model, the <tt>Qak-IDE</tt> generates (in file <tt>bls.pl</tt> ) the following description of the system:
+<pre>
+context(ctxbls, "localhost",  "TCP", "8090" ).
+
+qactor( welcome, ctxbls, "it.unibo.welcome.Welcome").
+qactor( led, ctxbls, "it.unibo.bls19d.qak.LedActork").
+qactor( control, ctxbls, "it.unibo.bls19d.qak.ControlActork").
+qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
+</pre>
+
+At this point, if we run the generated code <tt>it.unibo.ctxBls.MainCtxBls</tt>, the system immediately works.
+
+
+<h4>From local to distributed</h4>
+
+It is quite easy to change the configuration of the system, so to move one or more actors in different nodes.
+For example, let us move the <tt>Led</tt> in another node:
+<pre>
+System bls
+ 
+Context ctxBls ip [host="localhost" port=8090]
+Context ctxLed ip [host="localhost" port=8095]
+
+QActor welcome context ctxBls{ ... }
+
+CodedQActor ctxLed context ctxBls className "it.unibo.bls19d.qak.LedActork"        //FIRST
+
+CodedQActor control context ctxBls className "it.unibo.bls19d.qak.ControlActork" 
+CodedQActor button context ctxBls className "it.unibo.bls19d.qak.ButtonActork"   //LAST
+</pre>
+In this case, the generated description (in file <tt>bls.pl</tt> ) becomes:
+<pre>
+context(ctxbls, "localhost",  "TCP", "8090" ).
+context(ctxled, "localhost",  "TCP", "8095" ).
+
+qactor( welcome, ctxbls, "it.unibo.welcome.Welcome").
+qactor( led, ctxled, "it.unibo.bls19d.qak.LedActork").
+qactor( control, ctxbls, "it.unibo.bls19d.qak.ControlActork").
+qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
+</pre>
+
+<h4>A good model?</h4>
+Unfortunately, in the system described by the model above, there are many hidden details.  In particular:
+<ol>
+<li>the <tt>Kotlin</tt> code works by assuming that the <tt>led</tt> actor is created before 
+the <tt>control</tt> that in its turn must be created before the <tt>button</tt>.
+</li>
+<li>the model does not show neither the interaction among the main actors nor their logical behavior.</li>
+</ol>
+
+Thus, we can say that:
+
+<div class="remark">
+(Re)using actors written in <tt>Kotlin</tt> (or even conventional objects written in <tt>Java</tt>) cannot be excluded (for practical reasons), 
+but a model should always <em>explicitly express</em> relevant aspects related to all the three main <bc>architectural dimensions</bc>
+of a software system: <em>structure, interaction and behavior</em>.
+</div>
+
+Thus, let us express our model in a new way, so to explicitly express interaction and behavior related to the actors 
+<tt>led, control</tt> and <tt>button</tt>.
+
+
+
+
 </p>
 
-<h3><a id=""/>...</h3>
+<h3><a id=""/>A better model for the ButtonLed system</h3>
 <a href="../src/bls.qak" target="code">bls.qak</a>
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

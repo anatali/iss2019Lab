@@ -14,9 +14,9 @@ class BlsDistrNode1{
     fun configure(){
          val proxyControl = ProxyControl(
              "proxyControl", Protocol.TCP, "localhost", SystemKb.portNumber)
-        SystemKb.blsActorMap.put( proxyControl.name, proxyControl )
+        //SystemKb.blsActorMap.put( proxyControl.name, proxyControl )
         val button  = ButtonActork("button", proxyControl.name )
-        SystemKb.blsActorMap.put(button.name, button )
+        //SystemKb.blsActorMap.put(button.name, button )
     }
 
  }

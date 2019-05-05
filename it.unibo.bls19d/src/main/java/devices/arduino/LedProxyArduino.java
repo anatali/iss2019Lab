@@ -1,9 +1,7 @@
 package devices.arduino;
 
-
 import devices.interfaces.ILed;
 import devices.mock.LedMock;
-
 
 public class LedProxyArduino extends LedMock {
     private JSSCSerialComm conn;

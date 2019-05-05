@@ -1,6 +1,7 @@
 package it.unibo.bls19d.qak.distr
 
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
+import it.unibo.bls19d.qak.SystemKb
 import it.unibo.kactor.*
 import it.unibo.kactor.Protocol
 
@@ -11,6 +12,7 @@ class ProxyControl( name : String, val protocol: Protocol,
     init { configure()  }
 
     fun configure() {
+        SystemKb.blsActorMap.put(  name, this )
         when (protocol) {
             Protocol.TCP, Protocol.UDP ->
                 conn = MsgUtil.getConnection(protocol, hostName, portNum, name)
