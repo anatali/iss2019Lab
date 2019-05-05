@@ -277,6 +277,38 @@ qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 
 At this point, if we run the generated code <tt>it.unibo.ctxBls.MainCtxBls</tt>, the system immediately works.
 
+<h4>Is it a good model?</h4>
+Unfortunately, in the system described by the model above, there are many hidden details.  In particular:
+<ol>
+<li>the <tt>Kotlin</tt> code works by assuming that the <tt>led</tt> actor is created before 
+the <tt>control</tt> that in its turn must be created before the <tt>button</tt>.
+</li>
+<li>the model does not show neither the interaction among the main actors nor their logical behavior.</li>
+<li>the transition to a <bc>distributed version</bc> of the system is not possible, since  the <tt>Kotlin</tt> code 
+is based on a class (<tt>SystemKb</tt>) that must be shared among all the actors.
+</ol>
+
+Thus, we can say that:
+
+<div class="remark">
+(Re)using actors written in <tt>Kotlin</tt> (or even conventional objects written in <tt>Java</tt>) cannot be excluded (for practical reasons), 
+but a model should always <em>explicitly express</em> relevant aspects related to all the three main <bc>architectural dimensions</bc>
+of a software system: <em>structure, interaction and behavior</em>.
+</div>
+
+Thus, let us express our model in a new way, so to explicitly express interaction and behavior related to the actors 
+<tt>led, control</tt> and <tt>button</tt>.
+
+
+
+
+</p>
+
+<h3><a id=""/>A better model for the ButtonLed system</h3>
+<a href="../src/bls.qak" target="code">bls.qak</a>
+
+
+
 
 <h4>From local to distributed</h4>
 
@@ -305,34 +337,6 @@ qactor( led, ctxled, "it.unibo.bls19d.qak.LedActork").
 qactor( control, ctxbls, "it.unibo.bls19d.qak.ControlActork").
 qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 </pre>
-
-<h4>A good model?</h4>
-Unfortunately, in the system described by the model above, there are many hidden details.  In particular:
-<ol>
-<li>the <tt>Kotlin</tt> code works by assuming that the <tt>led</tt> actor is created before 
-the <tt>control</tt> that in its turn must be created before the <tt>button</tt>.
-</li>
-<li>the model does not show neither the interaction among the main actors nor their logical behavior.</li>
-</ol>
-
-Thus, we can say that:
-
-<div class="remark">
-(Re)using actors written in <tt>Kotlin</tt> (or even conventional objects written in <tt>Java</tt>) cannot be excluded (for practical reasons), 
-but a model should always <em>explicitly express</em> relevant aspects related to all the three main <bc>architectural dimensions</bc>
-of a software system: <em>structure, interaction and behavior</em>.
-</div>
-
-Thus, let us express our model in a new way, so to explicitly express interaction and behavior related to the actors 
-<tt>led, control</tt> and <tt>button</tt>.
-
-
-
-
-</p>
-
-<h3><a id=""/>A better model for the ButtonLed system</h3>
-<a href="../src/bls.qak" target="code">bls.qak</a>
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
 By AN Unibo-DISI    

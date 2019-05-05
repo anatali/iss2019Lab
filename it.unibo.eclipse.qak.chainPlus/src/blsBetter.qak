@@ -10,15 +10,14 @@
 
 System blsBetter
 
-mqttBroker "192.168.1.18" : 1883
+//mqttBroker "192.168.1.18" : 1883
 
 Event    local_buttonCmd : local_buttonCmd(X) 
 Event    ledCmd : ledCmd(X)  
 
 //Context ctxBlsBetter ip [host="localhost" port=8075]		//used for testing
-
-Context ctxBlsBetterConsole ip [host="192.168.1.18" port=8075]	-mqtt	
-Context ctxBlsBetterLed     ip [host="192.168.1.3"  port=8065]	-mqtt	
+Context ctxBlsBetterConsole ip [host="192.168.1.18"  port=8075]	//-mqtt	
+Context ctxBlsBetterLed     ip [host="192.168.1.3"  port=8065]	//-mqtt	
 
 QActor button context ctxBlsBetterConsole {	//generates local_buttonCmd 
 	State s0 initial { 
@@ -27,8 +26,7 @@ QActor button context ctxBlsBetterConsole {	//generates local_buttonCmd
 } 
 
 QActor blscontrol context ctxBlsBetterConsole {
-	State s0 initial { 
-		
+	State s0 initial { 	
 	}
 	Transition t0 whenEvent local_buttonCmd -> turnOn 
 	

@@ -54,6 +54,7 @@ dependencies {
 
 	//BLS
 	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
+	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19d-1.0.jar')
 	//RADAR
 	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'radarPojo.jar')
 	//RADAR GUI

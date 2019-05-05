@@ -1,11 +1,13 @@
 package resources
 
-import it.unibo.chain.segment7.LedSegmHorizontal
+//import it.unibo.chain.segment7.LedSegmHorizontal
 import java.awt.Color
 import java.awt.GridLayout
 import javax.swing.JFrame
+import devices.gui.segm7.LedSegmentHorizontal
+ 
 
-class myLedSegm : LedSegmHorizontal("myLedSegm", 110, 180) {
+class myLedSegm : LedSegmentHorizontal("myLedSegm", 110, 180) {
 var frame : JFrame
 	companion object{
 		var deltaX = 50

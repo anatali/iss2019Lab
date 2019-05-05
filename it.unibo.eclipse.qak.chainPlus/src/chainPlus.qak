@@ -75,13 +75,12 @@ if( solveOk() ){
 		}
 	}	  
 	Goto blinkChain	 //resumeLastPlan
-} 	
+} 	 
 
 
-
-//JUST FOR TESTING ...	
+//JUST FOR TESTING ...	  
 QActor dynamo context ctxLedsPlus {
-	State s0 initial{   
+	State s0 initial{    
 		println("dynamo START")
 	} 
 	Transition t0 whenTime 3000 -> sAdd         

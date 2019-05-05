@@ -18,22 +18,33 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						println("dynamo START")
 						TimerActor("timer", scope, context!!, "local_tout_s0", 3000.toLong())
 					}
-					 transition(edgeName="t00",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
+					 transition(edgeName="t06",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
 				}	 
 				state("sAdd") { //this:State
 					action { //it:State
-						resources.ledManager.addNewLed()
-						TimerActor("timer", scope, context!!, "local_tout_sAdd", 4000.toLong())
+						for(i in 0..1){ 
+							val ledName = resources.ledManager.addNewLed( myself  ) 
+							println("ledRegister($ledName, ${context!!.name})")
+							forward( "ledRegister", "ledRegister($ledName, ${context!!.name})", "control" )
+						    delay( 1000 ) 
+						}
+						TimerActor("timer", scope, context!!, "local_tout_sAdd", 3000.toLong())
 					}
-					 transition(edgeName="t01",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
+					 transition(edgeName="t07",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
 				}	 
 				state("sRemove") { //this:State
 					action { //it:State
-						resources.ledManager.removeLed()
+						val led = resources.ledManager.removeLastLed( myself  ) 
+						if( led != null ){ 
+						  println("ledUnRegister(${led.name}, ${context!!.name})")
+						  forward( "ledUnRegister", "ledUnRegister(${led.name}, ${context!!.name} )", "control" )
+						  delay( 1000 )
+						  led.terminate()     //please complete (normally) what you were doing and terminate
+						}
 					}
-					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

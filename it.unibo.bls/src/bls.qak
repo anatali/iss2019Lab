@@ -1,8 +1,17 @@
-System bls
+/*
+ * WARNING:
+ * this is a quite inappropriate model for the BLS system.
+ * 
+ * But it works by reusing already written code (actors)
+ * with a very limited set of changes.
+ * 
+ * For a better model see blsBetter.qak
+ */
+ System bls  
  
-Context ctxBls ip [host="192.168.1.18" port=8090]
-Context ctxLed ip [host="192.168.1.3" port=8095]
-
+Context ctxBls ip [host="localhost" port=8090]
+Context ctxLed ip [host="localhost" port=8095]
+ 
 QActor welcome context ctxBls{
 	State s0 initial{
 	  println("--------------------------------------------------")

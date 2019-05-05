@@ -11,6 +11,7 @@
 System bls
 
 Context ctxBls ip [host="localhost" port=8090]
+//Context ctxLed ip [host="localhost" port=8095]
 
 QActor welcome context ctxBls{
 	State s0 initial{
@@ -20,8 +21,8 @@ QActor welcome context ctxBls{
 	} 
 }
   
-CodedQActor button  context ctxBls className "resources.bls.ButtonActork"
-CodedQActor control context ctxBls className "resources.bls.ControlActork"
-CodedQActor led     context ctxBls className "resources.LedActork" 
+CodedQActor led     context ctxBls className "it.unibo.bls19d.qak.LedActork"        //FIRST
+CodedQActor control context ctxBls className "it.unibo.bls19d.qak.ControlActork" 
+CodedQActor button  context ctxBls className "it.unibo.bls19d.qak.ButtonActork"   //LAST
 
  

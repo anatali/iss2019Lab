@@ -6,7 +6,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import it.unibo.bls.devices.gui.ButtonAsGui
+import resources.bls.ButtonAsGui
+
 
 class buttonEventEmitter : IObserver {
 	

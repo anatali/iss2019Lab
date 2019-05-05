@@ -17,3 +17,5 @@ docker/
 
 /chainPlus.pl
 /sysRules.pl
+/bls.pl
+/blsBetter.pl
