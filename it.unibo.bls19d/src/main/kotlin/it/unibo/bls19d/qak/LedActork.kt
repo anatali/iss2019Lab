@@ -14,7 +14,7 @@ class LedActork( name : String ) : ActorBasic( name ){
         when( msg.msgContent() ){
             "ledCmd(on)"  -> concreteLed.turnOn()
             "ledCmd(off)" -> concreteLed.turnOff()
-            else -> println("   LedActork $name | UNKNOWN $msg")
+            else -> println("   it.unibo.bls19d.qak.LedActork $name | UNKNOWN $msg")
         }
     }
 }

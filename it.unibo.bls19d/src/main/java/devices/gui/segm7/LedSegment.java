@@ -77,13 +77,13 @@ Constructor
 
     public void turnOn(){
         //setSegmentState(this.getGraphics(), treu);
-        System.out.println("LedSegment " + name +" | turnOn");
+        //System.out.println("LedSegment " + name +" | turnOn");
         ledState = true;
         repaint();
      }
     public void turnOff(){
         //setSegmentState( this.getGraphics(), OFF );
-        System.out.println("LedSegment " + name + " | turnOff");
+        //System.out.println("LedSegment " + name + " | turnOff");
         ledState = false;
         repaint();
     }

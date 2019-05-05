@@ -95,6 +95,11 @@ pre{
 	font-size: 70%;
 	background-color: #fcf8c7; 
 }
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
 div.body{
 	width: 800px;
     font-size: 18px;
@@ -197,8 +202,8 @@ The <tt>Qak-IDE</tt> generates:
 <li>A <bc>.gitignore</bc> and a 'generic' <bc>build.gradle</bc> file. 
 <font size="2">To see the <tt>.XXX</tt> files you must act on the <b>Filters</b> command in the <tt>ViewMenu</tt></font>.</li>
 <li>A  context-specific gradle file (<bc>build_XXX.gradle</bc>) for each context.</li>
-<li>One package for each <tt>Context</tt> and for each <tt>QActor</tt>. Each package contains some source code written in <tt>Kotlin</tt>.
-Each package related to a <tt>Context</tt> includes a class whose name starts with <bc>Main</bc>. This class includes the code that starts the actors
+<li>One package for each <tt>Context</tt> and for each <tt>QActor</tt>. Each package contains some source code written in <tt>Kotlin</tt>.</li>
+<li>Each package related to a <tt>Context</tt> includes a class whose name starts with <bc>Main</bc>. This class includes the code that starts the actors
 working in that context.</li>
 
 </ul></m>
@@ -305,12 +310,89 @@ Thus, let us express our model in a new way, so to explicitly express interactio
 </p>
 
 <h3><a id=""/>A better model for the ButtonLed system</h3>
-<a href="../src/bls.qak" target="code">bls.qak</a>
 
 
 
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:68%"><img src="./blsBetter.png" alt="blsBetter." width="100%" height="40%"/></td>
+ <td><m>The model is in <a href="../src/blsBetter.qak" target="code">blsBetter.qak</a>.<br/>
+Now the model explicitly declares:
+<ol>
+<li>the <bc>events</bc> and the <bc>messages</bc> used in the system; </li>
+<li>a <tt>button</tt> actor that uses a custom object to generate the <tt>local_buttonCmd</tt> event; </li> 
+<li>a <tt>control</tt> actor working as a <bc>proactive/reactive FSM</bc>  that 
+intercepts <tt>local_buttonCmd</tt> events with a minimum delay
+(the execution time of a <tt>forward</tt> operation);
+<li>a <tt>led</tt> actor written in Kotlin (that handles  
+<tt>ledCmd</tt> messages (this part is still hidden). </li> 
+</li>
+</ol> 
+</m> 
+ </td>
+</tr>
+</table>
+</center>
 
-<h4>From local to distributed</h4>
+<h5>About the Led</h5>
+In this version, we still use the <tt>led</tt> actor defined in the old library  <bc>it.unibo.bls19d-1.0.jar</bc>. 
+The important thing is that this actor is able to handle messages whose content is compatible 
+(more precisely <em>Prolog-unifiable</em>) with our specification <tt>Dispatch ledCmd : ledCmd(X)</tt>. 
+
+<h5>About the Button</h5>
+ 
+The exact way used by the <tt>button</tt> actor to generate events of 'type' <tt>local_buttonCmd : local_buttonCmd(X)</tt>
+is considered here a 'technological detail' that cab be hidden in a custom object.
+Thus, the actor simply calls the method <bc>resources.bls.better.buttonEventEmitter.create()</bc> to create such an object,
+whose code can be found  in <a href="../src/resources/bls/better/buttonEventEmitter.kt" target="code">buttonEventEmitter.kt</a>.
+
+
+<h5>About <bc>whenTine</bc></h5>
+
+The transition <bc>whenTine</bc> is implemented by creating in dynamic way a <bc>TimerActor</bc> that emits a system-event when the given time expires
+(and afterwards terminates).
+More details will be given when we'll discuss the work done by the <tt>Qak-IDE</tt> to translate the model into runnable code.
+
+<h5>Running the system</h5>
+If we launch the main program <a href="../src/it/unibo/ctxBlsBetter/MainCtxBlsBetter.kt" target="code">MainCtxBlsBetter.kt</a>,
+the system will start its work. <br/><br/>
+After some click on the button, we will see on the console a sequence of outputs of the form:
+
+<pre>
+it.unibo.bls19d.qak.LedActork led | UNKNOWN msg(local_tout_turnOn,event,timer,none,local_tout_turnOn,53)
+it.unibo.bls19d.qak.LedActork led | UNKNOWN msg(local_buttonCmd,event,button,none,local_buttonCmd(clicked),57)
+it.unibo.bls19d.qak.LedActork led | UNKNOWN msg(local_tout_turnOff,event,timer,none,local_tout_turnOff,58)
+</pre>
+
+These messages are written by the (reused) <tt>Led</tt> 
+(see <a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>)
+when it receives a message that it is not wants to handle.
+
+<h4>Event-based behavior</h4>
+
+Since the <tt>Qak-infrastructure</tt> (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#events" target="lecture">Lab7.html#events</a>) delivers an event 
+to <b>all</b> the actors of the system, all the actors will receive any event.
+<br/><br/>
+However, the (meta-)model of actor behavior at the level of the DSL is <bc>event-based</bc> rather than <bc>event-driven</bc>. 
+This means that there is a new intermediate infrastructural level (<bc>ActorBasicFsm</bc> and not ActorBasic) an actor that is not interested in handling an event will discard it
+ 
+<pre>
+QActor led context ctxBlsBetter {
+	State s0 initial { 	}
+	Transition t0 whenEvent ledCmd -> handleLedCmd
+	 
+	State  handleLedCmd{
+		onMsg ( ledCmd : ledCmd(X) ) { println( "ledmock receives: ${meta_msgArg(0)}" ) }
+	}
+	Goto s0
+}
+</pre>
+
+The  <tt>local_buttonCmd : local_buttonCmd(X)</tt> is discarded when <tt>led</tt> is a state 
+
+
+<h2>From local to distributed</h2>
 
 It is quite easy to change the configuration of the system, so to move one or more actors in different nodes.
 For example, let us move the <tt>Led</tt> in another node:
