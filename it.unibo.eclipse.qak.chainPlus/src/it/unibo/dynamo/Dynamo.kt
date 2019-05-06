@@ -19,7 +19,7 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				state("s0") { //this:State
 					action { //it:State
 						println("dynamo START")
-						TimerActor("timer", scope, context!!, "local_tout_s0", 3000.toLong())
+						stateTimer = TimerActor("timer_s0", scope, context!!, "local_tout_s0", 3000.toLong())
 					}
 					 transition(edgeName="t06",targetState="sAdd",cond=whenTimeout("local_tout_s0"))   
 				}	 
@@ -31,7 +31,7 @@ class Dynamo ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 							forward( "ledRegister", "ledRegister($ledName, ${context!!.name})", "control" )
 						    delay( 1000 ) 
 						}
-						TimerActor("timer", scope, context!!, "local_tout_sAdd", 3000.toLong())
+						stateTimer = TimerActor("timer_sAdd", scope, context!!, "local_tout_sAdd", 3000.toLong())
 					}
 					 transition(edgeName="t07",targetState="sRemove",cond=whenTimeout("local_tout_sAdd"))   
 				}	 

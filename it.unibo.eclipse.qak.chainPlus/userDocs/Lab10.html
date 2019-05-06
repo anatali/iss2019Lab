@@ -368,30 +368,82 @@ it.unibo.bls19d.qak.LedActork led | UNKNOWN msg(local_tout_turnOff,event,timer,n
 These messages are written by the (reused) <tt>Led</tt> 
 (see <a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>)
 when it receives a message that it is not wants to handle.
-
-<h4>Event-based behavior</h4>
-
-Since the <tt>Qak-infrastructure</tt> (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#events" target="lecture">Lab7.html#events</a>) delivers an event 
-to <b>all</b> the actors of the system, all the actors will receive any event.
+<br/>Since the <tt>Qak-infrastructure</tt> (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#events" target="lecture">Lab7.html#events</a>) delivers an event 
+to <b>all</b> the actors of the system, all the actors will receive an emitted event.
 <br/><br/>
-However, the (meta-)model of actor behavior at the level of the DSL is <bc>event-based</bc> rather than <bc>event-driven</bc>. 
-This means that there is a new intermediate infrastructural level (<bc>ActorBasicFsm</bc> and not ActorBasic) an actor that is not interested in handling an event will discard it
+
+<h2>Event-based behavior</h2>
+The (meta-)model of actor behavior at the level of the <tt>DSL</tt> is <bc>event-based</bc> rather than <bc>event-driven</bc>. 
+
+This means that there is a <em>new  infrastructural layer</em> that implements the behavior of a <bc>Finite State Machine</bc> over the <i>event-driven</i>
+basic behavior of the actors. The logic of such a new layer is summarized in the following figure:
+<br/><br/>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:55%"><img src="./actorBasicFsm.png" alt="actorBasicFsm." width="98%" height="40%"/></td>
+ <td><m>
+
+ When a message <tt>msg</tt> is (<i>event-driven</i>) received, the actor checks for a possible transition for that <tt>msg</tt> in the <tt>current state</tt>.
+ <br/> <br/>
+If no transition is possible, the message <tt>msg</tt> is <b>discarded if it is an event</b>; otherwise it us stored in a local queue.
+ <br/> <br/>
+If the transition is possible, the actor goes into the next state related to that transition and then looks at empty moves or to transitions
+related to stored messages. 
+ <br/><br/>
+ The actor attempts to manage <b>all</b> the stored messages before looking to a new message.
+  <br/><br/>
+This behavior is implemented as a 
+<a href="../../it.unibo.kotlin.dsl/userDocs//LabDsl.html" target="code">Kotlin internal DSL</a>
+ in <a href="../../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" target="code">it.unibo.kactor.ActorBasicFsm.kt</a>.
+</m> 
+ </td>
+</tr>
+</table>
+</center>
  
-<pre>
-QActor led context ctxBlsBetter {
-	State s0 initial { 	}
-	Transition t0 whenEvent ledCmd -> handleLedCmd
-	 
-	State  handleLedCmd{
-		onMsg ( ledCmd : ledCmd(X) ) { println( "ledmock receives: ${meta_msgArg(0)}" ) }
-	}
-	Goto s0
-}
-</pre>
+<h3>Firing a transition</h3>
+A <bc>Transition</bc> can be 'fired' if the related condition (<bc>whenTime</bc>, <bc>whenEvent</bc>, <bc>whenMsg</bc>)  is true.
+The condition can be extended by a user-defined Kotlin code working as a <em>guard</em>. 
 
-The  <tt>local_buttonCmd : local_buttonCmd(X)</tt> is discarded when <tt>led</tt> is a state 
+<h4>Guarded transitions</h4>
+To give an example of guarded transitions, let us replace the old <tt>Led</tt> with the following actor:<br/><br/>
+ 
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:65%"><img src="./ledGuarded.png" alt="ledGuarded." width="98%" height="40%"/></td>
+ <td><m>The guard is the sentence
+<pre> <font size="2">
+ and { "counter++ < 5 || counter > 8"  }
+ </font></pre>
+ 
+ The sentence that starts with <bc>onMsg</bc> executes the related code only if the current message can be 
+ <em>Prolog-unified</em>
+ with the <tt>ledCmd</tt> template defined in <bc>Event</bc> declaration 
+ and with the template specified in <bc>onMsg</bc>.
+</m> 
+</td>
+ 
+ </tr>
+</table>
+</center>
+ <br/> 
+This <tt>Led</tt> executes a <tt>ledCmd</tt> only when a local <tt>counter</tt> (incremented at each guard evaluation) is less than <tt>5</tt> or higher than <tt>8</tt>;
+otherwise, the <tt>ledCmd</tt> message is stored in the local <tt>msgQueueStore</tt>.
+When the counter becomes higher than <tt>8</tt>, the actor handles all the stored messages before handling new messages.
+ 
+<div class="remark">
+<b>WARNING</b>: the possibility to augment the model with user-defined <tt>Kotlin</tt> code is still experimental and must be used with care.
+</div> 
 
+ 
+<h3>About whenTine</h3>
 
+The transition-condition <bc>whenTine</bc> is implemented by creating in dynamic way a <bc>TimerActor</bc>. 
+When the given time expires, the timer that emits a system-event  with a name that starts with the prefix <bc>local_tout</bc>; afterwards it terminates.
+Th event is <b>not emitted</b> if a message can be handled before that the timer time expires,
+ 
 <h2>From local to distributed</h2>
 
 It is quite easy to change the configuration of the system, so to move one or more actors in different nodes.
@@ -419,6 +471,13 @@ qactor( led, ctxled, "it.unibo.bls19d.qak.LedActork").
 qactor( control, ctxbls, "it.unibo.bls19d.qak.ControlActork").
 qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 </pre>
+
+<h2>MQTT</h2>
+The <tt>Qak-infrastructure</tt> is already able (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#mqtt" target="lecture">Lab7.html#mqtt</a>) 
+to support actor interaction based on the <tt>MQTT</tt> protocol
+
+
+
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
 By AN Unibo-DISI    

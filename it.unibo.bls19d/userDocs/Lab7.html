@@ -238,7 +238,7 @@ The occurrence of an event can put in execution some code devoted to the managem
 qualify this kind of behaviour as <bc>event-driven</bc> behaviour, since the event 'forces' the execution of code.
 <br/><br/>
 An event can also trigger state transitions in components, usually working as Finite state machines. We
-qualify this kind of behaviour as <bc>event-based</bc> behaviour, since the event is 'lost' if no actor is in a state
+qualify this kind of behavior as <bc>event-based</bc> behaviour, since the event is 'lost' if no actor is in a state
 waiting for it.
 <br/><br/>
 Events whose identifier start with the prefix <bc>local_</bc/> are not propagated outside the context in which they are generated.
@@ -906,7 +906,7 @@ When we <b>click</b> on the button, the <tt>OUTPUT</tt> is:
  
 <h2 id="mqtt">Using MQTT</h2>
 In several situations, it could be preferable to manage the interaction among the actors working on different nodes by using the
-publish-subscribe <a href="https://it.wikipedia.org/wiki/MQTT" target="web">MQTT</a> (<i>Message Queue Telemetry Transport</i>) 
+<em>publish-subscribe</em> <a href="https://it.wikipedia.org/wiki/MQTT" target="web">MQTT</a> (<i>Message Queue Telemetry Transport</i>) 
 protocol rather than the built-in <tt>qak-infrastructure</tt>.
 
 <br/><br/>
@@ -946,8 +946,8 @@ Now, the <tt>qak-infrastructure</tt> can be extended to support system descripti
 <pre>
 mqttBroker( "localhost",  1883 ).
 
-context(ctxProducer,"localhost", "TCP", 8010).
-context(ctxConsumer,"localhost", "MQTT", 0). %%The port is not considered here
+context(ctxProducer,"localhost", "TCP", "8010").
+context(ctxConsumer,"localhost", "MQTT", "0"). %%The port is not considered here
 
 qactor( button,    ctxProducer, "it.unibo.qak.prodConsMqtt.ButtonGuiActork").
 qactor( producer,  ctxProducer, "it.unibo.qak.prodConsMqtt.ProducerMqtt").

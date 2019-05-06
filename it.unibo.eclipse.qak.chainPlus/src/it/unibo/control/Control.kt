@@ -49,7 +49,7 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 							delay(200)
 							forward( "ledCmd", "ledCmd(off)", resVar )
 						}
-						TimerActor("timer", scope, context!!, "local_tout_doBlinkChain", 200.toLong())
+						stateTimer = TimerActor("timer_doBlinkChain", scope, context!!, "local_tout_doBlinkChain", 200.toLong())
 					}
 					 transition(edgeName="t12",targetState="doBlinkChain",cond=whenTimeout("local_tout_doBlinkChain"))   
 					transition(edgeName="t13",targetState="addLed",cond=whenDispatch("ledRegister"))

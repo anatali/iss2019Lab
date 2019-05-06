@@ -40,12 +40,18 @@ QActor blscontrol context ctxBlsBetter {
 
 //CodedQActor led context ctxBlsBetter className "it.unibo.bls19d.qak.LedActork"//"resources.LedActork" 
 
-QActor led context ctxBlsBetter {
-	State s0 initial { 	}
-	Transition t0 whenEvent ledCmd -> handleLedCmd
-	 
-	State  handleLedCmd{
-		onMsg ( ledCmd : ledCmd(X) ) { println( "ledmock receives: ${meta_msgArg(0)}" ) }
+QActor led context ctxBlsBetter { 
+["var counter = 0"]  
+	State s0 initial { println("led waits ...")	}    
+	Transition t0 
+	    whenTime 5000 -> tooLate  
+		whenMsg ledCmd and { "counter++ < 5 || counter > 8"  } -> handleLedCmd
+ 	  
+	State  handleLedCmd{ 
+		printCurrentMessage  //shows the handling of the  messages stored
+		onMsg ( ledCmd : ledCmd(X) ) { println( "led handleLedCmd: ${meta_msgArg(0)} counter=$counter" ) }
 	}	
-	Goto s0
+	Goto s0      
+	
+	State tooLate{ println( "Be faster, please ... ")	} Goto s0
 }

@@ -94,7 +94,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     protected lateinit var currentState: State
     protected var currentMsg = NoMsg
     lateinit protected var mybody: ActorBasicFsm.() -> Unit
-
+    var stateTimer : TimerActor? = null
 
     private val stateList = mutableListOf<State>()
     private val msgQueueStore = mutableListOf<ApplMessage>()
@@ -160,12 +160,12 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     suspend fun fsmwork(msg: ApplMessage) {
         //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
         var nextState = checkTransition(msg)
-        var b = hanldeCurrentMessage(msg, nextState)
+        var b         = hanldeCurrentMessage(msg, nextState)
         while (b) { //handle previous messages
             currentState.enterState()
             checkDoEmptyMove()
             val nextState = lookAtMsgQueueStore()
-            b = hanldeCurrentMessage(msg, nextState, memo = false)
+            b = hanldeCurrentMessage(currentMsg, nextState, memo = false)
         }
     }
 
@@ -200,6 +200,8 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         msgQueueStore.forEach {
             val state = checkTransition(it)
             if (state is State) {
+                currentMsg = msgQueueStore.get( msgQueueStore.indexOf(it) )
+                //println("ActorBasicFsm $name | lookAtMsgQueueStore FOUND $currentMsg")
                 msgQueueStore.remove(it)
                 return state
             }
@@ -211,77 +213,15 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         val trans = currentState.getTransitionForMessage(msg)
         //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
         return if (trans != null) {
+             if( ! msg.msgContent().startsWith("local_tout_") && (stateTimer !== null) ) {
+                 stateTimer!!.endTimer() //terminate TimerActor
+            }
             trans.enterTransition { getStateByName(it) }
         } else {
             //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
             null
         }
     }
-
-
-    /*
-    //Returns the next state by looking at th messages so far received or waits on infochannel
-    @kotlinx.coroutines.ExperimentalCoroutinesApi
-    suspend fun transition(): State {
-        //println("ActorBasicFsm $name | transition in:${currentState.stateName}")
-        val state = lookAtMsgQueueStore()
-        if (state is State) {
-            //println("ActorBasicFsm $name | transition state from msgQueueStore:${state.stateName}")
-            return state
-        }else return State("nostate",scope)
-        //lookAtMsgQueue => terminate
-
-        val (msg, newstate) = lookAtMsgQueue()
-        currentMsg = msg
-        return newstate
-
-    }
-
-    private suspend fun lookAtMsgQueue(): Pair<ApplMessage, State> {
-        var nextState: State?
-        do {
-            println("ActorBasicFsm $name | lookAtMsgQueue in:${currentState.stateName}")
-            val msg = msgQueue.receive()
-            println("ActorBasicFsm $name | lookAtMsgQueue received  $msg")
-            nextState = checkTransition(msg)
-            if (nextState is State) {
-                return Pair(msg, nextState)
-            } else { //EXCLUDE EVENTS FROM msgQueueStore
-                if (!(msg.isEvent())) {
-                    msgQueueStore.add(msg)
-                    println("ActorBasicFsm $name | lookAtMsgQueue added $msg in msgQueueStore")
-                } else {
-                    println("ActorBasicFsm $name | DISCARDING THE EVENT: $msg")
-                }
-            }
-        } while (true)
-    }
-
-*/
-
-
-    /*
-    fun isEvent( ev: Message, evName: String, v:String ) : Boolean{
-        return  ev is Message.Event && ev.name == evName && ev.body==v
-    }
-    fun whenEvent( evName: String, evVal: String ) : Edge.() -> Unit{
-        return { eventHandler = { it is Message.Event && it.name == evName && it.body==evVal} }
-    }
-    fun whenEvent( evName: String, cond: (Message)->Boolean ) : Edge.() -> Unit{
-        return { eventHandler = {
-            //println("YYY ${it} }"); //just to show when it happens
-            it is Message.Event && it.name == evName && cond(it) }}
-    }
-    fun whenEvent( evName: String ) : Edge.() -> Unit{
-        return { eventHandler = { it is Message.Event && it.name == evName } }
-    }
-    fun whenDispatch( msgName: String ) : Edge.() -> Unit{
-        return { eventHandler = { it is Message.Dispatch && it.name == msgName } }
-    }
-    fun whenRequest( reqName: String ) : Edge.() -> Unit{
-        return { eventHandler = { it is Message.Request && it.name == reqName } }
-    }
-*/
 
     fun doswitch(): Transition.() -> Unit {
         return { edgeEventHandler = { true } }
@@ -297,8 +237,14 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         return {
             edgeEventHandler = {
                 //println("whenEvent $it - $evName");
-                it == evName
-            } //it.isEvent() && it.msgId() == evName }
+                it == evName } //it.isEvent() && it.msgId() == evName }
+        }
+    }
+    fun whenEventGuarded(evName: String, guard:()->Boolean ): Transition.() -> Unit {
+        return {
+            edgeEventHandler = {
+                //println("whenEventGuarded $it - $evName");
+                it == evName && guard()  } //it.isEvent() && it.msgId() == evName }
         }
     }
 
@@ -308,6 +254,13 @@ abstract class ActorBasicFsm(  qafsmname:  String,
                     //println("ActorBasicFsm $name | ${currentState.stateName} whenDispatch $it  $msgName")
                     it == msgName }  //it.isDispatch() && it.msgId() == msgName }
             }
+    }
+    fun whenDispatchGuarded(msgName: String, guard:()->Boolean ): Transition.() -> Unit {
+        return {
+            edgeEventHandler = {
+                //println("whenDispatchGuarded $it - $evName");
+                it == msgName && guard() } //it.isEvent() && it.msgId() == evName }
+        }
     }
 
 

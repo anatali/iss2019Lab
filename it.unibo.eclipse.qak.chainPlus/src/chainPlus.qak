@@ -10,13 +10,13 @@ Dispatch ledUnRegister : ledUnRegister( LEDNAME, CTXNAME )
     
 Context ctxButton      ip [host="localhost" port=8010]  
 Context ctxLedsPlus    ip [host="localhost" port=8050]  //192.168.43.229
-//Context ctxLedRasp     ip [host="192.168.43.18"  port=8040]
+//Context ctxLedRasp     ip [host="192.168.43.18"  port=8040] 
 
 CodedQActor led1 context ctxLedsPlus className "resources.LedActork"  
 CodedQActor led2 context ctxLedsPlus className "resources.LedActork"  
 //CodedQActor ledArduino context ctxLedsPlus className "resources.LedOnArduinoActork" 
 //CodedQActor ledRasp context ctxLedRasp  className "resources.LedOnRasp" 
-
+ 
 QActor button context ctxButton {	//generates local_buttonCmd 
 	State s0 initial { 
 		run resources.buttonForChain.create()                      

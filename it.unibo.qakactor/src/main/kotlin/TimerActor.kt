@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 
 class TimerActor(name: String, scope: CoroutineScope, val ctx : QakContext,
                  val ev: String, val tout : Long) : ActorBasic(name,scope){
-
+var terminated = false;
     init{
         //println("TimerActor CREATED ${ev} time=$tout")
         this.context = ctx
@@ -17,8 +17,13 @@ class TimerActor(name: String, scope: CoroutineScope, val ctx : QakContext,
         if( msg.msgId() == "start") {
             delay(tout)
             //println("TimerActor EMITS  ${ev} ")
-            this.emit(ev, ev)
+            if( ! terminated ) emit(ev, ev)
             this.actor.close()
         }
+    }
+
+    fun endTimer(){
+        //println("TimerActor $name TERMINATED ")
+        terminated = true;
     }
 }

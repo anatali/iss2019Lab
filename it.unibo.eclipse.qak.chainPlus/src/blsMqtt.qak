@@ -1,0 +1,46 @@
+/*
+*/
+
+System blsMqtt
+
+mqttBroker "192.168.1.18" : 1883   
+
+Event    buttonCmd : buttonCmd(X) 
+Dispatch ledCmd    : ledCmd(X)  
+
+Context ctxMqttConsole ip [host="localhost"  port=0]	-mqtt	
+Context ctxMqttLed     ip [host="localhost"  port=0]	-mqtt	
+
+QActor buttonmqtt context ctxMqttConsole {	//generates local_buttonCmd 
+	State s0 initial { 
+		run resources.bls.better.buttonGlobalEventEmitter.create()                      
+	}    
+}   
+
+QActor blsmqttcontrol context ctxMqttConsole {
+	State s0 initial { printCurrentMessage	}
+	Transition t0 whenEvent buttonCmd -> turnOn 
+	
+	State turnOn{ forward ledmqtt -m ledCmd : ledCmd(on) }
+	Transition t1 whenTime 200 -> turnOff
+				  whenEvent buttonCmd -> s0
+	
+	State turnOff{ forward ledmqtt -m ledCmd : ledCmd(off) }
+	Transition t1 whenTime 200 -> turnOn
+		          whenEvent buttonCmd -> s0
+}	
+
+QActor ledmqtt context ctxMqttLed { 
+  
+	State s0 initial {  run resources.myLedSegm.create() } Goto waitLedCmd   
+ 	 
+ 	State waitLedCmd{ }
+	Transition t0 whenMsg ledCmd  -> handleLedCmd
+	
+	State  handleLedCmd{ 
+		//printCurrentMessage   
+		onMsg ( ledCmd : ledCmd( on ) )   { run resources.myLedSegm.turnOn() }
+		onMsg ( ledCmd : ledCmd( off ) ) { run resources.myLedSegm.turnOff() }
+	}	
+	Goto waitLedCmd      
+}
