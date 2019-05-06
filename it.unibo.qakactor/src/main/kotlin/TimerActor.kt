@@ -16,8 +16,10 @@ var terminated = false;
         //println("TimerActor RECEIVES  ${msg} ")
         if( msg.msgId() == "start") {
             delay(tout)
-            //println("TimerActor EMITS  ${ev} ")
-            if( ! terminated ) emit(ev, ev)
+            if( ! terminated ){
+                //println("TimerActor EMITS  ${ev} ")
+                emit(ev, ev)
+            }
             this.actor.close()
         }
     }

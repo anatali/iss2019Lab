@@ -2,21 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls/bls.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls/bls.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/devices/gui/ButtonAsGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/devices/gui/ButtonAsGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/sysDescr.pl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/sysDescr.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userDocs/Lab7.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsMqtt.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsMqtt.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/blscontrol/Blscontrol.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/blscontrol/Blscontrol.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/dynamo/Dynamo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/dynamo/Dynamo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/led/Led.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/led/Led.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsMqtt.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsMqtt.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/blsmqttcontrol/Blsmqttcontrol.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/blsmqttcontrol/Blsmqttcontrol.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/button/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/button/Button.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/ledmqtt/Ledmqtt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/ledmqtt/Ledmqtt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/bls/better/buttonGlobalEventEmitter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/bls/better/buttonGlobalEventEmitter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/myLedSegm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/myLedSegm.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasic.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/ActorBasicFsm.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/TimerActor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/src/main/kotlin/TimerActor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -70,7 +69,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/ButtonGuiActork.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="612">
-              <caret line="36" column="22" lean-forward="true" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+              <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
               <folding>
                 <element signature="e#37#265#0" expanded="true" />
               </folding>
@@ -111,7 +110,11 @@
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -204,7 +207,6 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/SystemKb.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/ConsumerMqtt.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/QakContext.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/kactor/sysUtil.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/chain/MainSys0.kt" />
@@ -244,6 +246,7 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/sysDescr.pl" />
         <option value="$PROJECT_DIR$/src/main/java/devices/gui/ButtonAsGui.java" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl" />
       </list>
     </option>
   </component>
@@ -384,7 +387,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557139841469" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557175340321" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/oldbackup" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -528,6 +531,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3260212" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -945,7 +949,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/prodConsCustomMqtt/ButtonGuiActork.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
-          <caret line="36" column="22" lean-forward="true" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+          <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
           <folding>
             <element signature="e#37#265#0" expanded="true" />
           </folding>
@@ -986,7 +990,11 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/prodConsMqtt/sysDescr.pl">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="44" selection-start-line="3" selection-start-column="44" selection-end-line="3" selection-end-column="44" />
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">

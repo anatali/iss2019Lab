@@ -18,13 +18,14 @@ class Blsmqttcontrol ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						println("blsmqttcontrol WAITS")
 					}
 					 transition(edgeName="t00",targetState="turnOn",cond=whenEvent("buttonCmd"))
 				}	 
 				state("turnOn") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(on)" ,"ledmqtt" ) 
+						emit("ledCmdEv", "ledCmd(on)" ) 
 						stateTimer = TimerActor("timer_turnOn", scope, context!!, "local_tout_turnOn", 200.toLong())
 					}
 					 transition(edgeName="t11",targetState="turnOff",cond=whenTimeout("local_tout_turnOn"))   
@@ -33,10 +34,17 @@ class Blsmqttcontrol ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("turnOff") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(off)" ,"ledmqtt" ) 
+						emit("ledCmdEv", "ledCmd(off)" ) 
 						stateTimer = TimerActor("timer_turnOff", scope, context!!, "local_tout_turnOff", 200.toLong())
 					}
-					 transition(edgeName="t13",targetState="turnOn",cond=whenTimeout("local_tout_turnOff"))   
-					transition(edgeName="t14",targetState="s0",cond=whenEvent("buttonCmd"))
+					 transition(edgeName="t23",targetState="turnOn",cond=whenTimeout("local_tout_turnOff"))   
+					transition(edgeName="t24",targetState="s0",cond=whenEvent("buttonCmd"))
+				}	 
+				state("checkUser") { //this:State
+					action { //it:State
+						println("Are you still here? ")
+					}
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

@@ -13,11 +13,11 @@ var frame : JFrame
 		var deltaX = 50
 		var deltaY = 50
 		lateinit var led :  myLedSegm
-		fun turnOn() { led.turnOn() }
+		fun turnOn() {  led.turnOn() }
 		fun turnOff() { led.turnOff() }
 		fun create() {
 			led = myLedSegm()
-			led.turnOff()
+			led.turnOn()
 		}
 		fun getX() : Int { deltaX = deltaX + 150  ; return   deltaX }
 		fun getY() : Int { return   deltaY }

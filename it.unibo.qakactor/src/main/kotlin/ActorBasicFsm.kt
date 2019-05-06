@@ -117,12 +117,6 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         //println("ActorBasicFsm INIT")private val
         myself  = this
         setBody(getBody(), getInitialState())
-        /*
-        buildbody()            //Build the structural part
-        currentState = getStateByName(initialStateName)
-        //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")
-        fsmscope.launch { autoMsg(autoStartMsg) }  //auto-start
-        */
     }
 
     abstract fun getBody(): (ActorBasicFsm.() -> Unit)
@@ -158,7 +152,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     }
 
     suspend fun fsmwork(msg: ApplMessage) {
-        //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} ")
+        //println("ActorBasicFsm $name | fsmwork in ${currentState.stateName} $msg")
         var nextState = checkTransition(msg)
         var b         = hanldeCurrentMessage(msg, nextState)
         while (b) { //handle previous messages
@@ -172,8 +166,17 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     fun hanldeCurrentMessage(msg: ApplMessage, nextState: State?, memo: Boolean = true): Boolean {
         //println("ActorBasicFsm $name | hanldeCurrentMessage in ${currentState.stateName} msg=${msg.msgId()}")
         if (nextState is State) {
-            currentMsg = msg
+            currentMsg   = msg
             currentState = nextState
+
+            //println("ActorBasicFsm $name | hanldeCurrentMessage currentState= ${currentState.stateName}  ")
+            //println("\"ActorBasicFsm $name | hanldeCurrentMessage currentMsg= $currentMsg  ")
+            if( currentMsg.msgId() != "noMsg" &&
+                ! currentMsg.msgContent().startsWith("local_tout_") && (stateTimer !== null) ) {
+                stateTimer!!.endTimer() //terminate TimerActor
+                stateTimer = null
+            }
+
             return true
         } else { //EXCLUDE EVENTS FROM msgQueueStore
             if (!memo) return false
@@ -211,14 +214,11 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     private fun checkTransition(msg: ApplMessage): State? {
         val trans = currentState.getTransitionForMessage(msg)
-        //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.name} edge=${edge is Edge}")
+        //println("ActorBasicFsm $name | checkTransition ENTRY $msg , currentState=${currentState.stateName} ")
         return if (trans != null) {
-             if( ! msg.msgContent().startsWith("local_tout_") && (stateTimer !== null) ) {
-                 stateTimer!!.endTimer() //terminate TimerActor
-            }
-            trans.enterTransition { getStateByName(it) }
+           trans.enterTransition { getStateByName(it) }
         } else {
-            //println("ActorBasicFsm $name | checkTransition NO next State for $msg !!!")
+            //println("ActorBasicFsm $name | checkTransition in ${currentState.stateName} NO next State for $msg !!!")
             null
         }
     }

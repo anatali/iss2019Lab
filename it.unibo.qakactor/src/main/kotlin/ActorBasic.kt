@@ -24,7 +24,7 @@ abstract class  ActorBasic(val name:         String,
     var context : QakContext? = null  //to be injected
     var resVar  : String ="fail"      // see solve
     val pengine     = Prolog()      //USED FOR LOCAL KB
-    val NoMsg       = MsgUtil.buildEvent(name, "noMsg", "noMsg")
+    val NoMsg       = MsgUtil.buildEvent(name, "local_noMsg", "noMsg")
 
     val mqtt    = MqttUtils()
     protected val subscribers = mutableListOf<ActorBasic>()
@@ -117,39 +117,49 @@ Messaging
     }//forward
 
     suspend fun emit( event : ApplMessage ) {
+        //println("       ActorBasic $name | emit ${event.msgId()}  STARTS")
         if( context == null ){
-            println("WARNING emit: there is no QakContext")
+            println("      ActorBasic $name | WARNING emit: there is no QakContext")
             this.actor.send(event)  //AUTOMSG
             return
         }
         //PROPAGATE TO LOCAL ACTORS
-        context!!.actorMap.forEach{
-            //val destName  = it.key
-            val destActor = it.value
-            destActor.actor.send( event )
+        if( context!!.mqttAddr.length == 0 ||
+            ( event.msgId().startsWith("local") ) ) { //NO MQTT for this context
+            context!!.actorMap.forEach {
+                val destActor = it.value
+                //println("      ActorBasic $name | PROPAGATE ${event.msgId()} locally to  ${destActor.name} ")
+                destActor.actor.send(event)
+            }
         }
         //PROPAGATE TO REMOTE ACTORS
         if( event.msgId().startsWith("local")) return       //local_ => no propagation
-
+        //println("       ActorBasic $name | ctxsMap SIZE = ${sysUtil.ctxsMap.size}")
+        var mqttPropagated = false;
         sysUtil.ctxsMap.forEach{
             val ctxName  = it.key
             val ctx      = it.value
-            //println("       ActorBasic $name | ${ctxName} emit mqttAddr= ${ctx!!.mqttAddr} mqttConnected=$mqttConnected")
-            if( ctx!!.mqttAddr.length > 0) {
+            //println("       ActorBasic $name | ${context!!.name } emit ${event.msgId()} to ${ctxName}  mqttAddr= ${ctx!!.mqttAddr} ")
+            val proxy  = context!!.proxyMap.get(ctxName)
+            if( proxy is ActorBasic ){
+                //println("       ActorBasic $name | emit ${event}  towards $ctxName " )
+                proxy.actor.send( event )
+            }else
+            if( ctx!!.mqttAddr.length > 0) {    //the context works under MQTT
                 if( ! mqttConnected ){
                     mqtt.connect(name, ctx!!.mqttAddr)
                     mqttConnected = true
                 }
-                mqtt.sendMsg(event, "unibo/qak/events")
-                return
-            }
-            val proxy  = context!!.proxyMap.get(ctxName)
-            if( proxy is ActorBasic ){
-                //println("       ActorBasic $name | emit $event  towards $ctxName " )
-                proxy.actor.send( event )
+                if( ctxName != context!!.name && ! mqttPropagated) { //avoid to send to itself again
+                    //println("       ActorBasic $name | emit MQTT ${event}  towards $ctxName " )
+                    mqtt.sendMsg(event, "unibo/qak/events")
+                    mqttPropagated = true
+                    //return  //NO, since we must look at the other contexts BUT JUST ONE
+                }
             }
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }
+        //println("       ActorBasic $name | emit ${event.msgId()}  ENDS")
     }
 
     suspend fun emit( msgId : String, msg : String) {
@@ -189,7 +199,7 @@ MQTT
     }
 
     override fun messageArrived(topic: String, msg: MqttMessage) {
-        //println("       ActorBasic $name |  messageArrived on "+ topic + ": "+msg.toString());
+        //println("        MQTT ActorBasic $name |  messageArrived on "+ topic + ": "+msg.toString());
         val m = ApplMessage( msg.toString() )
         this.scope.launch{ actor.send( m ) }
 

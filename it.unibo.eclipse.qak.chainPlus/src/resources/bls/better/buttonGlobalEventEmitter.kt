@@ -21,7 +21,7 @@ class buttonGlobalEventEmitter : IObserver {
 	   val a = sysUtil.getActor("buttonmqtt")
        if( a is ActorBasic ){
 	        GlobalScope.launch{
-	            println("buttonGlobalEventEmitter $arg" )
+	            println("buttonGlobalEventEmitter $arg  ${a.name}" )
 				a.emit("buttonCmd","buttonCmd(clicked)")				
 	        }
 	   }
