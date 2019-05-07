@@ -233,7 +233,7 @@ At this point you can run the Main (in our case <bc>it.unibo.ctxBls.MainCtxBls.k
 <h2><a id=""/>The ButtonLed System</h2>
 
 Our next next step is to define a Qak model for the ButtonLed system discussed in 
-<a href="../../it.unibo.bls19d/userDocs/Lab5.html" target="lecture">Lab5.html (From objects to actors)</a>.
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab5.html" target="lecture">Lab5.html (From objects to actors)</a>.
 Under the pressure of 'saving time' we could decide to reuse actors that we already developed and tested.
 
 
@@ -372,7 +372,8 @@ it.unibo.bls19d.qak.LedActork led | UNKNOWN msg(local_tout_turnOff,event,timer,n
 These messages are written by the (reused) <tt>Led</tt> 
 (see <a href="../../it.unibo.bls19d/src/main/kotlin/it/unibo/bls19d/qak/LedActork.kt" target="code">LedActork.kt</a>)
 when it receives a message that it is not wants to handle.
-<br/>Since the <tt>Qak-infrastructure</tt> (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#events" target="lecture">Lab7.html#events</a>) delivers an event 
+<br/>Since the <tt>Qak-infrastructure</tt> 
+(see <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#events" target="lecture">Lab7.html#events</a>) delivers an event 
 to <b>all</b> the actors of the system, all the actors will receive an emitted event.
 <br/><br/>
 
@@ -478,7 +479,8 @@ qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 </pre>
 
 <h2>MQTT</h2>
-The <tt>Qak-infrastructure</tt> is already able (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#mqtt" target="lecture">Lab7.html#mqtt</a>) 
+The <tt>Qak-infrastructure</tt> is already able (see 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#mqtt" target="lecture">Lab7.html#mqtt</a>) 
 to support actor interaction based on the <tt>MQTT</tt> protocol.
 
 
