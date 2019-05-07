@@ -6,7 +6,7 @@
  * with a very limited set of changes.
  * 
  * For a better model see blsBetter.qak
- */
+ */ 
 
 System bls
 
@@ -14,7 +14,7 @@ Context ctxBls ip [host="localhost" port=8090]
 //Context ctxLed ip [host="localhost" port=8095]
 
 QActor welcome context ctxBls{
-	State s0 initial{
+	State s0 initial{ 
 		println("---------------------------------------------------")
 		println("Welcome to the BLS system described in qak (DSL)")
 		println("---------------------------------------------------")

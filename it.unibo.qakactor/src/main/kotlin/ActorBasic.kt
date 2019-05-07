@@ -124,8 +124,9 @@ Messaging
             return
         }
         //PROPAGATE TO LOCAL ACTORS
-        if( context!!.mqttAddr.length == 0 ||
-            ( event.msgId().startsWith("local") ) ) { //NO MQTT for this context
+        if( context!!.mqttAddr.length == 0  //There is NO MQTT for this context
+            ||  //the event is local
+            event.msgId().startsWith("local")  ) {
             context!!.actorMap.forEach {
                 val destActor = it.value
                 //println("      ActorBasic $name | PROPAGATE ${event.msgId()} locally to  ${destActor.name} ")
@@ -150,8 +151,9 @@ Messaging
                     mqtt.connect(name, ctx!!.mqttAddr)
                     mqttConnected = true
                 }
-                if( ctxName != context!!.name && ! mqttPropagated) { //avoid to send to itself again
-                    //println("       ActorBasic $name | emit MQTT ${event}  towards $ctxName " )
+                //if( ctxName != context!!.name && ! mqttPropagated) { //avoid to send to itself again
+                if( ! mqttPropagated ) { //avoid to send more times
+                    //println("       ActorBasic $name | emit MQTT ${event} while looking at $ctxName " )
                     mqtt.sendMsg(event, "unibo/qak/events")
                     mqttPropagated = true
                     //return  //NO, since we must look at the other contexts BUT JUST ONE

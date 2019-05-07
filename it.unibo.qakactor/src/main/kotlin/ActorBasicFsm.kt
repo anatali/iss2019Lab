@@ -167,14 +167,27 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         //println("ActorBasicFsm $name | hanldeCurrentMessage in ${currentState.stateName} msg=${msg.msgId()}")
         if (nextState is State) {
             currentMsg   = msg
+            var msgBody = currentMsg.msgContent()
+            val endTheTimer = currentMsg.msgId() != "local_noMsg" &&
+                            ( ! msgBody.startsWith("local_tout_")
+                                    ||
+                                //msgBody.startsWith("local_tout_") &&
+                                    ( msgBody.contains(currentState.stateName) &&
+                                      msgBody.contains(this.name) )
+                            )
             currentState = nextState
 
             //println("ActorBasicFsm $name | hanldeCurrentMessage currentState= ${currentState.stateName}  ")
             //println("\"ActorBasicFsm $name | hanldeCurrentMessage currentMsg= $currentMsg  ")
-            if( currentMsg.msgId() != "noMsg" &&
-                ! currentMsg.msgContent().startsWith("local_tout_") && (stateTimer !== null) ) {
+            /*
+            if( currentMsg.msgId() != "local_noMsg" &&
+                ! currentMsg.msgContent().startsWith("local_tout_")  &&
+                currentMsg.msgContent().contains(currentState.stateName)
+                && (stateTimer !== null) ) {
+            */
+            if( endTheTimer && (stateTimer !== null) ){
                 stateTimer!!.endTimer() //terminate TimerActor
-                stateTimer = null
+                //stateTimer = null
             }
 
             return true

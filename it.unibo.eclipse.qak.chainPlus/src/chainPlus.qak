@@ -3,7 +3,7 @@ System chainPlus
 
 Event    local_buttonCmd : local_buttonCmd(X)  
 Event    ledCmd : ledCmd(X)  
- 
+  
 Dispatch ledCmd : ledCmd(X) 
 Dispatch ledRegister   : ledRegister( LEDNAME, CTXNAME ) 
 Dispatch ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) 
@@ -19,7 +19,8 @@ CodedQActor led2 context ctxLedsPlus className "resources.LedActork"
  
 QActor button context ctxButton {	//generates local_buttonCmd 
 	State s0 initial { 
-		run resources.buttonForChain.create()                      
+		//run resources.buttonForChain.create()          
+		run resources.bls.better.buttonEventEmitter.create()            
 	}    
 } 
 
@@ -86,7 +87,7 @@ QActor dynamo context ctxLedsPlus {
 	Transition t0 whenTime 3000 -> sAdd         
 	    
 	State sAdd{      
-["for(i in 0..1){ 
+["for(i in 0..1){  
 	val ledName = resources.ledManager.addNewLed( myself  ) 
 	println(\"ledRegister($ledName, ${context!!.name})\")
 	forward( \"ledRegister\", \"ledRegister($ledName, ${context!!.name})\", \"control\" )

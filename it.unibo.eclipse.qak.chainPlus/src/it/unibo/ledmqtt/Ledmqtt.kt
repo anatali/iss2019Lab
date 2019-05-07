@@ -15,6 +15,7 @@ class Ledmqtt ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		var counter = 0
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -25,7 +26,7 @@ class Ledmqtt ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				state("waitLedCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t05",targetState="handleLedCmd",cond=whenDispatch("ledCmd"))
+					 transition(edgeName="t07",targetState="handleLedCmd",cond=whenDispatch("ledCmd"))
 				}	 
 				state("handleLedCmd") { //this:State
 					action { //it:State
@@ -37,6 +38,7 @@ class Ledmqtt ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								resources.myLedSegm.turnOff()
 						}
+						if( counter++ > 16) { emit("alarm","alarm($counter) "); counter = 0}
 					}
 					 transition( edgeName="goto",targetState="waitLedCmd", cond=doswitch() )
 				}	 

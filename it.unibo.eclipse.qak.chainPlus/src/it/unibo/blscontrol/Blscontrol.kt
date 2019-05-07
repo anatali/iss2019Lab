@@ -24,17 +24,17 @@ class Blscontrol ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("turnOn") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(on)" ,"led" ) 
-						stateTimer = TimerActor("timer_turnOn", scope, context!!, "local_tout_turnOn", 200.toLong())
+						stateTimer = TimerActor("timer_turnOn", scope, context!!, "local_tout_blscontrol_turnOn", 200.toLong())
 					}
-					 transition(edgeName="t11",targetState="turnOff",cond=whenTimeout("local_tout_turnOn"))   
+					 transition(edgeName="t11",targetState="turnOff",cond=whenTimeout("local_tout_blscontrol_turnOn"))   
 					transition(edgeName="t12",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
 				state("turnOff") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(off)" ,"led" ) 
-						stateTimer = TimerActor("timer_turnOff", scope, context!!, "local_tout_turnOff", 200.toLong())
+						stateTimer = TimerActor("timer_turnOff", scope, context!!, "local_tout_blscontrol_turnOff", 200.toLong())
 					}
-					 transition(edgeName="t13",targetState="turnOn",cond=whenTimeout("local_tout_turnOff"))   
+					 transition(edgeName="t13",targetState="turnOn",cond=whenTimeout("local_tout_blscontrol_turnOff"))   
 					transition(edgeName="t14",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
 			}

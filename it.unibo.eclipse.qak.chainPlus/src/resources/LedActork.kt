@@ -2,7 +2,7 @@ package resources
 
 import it.unibo.kactor.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.GlobalScope 
 
 class LedActork( name : String, scope: CoroutineScope=GlobalScope ) : ActorBasic( name, scope ){
     val concreteLed = myLedSegm()

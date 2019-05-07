@@ -1,0 +1,75 @@
+/*
+ * The chain is described in the file chainDescr.pl that includes also the rules:
+ *   getLedNames  
+ *   getNextLedName
+ *   resetLedCounter
+ *   addLed / removeLed
+ * 
+ *  The example shows the usage of Prolog
+ */
+System chainStatic
+mqttBroker "localhost" : 1883
+
+Event    local_buttonCmd : local_buttonCmd(X)  
+Event    ledCmd : ledCmd(X)  
+  
+Dispatch ledCmd : ledCmd(X) 
+     
+Context ctxButtonChainStatic    ip [host="localhost" port=8010]  //-mqtt
+Context ctxLedChainStatic       ip [host="localhost" port=8050]  //-mqtt //192.168.43.229
+//Context ctxLedRasp     ip [host="192.168.43.18"  port=8040] 
+
+CodedQActor led1 context ctxLedChainStatic className "resources.LedActork"  
+CodedQActor led2 context ctxLedChainStatic className "resources.LedActork"  
+
+//CodedQActor ledArduino context ctxLedsPlus className "resources.LedOnArduinoActork" 
+//CodedQActor ledRasp context ctxLedRasp  className "resources.LedOnRasp" 
+ 
+QActor buttonchainstatic context ctxButtonChainStatic {	//generates local_buttonCmd 
+	State s0 initial { 
+		//run resources.buttonForChain.create()          
+		run resources.bls.better.buttonEventEmitter.create( myself, click )            
+	}    
+} 
+
+QActor controlchainstatic context ctxButtonChainStatic {
+["lateinit var ledNames : List<String>"]
+	State s0 initial {		           
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("chainDescr.pl")	 )  
+		solve( getLedNames(N) , N   )
+		["ledNames = sysUtil.strRepToList(resVar!!); println(\"LEDNAMES = $ledNames\")"]        
+	}     
+	Goto work   
+	 
+	State work{		println(" ----------------- work ---------------------- ")         		
+	}  
+	Transition t0 whenEvent local_buttonCmd -> blinkChain
+ 	
+	State blinkChain{
+		solve( resetLedCounter )	   
+	}
+	Goto doBlinkChain
+	
+	State doBlinkChain{   
+		solve( getNextLedName( LEDNAME ) , LEDNAME  ) 				
+[" 
+if( solveOk() ){
+    println(\"current led name = $resVar\")   
+	forward( \"ledCmd\", \"ledCmd(on)\", resVar )
+	delay(200)
+	forward( \"ledCmd\", \"ledCmd(off)\", resVar )
+}
+"]		 
+	}
+	Transition t1 whenTime 200     -> doBlinkChain
+ 				  whenEvent local_buttonCmd -> work          	
+ } 	 
+
+
+   
+
+	
+	 
+ 
+   

@@ -19,27 +19,40 @@ class Led ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("led waits ...")
-						stateTimer = TimerActor("timer_s0", scope, context!!, "local_tout_s0", 5000.toLong())
+						resources.myLedSegm.create()
 					}
-					 transition(edgeName="t05",targetState="tooLate",cond=whenTimeout("local_tout_s0"))   
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("waitCmd") { //this:State
+					action { //it:State
+						println("led waits ...")
+						stateTimer = TimerActor("timer_waitCmd", scope, context!!, "local_tout_led_waitCmd", 5000.toLong())
+					}
+					 transition(edgeName="t05",targetState="tooLate",cond=whenTimeout("local_tout_led_waitCmd"))   
 					transition(edgeName="t06",targetState="handleLedCmd",cond=whenDispatchGuarded("ledCmd",{counter++ < 5 || counter > 8}))
 				}	 
 				state("handleLedCmd") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(X)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("led handleLedCmd: ${meta_msgArg(0)} counter=$counter")
 						}
+						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(on)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								resources.myLedSegm.turnOn()
+						}
+						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(off)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								resources.myLedSegm.turnOff()
+						}
 					}
-					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("tooLate") { //this:State
 					action { //it:State
 						println("Be faster, please ... ")
 					}
-					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 			}
 		}

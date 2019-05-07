@@ -286,9 +286,9 @@ At this point, if we run the generated code <tt>it.unibo.ctxBls.MainCtxBls</tt>,
 Unfortunately, in the system described by the model above, there are many hidden details.  In particular:
 <ol>
 <li>the <tt>Kotlin</tt> code works by assuming that the <tt>led</tt> actor is created before 
-the <tt>control</tt> that in its turn must be created before the <tt>button</tt>.
+the <tt>control</tt> that in its turn must be created before the <tt>button</tt>;
 </li>
-<li>the model does not show neither the interaction among the main actors nor their logical behavior.</li>
+<li>the model does not show neither the interaction among the main actors nor their logical behavior;</li>
 <li>the transition to a <bc>distributed version</bc> of the system is not possible, since  the <tt>Kotlin</tt> code 
 is based on a class (<tt>SystemKb</tt>) that must be shared among all the actors.
 </ol>
@@ -340,19 +340,23 @@ In this version, we still use the <tt>led</tt> actor defined in the old library 
 The important thing is that this actor is able to handle messages whose content is compatible 
 (more precisely <em>Prolog-unifiable</em>) with our specification <tt>Dispatch ledCmd : ledCmd(X)</tt>. 
 
-<h5>About the Button</h5>
- 
-The exact way used by the <tt>button</tt> actor to generate events of 'type' <tt>local_buttonCmd : local_buttonCmd(X)</tt>
-is considered here a 'technological detail' that cab be hidden in a custom object.
-Thus, the actor simply calls the method <bc>resources.bls.better.buttonEventEmitter.create()</bc> to create such an object,
-whose code can be found  in <a href="../src/resources/bls/better/buttonEventEmitter.kt" target="code">buttonEventEmitter.kt</a>.
-
-
 <h5>About <bc>whenTine</bc></h5>
 
 The transition <bc>whenTine</bc> is implemented by creating in dynamic way a <bc>TimerActor</bc> that emits a system-event when the given time expires
 (and afterwards terminates).
-More details will be given when we'll discuss the work done by the <tt>Qak-IDE</tt> to translate the model into runnable code.
+More details <a href="#whenTine"> will be given</a> when we'll discuss the work done by the <tt>Qak-IDE</tt> to translate the model into runnable code.
+
+<h5>About the Button</h5>
+ 
+The exact way used by the <tt>button</tt> actor to generate events of 'type' <tt>local_buttonCmd : local_buttonCmd(X)</tt>
+is considered here a 'technological detail' that can be hidden in a <b>custom object</b>.
+
+<h4><bc>run</bc> a custom object</h4>
+The keyword <bc>run</bc> can be used to execute user-defined objects. For example, 
+the actor <tt>button</tt>  calls the method <tt>resources.bls.better.buttonEventEmitter.create()</tt> to create an object that implements
+a button-GUI (the code can be found  in <a href="../src/resources/bls/better/buttonEventEmitter.kt" target="code">buttonEventEmitter.kt</a>).
+
+
 
 <h5>Running the system</h5>
 If we launch the main program <a href="../src/it/unibo/ctxBlsBetter/MainCtxBlsBetter.kt" target="code">MainCtxBlsBetter.kt</a>,
@@ -435,14 +439,15 @@ When the counter becomes higher than <tt>8</tt>, the actor handles all the store
  
 <div class="remark">
 <b>WARNING</b>: the possibility to augment the model with user-defined <tt>Kotlin</tt> code is still experimental and must be used with care.
+It is preferable to <bc>run</bc> custom objects.
 </div> 
 
  
-<h3>About whenTine</h3>
+<h3 id="whenTine">About whenTine</h3>
 
 The transition-condition <bc>whenTine</bc> is implemented by creating in dynamic way a <bc>TimerActor</bc>. 
 When the given time expires, the timer that emits a system-event  with a name that starts with the prefix <bc>local_tout</bc>; afterwards it terminates.
-Th event is <b>not emitted</b> if a message can be handled before that the timer time expires,
+Th event is <em>not emitted</em> if a message can be handled before that the timer time expires.
  
 <h2>From local to distributed</h2>
 
@@ -474,7 +479,9 @@ qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 
 <h2>MQTT</h2>
 The <tt>Qak-infrastructure</tt> is already able (see <a href="../../it.unibo.bls19d/userDocs/Lab7.html#mqtt" target="lecture">Lab7.html#mqtt</a>) 
-to support actor interaction based on the <tt>MQTT</tt> protocol
+to support actor interaction based on the <tt>MQTT</tt> protocol.
+
+
 
 
 

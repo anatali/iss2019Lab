@@ -19,26 +19,28 @@ class Blsmqttcontrol ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("s0") { //this:State
 					action { //it:State
 						println("blsmqttcontrol WAITS")
+						stateTimer = TimerActor("timer_s0", scope, context!!, "local_tout_blsmqttcontrol_s0", 5000.toLong())
 					}
-					 transition(edgeName="t00",targetState="turnOn",cond=whenEvent("buttonCmd"))
+					 transition(edgeName="t00",targetState="checkUser",cond=whenTimeout("local_tout_blsmqttcontrol_s0"))   
+					transition(edgeName="t01",targetState="turnOn",cond=whenEvent("buttonCmd"))
 				}	 
 				state("turnOn") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(on)" ,"ledmqtt" ) 
-						emit("ledCmdEv", "ledCmd(on)" ) 
-						stateTimer = TimerActor("timer_turnOn", scope, context!!, "local_tout_turnOn", 200.toLong())
+						emit("ledCmd", "ledCmd(on)" ) 
+						stateTimer = TimerActor("timer_turnOn", scope, context!!, "local_tout_blsmqttcontrol_turnOn", 200.toLong())
 					}
-					 transition(edgeName="t11",targetState="turnOff",cond=whenTimeout("local_tout_turnOn"))   
-					transition(edgeName="t12",targetState="s0",cond=whenEvent("buttonCmd"))
+					 transition(edgeName="t12",targetState="turnOff",cond=whenTimeout("local_tout_blsmqttcontrol_turnOn"))   
+					transition(edgeName="t13",targetState="s0",cond=whenEvent("buttonCmd"))
 				}	 
 				state("turnOff") { //this:State
 					action { //it:State
 						forward("ledCmd", "ledCmd(off)" ,"ledmqtt" ) 
-						emit("ledCmdEv", "ledCmd(off)" ) 
-						stateTimer = TimerActor("timer_turnOff", scope, context!!, "local_tout_turnOff", 200.toLong())
+						emit("ledCmd", "ledCmd(off)" ) 
+						stateTimer = TimerActor("timer_turnOff", scope, context!!, "local_tout_blsmqttcontrol_turnOff", 200.toLong())
 					}
-					 transition(edgeName="t23",targetState="turnOn",cond=whenTimeout("local_tout_turnOff"))   
-					transition(edgeName="t24",targetState="s0",cond=whenEvent("buttonCmd"))
+					 transition(edgeName="t24",targetState="turnOn",cond=whenTimeout("local_tout_blsmqttcontrol_turnOff"))   
+					transition(edgeName="t25",targetState="s0",cond=whenEvent("buttonCmd"))
 				}	 
 				state("checkUser") { //this:State
 					action { //it:State

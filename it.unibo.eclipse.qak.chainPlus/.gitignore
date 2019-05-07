@@ -19,3 +19,4 @@ docker/
 /sysRules.pl
 /bls.pl
 /blsBetter.pl
+/chainStatic.pl

@@ -6,14 +6,15 @@ System blsMqtt
 mqttBroker "192.168.1.18" : 1883   
 
 Event    buttonCmd : buttonCmd(X)  
+Event    alarm     : alarm(X) 
 Dispatch ledCmd    : ledCmd(X)   
-Event    ledCmdEv  : ledCmd(X)          
+Event    ledCmd    : ledCmd(X)          
  
 Context ctxMqttConsole 		ip [host="localhost"  port=8035]	//-mqtt	  
 Context ctxMqttLed     		ip [host="localhost"  port=8045]	//-mqtt	
 Context ctxMqttOtherLed     ip [host="localhost"  port=8065]	//-mqtt 
 
-QActor buttonmqtt context ctxMqttConsole {	//generates local_buttonCmd 
+QActor buttonmqtt context ctxMqttConsole {	//generates buttonCmd 
 	State s0 initial { 
 		run resources.bls.better.buttonGlobalEventEmitter.create()                      
 	}    
@@ -24,27 +25,37 @@ QActor blsmqttcontrol context ctxMqttConsole {
  		println("blsmqttcontrol WAITS")
 	}
 	Transition t0 
-		//whenTime 5000 -> checkUser
+		whenTime 5000       -> checkUser
 		whenEvent buttonCmd -> turnOn 
-	
+ 	
 	State turnOn{ 
  		forward ledmqtt -m ledCmd : ledCmd(on)
- 		emit ledCmdEv : ledCmd(on) 
+ 		emit ledCmd : ledCmd(on)   //to activate otherled (sensible to the payload only)
 	}
 	Transition t1 whenTime 200 -> turnOff
 				  whenEvent buttonCmd -> s0 
 	 
 	State turnOff{ 
  		forward ledmqtt -m ledCmd : ledCmd(off)  
- 		emit ledCmdEv : ledCmd(off) 
+ 		emit ledCmd : ledCmd(off) //to activate otherled  (sensible to the payload only)
 	}
 	Transition t2 whenTime 200 -> turnOn
 		          whenEvent buttonCmd -> s0
 		          
 	State checkUser{ println("Are you still here? ")} Goto s0
+	
 }	
-  
+
+QActor alarmmqtt context ctxMqttConsole {
+	State s0 initial { }
+	Transition t0 
+ 		whenEvent alarm     -> handleAlarm 
+	
+	State handleAlarm{ printCurrentMessage } Goto s0
+}
+
 QActor ledmqtt context ctxMqttLed {  
+["var counter = 0"]   
 	State s0 initial {  
 		run resources.myLedSegm.create() 
 	} Goto waitLedCmd   
@@ -56,6 +67,7 @@ QActor ledmqtt context ctxMqttLed {
 		//printCurrentMessage   
 		onMsg ( ledCmd : ledCmd( on ) )   { run resources.myLedSegm.turnOn()  }
 		onMsg ( ledCmd : ledCmd( off ) )  { run resources.myLedSegm.turnOff() }
+		["if( counter++ > 16) { emit(\"alarm\",\"alarm($counter) \"); counter = 0}"]
 	}	
 	Goto waitLedCmd      
 }
