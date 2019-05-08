@@ -14,14 +14,14 @@ class MqttUtils  {
 
 	fun connect(clientid: String, brokerAddr: String ): Boolean {
 		try {
-  			//println("	%%% MqttUtils doing connect/4 $clientid $brokerAddr "  );
+  			println("	%%% MqttUtils doing connect for $clientid to $brokerAddr "  );
 			client = MqttClient(brokerAddr, clientid)
             //println("	%%% MqttUtils for $clientid connect $brokerAddr client = $client" )
 			val options = MqttConnectOptions()
 			options.setKeepAliveInterval(480)
 			options.setWill("unibo/clienterrors", "crashed".toByteArray(), 2, true)
 			client.connect(options)
-			println("	%%% MqttUtils connect DONE " + clientid + " to:" + brokerAddr  )//+ " " + client
+			println("	%%% MqttUtils connect DONE $clientid to $brokerAddr " )//+ " " + client
  			return true
 		} catch (e: Exception) {
 			println("	%%% MqttUtils for $clientid connect ERROR for: $brokerAddr" )
@@ -97,9 +97,9 @@ class MqttUtils  {
 		try {
 			client.publish(topic, message)
 //			println("			%%% MqttUtils published "+ message + " on topic=" + topic);
-		} catch (e: MqttException) {
-			println("	%%% MqttUtils publish ERROR $e"  )
-		}
+		} catch (e:Exception) {
+			println("	%%% MqttUtils publish ERROR $e topic=$topic msg=$msg"  )
+ 		}
 	}
 
 

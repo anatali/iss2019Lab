@@ -11,7 +11,7 @@ System chainStatic
 mqttBroker "localhost" : 1883
 
 Event    local_buttonCmd : local_buttonCmd(X)  
-Event    ledCmd : ledCmd(X)  
+Event    ledCmd : ledCmd(X)   
   
 Dispatch ledCmd : ledCmd(X) 
      

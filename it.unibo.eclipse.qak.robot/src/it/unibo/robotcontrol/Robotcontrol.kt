@@ -26,7 +26,7 @@ class Robotcontrol ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("robotCmd(X)"), Term.createTerm("robotCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								forward("sendToRobot", "msg(${meta_msgArg(0)})" ,"clienttcp" ) 
+								forward("sendToRobot", "msg(${payloadArg(0)})" ,"clienttcp" ) 
 						}
 					}
 					 transition(edgeName="t12",targetState="handleCmd",cond=whenEvent("robotCmd"))

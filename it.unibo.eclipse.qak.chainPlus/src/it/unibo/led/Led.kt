@@ -35,7 +35,7 @@ class Led ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(X)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								println("led handleLedCmd: ${meta_msgArg(0)} counter=$counter")
+								println("led handleLedCmd: ${payloadArg(0)} counter=$counter")
 						}
 						if( checkMsgContent( Term.createTerm("ledCmd(X)"), Term.createTerm("ledCmd(on)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList

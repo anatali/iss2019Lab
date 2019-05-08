@@ -24,9 +24,9 @@ class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				}	 
 				state("waitForEvents") { //this:State
 					action { //it:State
-						TimerActor("timer", scope, context!!, "local_tout_waitForEvents", 60000.toLong())
+						stateTimer = TimerActor("timer_waitForEvents", scope, context!!, "local_tout_sonardetector_waitForEvents", 60000.toLong())
 					}
-					 transition(edgeName="t14",targetState="endOfJob",cond=whenTimeout("local_tout_waitForEvents"))   
+					 transition(edgeName="t14",targetState="endOfJob",cond=whenTimeout("local_tout_sonardetector_waitForEvents"))   
 					transition(edgeName="t15",targetState="sendToRadar",cond=whenEvent("sonar"))
 					transition(edgeName="t16",targetState="showObstacle",cond=whenEvent("sonarDetect"))
 				}	 
@@ -35,7 +35,8 @@ class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								emit("polar", "p(${meta_msgArg(2)},90)" ) 
+								 val D = Integer.parseInt( payloadArg(2) ) * 5
+								forward("polar", "p($D,90)" ,"radar" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )

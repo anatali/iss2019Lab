@@ -2,7 +2,7 @@
  */ 
 
 System prologUsage
-Dispatch goon : goon
+Dispatch goon : goon(X)
  
 Context ctxPrologExample ip [host="localhost" port=8090]
 
@@ -51,7 +51,7 @@ QActor kb context ctxPrologExample{
 	State exampleKb2{ 
  		solve( chain($CHAINCOUNTER,LED) )
 	}
-	Goto exampleKb2continue if {"currentSolution.isSuccess() "  } else exampleKb2end
+	Goto exampleKb2continue if "currentSolution.isSuccess() "  else exampleKb2end
 	
 	State exampleKb2continue{ 
 		println( "LED=${getCurSol(\"LED\")}" ) // LED=led1, led2, ....
@@ -92,14 +92,15 @@ QActor kb context ctxPrologExample{
 		solve( initStepCounter )
  	}
  	Goto exampleKb2Prolog
- 	
-	State exampleKb2Prolog { 
+ 	    
+	State exampleKb2Prolog {            
  		solve( getNextLedName(LED) )		
-		if{"currentSolution.isSuccess()"} println( getCurSol("LED") ) else println("no more leds")
+		//if "currentSolution.isSuccess()"  println( getCurSol("LED") ) else println("no more leds")
+		ifSolved println( @LED ) else println("no more leds")
 	}
-	Goto exampleKb2Prolog if{ "currentSolution.isSuccess()" } else radarUsageInit
+	Goto exampleKb2Prolog if "currentSolution.isSuccess()"  else endOfWork
 	
-	
+/*  	
 	State radarUsageInit{
 		 run resources.radarSupport.activate()
 		 //run it.unibo.radar.common.radarSupport.setUpRadarGui()
@@ -111,17 +112,19 @@ QActor kb context ctxPrologExample{
 	Goto radarUsage  
 	 
 	State radarUsage{
-		solve( getData(D,A)	 )
-		if{"currentSolution.isSuccess()"} println( @A )  
- 		if{"currentSolution.isSuccess()"} run resources.radarSupport.showSpot( @D  ,  @A  )   
+		solve( getData(D,A)	 ) 
+  		if "currentSolution.isSuccess()"  run resources.radarSupport.showSpot( @D  ,  @A  )   
  		delay 500
 	}
 	Goto radarUsage if {"currentSolution.isSuccess() "  } else endOfWork 
-	
+*/	
 	State endOfWork{
-		println(" ------------ BYE    ------------ ") 		
-	}
-}
-  
- 
+		//onMsg ( goon : goon(X) ) { forward kb -m goon : goon($payloadArg(0))}
+		//forward clienttcp -m goon : goon(a)
+		println(" ------------ BYE    ------------ ") 	  	
+	}  
+	   
+} 
+//CodedQActor clienttcp context ctxPrologExample className "resources.clientWenvTcp"  
+ExternalQActor radar context ctxPrologExample  
  

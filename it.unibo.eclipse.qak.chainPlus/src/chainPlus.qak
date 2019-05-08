@@ -62,24 +62,25 @@ if( solveOk() ){
 	
 	State addLed{
 		onMsg( ledRegister : ledRegister( LEDNAME, CTXNAME ) ) {
-			println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")			  
-			solve( addLed("${meta_msgArg(0)}") )
-["sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))  //update system knowledge"]
+			println("control ADDING ${payloadArg(0)} from CONTEXT ${payloadArg(1)}")			  
+			solve( addLed("${payloadArg(0)}") )
+["sysUtil.setActorContextName(payloadArg(0), payloadArg(1))  //update system knowledge"]
 		}
 	}	 
 	Goto blinkChain  //resumeLastPlan
 			  
 	State removeLed{
 		onMsg( ledUnRegister : ledUnRegister( LEDNAME, CTXNAME ) ) {
-			println("REMOVING ${meta_msgArg(0)}")
- 		    solve( removeLed("${meta_msgArg(0)}") )
+			println("REMOVING ${payloadArg(0)}")
+ 		    solve( removeLed("${payloadArg(0)}") )
 		}
 	}	  
 	Goto blinkChain	 //resumeLastPlan
 } 	 
- 
+
+//JUST FOR TESTING ...
 /*  
-//JUST FOR TESTING ...	  
+	  
 QActor dynamo context ctxLedsPlus {
 	State s0 initial{    
 		println("dynamo START")

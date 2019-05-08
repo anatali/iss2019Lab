@@ -32,7 +32,7 @@ class Button ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("local_buttonCmd(X)"), Term.createTerm("local_buttonCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								forward("robotCmd", "robotCmd(${meta_msgArg(0)})" ,"robotcontrol" ) 
+								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"robotcontrol" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitForUserCommand", cond=doswitch() )

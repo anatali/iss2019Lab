@@ -43,7 +43,7 @@ QActor blscontrol context ctxBlsBetter {
 		          whenEvent local_buttonCmd -> s0
 }	
 
-//CodedQActor led context ctxBlsBetter className "it.unibo.bls19d.qak.LedActork"//"resources.LedActork" 
+//CodedQActor led context ctxBlsBetter className "it.unibo.bls19d.qak.LedActork" 
 
 
 QActor led context ctxBlsBetter {  
@@ -55,11 +55,11 @@ QActor led context ctxBlsBetter {
 	}   
 	Transition t0     
 	    whenTime 5000 -> tooLate  
-		whenMsg ledCmd and { "counter++ < 5 || counter > 8"  } -> handleLedCmd
+		whenMsg ledCmd and   "counter++ < 5 || counter > 8"   -> handleLedCmd
  	  
 	State  handleLedCmd{  
 		//printCurrentMessage  //shows the handling of the  messages stored
-		onMsg ( ledCmd : ledCmd(X) ) { println( "led handleLedCmd: ${meta_msgArg(0)} counter=$counter" ) }
+		onMsg ( ledCmd : ledCmd(X) ) { println( "led handleLedCmd: ${payloadArg(0)} counter=$counter" ) }
 		onMsg ( ledCmd : ledCmd(on) ) { run resources.myLedSegm.turnOn( )	}
 		onMsg ( ledCmd : ledCmd(off) ){ run resources.myLedSegm.turnOff( )	}
 	}	

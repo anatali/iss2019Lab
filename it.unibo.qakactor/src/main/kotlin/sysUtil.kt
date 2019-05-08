@@ -166,7 +166,11 @@ object sysUtil{
 	}//createTheActors
 
 	fun createActor( ctx: QakContext, actorName: String,
-					 className : String, scope : CoroutineScope = GlobalScope  ) : ActorBasic{
+					 className : String, scope : CoroutineScope = GlobalScope  ) : ActorBasic?{
+		if( className=="external"){
+			println("sysUtil |   actor=$actorName in context:${ctx.name}  is EXTERNAL"   )
+			return null
+		}
 		println("sysUtil | CREATE actor=$actorName in context:${ctx.name}  class=$className"   )
 		val clazz = Class.forName(className)	//Class<?>
         var actor  : ActorBasic

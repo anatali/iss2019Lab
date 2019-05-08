@@ -96,37 +96,13 @@ class Kb ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 				state("exampleKb2Prolog") { //this:State
 					action { //it:State
 						solve("getNextLedName(LED)","") //set resVar	
-						if( currentSolution.isSuccess() ){
-						 			println(getCurSol("LED"))
-						 		}else{
+						if(currentSolution.isSuccess()) println(getCurSol("LED").toString())
+						 		else{
 						 			 println("no more leds")
 						 		}
 					}
 					 transition( edgeName="goto",targetState="exampleKb2Prolog", cond=doswitchGuarded({currentSolution.isSuccess()}) )
-					transition( edgeName="goto",targetState="radarUsageInit", cond=doswitchGuarded({! currentSolution.isSuccess()}) )
-				}	 
-				state("radarUsageInit") { //this:State
-					action { //it:State
-						resources.radarSupport.activate()
-						solve("consult('radarData.pl')","") //set resVar	
-						delay(5000) 
-						println("radarUsage STARTS")
-					}
-					 transition( edgeName="goto",targetState="radarUsage", cond=doswitch() )
-				}	 
-				state("radarUsage") { //this:State
-					action { //it:State
-						solve("getData(D,A)","") //set resVar	
-						if( currentSolution.isSuccess() ){
-						 			println(getCurSol("A").toString())
-						 		}
-						if( currentSolution.isSuccess() ){
-						 			resources.radarSupport.showSpot(getCurSol("D").toString(), getCurSol("A").toString() )
-						 		}
-						delay(500) 
-					}
-					 transition( edgeName="goto",targetState="radarUsage", cond=doswitchGuarded({currentSolution.isSuccess() }) )
-					transition( edgeName="goto",targetState="endOfWork", cond=doswitchGuarded({! currentSolution.isSuccess() }) )
+					transition( edgeName="goto",targetState="endOfWork", cond=doswitchGuarded({! currentSolution.isSuccess()}) )
 				}	 
 				state("endOfWork") { //this:State
 					action { //it:State

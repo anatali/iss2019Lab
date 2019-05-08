@@ -60,9 +60,9 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledRegister(LEDNAME,CTXNAME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								println("control ADDING ${meta_msgArg(0)} from CONTEXT ${meta_msgArg(1)}")
-								solve("addLed('${meta_msgArg(0)}')","") //set resVar	
-								sysUtil.setActorContextName(meta_msgArg(0), meta_msgArg(1))  //update system knowledge
+								println("control ADDING ${payloadArg(0)} from CONTEXT ${payloadArg(1)}")
+								solve("addLed('${payloadArg(0)}')","") //set resVar	
+								sysUtil.setActorContextName(payloadArg(0), payloadArg(1))  //update system knowledge
 						}
 					}
 					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )
@@ -71,8 +71,8 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), Term.createTerm("ledUnRegister(LEDNAME,CTXNAME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								println("REMOVING ${meta_msgArg(0)}")
-								solve("removeLed('${meta_msgArg(0)}')","") //set resVar	
+								println("REMOVING ${payloadArg(0)}")
+								solve("removeLed('${payloadArg(0)}')","") //set resVar	
 						}
 					}
 					 transition( edgeName="goto",targetState="blinkChain", cond=doswitch() )

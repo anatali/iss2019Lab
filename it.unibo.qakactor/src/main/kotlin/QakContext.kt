@@ -62,7 +62,7 @@ open class QakContext(name: String, val hostAddr: String, val portNum: Int,
         actor.context = this
         actorMap.put( actor.name, actor )
         actor.checkMqtt()
-        //println("QakContext $name | addActor ${actor.name}")
+        println("QakContext $name | addActor ${actor.name}")
     }
 
     fun hasActor( actorName: String ) : ActorBasic? {

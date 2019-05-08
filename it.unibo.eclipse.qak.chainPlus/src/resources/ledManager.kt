@@ -17,10 +17,10 @@ class ledManager   {
 		fun addNewLed( actor: ActorBasicFsm ) : String {
 			val ctx = actor.context
 			val newLed = sysUtil.createActor(ctx!!, "newled${counter++}", "resources.LedActork" ) //GlobalScope
-			ledList.add( newLed )
-			ledNameList.add( newLed.name )
+			ledList.add( newLed!! )
+			ledNameList.add( newLed!!.name )
 			//actor.solve( "addLed( ${newLed.name} )")
-			println("ledManager addNewLed ${newLed.name} numeOfLeds= ${ledList.size}")
+			println("ledManager addNewLed ${newLed!!.name} numeOfLeds= ${ledList.size}")
 			return 	newLed.name	 
 		}
 		
