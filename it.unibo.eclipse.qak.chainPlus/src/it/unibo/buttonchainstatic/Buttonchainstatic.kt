@@ -18,7 +18,7 @@ class Buttonchainstatic ( name: String, scope: CoroutineScope ) : ActorBasicFsm(
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						resources.bls.better.buttonEventEmitter.create(myself ,"click" )
+						resources.bls.better.buttonEventEmitter.create(myself ,""click"" )
 					}
 				}	 
 			}

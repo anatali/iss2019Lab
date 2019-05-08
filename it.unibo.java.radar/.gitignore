@@ -1,0 +1,19 @@
+bin
+bin/default
+.metadata
+build
+
+ # Ignore Gradle project-specific cache directory
+.gradle
+
+
+/ReadMe.html
+.lck/ 
+docker/
+/.metadata/
+/src-gen/
+
+/build*.gradle
+
+
+
