@@ -1,0 +1,81 @@
+/*
+================================================================================
+build.gradle
+for it.unibo.radar
+USAGE:	 
+	gradle  eclipse	//to set the dependency on the library
+	gradle  build
+================================================================================
+*/
+plugins {
+    id 'java'
+    id 'eclipse'
+    //id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+}
+
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+ //MQTT
+// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
+    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.1'
+//JSON
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20160810'
+
+//CUSTOM
+    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'uniboInterfaces.jar')
+    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: '2p301.jar')
+    //For p2p two-way connections (TCP, UDP, BTH, Serial ...)
+    compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'unibonoawtsupports.jar')
+ /*   
+ compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.qakactor-1.0.jar')
+ 
+
+	//BLS
+	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19Local-1.0.jar')
+	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'it.unibo.bls19d-1.0.jar')
+	//RADAR
+	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs', include: 'radarPojo.jar')
+*/
+	//RADAR GUI
+	// https://mvnrepository.com/artifact/org.pushingpixels/trident
+	compile group: 'org.pushingpixels', name: 'trident', version: '1.3'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+ 
+sourceSets {
+    main.java.srcDirs += 'src'
+}
+ 
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+}
+/*
+mainClassName = 'it.unibo.TODOKt'
+
+jar {
+    println("executing jar")
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}
+*/

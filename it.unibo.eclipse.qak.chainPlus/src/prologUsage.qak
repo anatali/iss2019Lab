@@ -1,0 +1,127 @@
+/*
+ */ 
+
+System prologUsage
+Dispatch goon : goon
+ 
+Context ctxPrologExample ip [host="localhost" port=8090]
+
+
+QActor kb context ctxPrologExample{
+["var CHAINCOUNTER = 1"]	
+
+	State s0 initial{ 
+		 solve( consult("userKb.pl")	 )
+	} 
+	Goto exampleUnfiy
+/*
+ * UNIFICATION
+ */
+	State exampleUnfiy{
+		println(" ------------ exampleUnfiy  ------------ ")
+ 		solve( unify( p(X,X ), p(1,2) ), X)
+		println( currentSolution )	//no.
+		solve( unify( p(X,b(X) ), p(1,Y) ) )
+		println( currentSolution )	//X / 1  Y / b(1)
+		println( "X=${getCurSol(\"X\")} Y=${getCurSol(\"Y\")}" )
+	}
+	Goto exampleKb1  
+
+/*
+ * KNOWLEDGE one / all
+ */	
+	State exampleKb1{
+		println(" ------------ exampleKb1    ------------ ")
+		solve( chain(N,LED) )
+		println( "N=${getCurSol(\"N\")} LED=${getCurSol(\"LED\")}" ) //N=1 Y=led1
+		solve( getLedNames(LEDNAMES) )
+		println( getCurSol("LEDNAMES") )		//[led1,led2]		 
+ 	}
+ 	Goto exampleKb2Init    
+ 
+ /*
+ * KNOWLEDGE step by step at model level
+ */		
+	State exampleKb2Init{  
+		["CHAINCOUNTER=1"]
+		println(" ------------ INIT exampleKb2    ------------ ")
+	}
+	Goto exampleKb2 
+	
+	State exampleKb2{ 
+ 		solve( chain($CHAINCOUNTER,LED) )
+	}
+	Goto exampleKb2continue if {"currentSolution.isSuccess() "  } else exampleKb2end
+	
+	State exampleKb2continue{ 
+		println( "LED=${getCurSol(\"LED\")}" ) // LED=led1, led2, ....
+		["CHAINCOUNTER++"]				
+	}
+	Goto exampleKb2
+	
+	State exampleKb2end{  
+		println(" ------------ END exampleKb2    ------------ ") 		
+	}
+	Goto exampleKb2Coded
+
+ /*
+ * KNOWLEDGE step by step at Kotlin code level
+ */				
+	State exampleKb2Coded{
+		println(" ------------ exampleKb2Coded    ------------ ") 		
+		//this code can be better inserted into a static class
+	["CHAINCOUNTER=1
+		 do{
+			solve( \"chain($CHAINCOUNTER,LED) \" )
+            if(currentSolution.isSuccess()){
+				 val curLed = getCurSol(\"LED\")
+				 println( \"LED=$curLed \" )
+				 CHAINCOUNTER++
+			}
+		 }while(currentSolution.isSuccess())			
+	"]
+	}
+	
+	Goto exampleKb2PrologInit
+
+ /*
+ * KNOWLEDGE step by step at Prolog code level
+ */				
+	State exampleKb2PrologInit{
+		println(" ------------ INIT exampleKb2Prolog    ------------ ") 		
+		solve( initStepCounter )
+ 	}
+ 	Goto exampleKb2Prolog
+ 	
+	State exampleKb2Prolog { 
+ 		solve( getNextLedName(LED) )		
+		if{"currentSolution.isSuccess()"} println( getCurSol("LED") ) else println("no more leds")
+	}
+	Goto exampleKb2Prolog if{ "currentSolution.isSuccess()" } else radarUsageInit
+	
+	
+	State radarUsageInit{
+		 run resources.radarSupport.activate()
+		 //run it.unibo.radar.common.radarSupport.setUpRadarGui()
+		 solve( consult("radarData.pl")	 )
+		 delay 5000
+		 println("radarUsage STARTS")
+		 //run resources.radarSupport.showSpot(50,90)		
+	}
+	Goto radarUsage  
+	 
+	State radarUsage{
+		solve( getData(D,A)	 )
+		if{"currentSolution.isSuccess()"} println( @A )  
+ 		if{"currentSolution.isSuccess()"} run resources.radarSupport.showSpot( @D  ,  @A  )   
+ 		delay 500
+	}
+	Goto radarUsage if {"currentSolution.isSuccess() "  } else endOfWork 
+	
+	State endOfWork{
+		println(" ------------ BYE    ------------ ") 		
+	}
+}
+  
+ 
+ 

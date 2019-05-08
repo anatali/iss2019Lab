@@ -77,8 +77,8 @@ if( solveOk() ){
 	}	  
 	Goto blinkChain	 //resumeLastPlan
 } 	 
-
-
+ 
+/*  
 //JUST FOR TESTING ...	  
 QActor dynamo context ctxLedsPlus {
 	State s0 initial{    
@@ -86,7 +86,7 @@ QActor dynamo context ctxLedsPlus {
 	} 
 	Transition t0 whenTime 3000 -> sAdd         
 	    
-	State sAdd{      
+	State sAdd{       
 ["for(i in 0..1){  
 	val ledName = resources.ledManager.addNewLed( myself  ) 
 	println(\"ledRegister($ledName, ${context!!.name})\")
@@ -106,10 +106,10 @@ if( led != null ){
   led.terminate()     //please complete (normally) what you were doing and terminate
 }
 "]
-	} 
+	}   
 	//Goto s0
 } 
-
+*/
   
 
 	

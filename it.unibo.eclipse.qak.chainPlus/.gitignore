@@ -20,3 +20,4 @@ docker/
 /bls.pl
 /blsBetter.pl
 /chainStatic.pl
+/prologUsage.pl

@@ -38,3 +38,12 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+sourceSets {
+    main.java.srcDirs += 'src'
+}
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+}

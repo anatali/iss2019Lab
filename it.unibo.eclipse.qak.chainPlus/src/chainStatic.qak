@@ -28,7 +28,7 @@ CodedQActor led2 context ctxLedChainStatic className "resources.LedActork"
 QActor buttonchainstatic context ctxButtonChainStatic {	//generates local_buttonCmd 
 	State s0 initial { 
 		//run resources.buttonForChain.create()          
-		run resources.bls.better.buttonEventEmitter.create( myself, click )            
+		run resources.bls.better.buttonEventEmitter.create( myself, "click" )            
 	}    
 } 
 

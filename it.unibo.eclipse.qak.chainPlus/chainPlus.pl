@@ -7,4 +7,3 @@ qactor( led1, ctxledsplus, "resources.LedActork").
 qactor( led2, ctxledsplus, "resources.LedActork").
 qactor( button, ctxbutton, "it.unibo.button.Button").
 qactor( control, ctxbutton, "it.unibo.control.Control").
-qactor( dynamo, ctxledsplus, "it.unibo.dynamo.Dynamo").

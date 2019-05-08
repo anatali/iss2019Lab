@@ -8,7 +8,7 @@
  * The generation of a distributed system is quite easy
  */
 
-System blsBetter 
+System blsBetter  
 
 mqttBroker "192.168.1.18" : 1883
 
@@ -21,7 +21,12 @@ Context ctxBlsBetter ip [host="localhost" port=8075]		//used for testing
 
 QActor button context ctxBlsBetter {	//generates local_buttonCmd 
 	State s0 initial { 
-		run resources.bls.better.buttonEventEmitter.create( )                       
+		run resources.bls.better.buttonEventEmitter.create( )    
+		/* 
+		emit local_buttonCmd :  local_buttonCmd( clicked  )     
+		delay 2000
+		emit local_buttonCmd :  local_buttonCmd( clicked  )     
+ 		*/        
 	}    
 }   
   
@@ -38,9 +43,9 @@ QActor blscontrol context ctxBlsBetter {
 		          whenEvent local_buttonCmd -> s0
 }	
 
-CodedQActor led context ctxBlsBetter className "it.unibo.bls19d.qak.LedActork"//"resources.LedActork" 
+//CodedQActor led context ctxBlsBetter className "it.unibo.bls19d.qak.LedActork"//"resources.LedActork" 
 
-/* 
+
 QActor led context ctxBlsBetter {  
 ["var counter = 0"]    
 	State s0 initial {  run resources.myLedSegm.create( )	} 
@@ -48,7 +53,7 @@ QActor led context ctxBlsBetter {
 	
 	State waitCmd{  println("led waits ...") 
 	}   
-	Transition t0    
+	Transition t0     
 	    whenTime 5000 -> tooLate  
 		whenMsg ledCmd and { "counter++ < 5 || counter > 8"  } -> handleLedCmd
  	  
@@ -62,5 +67,5 @@ QActor led context ctxBlsBetter {
 	
 	State tooLate{ println( "Be faster, please ... ")	} Goto waitCmd
 }
-*/
+
  

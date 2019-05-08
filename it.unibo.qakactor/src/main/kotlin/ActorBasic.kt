@@ -2,6 +2,7 @@ package it.unibo.kactor
 
 import alice.tuprolog.Prolog
 import alice.tuprolog.SolveInfo
+import alice.tuprolog.Term
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -30,6 +31,8 @@ abstract class  ActorBasic(val name:         String,
     protected val subscribers = mutableListOf<ActorBasic>()
     var mqttConnected = false
     protected var count = 1;
+
+    protected lateinit var currentSolution : SolveInfo
 
      protected val dispatcher =
         if( confined ) sysUtil.singleThreadContext
@@ -233,6 +236,7 @@ KNOWLEDGE BASE
     fun solve( goal: String, rVar: String ="" ) {
         //println("       ActorBasic $name | solveGoal ${goal} rVar=$rVar" );
         val sol = pengine.solve( "$goal.")
+        currentSolution = sol
         if(  sol.isSuccess  ) {
             if( (rVar != "") ) {
                 val resStr = sol.getVarValue(rVar).toString()
@@ -244,5 +248,9 @@ KNOWLEDGE BASE
     fun solveOk() : Boolean{
         return resVar != "fail"
     }
-
+    fun getCurSol(v : String) : Term {
+        if(currentSolution.isSuccess )
+            return currentSolution.getVarValue( v )
+        else return Term.createTerm("no(more)solution")
+      }
 }

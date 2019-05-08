@@ -239,6 +239,9 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     fun doswitch(): Transition.() -> Unit {
         return { edgeEventHandler = { true } }
     }
+    fun doswitchGuarded( guard:()->Boolean ): Transition.() -> Unit {
+        return { edgeEventHandler = { guard() } }
+    }
 
     /*
     fun fireIf(cond: (ApplMessage) -> Boolean): Transition.() -> Unit {

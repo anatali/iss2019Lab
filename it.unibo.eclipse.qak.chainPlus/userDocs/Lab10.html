@@ -377,10 +377,10 @@ when it receives a message that it is not wants to handle.
 to <b>all</b> the actors of the system, all the actors will receive an emitted event.
 <br/><br/>
 
-<h2>Event-based behavior</h2>
-The (meta-)model of actor behavior at the level of the <tt>DSL</tt> is <bc>event-based</bc> rather than <bc>event-driven</bc>. 
+<h2>Message-based / Event-based behavior</h2>
+The (meta-)model of actor behavior at the level of the <tt>DSL</tt> is <bc>message/event-based</bc> rather than <bc>message/event-driven</bc>. 
 
-This means that there is a <em>new  infrastructural layer</em> that implements the behavior of a <bc>Finite State Machine</bc> over the <i>event-driven</i>
+This means that there is a <em>new  infrastructural layer</em> that implements the behavior of a <bc>Finite State Machine</bc> over the <i>message/event-driven</i>
 basic behavior of the actors. The logic of such a new layer is summarized in the following figure:
 <br/><br/>
 <center><table style="width:98%">
@@ -450,7 +450,7 @@ The transition-condition <bc>whenTine</bc> is implemented by creating in dynamic
 When the given time expires, the timer that emits a system-event  with a name that starts with the prefix <bc>local_tout</bc>; afterwards it terminates.
 Th event is <em>not emitted</em> if a message can be handled before that the timer time expires.
  
-<h2>From local to distributed</h2>
+<h3>From local to distributed</h3>
 
 It is quite easy to change the configuration of the system, so to move one or more actors in different nodes.
 For example, let us move the <tt>Led</tt> in another node:
@@ -477,6 +477,12 @@ qactor( led, ctxled, "it.unibo.bls19d.qak.LedActork").
 qactor( control, ctxbls, "it.unibo.bls19d.qak.ControlActork").
 qactor( button, ctxbls, "it.unibo.bls19d.qak.ButtonActork").
 </pre>
+
+<h2>Prolog</h2>
+A <tt>QActor</tt> is associated to a <em>private knowledge-base</em> (<tt>Actor Knowledge Base</tt> or simply <bc>QaKB</bc>) written in <tt>Prolog</tt> that can be
+dynamically extended.
+The Application Designer must remember to provide the prefixed set of rules required by the <tt>qak-infrastructure</tt>. These rule can be found
+in <a href="../sysRules.pl" target="code">sysRules.pl</a>.
 
 <h2>MQTT</h2>
 The <tt>Qak-infrastructure</tt> is already able (see 
