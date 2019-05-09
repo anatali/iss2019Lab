@@ -2,52 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.bls/bls.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls/bls.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/bls.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/bls.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsBetter.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsBetter.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsMqtt.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/blsMqtt.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/chainPlus.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/chainPlus.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsBetter.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsMqtt.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/blsMqtt.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainPlus.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainStatic.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/chainStatic.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/buttonchainstatic/Buttonchainstatic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/buttonchainstatic/Buttonchainstatic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/control/Control.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/ctxBlsBetterConsole/MainCtxBlsBetterConsole.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/ctxBlsBetterLed/MainCtxBlsBetterLed.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/ctxLedRasp/MainCtxLedRasp.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/dynamo/Dynamo.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/kb/Kb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/kb/Kb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/led/Led.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/it/unibo/led/Led.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/prologUsage.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/prologUsage.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/ledManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/src/resources/ledManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/ledGuarded.png" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/ledGuarded.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/robotBasic.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/robotBasic.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/button/Button.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/button/Button.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/robotcontrol/Robotcontrol.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/robotcontrol/Robotcontrol.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonardetector/Sonardetector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonardetector/Sonardetector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/resources/radarSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/resources/radarSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/robotBasic.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/robotBasic.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userKb.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.chainPlus/userKb.pl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.raspIntroK/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.robots19/userDocs/Lab9.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.robots19/userDocs/Lab9.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ide_1.0.2.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ide_1.0.2.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ui_1.0.2.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork.ui_1.0.2.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork_1.0.2.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/plugins/it.unibo.Qactork_1.0.2.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -82,11 +47,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="106" column="32" selection-start-line="106" selection-start-column="26" selection-end-line="106" selection-end-column="33" />
+            <state relative-caret-position="60">
+              <caret line="99" column="13" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -121,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="17" column="31" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="31" />
+            <state relative-caret-position="136">
+              <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
               <folding>
                 <element signature="e#25#92#0" expanded="true" />
               </folding>
@@ -192,7 +157,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>autoMsg</find>
       <find>msgQueueStore</find>
       <find>checkDoEmptyMove</find>
       <find>lookAtMsgQueueStore</find>
@@ -222,6 +186,7 @@
       <find>checkMqtt</find>
       <find>checkmqtt</find>
       <find>addActor</find>
+      <find>forward</find>
     </findStrings>
     <replaceStrings>
       <replace>kactor.test.chain.</replace>
@@ -264,9 +229,9 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/sysUtil.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/QakContext.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" />
       </list>
     </option>
   </component>
@@ -332,7 +297,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557350016593" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557399702190" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -603,20 +568,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="106" column="32" selection-start-line="106" selection-start-column="26" selection-end-line="106" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/MqttUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="31" />
+        <state relative-caret-position="136">
+          <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
           <folding>
             <element signature="e#25#92#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="99" column="13" selection-start-line="99" selection-start-column="13" selection-end-line="99" selection-end-column="13" />
         </state>
       </provider>
     </entry>

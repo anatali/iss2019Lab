@@ -14,7 +14,7 @@ Dispatch sendToRobot : msg(X)
 Dispatch robotCmd    : robotCmd(X)
 
 Context ctxRobot ip [host="localhost" port=8010]
-Context ctxRadar ip [host="192.168.1.18" port=8015] -mqtt
+Context ctxRadar ip [host="localhost" port=8015] //192.168.1.18 -mqtt
 
 CodedQActor clienttcp context ctxRobot className "resources.clientWenvTcp"
 
@@ -95,8 +95,8 @@ QActor robotcontrol context ctxRobot{
  }
  
  //Runs on another MQTT-based node
- ExternalQActor radar context ctxRadar 
- /* 
+ //ExternalQActor radar context ctxRadar 
+ 
 QActor radar context ctxRadar{
 	
 	State radarUsageInit initial{
@@ -124,4 +124,4 @@ QActor radar context ctxRadar{
 	Goto waitMsg
 	
 }
- */
+ 

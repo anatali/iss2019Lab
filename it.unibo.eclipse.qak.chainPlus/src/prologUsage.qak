@@ -11,22 +11,46 @@ QActor kb context ctxPrologExample{
 ["var CHAINCOUNTER = 1"]	
 
 	State s0 initial{ 
+		 solve( consult("sysRules.pl")	 ) 
+		 solve( consult("prologUsage.pl"))
 		 solve( consult("userKb.pl")	 )
+		 solve( showSystemConfiguration  )
 	} 
 	Goto exampleUnfiy
-/*
+/* 
  * UNIFICATION
  */
 	State exampleUnfiy{
 		println(" ------------ exampleUnfiy  ------------ ")
- 		solve( unify( p(X,X ), p(1,2) ), X)
+ 		solve( unify( p(X,X ), p(1,2) ) )
 		println( currentSolution )	//no.
+		
 		solve( unify( p(X,b(X) ), p(1,Y) ) )
 		println( currentSolution )	//X / 1  Y / b(1)
-		println( "X=${getCurSol(\"X\")} Y=${getCurSol(\"Y\")}" )
+ 		ifSolved println( "X=${getCurSol(\"X\")} Y=${getCurSol(\"Y\")}" ) 
+ 		 		
 	}
-	Goto exampleKb1  
+	Goto exampleStart  
 
+/* 
+ * RULES AT WORK
+ */
+	State exampleStart{
+		println(" ------------ exampleStart    ------------ ")
+		solve( vertical(line( point(16, 4), point(16, 72) )) )
+		println( currentSolution ) 						//yes.
+		solve(  horizontal(line(point(1,1),point(2,Y)))  )
+		ifSolved println( "Y=${getCurSol(\"Y\")}" ) 	//Y=1
+		println( "............................." ) 
+		solve(  horizontalLine( point(1,5),P )  ) 
+		//println( currentSolution )  
+		ifSolved println( "P=${getCurSol(\"P\")} " )  //P=point(3,5)
+		println( "............................." ) 
+		solve(  allHLines( point(1,5),L )  ) 
+		//println( currentSolution )  
+		ifSolved println( "all lines=${getCurSol(\"L\")} " ) 
+  	}
+	//Goto exampleKb1   
 /*
  * KNOWLEDGE one / all
  */	

@@ -100,7 +100,7 @@ Messaging
              }
              //println("       ActorBasic $name | forward ctx= ${ctx}")
              val m = MsgUtil.buildDispatch(name,msgId, msg, destName)
-             println("       ActorBasic $name | forward mqttAddr= ${ctx!!.mqttAddr}")
+             //println("       ActorBasic $name | forward mqttAddr= ${ctx!!.mqttAddr}")
              if( ctx!!.mqttAddr.length > 0  ) {
                  //The producer should be connected to the MQTT broker
                  if( ! mqttConnected ){

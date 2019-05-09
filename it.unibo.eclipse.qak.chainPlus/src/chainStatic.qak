@@ -37,13 +37,12 @@ QActor controlchainstatic context ctxButtonChainStatic {
 	State s0 initial {		           
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("chainDescr.pl")	 )  
-		solve( getLedNames(N) , N   )
+		solve( getLedNames(N) , N        )
 		["ledNames = sysUtil.strRepToList(resVar!!); println(\"LEDNAMES = $ledNames\")"]        
 	}     
 	Goto work   
 	 
-	State work{		println(" ----------------- work ---------------------- ")         		
-	}  
+	State work{		println(" ----------------- work ---------------------- ")     }  
 	Transition t0 whenEvent local_buttonCmd -> blinkChain
  	
 	State blinkChain{
@@ -52,13 +51,12 @@ QActor controlchainstatic context ctxButtonChainStatic {
 	Goto doBlinkChain
 	
 	State doBlinkChain{   
-		solve( getNextLedName( LEDNAME ) , LEDNAME  ) 				
-[" 
-if( solveOk() ){
-    println(\"current led name = $resVar\")   
-	forward( \"ledCmd\", \"ledCmd(on)\", resVar )
+		solve( getNextLedName( LEDNAME )  ) //forward to LEDNAME	
+["if( currentSolution.isSuccess ){ 
+    //println(\"current led name = $resVar\")   
+	forward( \"ledCmd\", \"ledCmd(on)\", getCurSol(\"LEDNAME\").toString() )
 	delay(200)
-	forward( \"ledCmd\", \"ledCmd(off)\", resVar )
+	forward( \"ledCmd\", \"ledCmd(off)\", getCurSol(\"LEDNAME\").toString() )
 }
 "]		 
 	}

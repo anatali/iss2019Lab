@@ -13,7 +13,7 @@ QActor radar context ctxRadar{
   	}
 	Goto radarTest  
 	 
-	State radarTest{
+	State radarTest{ 
 		solve( getData(D,A)	 ) 
  		ifSolved run resources.radarSupport.spot( @D,@A  ) 
  		delay 500

@@ -19,20 +19,38 @@ class Kb ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						solve("consult('sysRules.pl')","") //set resVar	
+						solve("consult('prologUsage.pl')","") //set resVar	
 						solve("consult('userKb.pl')","") //set resVar	
+						solve("showSystemConfiguration","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="exampleUnfiy", cond=doswitch() )
 				}	 
 				state("exampleUnfiy") { //this:State
 					action { //it:State
 						println(" ------------ exampleUnfiy  ------------ ")
-						solve("unify(p(X,X),p(1,2))","X") //set resVar	
+						solve("unify(p(X,X),p(1,2))","") //set resVar	
 						println(currentSolution)
 						solve("unify(p(X,b(X)),p(1,Y))","") //set resVar	
 						println(currentSolution)
-						println("X=${getCurSol("X")} Y=${getCurSol("Y")}")
+						if(currentSolution.isSuccess()) println("X=${getCurSol("X")} Y=${getCurSol("Y")}")
 					}
-					 transition( edgeName="goto",targetState="exampleKb1", cond=doswitch() )
+					 transition( edgeName="goto",targetState="exampleStart", cond=doswitch() )
+				}	 
+				state("exampleStart") { //this:State
+					action { //it:State
+						println(" ------------ exampleStart    ------------ ")
+						solve("vertical(line(point(16,4),point(16,72)))","") //set resVar	
+						println(currentSolution)
+						solve("horizontal(line(point(1,1),point(2,Y)))","") //set resVar	
+						if(currentSolution.isSuccess()) println("Y=${getCurSol("Y")}")
+						println(".............................")
+						solve("horizontalLine(point(1,5),P)","") //set resVar	
+						if(currentSolution.isSuccess()) println("P=${getCurSol("P")} ")
+						println(".............................")
+						solve("allHLines(point(1,5),L)","") //set resVar	
+						if(currentSolution.isSuccess()) println("all lines=${getCurSol("L")} ")
+					}
 				}	 
 				state("exampleKb1") { //this:State
 					action { //it:State

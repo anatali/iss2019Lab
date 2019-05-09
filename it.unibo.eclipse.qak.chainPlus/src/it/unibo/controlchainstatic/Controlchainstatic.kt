@@ -40,13 +40,12 @@ class Controlchainstatic ( name: String, scope: CoroutineScope ) : ActorBasicFsm
 				}	 
 				state("doBlinkChain") { //this:State
 					action { //it:State
-						solve("getNextLedName(LEDNAME)","LEDNAME") //set resVar	
-						 
-						if( solveOk() ){
-						    println("current led name = $resVar")   
-							forward( "ledCmd", "ledCmd(on)", resVar )
+						solve("getNextLedName(LEDNAME)","") //set resVar	
+						if( currentSolution.isSuccess ){ 
+						    //println("current led name = $resVar")   
+							forward( "ledCmd", "ledCmd(on)", getCurSol("LEDNAME").toString() )
 							delay(200)
-							forward( "ledCmd", "ledCmd(off)", resVar )
+							forward( "ledCmd", "ledCmd(off)", getCurSol("LEDNAME").toString() )
 						}
 						stateTimer = TimerActor("timer_doBlinkChain", scope, context!!, "local_tout_controlchainstatic_doBlinkChain", 200.toLong())
 					}
