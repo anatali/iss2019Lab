@@ -1,6 +1,6 @@
 chain(1, led1 ).
 chain(2, led2 ).
-%% chain(3, led3 ).
+chain(3, led3 ).
 
 getLedNames(LEDNAMES) :-
 	findall( NAME, chain(  _, NAME ), LEDNAMES),

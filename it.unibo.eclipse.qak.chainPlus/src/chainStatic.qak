@@ -19,8 +19,12 @@ Context ctxButtonChainStatic    ip [host="localhost" port=8010]  //-mqtt
 Context ctxLedChainStatic       ip [host="localhost" port=8050]  //-mqtt //192.168.43.229
 //Context ctxLedRasp     ip [host="192.168.43.18"  port=8040] 
 
+
+//WARNIG: remember to change chainDescr
 CodedQActor led1 context ctxLedChainStatic className "resources.LedActork"  
 CodedQActor led2 context ctxLedChainStatic className "resources.LedActork"  
+CodedQActor led3 context ctxLedChainStatic className "resources.LedActork"  
+
 
 //CodedQActor ledArduino context ctxLedsPlus className "resources.LedOnArduinoActork" 
 //CodedQActor ledRasp context ctxLedRasp  className "resources.LedOnRasp" 
@@ -40,13 +44,13 @@ QActor controlchainstatic context ctxButtonChainStatic {
 		solve( getLedNames(N) , N        )
 		["ledNames = sysUtil.strRepToList(resVar!!); println(\"LEDNAMES = $ledNames\")"]        
 	}     
-	Goto work   
+	Goto work     
 	 
 	State work{		println(" ----------------- work ---------------------- ")     }  
 	Transition t0 whenEvent local_buttonCmd -> blinkChain
  	
 	State blinkChain{
-		solve( resetLedCounter )	   
+		solve( resetLedCounter )	    
 	}
 	Goto doBlinkChain
 	

@@ -8,7 +8,7 @@ getCtxPortNames(PORTNAMES) :-
 getTheContexts(CTXS) :-
 	findall( context( CTX, HOST, PROTOCOL, PORT ), context( CTX, HOST, PROTOCOL, PORT ), CTXS).
 getTheActors(ACTORS) :-
-	findall( qactor( A, CTX, CLASS ), qactor( A, CTX, CLASS ), ACTORS).
+	findall( qactor( A, CTX ), qactor( A, CTX ), ACTORS).
 
 
 getOtherContexts(OTHERCTXS, MYSELF) :-
@@ -23,6 +23,11 @@ getOtherContextNames(OTHERCTXS, MYSELF) :-
 		(context( CTX, HOST, PROTOCOL, PORT ), CTX \== MYSELF),
 		OTHERCTXS
 	).
+/*
+	stdout <- println(CTXS),
+	'$tolist'(CTXS,OTHERCTXS),
+	stdout <- println( aaa(OTHERCTXS) ).
+*/
 	
 getTheActors(ACTORS,CTX) :-
 	findall( qactor( A, CTX, CLASS ), qactor( A, CTX, CLASS ),   ACTORS).
@@ -87,14 +92,18 @@ showListOfElements([C|R]):-
 	stdout <- println( C ),
 	showElements(R).
 
-unify(A,B)    :-  A = B.
-
 assign( I,V ) :-  retract( value(I,_) ),!, assert( value( I,V )).
 assign( I,V ) :-  assert( value( I,V )).
 getVal( I, V ):-  value(I,V), !.
 getVal( I, fail ).
-inc(I,K,N):- value( I,V ), N is V + K, assign( I,N ).
-dec(I,K,N):- value( I,V ), N is V - K, assign( I,N ).
+inc(I,K,N):-
+	value( I,V ),
+	N is V + K,
+	assign( I,N ).
+dec(I,K,N):-
+	value( I,V ),
+	N is V - K,
+	assign( I,N ).
 
 addRule( Rule ):-
 	%%output( addRule( Rule ) ),

@@ -35,7 +35,7 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 				state("waitMsg") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t07",targetState="showPoint",cond=whenDispatch("polar"))
+					 transition(edgeName="t00",targetState="showPoint",cond=whenDispatch("polar"))
 				}	 
 				state("showPoint") { //this:State
 					action { //it:State
