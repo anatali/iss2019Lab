@@ -33,6 +33,7 @@ abstract class  ActorBasic(val name:         String,
     protected var count = 1;
 
     protected lateinit var currentSolution : SolveInfo
+    protected lateinit var currentProcess  : Process
 
      protected val dispatcher =
         if( confined ) sysUtil.singleThreadContext

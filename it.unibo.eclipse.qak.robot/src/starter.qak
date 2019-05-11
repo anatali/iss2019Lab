@@ -1,0 +1,12 @@
+System starter
+
+Context ctxStarter ip [host="localhost" port=8005]   
+
+QActor starter context ctxStarter {	
+	State s0 initial { 
+		machineExec  "\"runWenv.bat\""
+		println("VIRTUAL ENVIRONMENT STARTED")
+		//machineExec  "\"runFrontEnd.bat\""
+		//println("FRONT END STARTED") 
+	}  
+}

@@ -1,6 +1,9 @@
 package it.unibo.robots19.basic
 
-import it.unibo.kactor.*
+
+import it.unibo.kactor.ActorBasic
+import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.MsgUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -47,15 +50,15 @@ fun main() = runBlocking {
 //    val sink = Sink("sink", this )
 //    a.subscribe(sink)
 
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.turnLeftStr, a)
+    MsgUtil.sendMsg("main",RobotCmds.id, RobotCmds.turnLeftStr, a)
     delay(1000)
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.turnRightStr, a)
+    MsgUtil.sendMsg("main",RobotCmds.id, RobotCmds.turnRightStr, a)
     delay(1000)
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.forwardStr, a)
+    MsgUtil.sendMsg("main",RobotCmds.id, RobotCmds.forwardStr, a)
     delay(1500)
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.backwardStr, a)
+    MsgUtil.sendMsg("main",RobotCmds.id, RobotCmds.backwardStr, a)
     delay(1000)
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.stopStr, a)
+    MsgUtil.sendMsg("main",RobotCmds.id, RobotCmds.stopStr, a)
 
     println("END   ")
 }

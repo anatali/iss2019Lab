@@ -1,0 +1,18 @@
+System frontend
+mqttBroker "127.0.0.1" : 1883    //192.168.1.18
+
+Dispatch robotCmd    : robotCmd(X)
+Event    robotCmd    : robotCmd(X)
+
+Context ctxFrontend ip [host="192.168.1.18" port=8018] -mqtt
+//Context ctxWorker   ip [host="localhost" port=8010] -mqtt
+
+QActor frontend context ctxFrontend{ 
+	State s0 initial {		
+		println("frontend STARTS")
+		//emit robotCmd :  robotCmd( moveforward )
+		run resources.buttonEventEmitter.create(myself, "")  //generates local_buttonCmd
+ 	}   
+ 	Transition t0 whenTime 600000 -> s0
+}	  
+ 

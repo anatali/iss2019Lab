@@ -1,6 +1,5 @@
 package it.unibo.radar.common;
-import it.unibo.is.interfaces.IOutputEnvView;
- 
+
  
 public class radarSupport {
 private  static RadarControl radarControl;

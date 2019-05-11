@@ -14,16 +14,4 @@ object radarSupport{
 			update(distance,angle)
 		}
 
-	/*
-	lateinit var radar : RadarControl 
-	
-	fun create(){
-		it.unibo.radar.common.radarSupport.setUpRadarGui()
-		radar = RadarControl(null)
-	}
-	fun sendData( dist: String, theta: String ){
-		val d = Integer.parseInt(dist)*5	//Amplify
-		radar.update(   "$d",   theta );
-	}
- */
 }

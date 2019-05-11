@@ -8,5 +8,7 @@ public class ButtonBasic extends java.awt.Button {
 		this.addActionListener(  listener );
 		frame.add(this); 
 		frame.validate();
+		frame.isVisible();
+		//System.out.println("BUTTON BASIC CREATED");
 	}
 }

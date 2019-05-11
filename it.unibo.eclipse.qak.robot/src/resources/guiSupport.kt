@@ -8,21 +8,21 @@ import kotlinx.coroutines.launch
 import java.util.*
 import resources.java.ButtonAsGui
 
-class buttonEventEmitter : IObserver {
-
+class guiSupport : IObserver {
 	
 	companion object{
 		val buttonLabels = arrayOf("Stop","Forward","Backward","Left","Rigth","Stop")
 		val buttonCmds   = arrayOf("stop","moveforward","movebackward","moveleft","moveright","stop")
-		lateinit var buttonActor : ActorBasic // = sysUtil.getActor("button")
-		fun create(actor : ActorBasic, todo : String){
+		lateinit var buttonActor : ActorBasic
+		fun create( actor: ActorBasic, todo: String ){
 			buttonActor = actor
 			val concreteButton = ButtonAsGui.createButton( buttonLabels )
-            concreteButton.addObserver( buttonEventEmitter() )			 
+            concreteButton.addObserver( guiSupport() )
+			//println("guiSupport CREATED")					 
 		}
 	}
       override fun update(o: Observable, arg: Any) {	   
-	   println("buttonEventEmitter update $arg with actor=${buttonActor.name}")
+	   //println("guiSupport update $arg $buttonActor")
        if( buttonActor is ActorBasic ){
 		   var cmd ="stop"
 		   when( arg as String){
@@ -32,9 +32,8 @@ class buttonEventEmitter : IObserver {
 			   buttonLabels[3] -> cmd = buttonCmds[3]
 			   buttonLabels[4] -> cmd = buttonCmds[4]			   
 		   }
-		    println("buttonEventEmitter emit $cmd " )
 	       GlobalScope.launch{
-				buttonActor.emit("robotCmd","robotCmd($cmd)")				
+ 			    MsgUtil.sendMsg ("robotCmd" , "robotCmd($cmd)" , buttonActor)
 	       }
 	   }
     }

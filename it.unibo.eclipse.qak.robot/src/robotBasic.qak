@@ -12,7 +12,7 @@ Dispatch polar       : p( Distance, Angle )
 
 Dispatch sendToRobot : msg(X)
 Dispatch robotCmd    : robotCmd(X)
-
+ 
 Context ctxRobot ip [host="localhost" port=8010]
 Context ctxRadar ip [host="localhost" port=8015] //192.168.1.18 -mqtt
 
@@ -20,7 +20,7 @@ CodedQActor clienttcp context ctxRobot className "resources.clientWenvTcp"
 
 QActor button context ctxRobot {	
 	State s0 initial { 
-		run resources.buttonEventEmitter.create()  //generates local_buttonCmd                     
+		run resources.buttonEventEmitter.create(myself, "")  //generates local_buttonCmd          
 	}  
 	Goto waitForUserCommand
 	
@@ -44,7 +44,7 @@ QActor robotcontrol context ctxRobot{
  	State handleCmd{
  		printCurrentMessage
 		onMsg ( robotCmd : robotCmd(CMD) ){			
-			forward clienttcp -m sendToRobot : msg(   $payloadArg(0)    ) 
+			forward clienttcp -m sendToRobot : msg( $payloadArg(0)   )  
 		}
 	}
  	Transition t1  whenEvent robotCmd  -> handleCmd 

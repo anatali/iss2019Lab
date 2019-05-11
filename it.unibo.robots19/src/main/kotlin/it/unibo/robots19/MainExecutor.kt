@@ -1,4 +1,4 @@
-package it.unibo.robots19
+package it.unibo.robots19.basic
 
 import it.unibo.kactor.*
 import it.unibo.robots19.basic.RobotCmds
@@ -13,7 +13,7 @@ fun main() = runBlocking {
     )
 
     val robot = QakContext.getActor("robot")
-    MsgUtil.sendMsg(RobotCmds.id, RobotCmds.turnLeftStr, robot!!)
+    MsgUtil.sendMsg("main", RobotCmds.id, RobotCmds.turnLeftStr, robot!!)
     delay( 1000 )
     MsgUtil.sendMsg(RobotCmds.id, RobotCmds.turnRightStr, robot)
     delay( 1000 )

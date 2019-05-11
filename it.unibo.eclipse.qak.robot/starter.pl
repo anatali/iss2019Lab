@@ -1,6 +1,5 @@
 %====================================================================================
-% radar description   
+% starter description   
 %====================================================================================
-mqttBroker("127.0.0.1", "1883").
-context(ctxradar, "192.168.1.18",  "MQTT", "0" ).
- qactor( radar, ctxradar, "it.unibo.radar.Radar").
+context(ctxstarter, "localhost",  "TCP", "8005" ).
+ qactor( starter, ctxstarter, "it.unibo.starter.Starter").
