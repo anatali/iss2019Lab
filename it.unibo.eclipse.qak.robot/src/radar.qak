@@ -4,7 +4,7 @@ mqttBroker "127.0.0.1" : 1883
 Dispatch  polar : p( Distance, Angle )  
 Event     polar : p( Distance, Angle )   
  
-Context ctxRadar ip [host="192.168.1.18" port=8015] -mqtt
+Context ctxRadar ip [host="localhost" port=8015] -mqtt //192.168.1.18
 
 QActor radar context ctxRadar{  
 	  
@@ -35,21 +35,3 @@ QActor radar context ctxRadar{
 	
 }
 
-/* 
-QActor radartester context ctxRadar{
-	State s0 initial{
-		delay 4000
-		forward radar -m  polar : p( 50, 10  ) 
-		delay 1000
-		forward radar -m  polar : p( 50, 20  ) 
-		delay 1000
-		forward radar -m  polar : p( 50, 30  ) 
-		delay 1000
-		forward radar -m  polar : p( 50, 40  ) 
-		delay 1000
-		forward radar -m  polar : p( 50, 50  ) 
-		delay 1000
-		forward radar -m  polar : p( 50, 60  ) 
-	}
-}
-*/

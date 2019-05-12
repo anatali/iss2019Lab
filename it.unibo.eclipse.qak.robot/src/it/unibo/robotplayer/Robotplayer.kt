@@ -19,9 +19,8 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 				state("s0") { //this:State
 					action { //it:State
 						println("robotplayer STARTS")
-						resources.guiSupport.create(myself ,"" )
-						resources.clientWenvObjTcp.initClientConn(myself ,"localhost" )
-						resources.clientWenvObjTcp.sendMsg("msg(moveleft)" )
+						resources.robotSupport.create(myself ,"localhost" )
+						resources.robotSupport.sendMsg("msg(moveleft)" )
 						delay(1000) 
 						resources.clientWenvObjTcp.sendMsg("msg(moveright)" )
 					}
@@ -31,10 +30,6 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 				state("handleCmd") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("local_buttonCmd(X)"), Term.createTerm("local_buttonCmd(CMD)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.clientWenvObjTcp.sendMsg("msg(${payloadArg(0)})" )
-						}
 						if( checkMsgContent( Term.createTerm("robotCmd(X)"), Term.createTerm("robotCmd(usercmd(CMD))"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("usercmd", "payloadArg(0)" ,"mind" ) 
