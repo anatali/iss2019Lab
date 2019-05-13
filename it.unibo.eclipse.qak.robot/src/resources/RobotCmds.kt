@@ -1,4 +1,4 @@
-package it.unibo.robots19.basic
+package resources
 
 
 public sealed class  RobotCmds(val cmd: String, val arg : Int=0, val id : String = RobotCmds.id){

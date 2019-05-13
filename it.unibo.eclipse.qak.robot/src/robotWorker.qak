@@ -23,7 +23,7 @@ QActor robotplayer context ctxWorker{
 		println("robotplayer STARTS")
 		//run resources.guiSupport.create( myself , "") 
 		run resources.robotSupport.create( myself, "localhost" ) 
-		run resources.robotSupport.sendMsg( "msg(moveleft)"  ) 
+		run resources.robotSupport.move( "msg(moveleft)"  ) 
 		delay 1000
 		run resources.clientWenvObjTcp.sendMsg( "msg(moveright)"  )
  	}   

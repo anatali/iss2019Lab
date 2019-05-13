@@ -1,3 +1,4 @@
+package resources
 import it.unibo.kactor.ActorBasic
 
 object robotSupport{

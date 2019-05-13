@@ -158,8 +158,13 @@ table, th, td {
  <ol>
 <li><a href="#lab11req">Requirements</a></li>
 <li><a href="#lab11iot">Domain (IOT)</a></li>
-<li></li>
-<li></li>
+<li><a href="#Methodology">Methodology</a></li>
+<li><a href="#reqanalysis">Requirement Analysis</a></li>
+<li><a href="#firstModel">A first model of the system Architecture</a></li>
+<li><a href="#problemanalysis">Problem  Analysis</a></li>
+
+<li><a href="#logicalarch">Logical Architecture</a></li>
+<li><a href="#Project">Project</a></li>
 <li></li>
 <li></li>
  </ol>
@@ -184,17 +189,16 @@ an alarm emitted by some external entity, etc.
 -->
 
 <div class="req">
-Design and build a software systems that allows an <em>human user</em> to interact with a single <em>Differential Drive Robot</em> (<tt>DDR</tt>) 
-by using a <em>remote console</em> (running on a conventional PC or on a smart device) in order to:
+Design and build a software systems (named <bc>ddrWorker</bc <!-- in project  it.unibo.eclipse.qak.ddrWorker  -->) that allows an <em>human user</em> to interact with a single <em>Differential Drive Robot</em> (<tt>DDR</tt>) 
+by using a <em>remote console</em> (running on a conventional PC or on a Smart Device) in order to:
 
 <ol>
-<li><em>sendMoveCmds</em>: send commands to move a <tt>DDR</tt> that could be a <bc>virtual</bc> or a <bc>real robot</bc>,
+<li><em>sendMoveCmds</em>: send commands to <em>move</em> a <tt>DDR</tt> that could be a <bc>virtual</bc> or a <bc>real robot</bc>,
 with reference to the <a href="#available">resources already available</a>.</li>
 <li><em>receiveSensorInfo</em>: receive information from the sensors mounted on the robot, in particular from the <bc>HC-SR04 sonar</bc>  
 put on the front of the <tt>DDR</tt>. </li>
-<li><em>showSensorData</em>: show data coming forn the sonar-sensor  on a radar <tt>GUI</tt>:
-<br/>
-<center><img src="./radarGui.png" alt="radarGui" width="20%" height="20%"/></center>
+<li><em>showSonarData</em>: show data coming forn the sonar-sensor  on a radar <tt>GUI</tt>:
+<img src="./radarGui.png" alt="radarGui" width="10%" height="10%"/>
 </li>
 <li><em>handleConds</em>: allow the robot to <bc>stop</bc> its behavior under some specific condition, 
 like for example an <b>alarm</b> emitted by some external entity, or when the <b>ambient temperature</b> overcomes a given limit value 
@@ -209,54 +213,67 @@ This system is intended to be a starting step towards the development of
 <a href="https://en.wikipedia.org/wiki/Internet_of_things">Internet of things</a>(<tt>IOT</tt>) applications.
 See the section: <a href="#lab11iot">The Application Domain</a>
 </div>
- 
 
 
-<h2><a id=""/>A first Requirement Analysis</h2> 
+<h3 id="available">Resources already available</h3>
+Besides the (open-source) software available from Internet, we can use software already developed by our company, and in particular:
+<ul>
+<li>A basic robot control software for physical ddr robots (<bc>BaseRobot</bc>), modeled as an  <tt>observable POJO</tt>.
+See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>.</li>
+<li>A software system written in Java that simulates the screen of a <bc>radar</bc>. 
+The project  <tt>it.unibo.java.radar</tt> implements a software system able to display distance values on an output device 
+that simulates the screen of a radar.  The deployment file is   <tt>radarPojo.jar</tt> .
 
-<ol>
+ </li>
+<!--  A IOT envelope (called mbot) of the BaseRobot that allows us to send commands on the network to a real
+robot built upon a mBot robot.  -->
+<li>A virtual environment (named <bc>WEnv</bc>) built in JavaScript, that includes a virtual robot that accepts commands 
+sent on a TCP connection on port 8999.</li>
+<!-- <li>A front-end system written in Node that provides a user interface and support for user-authentication.</li> -->
+</ul>
 
+<h3>Basic questions</h3>
+Let us recall a set of basic questions that we can pose to ourselves at the starting of each new project.
+<ul>
+<li><em>Incremental development</em>: Is it possible to organize the production in terms of a <tt>sequence of systems</tt>, each facing a more wide/complex
+set of requirements so that each system can be designed and built as the <bc>incremental evolution</bc> of the previous one?</li>
+<li><em>Top-down or bottom up?</em>: What is our starting point? Do we start by what is already available (by following a <tt>bottom-up</tt> approach) or 
+do we follow a <tt>top-down</tt> approach that first detects a logic architecture of the system and afterward selects
+the technology? </li>
+<!-- <li><em>Requirement sequencing</em>Is it possible to order the set of requirements into a list of increasing complexity and to harmonize such a list
+with the <bc>product backlog</bc> defined by our <tt>product-owner</tt>? </li> -->
+</ul>
 
-<li>Our software system is a <bc>distributed system</bc> composed by two main entities: a <em>console</em> running on a <em>consoleNode</em> 
-that can be a PC or on a SmartDevice and a (real or virtual) <em>robot</em>, running on its own <em>robotNode</em>.</li>
-<li>The robot is equipped with a sonar (<em>sonar-robot</em>) put in front of it. Other sensors are, at the moment, 
-excluded for costs reason.</li>
-<li>To understand (or formally define) what is the meaning of the term <bc>robot</bc>, we must read
- <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>. </li>
-<li>The software running on the <em>consoleNode</em>  must allow the end-user to control the robot with very simple commands
-(e.g. <tt>W, A, S, D, H</tt>).</li>
-<li>The software running on the <em>robotNode</em> must execute the commands sent by the <em>human-user</em> via the <em>console</em> and must
-be sensible to a set of conditions. Let us name, from now on, such a set with the term <em>envConds</em>.</li>
-<li>The <em>envConds</em> set is actually given only with reference to examples, i.e. it is not clearly defined. However, the given examples
-suggest two different type of conditions:
-	<ul>
-	<li>conditions related the <b>world external</b> to the system, e.g. alarms and temperature;</li>
-	<li>conditions that <b>arise form the work of the system</b> itself, e.g. fining an obstacle.</li>
-	</ul>
-</li>
-<li>It is not clear whether the <em>radarGUI</em> must be shown on the <em>console</em> or is a different system. From 
-<a href="#available">resources already available</a> we can assume that we can/should use the   </li>
-<li></li>
-</ol>
+Of course, we will - sooner or later - use as much as possible the (hopefully corrected or at least tested) software
+that our company has already built in the <tt>IOT</tt> domain. The intent however is to avoid the a-priori introduction of
+such a software. 
+<!--Rather, our aim is to introduce proper available software libraries, infrastructures, components
+etc. as the proper consequence of our problem analysis or of our design choices. -->
+In other words: 
 
-<h2><a id=""/>Methodology</h2> 
+<div class="remark">
+we will not start from any available software, with the intent to discover what are the most appropriate resources
+able to satisfy our needs <bc>after the analysis</bc> of the requirements  and of the problem.
+</div>
+
+<!--
+Model Driven methodology (GeneXus)
+Describe: Create a technology-independant representation of the desired application.
+Forward Engineering: The specific model can be discarded and regenerated at any time.
+Extensible: There are clear options to extend the model, which enable the developer to extend the final application using the specific language.
+DRY: There are no duplicated definitions of concepts (Don't Repeat Yourself).
+
+https://wiki.analog.com/resources/eval/user-guides/eval-adicup3029/smart_app/android_app
+-->
+
+<h2><a id="Methodology"/>Methodology</h2> 
 <img src="./Scrum-framework.jpg" alt="Scrum-framework" width="70%" height="70%"/>
 <br/>
 <img src="./overviewScrum.jpg" alt="overviewScrum" width="100%" height="30%"/>
 <!--
 <br/><img src="./scrum1.png" alt="scrum1" /> <br/>-->
 
-<h3>Basic questions</h3>
-Let us recall a set of basic questions that we can pose to ourselves at the starting of each new project.
-<ul>
-<li><em>Top-down or bottm up?</em>What is our starting point? Do we start by what is already available (by following a bottom-up approach) or 
-do we follow a top-down approach that first detects a logic architecture of the system and afterward selects
-the technology? </li>
-<li><em>Incremental development</em>Is it possible to organize the production in terms of a sequence of systems, each facing a more wide/complex
-set of requirements so that each system can be designed and built as the evolution of the previous one?</li>
-<li><em>Requirement sequencing</em>Is it possible to order the set of requirements into a list of increasing complexity and to harmonize such a list
-with the <bc>product backlog</bc> defined by our <tt>product-owner</tt>? </li>
-</ul>
+
 
 <h3>Technology (in)dependency and modeling</h3>
 In the first phase of our development, we want to be <em>technology-aware</em> but also as much technology-independent
@@ -271,94 +288,272 @@ people know, understand, or simulate a subject the model represents.
 <h3>A Product Backlog</h3>
 According to the <em>SCRUM</em> framework of software development, we will suppose that the product backlog defined
 by the <tt>Product Owner</tt> allows us to satisfy the set of requirements in incremental way, by distinguishing among a
-set of macro-steps. For example, we could define the sequence reported in the following sections.
+set of macro-steps. More precisely, we will follow a '<bc>zooming methodology</bc>' (see the video 
+<a href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="web">Powers of Ten</a>):
 
 <ol>
 <li>The first step defines the main components of the logic architecture of the systems, by focusing on their
 interaction. In this phase, the behavior of each component should be simply 'simulated' in order to reproduce a set of
-interaction patterns, with the aim to introduce a proper set of initial (integration, functional) Test-Plans.</li>
-<li>Refine the logical architecture defined in the previous step by including code that satisfies more functional requirements .</li>
+interaction patterns, with the aim to introduce a proper set of initial (integration, functional) <bc>Test-Plans</bc>.</li>
+<li>Refine the logical architecture defined in the previous step, by including code that satisfies the requirements
+in more detailed way or that satisfies more functional requirements.
+.</li>
 
 </ol>
 
-<h3 id="available">Resources already available</h3>
-Our company (Unibo) has already developed:
-<ul>
-<li>A basic robot control software for physical ddr robots (BaseRobot), modelled as an observable POJO.
-See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>.</li>
-<li>A software system written in Java that simulates the screen of a radar. 
-The project  it.unibo.java.radar implements a software system able to display distance values on an output device 
-that simulates the screen of a radar.  The deployment file is   radarPojo.jar .
-
- </li>
-<li>A IOT envelope (called mbot) of the BaseRobot that allows us to send commands on the network to a real
-robot built upon a mBot robot.</li>
-<li>A virtual environment (named W-Env) built in JavaScript, that includes a virtual robot that accepts commands 
-sent on a TCP connection on port 8999</li>
-<li>A front-end system written in Node that provides a user interface and support for user-authentication.</li>
-</ul>
-Of course, we will - sooner or later - use as much as possible the (hopefully corrected or at least tested) software
-that our company has already built in the IOT domain. The intent however is to avoid the a-priori introduction of
-such a software. Rather, our aim is to introduce proper available software libraries, infrastructures, components
-etc. as the proper consequence of our problem analysis or of our design choices. In other words, we will not
-start from any available software, with the intent to 'discover its applicability' to our needs.
-
-<h2><a id=""/>Problem analysis</h2> 
-
-<ol>
-
-
-<li>Our software system is a <bc>distributed system</bc> composed by two main entities: a <em>console</em> running on a <em>consoleNode</em> 
-that can be a PC or on a SmartDevice and a (real or virtual) <em>robot</em>, running on its own <em>robotNode</em>.</li>
-<li>To understand (or fomally define) what is the meaning of the term <bc>robot</bc>, we must read
- <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>. </li>
-<li>The robot is equipped with a sonar (<em>sonar-robot</em>) put in front of it. Other sensors are, at the moment, 
-excluded for costs reason.</li>
-<li>The software running on the <em>consoleNode</em>  must allow the end-user to control the robot with very simple commands
-(e.g. <tt>W, A, S, D, H</tt>).</li>
-<li>The software running on the <em>robotNode</em> must execute the commands sent by the <em>human-user</em> via the <em>console</em> and must
-be sensible to a set of conditions. Let us name, from now on, such a set with the term <em>envConds</em>.</li>
-<li></li>
-<li></li>
-<li></li>
-</ol>
-<h3><a id=""/>A first Architecture</h3>
-Our first step consists in defining the overall system architecture in a technology-independent way.
-
- 
-
-At this stage, the system can be represented as in the following, informal picture:
- 
-
-<h3><a id=""/>Logical Architecture</h3>
+<h3><a id="logicalarch"/>Logical Architecture</h3>
 For <em>logical architecture</em> we intend here a software architecture that is defined as consequence of the
-problem analysis phase, in the attempt to focus our attention on the problem itself, rather than on some specific
+requirement/problem analysis phase, in the attempt to focus our attention <bc>on the problem itself</bc>, rather than on some specific
 technology. We say that, during problem analysis, we are technology aware but not technology dependent.
 <br/><br/>
-The logical architecture will be progressively defined in more detailed way in order to define a project architecture
+The logical architecture will be progressively 'zoomed' into a project architecture
 and a proper implementation and deployment.
 <br/><br/>
 The incremental approach will lead us to define a sequence of (QActor) models, that can be used as the reference
-point for a sequence of SPRINT, in SCRUM terminology.
+point for a sequence of <tt>SCRUM</tt> <bc>sprint</bc>, followed by proper <bc>sprint-review</bc> and <bc>sprint-retrospective</bc>.
+
+
+<h2><a id="reqanalysis"/>Requirement Analysis</h2> 
+
+After the (several) meetings with the customer, we can say that:
+
+<ol>
+<li>Our software system is a <bc>distributed system</bc> composed by two main entities: a <em>console</em> running on a <em>consoleNode</em> 
+that can be a PC or on a SmartDevice and a (real or virtual) <em>robot</em>, running on its own <em>robotNode</em>.</li>
+<li>The robot is equipped with a sonar (<em>sonar-robot</em>) put in front of it. Other sensors are, at the moment, 
+excluded for costs reason.</li>
+<li>To understand (or formally define) what is the meaning of the term <bc>robot</bc>, we must read
+ <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>. </li>
+<li>The software running on the <em>consoleNode</em>  must allow the end-user to control the robot with very simple commands
+(e.g. <tt>W, A, S, D, H</tt>).</li>
+<li>A <em>console</em> running on a Smart Device could be conceived as a Application or as user-GUI running into  <bc>Browser</bc>. </li>
+<li>The software running on the <em>robotNode</em> must execute the commands sent by the <em>human-user</em> via the <em>console</em> and must
+be sensible to a set of conditions. Let us name, from now on, such a set with the term <em>envConds</em>.</li>
+<li>The <em>envConds</em> set is actually given only with reference to examples, i.e. it is not clearly defined. However, the given examples
+suggest two different type of conditions:
+	<ul>
+	<li>conditions related the <b>world external</b> to the system, e.g. alarms and temperature;</li>
+	<li>conditions that <b>arise form the work of the system</b> itself, e.g. fining an obstacle.</li>
+	</ul>
+</li>
+<li>It is not clear whether the <em>radarGUI</em> is shown in the <em>console</em> or it is a different system. From 
+<a href="#available">resources already available</a> we can assume that we can/should use the library <tt>radarPojo.jar</tt>.
+</li>
+
+</ol>
+
+<h3><a id="firstModel"/>A first model of the system Architecture</h3>
+At this stage, the system architecture can be represented as in the following, informal picture:
 
 <center><table style="width:98%">
 <tbody>	
 <tr>
 <td style="width:55%">
-<img src="./robotRadar0.png" alt="robotRadar0" width="100%" height="30%"/>
+<img src="./robotRadarReq.png" alt="robotRadarReq" width="100%" height="30%"/>
 <br/>
-
- 
 </td>
 <td>
 <m>
+The structure of the <bc>information exchanged</bc> among the main components of the application is (at the moment) defined as follows:
+<ul>
+<li>from console to robot: <tt>robotCmd : robotCmd(X)</tt></li>
+<li>from robot to radar: <tt>polar : p( Distance, Angle )</tt></li>
+<li>from the environment: <tt>envCond : envCond(X)</tt></li>
+</ul>
+
+These definitions are very useful to assure interoperability, but they do not arise from the requirements; thus,
+can be changed in the next models.
 </m>
+ 
 </td>
  </tr>
  </table>
 </center>
 
-<h2><a id=""/>Project</h2> 
+<h3>A first model (towards<bc> Requirements traceability</bc>) </h3>
+A better specification of the system architecture can be given by introducing a model written in a machine-understandable language. 
+For example, a   
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.qakactor/userDocs/LabQak.html" target="lecture">QActor</a>
+specification allows us to introduce a description that associates each running component (actor) with the requirements 
+(see <a href="https://en.wikipedia.org/wiki/Requirements_traceability" target="web">Requirements traceability</a>):
+
+<pre>
+------------------------------------------------------------------------------------------------------------------------------
+System ddrWorker
+Event    envCond   : envCond( CONDTYPE )            //from the environment  
+Event    sonar     : sonar(SONAR, TARGET, DISTANCE)	//from (virtual) sonar   FIXED
+
+Dispatch robotCmd  : robotCmd(X)	                //from console to robot
+Dispatch polar     : p( Distance, Angle )           //from robot to radar
+
+Context <ks>ctxRobotReq</ks> ip [host="localhost" port=8025]
+
+<kc>//requirements: <ks>human user interaction, sendMoveCmds</ks></kc>
+QActor <k>consolereq</k> context ctxRobotReq{ <kc>//Provides a user GUI and <k>Forwards <ks>robotCmd</ks> to robotplayerreq</k></kc> }        
+
+<kc>//requirements: <ks>sendMoveCmds.move, handleConds, receiveSensorInfo, showSonarData</ks></kc>
+QActor <k>robotplayerreq</k> context ctxRobotReq{ <kc>/* Handles <ks>robotCmd</ks>, <ks>sonar</ks>  <ks>envCond</ks>;  
+	                                                     moves the robot and <k>Forwards <ks>polar</ks> to radarreq</k></kc> */ }    
+
+<kc>//requirements: <ks>showSonarData</ks></kc></kc>
+QActor <k>radarreq</k> context ctxRobotReq{  <kc>//Uses <ks>radarPojo.jar</ks> to show sonar data</kc> }     
+------------------------------------------------------------------------------------------------------------------------------
+ </pre>
+
+  <center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:60%">
+<img src="./robotRadarReq1.png" alt="robotRadarReq1" width="95%" height="30%"/>
+</td>
+<td>
+<m>
+<li>The first prototype aims at capturing the <em>fundamental aspects</em> of the system we have to build.<br/></br></li>
+<li>There is a <bc>single context</bc>, in order to just check  the logical interactions and to fix the main business logic.<br/></br></li>
+<li>The <bc>business logic</bc> is almost entirely included in <tt>robotreq</tt> actor.</li>
+ 
+</m>
+ 
+</td>
+ </tr>
+ </table>
+</center>
+
+Note that in this first model:
+<ul>
+<li>The names of the actors ends with the suffix <bc>req</bc> to recall that they are part of the first model, related
+to our requirement analysis. These names will change in our next model refinements.</li>
+<li>The <em>responsibility</em> to satisfy the requirements is already <b>distributed among the actors</b>.</li>
+<li>Data identified with the names <bc>userCmd</bc>, <bc>robotCmd</bc> and <bc>polar</bc> are defined as <em>Dispatches</em>.
+In fact, from the requirements, we deduce that each of them has a specific destination.
+</li>
+<li>Data identified with the names <bc>envCond</bc> and <bc>sonar</bc> are defined each as <em>Events</em>.
+In fact, <bc>envCond</bc> models information generated by the 'world' outside the system, while <bc>sonar</bc> is information
+generated by the virtual robot. In both cases, the entity that generates this data cannot known the names of the actors
+working in our system.</li>    
+</ul> 
+
+  
+ 
+
+<h2><a id="problemanalysis"/>Problem analysis</h2> 
+The main goal of problem analysis can be summarized as follows:
+<ol>
+<li>understand the (technical) problems posed by the requirements;</li>
+<li>identify the best tools/libraries/supports etc. necessary and/or useful for building the system;</li>
+<li>clarify the constraints  (human, technical, economical, etc.) related to both the software
+<em> product</em> to build and the software <em>production process</em>;</li>
+<li>define a <bc>logical architecture</bc> of the system and a <em>first working prototype</em> to show to the customer
+at the end of our <em>first sprint</em>.
+</li>
+ 
+</ol>
+
+In the context of <tt>SCRUM</tt>, one or more of these steps will be redone in the <em>sprint-review meetings</em>.
+
+<br/><br/>
+In our case, we can say that:
+<ol>
+<li>The system is distributed and <bc>effective operational supports</bc> are required. At the current state of the art, there are
+several possible candidates, whose number is increasing. We will start from the support given by the <tt>QAk-infrastructure</tt>.
+In a second moment, when the requirements and the consequent logic of the system will be more stable, we will discuss
+how to introduce other, different supports, with particular reference to MQTT and Web.<br/><br/></li>
+
+<li>The system requires a <tt>GUI</tt> for human-user interaction that can be created by the <bc>console</bc> component.
+The <tt>GUI</tt> can be a built by reusing a <tt>POJO</tt> already available, with the addition of an adapter to send information
+to the <bc>console</bc>. A possible adapter can be <a href="../src/resources/guiSupport.kt" target="code">guiSupport.kt</a>
+<br/><br></li>
+
+<li>The <bc>robot</bc> component is a <em>proactive/reactive</em> component that must execute user commands without
+loosing the capability to react to <em>envCond</em> events and to update the radar. It can be wise to remember the  motto
+<bc>divide et impera</bc>  and distribute some responsibility to another actor:
+
+<pre>
+<kc>//requirements: <ks>sendMoveCmds.move, handleConds</ks></kc>
+QActor <k>robotplayerreq</k> context ctxRobotReq{ <kc>// Handles <ks>robotCmd</ks>, <ks>envCond</ks>; moves the robot }    
+
+<kc>//requirements: <ks>receiveSensorInfo, showSonarData</ks></kc>
+QActor <k>sonarhandler</k> context ctxRobotReq{  <kc>//Handles <ks>sonar</ks> and <k>Forwards <ks>polar</ks> to radarreq</k></kc> }    
+
+</pre>
+
+</li>
+<li>The library <tt>radarPojo.jar</tt> used by the <bc>radar</bc> requires the introduction of a proper  support, like 
+<a href="../src/resources/radarSupport.kt" target="code">radarSupport.kt</a>.
+
+<br/><br></li>
+
+<li>The problem of a <em>GUI for a smart device</em> is not trivial, since the development of an Application requires
+effort and probably introduces technology lock-in. On the other side, a browser-based implementation of the user-GUI 
+requires the introduction of a Web infrastructure. We will discuss this problem later.</li>
+</ol>
+
+
+<h3>Logical architecture</h3>
+With the help of the supports built  after the problem analysis phase, we can define in more detail the logical architecture of the system
+and our first working prototype. Let us start from the actor that captures our business logic.
+
+
+<h4><a id=""/>The robot</h4> 
+The principal actor of our system is a proactive/reactive component that executes user commands without
+loosing the capability to react to <bc>envCond</bc> events:
+<pre>
+<k>QActor</k> robotreq <k>context</k> ctxRobotReq{   
+	<k>State</k> s0 <k>initial</k> { <k>run</k> <ks>resources.robotSupport.create( myself, "virtual" )</ks>	}
+	<k>Goto</k> waitCmd
+	
+	<k>State</k> waitCmd{ }
+	<k>Transition</k> t0 <k>whenMsg</k>  robotCmd -> handleCmd
+	             <k> whenEvent</k> envCond -> handleCond
+	
+	<k>State</k> handleCmd{
+		<k>onMsg</k> ( robotCmd : robotCmd(CMD) ){	<k>run</k> <ks>resources.robotSupport.move( "msg(${payloadArg(0)})"  )</ks> }	
+	}
+	<k>Goto</k> waitCmd
+	
+	<k>State</k> handleCond{ <k>run</k> <ks>resources.robotSupport.move( "msg(stop)"  )</ks> }
+	<k>Goto</k> waitCmd
+}
+</pre>
+
+This version of the <bc>robot</bc> actor does not handle the event <em>sonar</em> emitted by the virtual robot.  This task is delegated
+to the <bc>sonarhandler</bc> that <tt>forward</tt> the message  <em>polar</em> to the actor <bc>radar</bc> .
+
+<h4><a id=""/>The sonarhandler</h4> 
+  
+<pre> 
+QActor sonarhandler context ctxRobotReq{
+ 	State init initial{
+		println("sonardatahandler STARTS ")
+	}         
+	Goto waitForEvents
+	   
+	State waitForEvents{  }      
+   	Transition t0 whenEvent sonar ->  sendToRadar
+   	  
+ 	State sendToRadar{                      
+ 		printCurrentMessage                                        
+ 		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
+			[" val D = Integer.parseInt( payloadArg(2) ) * 5"] 
+			forward radarreq -m polar : p( $D, 90  ) 
+ 		}
+ 	} 
+ 	Goto waitForEvents
+}
+</pre>
+
+The full code is in <a href="../src/robotWorker.qak" target="code">robotWorker.qak</a>.
+ 
+ <h2><a id="Project"/>Project</h2> 
+ Here we:
+ <ol>
+ <li>Distribute the actors into proper different contexts </li>
+ <li>Test the system on the network</li>
+ <li>Substitute the  <tt>QAk-infrastructure</tt> with a <tt>MQTT</tt> support.</li>
+ <li>Define a better <tt>GUI</tt> and/or a <tt>GUI</tt> for a <bc>smart device</bc> </li>
+ </ol>
+<!--
+
 <h3><a id=""/>Project Architecture</h3>
 <center><table style="width:98%">
 <tbody>	
@@ -403,11 +598,11 @@ for the application logic.</li>
 <h2><a id="lab11iot"/>The Application Domain</h2> 
 
 <img src="./iot3.png" alt="iot0" width="100%" height="100%"/>
-<!-- <img src="./iot3.jpg" alt="iot0" width="70%" height="70%"/> -->
+
 <img src="./iot0.png" alt="iot0" width="70%" height="70%"/>
 <img src="./iotRobot.png" alt="iotRobot" width="60%" height="60%"/>
 
-
+-->
 
 
 </div>

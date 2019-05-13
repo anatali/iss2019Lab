@@ -20,7 +20,7 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 					action { //it:State
 						println("robotplayer STARTS")
 						resources.robotSupport.create(myself ,"localhost" )
-						resources.robotSupport.sendMsg("msg(moveleft)" )
+						resources.robotSupport.move("msg(moveleft)" )
 						delay(1000) 
 						resources.clientWenvObjTcp.sendMsg("msg(moveright)" )
 					}
