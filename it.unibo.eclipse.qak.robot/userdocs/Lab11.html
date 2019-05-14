@@ -189,14 +189,16 @@ an alarm emitted by some external entity, etc.
 -->
 
 <div class="req">
-Design and build a software systems (named <bc>ddrWorker</bc <!-- in project  it.unibo.eclipse.qak.ddrWorker  -->) that allows an <em>human user</em> to interact with a single <em>Differential Drive Robot</em> (<tt>DDR</tt>) 
+Design and build a software systems (named <bc>ddrworker</bc <!-- in project  it.unibo.eclipse.qak.ddrworker  -->) that allows an <em>human user</em> to interact with a single <em>Differential Drive Robot</em> (<tt>DDR</tt>) 
 by using a <em>remote console</em> (running on a conventional PC or on a Smart Device) in order to:
 
 <ol>
 <li><em>sendMoveCmds</em>: send commands to <em>move</em> a <tt>DDR</tt> that could be a <bc>virtual</bc> or a <bc>real robot</bc>,
 with reference to the <a href="#available">resources already available</a>.</li>
-<li><em>receiveSensorInfo</em>: receive information from the sensors mounted on the robot, in particular from the <bc>HC-SR04 sonar</bc>  
-put on the front of the <tt>DDR</tt>. </li>
+
+<li><em>receiveSensorInfo</em>: receive information from the  <bc>HC-SR04 sonar</bc> sensor mounted on the robot  and from
+the sonars (if they exists) present in the robot working environment. </li>
+
 <li><em>showSonarData</em>: show data coming forn the sonar-sensor  on a radar <tt>GUI</tt>:
 <img src="./radarGui.png" alt="radarGui" width="10%" height="10%"/>
 </li>
@@ -210,7 +212,7 @@ or when the robot <b>hits an obstacle</b>.
 
 <div class="remark">
 This system is intended to be a starting step towards the development of 
-<a href="https://en.wikipedia.org/wiki/Internet_of_things">Internet of things</a>(<tt>IOT</tt>) applications.
+<a href="https://en.wikipedia.org/wiki/Internet_of_things" target="web">Internet of things</a>(<tt>IOT</tt>) applications.
 See the section: <a href="#lab11iot">The Application Domain</a>
 </div>
 
@@ -218,8 +220,11 @@ See the section: <a href="#lab11iot">The Application Domain</a>
 <h3 id="available">Resources already available</h3>
 Besides the (open-source) software available from Internet, we can use software already developed by our company, and in particular:
 <ul>
+<li>A virtual environment (named <bc>WEnv</bc>) built in JavaScript, that includes a virtual robot that accepts commands 
+sent on a<tt> TCP</tt> connection on port <tt>8999</tt>. 
+See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.robots19/userDocs/Lab9.html" target="lecture">Lab9.html</a> </li>
 <li>A basic robot control software for physical ddr robots (<bc>BaseRobot</bc>), modeled as an  <tt>observable POJO</tt>.
-See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>.</li>
+See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3 and 4</a>.</li>
 <li>A software system written in Java that simulates the screen of a <bc>radar</bc>. 
 The project  <tt>it.unibo.java.radar</tt> implements a software system able to display distance values on an output device 
 that simulates the screen of a radar.  The deployment file is   <tt>radarPojo.jar</tt> .
@@ -227,8 +232,6 @@ that simulates the screen of a radar.  The deployment file is   <tt>radarPojo.ja
  </li>
 <!--  A IOT envelope (called mbot) of the BaseRobot that allows us to send commands on the network to a real
 robot built upon a mBot robot.  -->
-<li>A virtual environment (named <bc>WEnv</bc>) built in JavaScript, that includes a virtual robot that accepts commands 
-sent on a TCP connection on port 8999.</li>
 <!-- <li>A front-end system written in Node that provides a user interface and support for user-authentication.</li> -->
 </ul>
 
@@ -267,7 +270,7 @@ https://wiki.analog.com/resources/eval/user-guides/eval-adicup3029/smart_app/and
 -->
 
 <h2><a id="Methodology"/>Methodology</h2> 
-<img src="./Scrum-framework.jpg" alt="Scrum-framework" width="70%" height="70%"/>
+<img src="./Scrum-framework.jpg" alt="Scrum-framework" width="60%" height="60%"/>
 <br/>
 <img src="./overviewScrum.jpg" alt="overviewScrum" width="100%" height="30%"/>
 <!--
@@ -325,7 +328,7 @@ excluded for costs reason.</li>
 <li>To understand (or formally define) what is the meaning of the term <bc>robot</bc>, we must read
  <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf</a>. </li>
 <li>The software running on the <em>consoleNode</em>  must allow the end-user to control the robot with very simple commands
-(e.g. <tt>W, A, S, D, H</tt>).</li>
+(e.g. <tt>w, a, s, d, h</tt>).</li>
 <li>A <em>console</em> running on a Smart Device could be conceived as a Application or as user-GUI running into  <bc>Browser</bc>. </li>
 <li>The software running on the <em>robotNode</em> must execute the commands sent by the <em>human-user</em> via the <em>console</em> and must
 be sensible to a set of conditions. Let us name, from now on, such a set with the term <em>envConds</em>.</li>
@@ -379,9 +382,10 @@ specification allows us to introduce a description that associates each running 
 
 <pre>
 ------------------------------------------------------------------------------------------------------------------------------
-System ddrWorker
+System ddrworker
 Event    envCond   : envCond( CONDTYPE )            //from the environment  
-Event    sonar     : sonar(SONAR, TARGET, DISTANCE)	//from (virtual) sonar   FIXED
+Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
+Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
 
 Dispatch robotCmd  : robotCmd(X)	                //from console to robot
 Dispatch polar     : p( Distance, Angle )           //from robot to radar
@@ -392,7 +396,7 @@ Context <ks>ctxRobotReq</ks> ip [host="localhost" port=8025]
 QActor <k>consolereq</k> context ctxRobotReq{ <kc>//Provides a user GUI and <k>Forwards <ks>robotCmd</ks> to robotplayerreq</k></kc> }        
 
 <kc>//requirements: <ks>sendMoveCmds.move, handleConds, receiveSensorInfo, showSonarData</ks></kc>
-QActor <k>robotplayerreq</k> context ctxRobotReq{ <kc>/* Handles <ks>robotCmd</ks>, <ks>sonar</ks>  <ks>envCond</ks>;  
+QActor <k>robotreq</k> context ctxRobotReq{ <kc>/* Handles <ks>robotCmd</ks>, <ks>sonar</ks>  <ks>envCond</ks>;  
 	                                                     moves the robot and <k>Forwards <ks>polar</ks> to radarreq</k></kc> */ }    
 
 <kc>//requirements: <ks>showSonarData</ks></kc></kc>
@@ -457,20 +461,43 @@ In our case, we can say that:
 <li>The system is distributed and <bc>effective operational supports</bc> are required. At the current state of the art, there are
 several possible candidates, whose number is increasing. We will start from the support given by the <tt>QAk-infrastructure</tt>.
 In a second moment, when the requirements and the consequent logic of the system will be more stable, we will discuss
-how to introduce other, different supports, with particular reference to MQTT and Web.<br/><br/></li>
+how to introduce other, different supports, with particular reference to <tt>MQTT</tt> and <tt> Web</tt>.<br/><br/></li>
+
+
 
 <li>The system requires a <tt>GUI</tt> for human-user interaction that can be created by the <bc>console</bc> component.
 The <tt>GUI</tt> can be a built by reusing a <tt>POJO</tt> already available, with the addition of an adapter to send information
 to the <bc>console</bc>. A possible adapter can be <a href="../src/resources/guiSupport.kt" target="code">guiSupport.kt</a>
-<br/><br></li>
+that sends the dispatch:
+<pre>
+Dispatch <ks>userCmd : userCmd(X)</ks>		<kc>//with X = w | a | s | d | h</kc> 
+</pre>
+</li>
 
-<li>The <bc>robot</bc> component is a <em>proactive/reactive</em> component that must execute user commands without
-loosing the capability to react to <em>envCond</em> events and to update the radar. It can be wise to remember the  motto
-<bc>divide et impera</bc>  and distribute some responsibility to another actor:
+<li>The <bc>robot</bc> component represents the control part of the system. To make such a control independent form the
+particular type of robot to move (<tt>virtual, real-mbot, real-nano</tt>, etc.) it is opportune to introduce a resource 
+<a href="../src/resources/robotSupport.kt" target="code">robotSupport.kt</a> working as a robot-
+<a href="https://en.wikipedia.org/wiki/Facade_pattern" target="web">facade</a>.
+<!--
+<br/></br>
+From  <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3 and 4</a>, we discover that each robot type
+'emit' sonar event with its own pattern. In particular:
+<ul>
+<li><em>mbot</em> sends over a TCP connection data of the form: </li>
+<li></li>
+</ul>
+-->
+<br/></br>
+</li>
+
+<li>The <bc>robot</bc> control must work as a <em>proactive/reactive</em> component, since it must execute user commands without
+loosing the capability to react to <em>envCond</em> events and to update the radar. With reference to the  motto
+<i>divide et impera</i>, it is opportune to distribute some responsibility by introducing another actor to handle 
+<bc>sonar</bc> events and to interact with the radar:
 
 <pre>
 <kc>//requirements: <ks>sendMoveCmds.move, handleConds</ks></kc>
-QActor <k>robotplayerreq</k> context ctxRobotReq{ <kc>// Handles <ks>robotCmd</ks>, <ks>envCond</ks>; moves the robot }    
+QActor <k>robotreq</k> context ctxRobotReq{ <kc>// Handles <ks>robotCmd</ks>, <ks>envCond</ks>; moves the robot }    
 
 <kc>//requirements: <ks>receiveSensorInfo, showSonarData</ks></kc>
 QActor <k>sonarhandler</k> context ctxRobotReq{  <kc>//Handles <ks>sonar</ks> and <k>Forwards <ks>polar</ks> to radarreq</k></kc> }    
@@ -478,20 +505,51 @@ QActor <k>sonarhandler</k> context ctxRobotReq{  <kc>//Handles <ks>sonar</ks> an
 </pre>
 
 </li>
-<li>The library <tt>radarPojo.jar</tt> used by the <bc>radar</bc> requires the introduction of a proper  support, like 
-<a href="../src/resources/radarSupport.kt" target="code">radarSupport.kt</a>.
+<li>The <bc>radar</bc> actor must show on the <tt>radar-GUI</tt> the sonar data enclosed in the dispatch <bc>polar : p( Distance, Angle )</bc>.
+To this end, it can reuse the <tt>POJO</tt> facade given by the library <tt>radarPojo.jar</tt>:
 
-<br/><br></li>
+<pre>
+package radarPojo;
+import it.unibo.radar.common.RadarControl;
+public class radarSupport {
+private  static RadarControl radarControl;
+
+public static void <k>setUpRadarGui</k>( ) {
+		try {
+			radarControl = new RadarControl( null );
+		} catch (Exception e) {
+ 			e.printStackTrace();
+		}
+	}
+	public static void <k>update</k>(  String dist, String theta ){
+		if( radarControl != null ) radarControl.update(   dist,   theta );
+	}
+}
+</pre>
+</li>
 
 <li>The problem of a <em>GUI for a smart device</em> is not trivial, since the development of an Application requires
 effort and probably introduces technology lock-in. On the other side, a browser-based implementation of the user-GUI 
-requires the introduction of a Web infrastructure. We will discuss this problem later.</li>
+requires the introduction of a Web infrastructure. Let us postpone this problem to a next sprint.</li>
 </ol>
 
 
 <h3>Logical architecture</h3>
 With the help of the supports built  after the problem analysis phase, we can define in more detail the logical architecture of the system
-and our first working prototype. Let us start from the actor that captures our business logic.
+and our first working prototype. Let us start from the declaration of the messages and events:
+
+<pre>
+Event    envCond   : envCond( CONDTYPE )            //from the environment (simulated)
+Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
+Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
+
+Dispatch userCmd   : userCmd(X)		                //from GUI to console
+Dispatch robotCmd  : robotCmd(X)	                //from console to robot
+Dispatch polar     : p( Distance, Angle )           //from robot to radar
+</pre>
+
+
+Let us start from the actor that captures our business logic.
 
 
 <h4><a id=""/>The robot</h4> 
@@ -522,24 +580,22 @@ to the <bc>sonarhandler</bc> that <tt>forward</tt> the message  <em>polar</em> t
 <h4><a id=""/>The sonarhandler</h4> 
   
 <pre> 
-QActor sonarhandler context ctxRobotReq{
- 	State init initial{
-		println("sonardatahandler STARTS ")
-	}         
-	Goto waitForEvents
-	   
 	State waitForEvents{  }      
-   	Transition t0 whenEvent sonar ->  sendToRadar
-   	  
+   	Transition t0 whenEvent sonar      ->  sendToRadar
+   	              whenEvent sonarRobot ->  sendToRadar
+   	               
  	State sendToRadar{                      
  		printCurrentMessage                                        
- 		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
-			[" val D = Integer.parseInt( payloadArg(2) ) * 5"] 
+ 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){     
+			[" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
 			forward radarreq -m polar : p( $D, 90  ) 
+ 		}
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
+			forward radarreq -m polar : p( $D, 180  ) 
  		}
  	} 
  	Goto waitForEvents
-}
 </pre>
 
 The full code is in <a href="../src/robotWorker.qak" target="code">robotWorker.qak</a>.
@@ -547,10 +603,12 @@ The full code is in <a href="../src/robotWorker.qak" target="code">robotWorker.q
  <h2><a id="Project"/>Project</h2> 
  Here we:
  <ol>
- <li>Distribute the actors into proper different contexts </li>
- <li>Test the system on the network</li>
+ <li>Provide the proper support for the different types of robots.</li>
+ <li>Distribute the actors into proper different contexts. </li>
+ <li>Test the system on the network.</li>
  <li>Substitute the  <tt>QAk-infrastructure</tt> with a <tt>MQTT</tt> support.</li>
- <li>Define a better <tt>GUI</tt> and/or a <tt>GUI</tt> for a <bc>smart device</bc> </li>
+ <li>Define a better <tt>GUI</tt> and/or a <tt>GUI</tt> for a <bc>smart device</bc>. </li>
+ <li>Refactor the <bc>robot</bc> control according to the MVC design pattern.</li>
  </ol>
 <!--
 

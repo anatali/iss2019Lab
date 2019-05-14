@@ -29,6 +29,7 @@ class Consolereq ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				}	 
 				state("handleUserCmd") { //this:State
 					action { //it:State
+						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"robotreq" ) 

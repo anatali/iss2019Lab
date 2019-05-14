@@ -1,5 +1,5 @@
 %====================================================================================
-% ddrWorker description   
+% ddrworker description   
 %====================================================================================
 context(ctxrobotreq, "localhost",  "TCP", "8025" ).
  qactor( consolereq, ctxrobotreq, "it.unibo.consolereq.Consolereq").

@@ -1,4 +1,6 @@
-package it.unibo.radar.common;
+package radarPojo;
+
+import it.unibo.radar.common.RadarControl;
 
 public class radarSupport {
 private  static RadarControl radarControl;

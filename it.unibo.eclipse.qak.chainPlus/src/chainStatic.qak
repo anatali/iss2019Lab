@@ -19,7 +19,6 @@ Context ctxButtonChainStatic    ip [host="localhost" port=8010]  //-mqtt
 Context ctxLedChainStatic       ip [host="localhost" port=8050]  //-mqtt //192.168.43.229
 //Context ctxLedRasp     ip [host="192.168.43.18"  port=8040] 
 
-
 //WARNIG: remember to change chainDescr
 CodedQActor led1 context ctxLedChainStatic className "resources.LedActork"  
 CodedQActor led2 context ctxLedChainStatic className "resources.LedActork"  
@@ -46,7 +45,7 @@ QActor controlchainstatic context ctxButtonChainStatic {
 	}     
 	Goto work     
 	 
-	State work{		println(" ----------------- work ---------------------- ")     }  
+	State work {		println(" ----------------- work ---------------------- ")     }  
 	Transition t0 whenEvent local_buttonCmd -> blinkChain
  	
 	State blinkChain{

@@ -36,12 +36,19 @@ import alice.tuprolog.*
 			var outS = "{'type': 'alarm', 'arg': 0 }"
 			val t = Term.createTerm(v) as Struct
 			val ts = t.getArg(0).toString()
+//			when( ts ){
+//				"moveforward"   -> outS = "{'type': 'moveForward',  'arg': -1 }"
+//    			"movebackward"  -> outS = "{'type': 'moveBackward', 'arg': -1 }"
+//				"moveleft"      -> outS = "{'type': 'turnLeft', 'arg': 400 }"
+// 				"moveright"     -> outS = "{'type': 'turnRight', 'arg': 400 }"
+//   			     "stop"         -> outS = "{'type': 'alarm', 'arg': 0 }"
+// 			}
 			when( ts ){
-				"moveforward"   -> outS = "{'type': 'moveForward',  'arg': -1 }"
-    			"movebackward"  -> outS = "{'type': 'moveBackward', 'arg': -1 }"
-				"moveleft"      -> outS = "{'type': 'turnLeft', 'arg': 400 }"
- 				"moveright"     -> outS = "{'type': 'turnRight', 'arg': 400 }"
-   			     "stop"         -> outS = "{'type': 'alarm', 'arg': 0 }"
+				"w"   -> outS = "{'type': 'moveForward',  'arg': -1 }"
+    			"s"  -> outS = "{'type': 'moveBackward', 'arg': -1 }"
+				"a"      -> outS = "{'type': 'turnLeft', 'arg': 400 }"
+ 				"d"     -> outS = "{'type': 'turnRight', 'arg': 400 }"
+   			    "h"         -> outS = "{'type': 'alarm', 'arg': 0 }"
  			}
 			val jsonObject = JSONObject(outS)
 			val msg= "$sep${jsonObject.toString()}$sep"
@@ -64,27 +71,23 @@ import alice.tuprolog.*
                             "webpage-ready" -> println("webpage-ready ")
                             "sonar-activated" -> {
                                 //println("sonar-activated ")
-                                val jsonArg = jsonObject.getJSONObject("arg")
+                                val jsonArg   = jsonObject.getJSONObject("arg")
                                 val sonarName = jsonArg.getString("sonarName")
-                                val distance = jsonArg.getInt("distance")
-                                //println("clientWenvObjTcp | sonarName=$sonarName distance=$distance")
-                                val m = MsgUtil.buildEvent("tcp", sonarName,"$sonarName($distance)" )
+                                val distance  = jsonArg.getInt("distance")
                                 //emitLocalStreamEvent( m )
-                                //emit( m )
-								val m1 = "sonar($sonarName,clientWenvObjTcp,$distance)"
+ 								val m1 = "sonar($sonarName, $distance)"
 								//println( "clientWenvObjTcp EMIT $m1"   );
-							    actor.emit("sonar", m1);
+							    actor.emit("sonar",m1 );
                             }
                             "collision" -> {
                                 //println( "collision"   );
                                 val jsonArg = jsonObject.getJSONObject("arg")
                                 val objectName = jsonArg.getString("objectName")
-                                //println("clientWenvObjTcp | collision objectName=$objectName")
-                                val m = MsgUtil.buildEvent( "tcp", "collision","collision($objectName)")
+                                println("clientWenvObjTcp | collision objectName=$objectName")
+                                //val m = MsgUtil.buildEvent( "tcp", "collision","collision($objectName)")
 								//println("clientWenvObjTcp | emit $m")
                                 //emitLocalStreamEvent( m )
-                                //emit( m )
- 							 actor.emit("sonarDetect","sonarDetect(TARGET)"
+ 							     actor.emit("sonarRobot","sonar(5)"
 									.replace("TARGET", objectName
 									.replace("-", "")));
                            }

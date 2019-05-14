@@ -1,16 +1,16 @@
 /*
 ================================================================================
-build_ctxRobot.gradle
+build_ctxConsole.gradle
 GENERATED ONLY ONCE
 USAGE:	 
 	gradle    build eclipse		//to set the dependency on the library
-	gradle   -b build_ctxRobot.gradle distZip //for executable jar and distribution
+	gradle   -b build_ctxConsole.gradle distZip //for executable jar and distribution
 	
-	gradle   -b build_ctxRobot.gradle qawrapper
-	gradlew  -b build_ctxRobot.gradle eclipse		//to set the dependency on the library
-	gradlew  -b build_ctxRobot.gradle build
-	gradlew  -b build_ctxRobot.gradle -q tasks --all
-	gradlew  -b build_ctxRobot.gradle cleanDistDir	//to clean the src directory
+	gradle   -b build_ctxConsole.gradle qawrapper
+	gradlew  -b build_ctxConsole.gradle eclipse		//to set the dependency on the library
+	gradlew  -b build_ctxConsole.gradle build
+	gradlew  -b build_ctxConsole.gradle -q tasks --all
+	gradlew  -b build_ctxConsole.gradle cleanDistDir	//to clean the src directory
 ================================================================================
 */
 plugins {
@@ -72,10 +72,11 @@ sourceSets {
     main.java.srcDirs += 'src'
 }
 
-mainClassName = 'it.unibo.ctxRobotReq.MainCtxRobotReqKt'
+mainClassName = 'it.unibo.TODOKt'
 
 jar {
     println("executing jar")
+    from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"
     }

@@ -18,21 +18,21 @@ class Radarreq ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						resources.radarSupport.activate()
+						radarPojo.radarSupport.setUpRadarGui()
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )
 				}	 
 				state("waitMsg") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t04",targetState="showPoint",cond=whenDispatch("polar"))
+					 transition(edgeName="t05",targetState="showPoint",cond=whenDispatch("polar"))
 				}	 
 				state("showPoint") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("p(Distance,Angle)"), Term.createTerm("p(D,A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.radarSupport.spot(payloadArg(0), payloadArg(1) )
+								radarPojo.radarSupport.update(payloadArg(0), payloadArg(1) )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )

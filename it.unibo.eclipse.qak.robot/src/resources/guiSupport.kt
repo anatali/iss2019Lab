@@ -11,8 +11,8 @@ import resources.java.ButtonAsGui
 class guiSupport : IObserver {
 	
 	companion object{
-		val buttonLabels = arrayOf("Alarm","Forward",    "Backward",    "Left",    "Rigth",    "Stop")
-		val buttonCmds   = arrayOf("fire",  "moveforward","movebackward","moveleft","moveright","stop")
+		val buttonLabels = arrayOf("Alarm"," w(Forward)", "s(Backward)", "a(Left)", "d(Rigth)", "h(Stop)")
+		val buttonCmds   = arrayOf("fire",  "w","s","a","d","h")
 		lateinit var buttonActor : ActorBasic
 		lateinit var msgId       : String
 		
@@ -25,7 +25,7 @@ class guiSupport : IObserver {
 	  }
       override fun update(o: Observable, arg: Any) {	   
 	   //println("guiSupport update $arg $buttonActor")
-  		   var cmd ="stop"
+  		   var cmd ="h"
 		   when( arg as String ){
 			   buttonLabels[0] -> {  //the buttonActor emits an event
 				   GlobalScope.launch{

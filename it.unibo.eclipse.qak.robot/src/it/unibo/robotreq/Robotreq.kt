@@ -20,6 +20,11 @@ class Robotreq ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						println("robotplayer STARTS")
 						resources.robotSupport.create(myself ,"virtual" )
+						resources.robotSupport.move("msg(a)" )
+						delay(1000) 
+						resources.robotSupport.move("msg(d)" )
+						delay(1000) 
+						resources.robotSupport.move("msg(h)" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

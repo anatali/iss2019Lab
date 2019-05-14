@@ -4,24 +4,25 @@
  * written as the result of the requirement analysis
  * ------------------------------------------------------
  */
-System ddrWorker
+System ddrworker 
 /*
  * 1) Information exchanged
  */
 Event    envCond   : envCond( CONDTYPE )            //from the environment (simulated)
-Event    sonar     : sonar(SONAR, TARGET, DISTANCE)	//from (virtual) sonar   FIXED
+Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
+Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
 
 Dispatch userCmd   : userCmd(X)		                //from GUI to console
 Dispatch robotCmd  : robotCmd(X)	                //from console to robot
 Dispatch polar     : p( Distance, Angle )           //from robot to radar
 
 /*
- * 2) Computational Nodes
+ * 2) Computational Nodes   
  */
 Context ctxRobotReq ip [host="localhost" port=8025]
-//Context ctxConsole   ip [host="localhost" port=8023]
+//Context ctxConsole   ip [host="192.168.1.4" port=8023]
 //Context ctxRobot     ip [host="localhost" port=8025]
-//Context ctxRadar     ip [host="localhost" port=8027]
+//Context ctxRadar     ip [host="192.168.1.4" port=8027]
 
 /*
  * 3) System Actors
@@ -41,7 +42,7 @@ QActor consolereq context ctxRobotReq{  //should work in ctxConsole
 	Transition t0 whenMsg userCmd -> handleUserCmd
 	
 	State handleUserCmd{
-		//printCurrentMessage
+		printCurrentMessage
 		onMsg ( userCmd : userCmd(CMD) ) { 
 			forward robotreq -m robotCmd : robotCmd($payloadArg(0))
 		}
@@ -56,11 +57,16 @@ QActor consolereq context ctxRobotReq{  //should work in ctxConsole
 QActor robotreq context ctxRobotReq{   
 	State s0 initial {		
 		println("robotplayer STARTS")	
-		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or real	
+		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or realmbot	
+		run resources.robotSupport.move( "msg(a)"  )
+		delay 1000
+		run resources.robotSupport.move( "msg(d)"  )
+		delay 1000
+		run resources.robotSupport.move( "msg(h)"  )
 	}
 	Goto waitCmd
 	
-	State waitCmd{ }
+	State waitCmd{  }
 	Transition t0 whenMsg  robotCmd -> handleCmd
 	              whenEvent envCond -> handleCond
 	
@@ -88,13 +94,18 @@ QActor sonarhandler context ctxRobotReq{
 	Goto waitForEvents
 	   
 	State waitForEvents{  }      
-   	Transition t0 whenEvent sonar ->  sendToRadar
-   	  
+   	Transition t0 whenEvent sonar      ->  sendToRadar
+   	              whenEvent sonarRobot ->  sendToRadar
+   	               
  	State sendToRadar{                      
  		printCurrentMessage                                        
- 		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
-			[" val D = Integer.parseInt( payloadArg(2) ) * 5"] 
+ 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){     
+			[" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
 			forward radarreq -m polar : p( $D, 90  ) 
+ 		}
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
+			forward radarreq -m polar : p( $D, 180  ) 
  		}
  	} 
  	Goto waitForEvents
@@ -106,7 +117,8 @@ QActor sonarhandler context ctxRobotReq{
  */
 QActor radarreq context ctxRobotReq{  //should work in ctxRadar
 	State s0 initial {		
-		run resources.radarSupport.activate()	//(3)	REUSE radarPojo
+		//run resources.radarSupport.activate()	
+		run radarPojo.radarSupport.setUpRadarGui()  //(3)	REUSE radarPojo
 	}
 	Goto waitMsg
 	
@@ -116,7 +128,7 @@ QActor radarreq context ctxRobotReq{  //should work in ctxRadar
 	State showPoint{
 		printCurrentMessage
 		onMsg ( polar : p( D,A )){
-			 run resources.radarSupport.spot( payloadArg(0), payloadArg(1)  )			 
+			 run radarPojo.radarSupport.update( payloadArg(0), payloadArg(1)  )			 
 		}
 	}
 	Goto waitMsg
