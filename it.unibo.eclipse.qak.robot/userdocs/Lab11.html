@@ -653,16 +653,14 @@ and
    
  Let us now show how the radar can  become a stand-alone system.
  
- <h2 id="radaralone">The radar as a stand-alone system</h2>
+ <h3 id="radaralone">The radar as a stand-alone system</h3>
  <ol>
  <li>Remove <bc>radarreq</bc> from the system model</li>
  <li>Redefine the model for the radar. See <a href="../src/radar.qak" target="code">radar.qak</a>.</li>
  <li>Modify the <em>sonarhandler</em> by substituting <tt>forward</tt> with <bc>publish</bc>.</li>
  </ol>
  
- Is it possible to avoid any modification in the <bc>sonarhandler</bc>? The answer is 'yes': it is sufficient to include the flag <bc>-mqtt</bc> in
- the declaration of the context <tt>ctxRobotReq</tt> as done in <a href="../src/radar.qak" target="code">radar.qak</a>.
- 
+  
  <center><table style="width:98%">
 <tbody>	
 <tr>
@@ -677,9 +675,14 @@ The radar is now a stand-alone system that receives <tt>polar</tt> events <bc>pu
  </tr>
  </table>
 </center>
+<br/><br/>
+Since we must change  the <tt>qak</tt> model by using a <ks>publish</ks> at the place of a <ks>forward</ks>, we ask
+ourselves if it possible to avoid any modification in the code of <bc>sonarhandler</bc>. 
+The answer is 'yes': it is sufficient to include the flag <bc>-mqtt</bc> in
+the declaration of the context <tt>ctxRobotReq</tt> as done in <a href="../src/radar.qak" target="code">radar.qak</a>.
+See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.qakactor/userDocs/LabQak.html#mqtt">LabQak.html: Using MQTT</a>.
 
 
- 
 <h2><a id="mvcrefactoring"/>A MVC-based refactoring</h2> 
 Let us introduce a new requirement: 
  <div class="req">
