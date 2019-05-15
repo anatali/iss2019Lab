@@ -15,7 +15,7 @@ object robotSupport{
 	}
 	
 	fun move( cmd : String ){ //cmd = msg(M) M=w | a | s | d | h
-		println("robotSupport move cmd=$cmd robotKind=$robotKind" )
+		//println("robotSupport move cmd=$cmd robotKind=$robotKind" )
 		when( robotKind ){
 			"virtual"  -> { resources.clientWenvObjTcp.sendMsg(  cmd ) }	
 			"realmbot" -> { mbotSupport.move( cmd ) }

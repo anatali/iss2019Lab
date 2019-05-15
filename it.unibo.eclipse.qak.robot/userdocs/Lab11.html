@@ -460,11 +460,15 @@ In both cases, the entity that generates this data cannot known the names of the
 working in our system.</li>    
 </ul> 
 
+<div class="remark">
+An important point is to exclude from the <em>console</em> any responsibility rleated to the business logic.
+</div>
 <h2><a id="testplans"/>Test plans</h2>   
 This first model is quite simple but is provides a basic skeleton for the system to build a reference point for our next development steps.
 Moroever, it can be used to define a set of <bc>test plans</bc>, i.e. the specification of tests that must be run with success as soon as some code
 is available.
- 
+
+<h3>An example</h3>
 
 <h2><a id="problemanalysis"/>Problem analysis</h2> 
 The main goal of problem analysis can be summarized as follows:
@@ -646,32 +650,7 @@ and
 
  The first 3 points are left to the reader. 
  
- Note that we can add to the system an actor able to show to the user the structure of the system
- <h3>Introspection</h3>
- Let us introduce a system an actor (<bc>introspector</bc>) whose task is to show the structure of system itself. 
- <pre>
-QActor <k>introspector</k> context ctxRobotReq{
-	State init initial{
-		solve( <ks> consult("sysRules.pl")</ks>	 )       
-		solve( <ks>consult("ddrworker.pl")</ks>	 )  
-		solve( <ks> showSystemConfiguration</ks> ) <kc>//showSystemConfiguration is defined in sysRules</kc>
-	}
-}
-</pre> 
-
-The output is
- <pre>
-&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
-CONTEXTS IN THE SYSTEM:
-context(ctxrobotreq,localhost,'TCP','8025')
-ACTORS   IN THE SYSTEM:
-qactor(consolereq,ctxrobotreq,'it.unibo.consolereq.Consolereq')
-qactor(robotreq,ctxrobotreq,'it.unibo.robotreq.Robotreq')
-qactor(sonarhandler,ctxrobotreq,'it.unibo.sonarhandler.Sonarhandler')
-qactor(introspector,ctxrobotreq,'it.unibo.introspector.Introspector')
-&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
-</pre>
-  
+   
  Let us now show how the radar can  become a stand-alone system.
  
  <h2 id="radaralone">The radar as a stand-alone system</h2>
@@ -699,26 +678,197 @@ The radar is now a stand-alone system that receives <tt>polar</tt> events <bc>pu
  </table>
 </center>
 
- 
- 
- <h2><a id="mvcrefactoring"/>A MVC-based refactoring</h2> 
 
-  <center><table style="width:98%">
+ 
+<h2><a id="mvcrefactoring"/>A MVC-based refactoring</h2> 
+Let us introduce a new requirement: 
+ <div class="req">
+<em>Introspection</em>: The system must be able to  <em>show relevant information</em> to the user  about the <em>state</em>
+of the system and of the external world. For example, the system should show the current state of robot, including its
+position (assuming that it moves into a room with a flat floor) and the vale of temperature in the room.
+ </div>
+ 
+Now a new 'sprint' related to requirement analysis is necessary, in order to fix with the customer the meaning of several terms,
+in particular <tt>'show',  'relevant information', 'state of the robot', 'robot position'</tt>.
+<br/><br/>
+We entrust the reader with such a task. 
+For our part, Let us show how an actor (<bc>introspector</bc>) can show the structure of system. 
+
+<h3>Introspection: the system structure</h3>
+ 
+ <pre>
+QActor <k>introspector</k> context ctxRobotReq{
+	State init initial{
+		solve( <ks> consult("sysRules.pl")</ks>	 )       
+		solve( <ks>consult("ddrworker.pl")</ks>	 )  
+		solve( <ks>showSystemConfiguration</ks> ) <kc>//showSystemConfiguration is defined in sysRules</kc>
+	}
+}
+</pre> 
+
+Note that the facts stored in the file <bc>ddrworker.pl</bc> represent give us information about the structure of the system.
+The actor executes the rule <bc>showSystemConfiguration</bc> (written in <em>sysRules.pl</em>) to produce the following output:
+
+ <pre>
+&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
+CONTEXTS IN THE SYSTEM:
+context(ctxrobotreq,localhost,'TCP','8025')
+ACTORS   IN THE SYSTEM:
+qactor(consolereq,ctxrobotreq,'it.unibo.consolereq.Consolereq')
+qactor(robotreq,ctxrobotreq,'it.unibo.robotreq.Robotreq')
+qactor(sonarhandler,ctxrobotreq,'it.unibo.sonarhandler.Sonarhandler')
+qactor(introspector,ctxrobotreq,'it.unibo.introspector.Introspector')
+&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
+</pre>
+
+<h3>Resource model</h3>
+
+During problem analysis, we can state that requirement similar to <em>Introspection</em> appear in the <tt>IOT</tt> domain
+andd in particular in the <em>Web Of Things</em> (<bc>WOT</bc>).<br/><br/>
+
+<center><table style="width:98%">
 <tbody>	
+
 <tr>
 <td style="width:60%">
 <img src="./portAdapterArch.png" alt="portAdapterArch" width="95%" height="30%"/>
 </td>
-<td>
+<td> 
+<img src="./wotBook.jpg" alt="wotBook" width="40%" height="30%"/><br/>
+
 <m>
- .
+From the <tt>Guinard/Trifa WOT</tt> book, we read (pg. 225) :<br/>
+We need a method to describe what a device is and does. In other words, we need a <bc>conceptual model</bc> of
+a web Thing (a <em>WebThingModel</em>) that can describe the resources of a web Thing using a set of well-known
+concepts.
+
 </m>
 </td>
  </tr>
  </table>
 </center>
- 
 
+The architecture shown on the left in the figure represents the reference system architecture in these domains,
+known ad hexagoal architecture or port/adapter pattern (see for example
+<a href="https://softwarecampament.wordpress.com/portsadapters/" target="web">Ports and Adapters Pattern (Hexagonal Architecture)</a>. 
+
+<h3>Hexagonal architecture</h3>
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:15%">
+<img src="./portAdapter.png" alt="portAdapter" width="80%" height="30%"/>
+</td>
+<td> 
+<m>
+<ul>
+ <li>The core logic, or business logic, of an application consists of the algorithms that are essential to its purpose. 
+They implement the use cases that are the heart of the application. 
+When you change them, you change the essence of the application.
+</li>
+<li>The services are not essential. They can be replaced without changing the purpose of the application. 
+Examples: database access and other types of storage, user interface components, 
+e-mail and other communication components, hardware devices.</li>
+<li>The core logic can be tested independent of outside services.</li>
+<li>
+It is easy to replace services by other ones that are more fit in view of changing requirements.
+</ul>
+
+</m>
+</td>
+ </tr>
+ </table>
+</center>
+
+The main aim of this architecture is to decouple the application's core logic from the services it uses. 
+This allows different services to be "plugged in", and it allows the application to be run without these services.
+
+The connection between the inside and the outside part of the system is realized via abstractions called 
+<em>ports</em> and their implementation counterparts called </em>adapters</em>.
+
+
+At the center, there is the model of the resources and the structure of system can become an instance of the
+MVC pattern.
+
+<h3>The pattern MVC</h3>
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:70%">
+<img src="./mvc.png" alt="mvc" width="100%" height="40%"/>
+</td>
+<td> 
+
+
+<m>
+Today, it is quite common to express the resource model in <tt>JSON</tt>.
+
+<img src="./resourceModelJson1.png" alt="resourceModelJson1" width="60%" height="32%"/>
+
+<pre>
+{
+"env": {
+	"actuators": {
+		"leds": {
+			"led1": {
+			"name": "LED 1",
+			"value": false,
+			"gpio": 4
+			},
+			"led2": {
+			...
+			}
+		}
+	} 
+	...
+}
+</pre>
+
+</m>
+</td>
+ </tr>
+ </table>
+</center>
+
+
+<br/><br/>
+While it is nowadays quite common to express the resource model in <tt>JSON</tt>, let us introduce an example of resource model
+by using Prolog facts :
+
+
+
+<pre>
+model( actuator, robot, state(stopped) ).
+
+The rules to access and to change the model cane be expressed in Prolog too:
+</pre>
+
+<pre>
+action(robot, move(w)) :- changeModel( actuator, robot, state(movingForward)  ).
+action(robot, move(s)) :- changeModel( actuator, robot, state(movingBackward) ).
+action(robot, move(a)) :- changeModel( actuator, robot, state(rotateLeft)     ).
+action(robot, move(d)) :- changeModel( actuator, robot, state(rotateRight)    ).
+action(robot, move(h)) :- changeModel( actuator, robot, state(stopped)        ).
+
+
+changeModel( CATEG, NAME, state(VALUE) ) :-
+ 		replaceRule( 
+			model( CATEG,  NAME, state(_) ),  
+			model( CATEG,  NAME, state(VALUE) ) 		
+		),
+		showResourceModel.
+				
+showResourceModel :- 
+	stdout <- print("[ "),
+	model( CATEG, NAME, STATE ),
+ 	stdout <- print( model( CATEG, NAME, STATE ) ),
+	stdout <- println(" ]").
+
+</pre>
+ 
  <h3>Resource Model starting from the system kb</h3>
  <h3>MVC-based refactoring</h3>
  <h3>Access to the model with CoAP</h3>

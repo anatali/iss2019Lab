@@ -3,38 +3,41 @@
 ddrWorkerResourceModel.pl
 ===============================================================
 */
-model( type(actuator, leds),      name(led1), value(off) ).
-model( type(sensor, temperature), name(t1),   value(25)  ).
+ 
+model( actuator, robot, state(stopped) ).
 
-getModelItem( TYPE, CATEG, NAME, VALUE ) :-
-		model( type(TYPE, CATEG), name(NAME), value(VALUE) ).
-changeModelItem( CATEG, NAME, VALUE ) :-
+action(robot, move(w)) :- changeModel( actuator, robot, state(movingForward)  ).
+action(robot, move(s)) :- changeModel( actuator, robot, state(movingBackward) ).
+action(robot, move(a)) :- changeModel( actuator, robot, state(rotateLeft)     ).
+action(robot, move(d)) :- changeModel( actuator, robot, state(rotateRight)    ).
+action(robot, move(h)) :- changeModel( actuator, robot, state(stopped)        ).
+
+
+changeModel( CATEG, NAME, state(VALUE) ) :-
  		replaceRule( 
-			model( type(TYPE, CATEG), name(NAME), value(_) ),  
-			model( type(TYPE, CATEG), name(NAME), value(VALUE) ) 		
-		),!,
-		%%output( changedModelAction(CATEG, NAME, VALUE) ),
-		( changedModelAction(CATEG, NAME, VALUE) %%to be defined by the appl designer
-		  ; true ).		%%to avoid the failure if no changedModelAction is defined
-		
+			model( CATEG,  NAME, state(_) ),  
+			model( CATEG,  NAME, state(VALUE) ) 		
+		),
+		showResourceModel.
+				
+showResourceModel :- 
+	stdout <- print("[ "),
+	model( CATEG, NAME, STATE ),
+ 	stdout <- print( model( CATEG, NAME, STATE ) ),
+	stdout <- println(" ]").
+ 			
 
-emitevent( EVID, EVCONTENT ) :- 
-	actorobj( Actor ), 
-	output( eeeeemit( Actor, EVID, EVCONTENT ) ),
-	Actor <- emit( EVID, EVCONTENT ).
-%%%  initialize
+dialog( FileName ) :-  
+	java_object('javax.swing.JFileChooser', [], Dialog),
+	Dialog <- showOpenDialog(_),
+	Dialog <- getSelectedFile returns File,
+	File <- getName returns FileName. 		 
 
-initResourceTheory :- output("ddrWorkerResourceModel ...").
+output( M ) :- stdout <- println( M ).
+
+
+initResourceTheory :- output("ddrWorkerResourceModel").
 :- initialization(initResourceTheory).
-
-
-
-/*  		
-	changedModelAction( temperature, t1, V  ):-
- 		    eval( ge, V , 30 ), !,  
- 		    changemodelitem( leds, led1, on).		     
- 	changedModelAction( temperature, t1, V  ):-	 
- 			changemodelitem( leds, led1, off).     			 			
- 	changedModelAction( leds, led1, V  ):-
- 			emitevent( ctrlEvent, ctrlEvent( leds, led1, V) ).
- */
+		
+		
+		

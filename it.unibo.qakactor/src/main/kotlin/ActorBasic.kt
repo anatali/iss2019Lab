@@ -1,8 +1,6 @@
 package it.unibo.kactor
 
-import alice.tuprolog.Prolog
-import alice.tuprolog.SolveInfo
-import alice.tuprolog.Term
+import alice.tuprolog.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -10,10 +8,10 @@ import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
 
-    /*
-        Implements an abstract actor able to receive an ApplMessage and
-        to delegate its processing to the abstract method actorBody
-     */
+/*
+    Implements an abstract actor able to receive an ApplMessage and
+    to delegate its processing to the abstract method actorBody
+ */
 
 abstract class  ActorBasic(val name:         String,
                            val scope:        CoroutineScope = GlobalScope,
@@ -249,6 +247,17 @@ machineExec
 /*
 KNOWLEDGE BASE
 */
+
+
+    fun registerActor( ) {
+        //	println("QActorUtils Regsitering in TuProlog ... " + this.getName()  );
+        val lib = pengine.getLibrary("alice.tuprolog.lib.OOLibrary")
+        //	println("QActorUtils Registering in TuProlog18 ... " + lib );
+        val internalName = Struct("" + this.name)
+        (lib as alice.tuprolog.lib.OOLibrary).register(internalName, this)
+        //	System.out.println("QActorUtils Registered in TuProlog18 " + internalName );
+    }
+
     fun solve( goal: String, rVar: String ="" ) {
         //println("       ActorBasic $name | solveGoal ${goal} rVar=$rVar" );
         val sol = pengine.solve( "$goal.")
@@ -268,5 +277,5 @@ KNOWLEDGE BASE
         if(currentSolution.isSuccess )
             return currentSolution.getVarValue( v )
         else return Term.createTerm("no(more)solution")
-      }
+    }
 }
