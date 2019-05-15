@@ -19,6 +19,7 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("init") { //this:State
 					action { //it:State
 						println("sonardatahandler STARTS ")
+						connectToMqttBroker("tcp://127.0.0.1:1883")
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
@@ -34,12 +35,13 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						if( checkMsgContent( Term.createTerm("sonar(SONAR,DISTANCE)"), Term.createTerm("sonar(SONAR,DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val D = Integer.parseInt( payloadArg(1) ) * 5
-								forward("polar", "p($D,90)" ,"radarreq" ) 
+								val evtopic = "unibo/qak/events"
+								val evpolar = MsgUtil.buildEvent("$name","polar", "p( $D, 90  )").toString()
+								publish(evpolar, evtopic )
 						}
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 val D = Integer.parseInt( payloadArg(0) ) * 5
-								forward("polar", "p($D,180)" ,"radarreq" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )

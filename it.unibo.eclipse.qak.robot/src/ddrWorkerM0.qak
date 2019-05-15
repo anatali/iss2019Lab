@@ -3,10 +3,13 @@
  * This is the first model of the system
  * written as the result of the requirement analysis
  * ------------------------------------------------------
- */
-System ddrworker 
+ */  
+System ddrworker   
+
+//mqttBroker "127.0.0.1" : 1883    //192.168.1.18
+ 	  
 /*
- * 1) Information exchanged
+ * 1) Information exchanged 
  */
 Event    envCond   : envCond( CONDTYPE )            //from the environment (simulated)
 Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
@@ -19,10 +22,9 @@ Dispatch polar     : p( Distance, Angle )           //from robot to radar
 /*
  * 2) Computational Nodes   
  */
-Context ctxRobotReq ip [host="localhost" port=8025]
-//Context ctxConsole   ip [host="192.168.1.4" port=8023]
-//Context ctxRobot     ip [host="localhost" port=8025]
-//Context ctxRadar     ip [host="192.168.1.4" port=8027]
+//Context ctxConsoleReq   ip [host="192.168.1.4" port=8023]
+Context ctxRobotReq     ip [host="localhost"   port=8025]    
+//Context ctxRadarReq   ip [host="192.168.1.4" port=8027]    
 
 /*
  * 3) System Actors
@@ -32,7 +34,7 @@ Context ctxRobotReq ip [host="localhost" port=8025]
  * console: converts a userCmd into a robotCmd
  * REQ : human user interaction, sendMoveCmds
  */
-QActor consolereq context ctxRobotReq{  //should work in ctxConsole
+QActor consolereq context ctxRobotReq{  //should work in ctxConsoleReq
 	State s0 initial {		
 		run resources.guiSupport.create( myself , "userCmd")   //(1) REQ: human user interaction 	 	
 	}
@@ -66,13 +68,14 @@ QActor robotreq context ctxRobotReq{
 	}
 	Goto waitCmd
 	
-	State waitCmd{  }
+	State waitCmd{  } 
 	Transition t0 whenMsg  robotCmd -> handleCmd
 	              whenEvent envCond -> handleCond
 	
 	State handleCmd{
 		onMsg ( robotCmd : robotCmd(CMD) ){			
 			run resources.robotSupport.move( "msg(${payloadArg(0)})"  )
+			//println("msg(${payloadArg(0)})")
 		}	
 	}
 	Goto waitCmd
@@ -90,6 +93,8 @@ QActor robotreq context ctxRobotReq{
 QActor sonarhandler context ctxRobotReq{
  	State init initial{
 		println("sonardatahandler STARTS ")
+["connectToMqttBroker(\"tcp://127.0.0.1:1883\")
+"]		
 	}         
 	Goto waitForEvents
 	   
@@ -100,21 +105,35 @@ QActor sonarhandler context ctxRobotReq{
  	State sendToRadar{                      
  		printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){     
-			[" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
-			forward radarreq -m polar : p( $D, 90  ) 
+[" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
+			//forward radarreq -m polar : p( $D, 90  ) 
+["val evtopic = \"unibo/qak/events\"
+val evpolar = MsgUtil.buildEvent(\"$name\",\"polar\", \"p( $D, 90  )\").toString()
+publish(evpolar, evtopic )
+"]
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-			[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
-			forward radarreq -m polar : p( $D, 180  ) 
+[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
+			//forward radarreq -m polar : p( $D, 180  ) 
  		}
  	} 
  	Goto waitForEvents
 }
 
 /*
+ * Introspector
+ */
+QActor introspector context ctxRobotReq{
+	State init initial{
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("ddrworker.pl")	 )  
+		solve( showSystemConfiguration )
+	}
+}
+/*
  * radar: show polar data on a radar GUI (radarPojo)
  * REQ : showSonarData
- */
+
 QActor radarreq context ctxRobotReq{  //should work in ctxRadar
 	State s0 initial {		
 		//run resources.radarSupport.activate()	
@@ -133,4 +152,4 @@ QActor radarreq context ctxRobotReq{  //should work in ctxRadar
 	}
 	Goto waitMsg
 }
-
+ */

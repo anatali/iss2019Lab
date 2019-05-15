@@ -216,8 +216,23 @@ MQTT
     override fun deliveryComplete(token: IMqttDeliveryToken?) {
 //		println("       ActorBasic $name |  deliveryComplete token= "+ token );
     }
-
 /*
+For direct usage without qak
+ */
+    fun connectToMqttBroker( mqttAddr : String){
+        mqtt.connect(name, mqttAddr )
+    }
+
+    fun publish( msg: String, topic: String ){
+        mqtt.publish( topic, msg, 1, false);
+    }
+
+    fun subscribe(  topic: String ) {
+        mqtt.subscribe(this,topic)
+    }
+
+
+        /*
 --------------------------------------------
 machineExec
 --------------------------------------------

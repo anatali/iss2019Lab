@@ -157,7 +157,7 @@ table, th, td {
  <h2>Index</h2>
  <ol>
 <li><a href="#lab11req">Requirements</a></li>
-<li><a href="#lab11iot">Domain (IOT)</a></li>
+<li><a href="#lab11iot">Application Domain (IOT)</a></li>
 <li><a href="#Methodology">Methodology</a></li>
 <li><a href="#reqanalysis">Requirement Analysis</a></li>
 <li><a href="#firstModel">A first model of the system Architecture</a></li>
@@ -165,10 +165,10 @@ table, th, td {
 
 <li><a href="#logicalarch">Logical Architecture</a></li>
 <li><a href="#Project">Project</a></li>
-<li></li>
-<li></li>
+<li><a href="#radaralone">The radar as a stand-alone system</a></li>
+<li><a href="#mvcrefactoring">A MVC-based refactoring</a> </li>
  </ol>
- 
+ lab11iot
  
 <h2><a id="lab11req"/>Requirements</h2> 
 <!--
@@ -199,7 +199,7 @@ with reference to the <a href="#available">resources already available</a>.</li>
 <li><em>receiveSensorInfo</em>: receive information from the  <bc>HC-SR04 sonar</bc> sensor mounted on the robot  and from
 the sonars (if they exists) present in the robot working environment. </li>
 
-<li><em>showSonarData</em>: show data coming forn the sonar-sensor  on a radar <tt>GUI</tt>:
+<li><em>showSonarData</em>: show data coming forn the sonar-sensor  on a <em>radar GUI</em>:
 <img src="./radarGui.png" alt="radarGui" width="10%" height="10%"/>
 </li>
 <li><em>handleConds</em>: allow the robot to <bc>stop</bc> its behavior under some specific condition, 
@@ -270,9 +270,21 @@ https://wiki.analog.com/resources/eval/user-guides/eval-adicup3029/smart_app/and
 -->
 
 <h2><a id="Methodology"/>Methodology</h2> 
-<img src="./Scrum-framework.jpg" alt="Scrum-framework" width="60%" height="60%"/>
-<br/>
+<table>
+<tr><td>
+<img src="./Scrum-framework.jpg" alt="Scrum-framework" width="90%" height="90%"/>
+</td>
+<td>
+<img src="./process.jpg" alt="process" width="90%" height="90%"/>
+</td>
+</tr>
+</table>
+
 <img src="./overviewScrum.jpg" alt="overviewScrum" width="100%" height="30%"/>
+
+ 
+
+
 <!--
 <br/><img src="./scrum1.png" alt="scrum1" /> <br/>-->
 
@@ -288,17 +300,17 @@ A model is a representation of a system, made of the composition of concepts whi
 people know, understand, or simulate a subject the model represents.
 </div>
 
-<h3>A Product Backlog</h3>
+<h3>Towards a Product Backlog</h3>
 According to the <em>SCRUM</em> framework of software development, we will suppose that the product backlog defined
 by the <tt>Product Owner</tt> allows us to satisfy the set of requirements in incremental way, by distinguishing among a
 set of macro-steps. More precisely, we will follow a '<bc>zooming methodology</bc>' (see the video 
 <a href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="web">Powers of Ten</a>):
 
 <ol>
-<li>The first step defines the main components of the logic architecture of the systems, by focusing on their
+<li>The first step defines the <em>main components</em> of the logic architecture of the systems, by focusing on their
 interaction. In this phase, the behavior of each component should be simply 'simulated' in order to reproduce a set of
-interaction patterns, with the aim to introduce a proper set of initial (integration, functional) <bc>Test-Plans</bc>.</li>
-<li>Refine the logical architecture defined in the previous step, by including code that satisfies the requirements
+interaction patterns, with the aim to introduce a proper set of <em>initial (integration, functional) Test-Plans</em>.</li>
+<li><em>Refine</em> the logical architecture defined in the previous step, by including code that satisfies the requirements
 in more detailed way or that satisfies more functional requirements.
 .</li>
 
@@ -309,12 +321,14 @@ For <em>logical architecture</em> we intend here a software architecture that is
 requirement/problem analysis phase, in the attempt to focus our attention <bc>on the problem itself</bc>, rather than on some specific
 technology. We say that, during problem analysis, we are technology aware but not technology dependent.
 <br/><br/>
+
+<img src="./vision.png" alt="vision" width="80%" height="80%"/>
+ <br/><br/>
 The logical architecture will be progressively 'zoomed' into a project architecture
 and a proper implementation and deployment.
 <br/><br/>
-The incremental approach will lead us to define a sequence of (QActor) models, that can be used as the reference
+The incremental approach will lead us to define a sequence of running models, that can be used as the reference
 point for a sequence of <tt>SCRUM</tt> <bc>sprint</bc>, followed by proper <bc>sprint-review</bc> and <bc>sprint-retrospective</bc>.
-
 
 <h2><a id="reqanalysis"/>Requirement Analysis</h2> 
 
@@ -339,8 +353,10 @@ suggest two different type of conditions:
 	<li>conditions that <b>arise form the work of the system</b> itself, e.g. fining an obstacle.</li>
 	</ul>
 </li>
-<li>It is not clear whether the <em>radarGUI</em> is shown in the <em>console</em> or it is a different system. From 
-<a href="#available">resources already available</a> we can assume that we can/should use the library <tt>radarPojo.jar</tt>.
+<li>It is not clear whether the <em>radarGUI</em> is shown in the <em>console</em> or it is a different system. The customer told us
+that it is quite probable that in the future the requirement <em>showSonarData</em> and the related <em>radar GUI</em> will be delegated
+to an external (sub)system.
+At the moment, we can reuse the library <tt>radarPojo.jar</tt> (see <a href="#available">resources already available</a>).
 </li>
 
 </ol>
@@ -360,6 +376,7 @@ At this stage, the system architecture can be represented as in the following, i
 The structure of the <bc>information exchanged</bc> among the main components of the application is (at the moment) defined as follows:
 <ul>
 <li>from console to robot: <tt>robotCmd : robotCmd(X)</tt></li>
+<li>from a sonar : <tt>sonar : sonar( Name, Distance )</tt></li>
 <li>from robot to radar: <tt>polar : p( Distance, Angle )</tt></li>
 <li>from the environment: <tt>envCond : envCond(X)</tt></li>
 </ul>
@@ -372,6 +389,11 @@ can be changed in the next models.
  </tr>
  </table>
 </center>
+
+Note that, at this stage, we do not introduce a full model for the <em>sonars</em>. Rather, we capture only the fact that a sonar is
+a source of information (see <bc>sonar/2</bc> in the picture above).
+
+
 
 <h3>A first model (towards<bc> Requirements traceability</bc>) </h3>
 A better specification of the system architecture can be given by introducing a model written in a machine-understandable language. 
@@ -404,7 +426,7 @@ QActor <k>radarreq</k> context ctxRobotReq{  <kc>//Uses <ks>radarPojo.jar</ks> t
 ------------------------------------------------------------------------------------------------------------------------------
  </pre>
 
-  <center><table style="width:98%">
+<center><table style="width:98%">
 <tbody>	
 <tr>
 <td style="width:60%">
@@ -433,11 +455,15 @@ In fact, from the requirements, we deduce that each of them has a specific desti
 </li>
 <li>Data identified with the names <bc>envCond</bc> and <bc>sonar</bc> are defined each as <em>Events</em>.
 In fact, <bc>envCond</bc> models information generated by the 'world' outside the system, while <bc>sonar</bc> is information
-generated by the virtual robot. In both cases, the entity that generates this data cannot known the names of the actors
+generated by the virtual robot or by (sonars working in) the robot environment. 
+In both cases, the entity that generates this data cannot known the names of the actors
 working in our system.</li>    
 </ul> 
 
-  
+<h2><a id="testplans"/>Test plans</h2>   
+This first model is quite simple but is provides a basic skeleton for the system to build a reference point for our next development steps.
+Moroever, it can be used to define a set of <bc>test plans</bc>, i.e. the specification of tests that must be run with success as soon as some code
+is available.
  
 
 <h2><a id="problemanalysis"/>Problem analysis</h2> 
@@ -505,7 +531,7 @@ QActor <k>sonarhandler</k> context ctxRobotReq{  <kc>//Handles <ks>sonar</ks> an
 </pre>
 
 </li>
-<li>The <bc>radar</bc> actor must show on the <tt>radar-GUI</tt> the sonar data enclosed in the dispatch <bc>polar : p( Distance, Angle )</bc>.
+<li>The <bc>radar</bc> actor must show on the <em>radarGUI</em> the sonar data enclosed in the dispatch <bc>polar : p( Distance, Angle )</bc>.
 To this end, it can reuse the <tt>POJO</tt> facade given by the library <tt>radarPojo.jar</tt>:
 
 <pre>
@@ -601,15 +627,106 @@ to the <bc>sonarhandler</bc> that <tt>forward</tt> the message  <em>polar</em> t
 The full code is in <a href="../src/robotWorker.qak" target="code">robotWorker.qak</a>.
  
  <h2><a id="Project"/>Project</h2> 
+
+ 
  Here we:
  <ol>
- <li>Provide the proper support for the different types of robots.</li>
+ <li>Provide the proper support for the different types of robots. 
+ See <a href="../src/resources/robotSupport.kt" target="code">robotSupport.kt</a>,
+<a href="../src/resources/clientWenvObjTcp.kt" target="code">clientWenvObjTcp.kt</a> (for the virtual robot)
+and
+<a href="../src/resources/mbotSupport.kt" target="code">mbotSupport.kt</a> (for the <tt>mbot</tt> robot). </li>
  <li>Distribute the actors into proper different contexts. </li>
  <li>Test the system on the network.</li>
+ <li>Refactor the <bc>robot</bc> control according to the <bc>MVC</bc> design pattern.</li>
  <li>Substitute the  <tt>QAk-infrastructure</tt> with a <tt>MQTT</tt> support.</li>
  <li>Define a better <tt>GUI</tt> and/or a <tt>GUI</tt> for a <bc>smart device</bc>. </li>
- <li>Refactor the <bc>robot</bc> control according to the MVC design pattern.</li>
  </ol>
+ 
+
+ The first 3 points are left to the reader. 
+ 
+ Note that we can add to the system an actor able to show to the user the structure of the system
+ <h3>Introspection</h3>
+ Let us introduce a system an actor (<bc>introspector</bc>) whose task is to show the structure of system itself. 
+ <pre>
+QActor <k>introspector</k> context ctxRobotReq{
+	State init initial{
+		solve( <ks> consult("sysRules.pl")</ks>	 )       
+		solve( <ks>consult("ddrworker.pl")</ks>	 )  
+		solve( <ks> showSystemConfiguration</ks> ) <kc>//showSystemConfiguration is defined in sysRules</kc>
+	}
+}
+</pre> 
+
+The output is
+ <pre>
+&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
+CONTEXTS IN THE SYSTEM:
+context(ctxrobotreq,localhost,'TCP','8025')
+ACTORS   IN THE SYSTEM:
+qactor(consolereq,ctxrobotreq,'it.unibo.consolereq.Consolereq')
+qactor(robotreq,ctxrobotreq,'it.unibo.robotreq.Robotreq')
+qactor(sonarhandler,ctxrobotreq,'it.unibo.sonarhandler.Sonarhandler')
+qactor(introspector,ctxrobotreq,'it.unibo.introspector.Introspector')
+&&&&&&&&&&&&&&&&&&SysRules&&&&&&&&&&&&&&&&&&&&
+</pre>
+  
+ Let us now show how the radar can  become a stand-alone system.
+ 
+ <h2 id="radaralone">The radar as a stand-alone system</h2>
+ <ol>
+ <li>Remove <bc>radarreq</bc> from the system model</li>
+ <li>Redefine the model for the radar. See <a href="../src/radar.qak" target="code">radar.qak</a>.</li>
+ <li>Modify the <em>sonarhandler</em> by substituting <tt>forward</tt> with <bc>publish</bc>.</li>
+ </ol>
+ 
+ Is it possible to avoid any modification in the <bc>sonarhandler</bc>? The answer is 'yes': it is sufficient to include the flag <bc>-mqtt</bc> in
+ the declaration of the context <tt>ctxRobotReq</tt> as done in <a href="../src/radar.qak" target="code">radar.qak</a>.
+ 
+ <center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:60%">
+<img src="./robotRadarViaMqtt.png" alt="robotRadarViaMqtt" width="95%" height="30%"/>
+</td>
+<td>
+<m>
+The radar is now a stand-alone system that receives <tt>polar</tt> events <bc>published</bc> on a <tt>MQTT</tt> broker by the robot.
+</m>
+</td>
+ </tr>
+ </table>
+</center>
+
+ 
+ 
+ <h2><a id="mvcrefactoring"/>A MVC-based refactoring</h2> 
+
+  <center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:60%">
+<img src="./portAdapterArch.png" alt="portAdapterArch" width="95%" height="30%"/>
+</td>
+<td>
+<m>
+ .
+</m>
+</td>
+ </tr>
+ </table>
+</center>
+ 
+
+ <h3>Resource Model starting from the system kb</h3>
+ <h3>MVC-based refactoring</h3>
+ <h3>Access to the model with CoAP</h3>
+ 
+ 
+ 
+ 
+ 
 <!--
 
 <h3><a id=""/>Project Architecture</h3>
@@ -652,16 +769,33 @@ for the application logic.</li>
  
 </table>
 </center>
+-->
  
 <h2><a id="lab11iot"/>The Application Domain</h2> 
 
 <img src="./iot3.png" alt="iot0" width="100%" height="100%"/>
-
+<br/><br/>
+<img src="./iot4.png" alt="iot4" width="60%" height="60%"/>
 <img src="./iot0.png" alt="iot0" width="70%" height="70%"/>
 <img src="./iotRobot.png" alt="iotRobot" width="60%" height="60%"/>
 
--->
 
+<h2>Questions</h2>
+<pre>
+Quando inizio ad occuparmi del Testing del sistema?
+
+- Cosa avrò in mano quando ho finito la fase di Analisi dei Requisiti?
+
+- Cosa avrò in mano quando ho finito la fase di Analisi del Problema?
+
+- Ammettendo di seguire un approccio incrementale evolutivo sarò in grado, e fino a che punto, di
+implementare dei sistemi che evolvono in maniera monotona crescente? Andrò sempre dritto verso la
+meta oppure devo mettere in conto che avrò dei ripensamenti durante la fase di feedback?
+
+- Ma che cosa intende realmente Scrum quando parla di Sprint Review?
+
+- Cosa intende realmente Scrum quando parla di Sprint Retrospective? 
+</pre>
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
