@@ -25,8 +25,8 @@ class Sonarhandlermvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( n
 				state("waitForEvents") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t05",targetState="sendToRadar",cond=whenEvent("sonar"))
-					transition(edgeName="t06",targetState="sendToRadar",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t06",targetState="sendToRadar",cond=whenEvent("sonar"))
+					transition(edgeName="t07",targetState="sendToRadar",cond=whenEvent("sonarRobot"))
 				}	 
 				state("sendToRadar") { //this:State
 					action { //it:State

@@ -27,25 +27,15 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				state("waitModelChange") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t00",targetState="robotMove",cond=whenEvent("local_userCmd"))
-					transition(edgeName="t01",targetState="changeModel",cond=whenEvent("local_modelChange"))
-				}	 
-				state("robotMove") { //this:State
-					action { //it:State
-						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(X)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								solve("action(robot,move(${payloadArg(0)}))","") //set resVar	
-								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"robotmvc" ) 
-						}
-					}
-					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )
+					 transition(edgeName="t01",targetState="changeModel",cond=whenEvent("modelChange"))
 				}	 
 				state("changeModel") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("modelChange(X)"), Term.createTerm("modelChange(V)"), 
+						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(robot,V)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								solve("${payloadArg(0)}","") //set resVar	
+								solve("action(robot,move(${payloadArg(1)}))","") //set resVar	
+								emit("modelChanged", "modelChanged(robot,${payloadArg(1)})" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )

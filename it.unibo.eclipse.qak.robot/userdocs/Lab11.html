@@ -161,14 +161,14 @@ table, th, td {
 <li><a href="#Methodology">Methodology</a></li>
 <li><a href="#reqanalysis">Requirement Analysis</a></li>
 <li><a href="#firstModel">A first model of the system Architecture</a></li>
+<li><a href="#testplans">TestPlans</a></li>
 <li><a href="#problemanalysis">Problem  Analysis</a></li>
-
 <li><a href="#logicalarch">Logical Architecture</a></li>
 <li><a href="#Project">Project</a></li>
 <li><a href="#radaralone">The radar as a stand-alone system</a></li>
 <li><a href="#mvcrefactoring">A MVC-based refactoring</a> </li>
  </ol>
- lab11iot
+  
  
 <h2><a id="lab11req"/>Requirements</h2> 
 <!--
@@ -236,7 +236,8 @@ robot built upon a mBot robot.  -->
 </ul>
 
 <h3>Basic questions</h3>
-Let us recall a set of basic questions that we can pose to ourselves at the starting of each new project.
+Let us recall a set of basic questions that we can pose to ourselves at the starting of each new project (see also
+the section <a href="#Questions">Questions</a>).
 <ul>
 <li><em>Incremental development</em>: Is it possible to organize the production in terms of a <tt>sequence of systems</tt>, each facing a more wide/complex
 set of requirements so that each system can be designed and built as the <bc>incremental evolution</bc> of the previous one?</li>
@@ -375,10 +376,10 @@ At this stage, the system architecture can be represented as in the following, i
 <m>
 The structure of the <bc>information exchanged</bc> among the main components of the application is (at the moment) defined as follows:
 <ul>
-<li>from console to robot: <tt>robotCmd : robotCmd(X)</tt></li>
-<li>from a sonar : <tt>sonar : sonar( Name, Distance )</tt></li>
-<li>from robot to radar: <tt>polar : p( Distance, Angle )</tt></li>
-<li>from the environment: <tt>envCond : envCond(X)</tt></li>
+<li>console to robot: <ks>robotCmd : robotCmd(X) </ks> <kc>X=w|a|s|d|h</kc></li>
+<li>from sonar : <ks>sonar : sonar( Name, Distance )</ks></li>
+<li>robot to radar: <ks>polar : p( Distance, Angle )</ks></li>
+<li>from environment: <ks>envCond : envCond(X)</ks></li>
 </ul>
 
 These definitions are very useful to assure interoperability, but they do not arise from the requirements; thus,
@@ -395,7 +396,7 @@ a source of information (see <bc>sonar/2</bc> in the picture above).
 
 
 
-<h3>A first model (towards<bc> Requirements traceability</bc>) </h3>
+<h4>Towards <bc>Requirements traceability</bc>) </h4>
 A better specification of the system architecture can be given by introducing a model written in a machine-understandable language. 
 For example, a   
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.qakactor/userDocs/LabQak.html" target="lecture">QActor</a>
@@ -463,12 +464,25 @@ working in our system.</li>
 <div class="remark">
 An important point is to exclude from the <em>console</em> any responsibility rleated to the business logic.
 </div>
+
+
 <h2><a id="testplans"/>Test plans</h2>   
 This first model is quite simple but is provides a basic skeleton for the system to build a reference point for our next development steps.
 Moroever, it can be used to define a set of <bc>test plans</bc>, i.e. the specification of tests that must be run with success as soon as some code
 is available.
 
 <h3>An example</h3>
+Example of functional test-plans could be:
+<ul>
+<li>If the robot receives the command <bc>robotCmd:robotCmd(X)</bc>, the robot state must change from <tt>stopped</tt> to <tt>movingForward</tt> </li>
+<li>If the robot is in the state <tt>movingForward</tt> and the event <bc>envCond : envCond(alarm(fire))</bc> is emitted,
+the robot state must change to <tt>stopped</tt> 'as soon as possibile' </li>
+<li>...</li>
+</ul>
+
+We note that the effort to declare (even if in informal way) a set of test-plan in explcit way, leads us to the idea of introducing the concept of 
+<bc>robot state</bc>.
+We will return on this point after the section <a href="#mvcrefactoring">A MVC-based refactoring</a>.
 
 <h2><a id="problemanalysis"/>Problem analysis</h2> 
 The main goal of problem analysis can be summarized as follows:
@@ -660,8 +674,56 @@ and
  <li>Modify the <em>sonarhandler</em> by substituting <tt>forward</tt> with <bc>publish</bc>.</li>
  </ol>
  
-  
  <center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:38%">
+<pre>
+ QActor <ks>sonarhandler</ks> context ctxRobotReq{
+ 	State init initial{
+		["<k>connectToMqttBroker</k>(\"tcp://127.0.0.1:1883\")"]		
+	}         
+	Goto waitForEvents	   
+	State waitForEvents{  }      
+   	Transition t0 whenEvent sonar      ->  sendToRadar
+   	              whenEvent sonarRobot ->  sendToRadar   	               
+ 	State sendToRadar{                      
+ 		printCurrentMessage                                        
+ 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){     
+[" val D = Integer.parseInt( payloadArg(1) ) * 5"] <kc>//amplify distance</kc>
+		<kc>//forward radarreq -m polar : p( $D, 90  )</kc> 
+["val <ks>evtopic</ks> = \"<k>unibo/qak/events</k>\"
+val evpolar = MsgUtil.buildEvent(\"$name\",\"polar\", \"p( $D, 90  )\").toString()
+<k>publish</k>(evpolar, <ks>evtopic</ks> ) "]
+ 		}
+ }
+ </pre></td>
+<td>
+<m>The operations <bc>connectToMqttBroker</bc>, <bc>publish</bc> and <bc>subscribe</bc>  are built-in in <em>ActorBasic</em>.
+At the moment they are not included in the <tt>qak</tt> language.
+<div class="remark">
+WARNING: the system works, but <bc>is it logically correct?</bc><br/><br/>
+Is it right to substitute a point-to-point interaction expressed by <ks>forward</ks> with a 
+one-to-many interaction expressed by <ks>publish</ks>?
+</div>
+
+See on the network, e.g. 
+<li><a href="http://www.steves-internet-guide.com/mqtt-security-mechanisms/" target="web">MQTT Security Fundamentals</a></li>
+<li><a href="https://www.hivemq.com/mqtt-security-fundamentals/" target="web">MQTT Security Fundamentals</a></li>
+<li><a href="https://www.trendmicro.com/vinfo/us/security/news/internet-of-things/mqtt-and-coap-security-and-privacy-issues-in-iot-and-iiot-communication-protocols" target="web">
+MQTT & CoAP:Security and Privacy Issues in IoT</a></li>
+
+
+</m>
+</td>
+ </tr>
+ </table>
+</center>
+
+ 
+ <br/><br/>
+  
+<center><table style="width:98%">
 <tbody>	
 <tr>
 <td style="width:60%">
@@ -670,6 +732,11 @@ and
 <td>
 <m>
 The radar is now a stand-alone system that receives <tt>polar</tt> events <bc>published</bc> on a <tt>MQTT</tt> broker by the robot.
+<br/><br/>
+The radar performs a <bc>subscribe</bc> to the topic <ks>unibo/qak/events</ks>. 
+<div class="remark">
+WARNING: without proper security, anyone that knows the address of the <tt>MQTT</tt> broker and the name of the topic, can receive <ks>polar</ks> events.
+</div>
 </m>
 </td>
  </tr>
@@ -683,6 +750,11 @@ the declaration of the context <tt>ctxRobotReq</tt> as done in <a href="../src/r
 See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.qakactor/userDocs/LabQak.html#mqtt">LabQak.html: Using MQTT</a>.
 
 
+ <div class="req">
+<em>Todo (Radar with sonar HC-SR04)</em>: Launch the system for a real robot equipped with a sonar <bc>HC-SR04</bc> and look at the radar
+ </div>
+
+ 
 <h2><a id="mvcrefactoring"/>A MVC-based refactoring</h2> 
 Let us introduce a new requirement: 
  <div class="req">
@@ -755,7 +827,14 @@ The architecture shown on the left in the figure represents the reference system
 known ad hexagoal architecture or port/adapter pattern (see for example
 <a href="https://softwarecampament.wordpress.com/portsadapters/" target="web">Ports and Adapters Pattern (Hexagonal Architecture)</a>. 
 
+
 <h3>Hexagonal architecture</h3>
+The main aim of this architecture is to decouple the application's core logic from the services it uses. 
+This allows different services to be "plugged in", and it allows the application to be run without these services.
+<br/><br/>
+The <em>connection between the inside and the outside part</em> of the system is realized via abstractions called 
+<bc>ports</bc> and their implementation counterparts called <bc>adapters</bc>.
+
 <center><table style="width:98%">
 <tbody>	
 
@@ -766,16 +845,16 @@ known ad hexagoal architecture or port/adapter pattern (see for example
 <td> 
 <m>
 <ul>
- <li>The core logic, or business logic, of an application consists of the algorithms that are essential to its purpose. 
-They implement the use cases that are the heart of the application. 
+ <li>The <em>business logic</em> of an application consists of the algorithms that are essential to its purpose. 
+They implement the <em>use cases</em> that are the heart of the application. 
 When you change them, you change the essence of the application.
 </li>
-<li>The services are not essential. They can be replaced without changing the purpose of the application. 
+<li>The <em>services</em> are not essential. They can be replaced without changing the purpose of the application. 
 Examples: database access and other types of storage, user interface components, 
 e-mail and other communication components, hardware devices.</li>
-<li>The core logic can be tested independent of outside services.</li>
+<li>The business logic can be <em>tested independent of outside services</em>.</li>
 <li>
-It is easy to replace services by other ones that are more fit in view of changing requirements.
+It is <em>easy to replace services</em> by other ones that are more fit in view of changing requirements.
 </ul>
 
 </m>
@@ -784,15 +863,9 @@ It is easy to replace services by other ones that are more fit in view of changi
  </table>
 </center>
 
-The main aim of this architecture is to decouple the application's core logic from the services it uses. 
-This allows different services to be "plugged in", and it allows the application to be run without these services.
 
-The connection between the inside and the outside part of the system is realized via abstractions called 
-<em>ports</em> and their implementation counterparts called </em>adapters</em>.
-
-
-At the center, there is the model of the resources and the structure of system can become an instance of the
-MVC pattern.
+At the center, there is the model of the resources and the structure of system can be viewed an instance of the
+<bc>MVC</bc> pattern.
 
 <h3>The pattern MVC</h3>
 
@@ -837,92 +910,100 @@ Today, it is quite common to express the resource model in <tt>JSON</tt>.
 </center>
 
 
-<br/><br/>
+<h3>A resource model expressed in Prolog</h3>
 While it is nowadays quite common to express the resource model in <tt>JSON</tt>, let us introduce an example of resource model
 by using Prolog facts :
 
 
 
 <pre>
-model( actuator, robot, state(stopped) ).
 
-The rules to access and to change the model cane be expressed in Prolog too:
+<ks>model( actuator, robot, state(V) ).</ks>	<kc>//V = movingForward | movingBackward | rotateLeft | rotateRight | stopped</kc>
+
 </pre>
 
+The rules to access and to change the model cane be expressed in Prolog too:
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:60%">
+Code in <a href="../ddrWorkerResourceModel.pl" target="code">ddrWorkerResourceModel.pl</a>
 <pre>
-action(robot, move(w)) :- changeModel( actuator, robot, state(movingForward)  ).
-action(robot, move(s)) :- changeModel( actuator, robot, state(movingBackward) ).
-action(robot, move(a)) :- changeModel( actuator, robot, state(rotateLeft)     ).
-action(robot, move(d)) :- changeModel( actuator, robot, state(rotateRight)    ).
-action(robot, move(h)) :- changeModel( actuator, robot, state(stopped)        ).
+<ks>model( actuator, robot, state(stopped) ).</ks> <kc>%% initial state</kc>
+
+action(robot, move(w)) :- changeModel( actuator, robot, movingForward  ).
+action(robot, move(s)) :- changeModel( actuator, robot, movingBackward ).
+action(robot, move(a)) :- changeModel( actuator, robot, rotateLeft     ).
+action(robot, move(d)) :- changeModel( actuator, robot, rotateRight    ).
+action(robot, move(h)) :- changeModel( actuator, robot, stopped        ).
 
 
-changeModel( CATEG, NAME, state(VALUE) ) :-
- 		replaceRule( 
-			model( CATEG,  NAME, state(_) ),  
-			model( CATEG,  NAME, state(VALUE) ) 		
-		),
-		showResourceModel.
+changeModel( CATEG, NAME, VALUE ) :-
+   replaceRule( model(C,N,_),  model(C,N,state(VALUE)) ),
+   <ks>showResourceModel</ks>.  <kc>%% at each change, show the model</kc>
 				
 showResourceModel :- 
 	stdout <- print("[ "),
-	model( CATEG, NAME, STATE ),
+	<ks>model( CATEG, NAME, STATE ),</ks>
  	stdout <- print( model( CATEG, NAME, STATE ) ),
 	stdout <- println(" ]").
 
 </pre>
- 
- <h3>Resource Model starting from the system kb</h3>
- <h3>MVC-based refactoring</h3>
- <h3>Access to the model with CoAP</h3>
- 
- 
- 
- 
- 
-<!--
+<m>
+The actor <em>resourcemodel</em> (code on the left) interacts with the resource model and with the other actors.
+</m>
+<img src="./hexRobotMvc.png" alt="hexRobotMvc" width="90%" height="32%"/>
+</td>
+<td> 
+<pre>
 
-<h3><a id=""/>Project Architecture</h3>
-<center><table style="width:98%">
-<tbody>	
-<tr>
-<td style="width:55%">
-<img src="./robotRadar0.png" alt="robotRadar0" width="100%" height="30%"/>
- 
-</td>
-<td>
+<k>Event</k>  local_userCmd : userCmd(X)	<kc>//from GUI  X = w | a | s | d | h </kc>
+<k>Event</k>  modelChanged  : modelChanged( TARGET, VALUE )
+<k>Dispatch</k> robotCmd    : robotCmd(X)
+...
+<k>QActor</k> resourcemodel <k>context</k> ctxRobotMvc{
+	State s0 initial {	 //load the 	
+		<k>solve</k>( consult("sysRules.pl")	 )       
+		<k>solve</k>( consult("ddrWorkerResourceModel.pl")) 
+		<k>solve</k>( <ks>showResourceModel</ks> ) 		
+	}
+	Goto waitModelChange
+	
+	State waitModelChange{}
+	Transition t0 <k>whenEvent</k> <ks>modelChange</ks> -> changeModel
+
+	State changeModel{
+		<k>onMsg</k>( <ks>modelChange : modelChange( robot,V )</ks> ) { <kc>// V= w | ...</kc>
+			<k>solve</k>(  <ks>action( robot, move($payloadArg(1)) )</ks> )  
+			<kc>//emit makes  resourcemodel an observable</kc>
+			<k>emit</k> <ks>modelChanged : modelChanged(robot,$payloadArg(1))  </ks>
+		} 
+	}
+	Goto waitModelChange
+}
+
+</pre> 
 <m>
-<ul>
-<li>Frontend Model: <a href="../src/frontend.qak" target="code">frontend.qak</a></li>
-<li>Robot Model: <a href="../src/robotWorker.qak" target="code">robotWorker.qak</a></li>
-<li>Radar Model: <a href="../src/radar.qak" target="code">radar.qak</a></li>
-</ul>
+The full code is in <a href="../src/ddrWorkerMvc.qak" target="code">ddrWorkerMvc.qak</a> 
 </m>
 </td>
  </tr>
- 
- <tr>
-<td>
-<img src="./robotWorker.png" alt="robotWorker" width="100%" height="30%"/>
- 
-</td>
-<td>
-<m>
-Robot Model: <a href="../src/robotWorker.qak" target="code">robotWorker.qak</a>
-<ul>
-<li><bc>player</bc>:  handles <tt>robotCmd</tt> to move the robot and sends <tt>usercmd</tt> to <bc>mind</bc>
-for the application logic.</li>
-<li><bc>mind</bc>: executes the robot work (application logic) by sending <tt>robotCmd</tt> to <bc>player</bc> </li>
-<li>sonarhandler: handles  <tt>sonar</tt> and sends <tt>polat</tt> to <bc>radar</bc>.  </li>
-</ul>
-</m>
-</td>
- </tr>
- 
- 
-</table>
+ </table>
 </center>
--->
+ 
+ <div class="req">
+<em>Todo (TestPlans)</em>: Define in a formal way (using <bc>JUnit</bc>) a set of test plan for the system.
+</div>
+
+<!--
+ <h3>Access to the model with CoAP</h3>
+Todo 
+--> 
+ 
+ 
+
  
 <h2><a id="lab11iot"/>The Application Domain</h2> 
 
@@ -933,7 +1014,7 @@ for the application logic.</li>
 <img src="./iotRobot.png" alt="iotRobot" width="60%" height="60%"/>
 
 
-<h2>Questions</h2>
+<h2 id="Questions">Questions</h2>
 <pre>
 Quando inizio ad occuparmi del Testing del sistema?
 

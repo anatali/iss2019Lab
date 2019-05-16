@@ -1,7 +1,7 @@
 /*
  * ------------------------------------------------------
- * This is the first model of the system
- * written as the result of the requirement analysis
+ * This is a model of the project of the 
+ * system based on the MVC pattern
  * ------------------------------------------------------
  */  
 System ddrworkermvc   
@@ -15,11 +15,14 @@ Event    envCond   : envCond( CONDTYPE )            //from the environment (simu
 Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
 Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
 
-Event  local_userCmd   : userCmd(X)		            //from GUI to console X = w | a | s | d | h 
+Event  local_userCmd   : userCmd(X)		            //from GUI X = w | a | s | d | h 
 Dispatch robotCmd  : robotCmd(X)	                //from console to robot
 
 Event polar             : p( Distance, Angle )            
-Event local_modelChange : modelChange( X )
+//Event local_modelChange : modelChange( X )
+Dispatch  modelChange   : modelChange( TARGET, VALUE )
+Event  modelChanged     : modelChanged( TARGET, VALUE )
+
 /*
  * 2) Computational Nodes   
  */
@@ -39,6 +42,17 @@ QActor consolemvc context ctxRobotMvc{
 		run resources.guiMvcSupport.create( myself , "msg")   //(1) REQ: human user interaction 	
 		//emits  local_userCmd : userCmd( X )	X = w | a | s | d | h 
 	}
+	Goto waitCmd
+	
+	State waitCmd{  } 
+	Transition t0 whenEvent local_userCmd -> handleUserCmd
+	
+	State handleUserCmd{ //does not handle alarms
+		onMsg( local_userCmd : userCmd( X ) ) {
+ 		   forward resourcemodel -m modelChange : modelChange( robot,  $payloadArg(0)   )
+		}	
+	}
+	Goto waitCmd
 }
 
 QActor resourcemodel context ctxRobotMvc{
@@ -51,28 +65,23 @@ QActor resourcemodel context ctxRobotMvc{
 	
 	State waitModelChange{}
 	Transition t0 
-		whenEvent local_userCmd     -> robotMove
-		whenEvent local_modelChange -> changeModel
-	
-	State robotMove { 
-		//printCurrentMessage
-		onMsg( local_userCmd : userCmd( X ) ) {
-			solve( action(robot, move($payloadArg(0))) )  
-			forward robotmvc -m robotCmd : robotCmd( $payloadArg(0) )
-		}
-	}
-	Goto waitModelChange
-	
+		whenEvent modelChange -> changeModel
+
 	State changeModel{
 		printCurrentMessage
-		onMsg( local_modelChange : modelChange( V ) ) {
-			solve(  $payloadArg(0) ) 
+		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
+			solve(  action( robot, move($payloadArg(1)) ) )  
+			//actuate the move: is it model responsibility?
+			//forward robotmvc -m robotCmd : robotCmd( $payloadArg(0) ) //observer is better ?
+			emit modelChanged : modelChanged(  robot,  $payloadArg(1)  )  
 		} 
 	}
 	Goto waitModelChange
 }
+
+
 /*
- * robot: executes robotCmd and handles envCond events
+ * robot: ACTUATOR of modelChanged events related to robot move
  * REQ : sendMoveCmds.move, handleConds
  */
 QActor robotmvc context ctxRobotMvc{   
@@ -83,9 +92,18 @@ QActor robotmvc context ctxRobotMvc{
 	Goto waitCmd
 	
 	State waitCmd{  } 
-	Transition t0 whenMsg  robotCmd    -> handleCmd
+	Transition t0 whenMsg  robotCmd        -> handleCmd
+				  whenEvent modelChanged  -> handleModelChanged
 	              whenEvent envCond    -> handleCond
 	              whenEvent sonarRobot ->  handleCond  //the robot hits
+	
+	State handleModelChanged{
+		printCurrentMessage
+		onMsg ( modelChanged : modelChanged(robot,CMD) ){
+			run resources.robotSupport.move( "msg(${payloadArg(1)})"  )
+		}
+	}
+	Goto waitCmd
 	
 	State handleCmd{
 		onMsg ( robotCmd : robotCmd(CMD) ){			
@@ -97,8 +115,9 @@ QActor robotmvc context ctxRobotMvc{
 	
 	State handleCond{
 		printCurrentMessage
-		run resources.robotSupport.move( "msg(stop)"  ) //do the action
-		emit local_modelChange : modelChange( changeModel( actuator, robot, state(stop) ) )	        //updates the model
+		//Logically correct, but perhaps no adequate as regards reactivity
+		//run resources.robotSupport.move( "msg(stop)"  ) //do the action
+		forward resourcemodel -m modelChange : modelChange( robot, h   )
 	}
 	Goto waitCmd
 }

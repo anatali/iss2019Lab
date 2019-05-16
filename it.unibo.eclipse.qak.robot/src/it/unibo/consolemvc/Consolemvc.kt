@@ -20,6 +20,21 @@ class Consolemvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 						resources.guiMvcSupport.create(myself ,"msg" )
 					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("waitCmd") { //this:State
+					action { //it:State
+					}
+					 transition(edgeName="t00",targetState="handleUserCmd",cond=whenEvent("local_userCmd"))
+				}	 
+				state("handleUserCmd") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(X)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								forward("modelChange", "modelChange(robot,${payloadArg(0)})" ,"resourcemodel" ) 
+						}
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 			}
 		}

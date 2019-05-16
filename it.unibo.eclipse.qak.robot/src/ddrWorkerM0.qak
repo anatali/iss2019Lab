@@ -103,7 +103,7 @@ QActor sonarhandler context ctxRobotReq{
  		printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){     
 [" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
-			//forward radarreq -m polar : p( $D, 90  ) 
+		//forward radarreq -m polar : p( $D, 90  )  
 ["val evtopic = \"unibo/qak/events\"
 val evpolar = MsgUtil.buildEvent(\"$name\",\"polar\", \"p( $D, 90  )\").toString()
 publish(evpolar, evtopic )
