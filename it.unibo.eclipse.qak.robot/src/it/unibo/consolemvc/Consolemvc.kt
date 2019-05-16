@@ -18,7 +18,7 @@ class Consolemvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						resources.guiMvcSupport.create(myself ,"msg" )
+						resources.guiMvcSupport.create(myself ,"" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

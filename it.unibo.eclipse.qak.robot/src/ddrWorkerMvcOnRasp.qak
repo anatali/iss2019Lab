@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------
+ * This is a model of the project of the 
+ * system based on the MVC pattern
+ * ------------------------------------------------------
+ */  
+System ddrworkermvconrasp   
+
+mqttBroker "192.168.43.229" : 1883    //192.168.1.4
+ 	  
+/*
+ * 1) Information exchanged 
+ */
+Event sonarRobot: sonar( DISTANCE )	            //from  sonar   
+Event polar     : p( Distance, Angle )
+/*
+ * 2) Computational Nodes   
+ */
+ Context ctxSonarOnRasp     ip [host="localhost"   port=8025]  -mqtt 
+ 
+/*
+ * sonarhandler: looks at sonar events and sends polar to radar
+ * REQ : receiveSensorInfo, showSonarData
+ */
+QActor sonarhandleronrasp context ctxSonarOnRasp{
+ 	State init initial{
+		println("sonarhandleronrasp STARTS ")
+		run resources.sonarHCSR04Support.init(myself , "")
+		//machineExec "SonarAlone"
+	}         
+	Goto waitForEvents
+	   
+	State waitForEvents{  }      
+   	Transition t0 whenEvent sonarRobot ->  sendToRadar
+   	               
+ 	State sendToRadar{                      
+ 		printCurrentMessage                                        
+  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
+			emit polar : p( $D, 60  ) 
+ 		}
+ 	} 
+ 	Goto waitForEvents
+}
+
+ 
+ 

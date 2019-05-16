@@ -19,7 +19,7 @@ class Robotmvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("s0") { //this:State
 					action { //it:State
 						println("robotplayer STARTS")
-						resources.robotSupport.create(myself ,"virtual" )
+						resources.robotSupport.create(myself ,"realmbot" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

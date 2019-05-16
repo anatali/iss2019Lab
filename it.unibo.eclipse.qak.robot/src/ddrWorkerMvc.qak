@@ -16,10 +16,9 @@ Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot en
 Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
 
 Event  local_userCmd   : userCmd(X)		            //from GUI X = w | a | s | d | h 
-Dispatch robotCmd  : robotCmd(X)	                //from console to robot
+Dispatch robotCmd      : robotCmd(X)	                //from console to robot
 
 Event polar             : p( Distance, Angle )            
-//Event local_modelChange : modelChange( X )
 Dispatch  modelChange   : modelChange( TARGET, VALUE )
 Event  modelChanged     : modelChanged( TARGET, VALUE )
 
@@ -39,7 +38,7 @@ Context ctxSonarMvc     ip [host="localhost"   port=8025]  -mqtt
  */
 QActor consolemvc context ctxRobotMvc{  
 	State s0 initial {		 
-		run resources.guiMvcSupport.create( myself , "msg")   //(1) REQ: human user interaction 	
+		run resources.guiMvcSupport.create( myself , "")   //(1) REQ: human user interaction 	
 		//emits  local_userCmd : userCmd( X )	X = w | a | s | d | h 
 	}
 	Goto waitCmd
@@ -87,7 +86,7 @@ QActor resourcemodel context ctxRobotMvc{
 QActor robotmvc context ctxRobotMvc{   
 	State s0 initial {		
 		println("robotplayer STARTS")	
-		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or realmbot	
+		run resources.robotSupport.create( myself, "realmbot" ) //(2) REQ : virtual or realmbot	
 	}
 	Goto waitCmd
 	
@@ -139,7 +138,7 @@ QActor sonarhandlermvc context ctxSonarMvc{
  	State sendToRadar{                      
  		printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
-[" val D = Integer.parseInt( payloadArg(1) ) * 5"] 
+[" val D = Integer.parseInt( payloadArg(1) ) * 1"] 
 			emit polar : p( $D, 90  )  
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     

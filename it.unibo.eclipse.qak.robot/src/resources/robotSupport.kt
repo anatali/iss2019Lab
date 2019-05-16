@@ -8,7 +8,7 @@ object robotSupport{
 		robotKind = robot
 		when( robotKind ){
 			"virtual"    ->  { resources.clientWenvObjTcp.initClientConn( actor, "localhost" ) }
-			"realmbot"   ->  { mbotSupport.create( actor, "/dev/ttyUSB0") }  //"/dev/ttyUSB0"   "COM6"
+			"realmbot"   ->  { mbotSupport.create( actor, "COM6") }  //"/dev/ttyUSB0"   "COM6"
 			"relacustom" ->  {}
 			else -> println( "robot unknown" )
 		}
