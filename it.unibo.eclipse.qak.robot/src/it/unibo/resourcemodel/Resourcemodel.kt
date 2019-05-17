@@ -31,11 +31,10 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				}	 
 				state("changeModel") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(robot,V)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								solve("action(robot,move(${payloadArg(1)}))","") //set resVar	
-								emit("modelChanged", "modelChanged(robot,${payloadArg(1)})" ) 
+								if(currentSolution.isSuccess()) emit("modelChanged", "modelChanged(robot,${payloadArg(1)})" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )

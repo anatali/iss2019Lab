@@ -56,7 +56,7 @@ QActor consolereq context ctxRobotReq{  //should work in ctxConsoleReq
 QActor robotreq context ctxRobotReq{   
 	State s0 initial {		
 		println("robotplayer STARTS")	
-		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or realmbot	
+		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or 	realmbot
 		run resources.robotSupport.move( "msg(a)"  )
 		delay 1000
 		run resources.robotSupport.move( "msg(d)"  )
@@ -90,8 +90,7 @@ QActor robotreq context ctxRobotReq{
 QActor sonarhandler context ctxRobotReq{
  	State init initial{
 		println("sonardatahandler STARTS ")
-["connectToMqttBroker(\"tcp://127.0.0.1:1883\")
-"]		
+["connectToMqttBroker(\"tcp://127.0.0.1:1883\")"]		
 	}         
 	Goto waitForEvents
 	   
@@ -107,7 +106,7 @@ QActor sonarhandler context ctxRobotReq{
 ["val evtopic = \"unibo/qak/events\"
 val evpolar = MsgUtil.buildEvent(\"$name\",\"polar\", \"p( $D, 90  )\").toString()
 publish(evpolar, evtopic )
-"]
+"] 
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
 [" val D = Integer.parseInt( payloadArg(0) ) * 5"] 

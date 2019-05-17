@@ -1,16 +1,16 @@
 /*
 ================================================================================
-build_ctxRadar.gradle
+build_ctxSonarHandler.gradle
 GENERATED ONLY ONCE
 USAGE:	 
 	gradle    build eclipse		//to set the dependency on the library
-	gradle   -b build_ctxRadar.gradle distZip //for executable jar and distribution
+	gradle   -b build_ctxSonarHandler.gradle distZip //for executable jar and distribution
 	
-	gradle   -b build_ctxRadar.gradle qawrapper
-	gradlew  -b build_ctxRadar.gradle eclipse		//to set the dependency on the library
-	gradlew  -b build_ctxRadar.gradle build
-	gradlew  -b build_ctxRadar.gradle -q tasks --all
-	gradlew  -b build_ctxRadar.gradle cleanDistDir	//to clean the src directory
+	gradle   -b build_ctxSonarHandler.gradle qawrapper
+	gradlew  -b build_ctxSonarHandler.gradle eclipse		//to set the dependency on the library
+	gradlew  -b build_ctxSonarHandler.gradle build
+	gradlew  -b build_ctxSonarHandler.gradle -q tasks --all
+	gradlew  -b build_ctxSonarHandler.gradle cleanDistDir	//to clean the src directory
 ================================================================================
 */
 plugins {
@@ -72,7 +72,7 @@ sourceSets {
     main.java.srcDirs += 'src'
 }
 
-mainClassName = 'it.unibo.ctxRadar.MainCtxRadarKt'
+mainClassName = 'it.unibo.TODOKt'
 
 jar {
     println("executing jar")

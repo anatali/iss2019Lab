@@ -25,15 +25,15 @@ class Sonarhandlermvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( n
 				state("waitForEvents") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t06",targetState="sendToRadar",cond=whenEvent("sonar"))
-					transition(edgeName="t07",targetState="sendToRadar",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t05",targetState="sendToRadar",cond=whenEvent("sonar"))
+					transition(edgeName="t06",targetState="sendToRadar",cond=whenEvent("sonarRobot"))
 				}	 
 				state("sendToRadar") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(SONAR,DISTANCE)"), Term.createTerm("sonar(SONAR,DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 val D = Integer.parseInt( payloadArg(1) ) * 1
+								 val D = Integer.parseInt( payloadArg(1) ) * 5
 								emit("polar", "p($D,90)" ) 
 						}
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 

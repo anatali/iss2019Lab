@@ -6,7 +6,7 @@
  */  
 System ddrworkermvconrasp   
 
-mqttBroker "192.168.43.229" : 1883    //192.168.1.4
+mqttBroker "localhost" : 1883    //192.168.1.4  192.168.43.229
  	  
 /*
  * 1) Information exchanged 

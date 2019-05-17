@@ -1,7 +1,7 @@
 /*
  * ------------------------------------------------------
- * This is a model of the project of the 
- * system based on the MVC pattern
+ * This is a model based on the MVC pattern
+ * of the PROJECT of the system
  * ------------------------------------------------------
  */  
 System ddrworkermvc   
@@ -10,36 +10,33 @@ mqttBroker "127.0.0.1" : 1883    //192.168.1.18
  	  
 /*
  * 1) Information exchanged 
- */
-Event    envCond   : envCond( CONDTYPE )            //from the environment (simulated)
-Event    sonar     : sonar(SONAR, DISTANCE)	        //from sonar in the robot environment   
-Event    sonarRobot: sonar( DISTANCE )	            //from  sonar on robot 
+ */   
+Event  envCond      : envCond( CONDTYPE )        //from the environment (simulated)
+Event  sonar        : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment   
+Event  sonarRobot   : sonar( DISTANCE )	         //from  sonar on robot 
+Event  polar        : p( Distance, Angle )            
+Event  local_userCmd: userCmd(X)		         //from GUI X = w | a | s | d | h 
 
-Event  local_userCmd   : userCmd(X)		            //from GUI X = w | a | s | d | h 
-Dispatch robotCmd      : robotCmd(X)	                //from console to robot
-
-Event polar             : p( Distance, Angle )            
-Dispatch  modelChange   : modelChange( TARGET, VALUE )
 Event  modelChanged     : modelChanged( TARGET, VALUE )
+Dispatch  modelChange   : modelChange( TARGET, VALUE )
 
+
+Context ctxRobotMvc         ip [host="localhost"   port=8025]  
+Context ctxSonarHandler     ip [host="localhost"   port=8028]  -mqtt 
+
+     
 /*
- * 2) Computational Nodes   
- */
-Context ctxRobotMvc     ip [host="localhost"   port=8025]  
-Context ctxSonarMvc     ip [host="localhost"   port=8025]  -mqtt 
-    
-/*
- * 3) System Actors
- */
- 
-/*
- * console: converts a userCmd into a robotCmd
+ * console: 
  * REQ : human user interaction, sendMoveCmds
  */
 QActor consolemvc context ctxRobotMvc{  
 	State s0 initial {		 
 		run resources.guiMvcSupport.create( myself , "")   //(1) REQ: human user interaction 	
 		//emits  local_userCmd : userCmd( X )	X = w | a | s | d | h 
+		//SHOW THE SYSTEM
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("ddrworkermvc.pl")	 )  
+		solve( showSystemConfiguration )
 	}
 	Goto waitCmd
 	
@@ -67,12 +64,12 @@ QActor resourcemodel context ctxRobotMvc{
 		whenEvent modelChange -> changeModel
 
 	State changeModel{
-		printCurrentMessage
+		//printCurrentMessage
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			solve(  action( robot, move($payloadArg(1)) ) )  
 			//actuate the move: is it model responsibility?
-			//forward robotmvc -m robotCmd : robotCmd( $payloadArg(0) ) //observer is better ?
-			emit modelChanged : modelChanged(  robot,  $payloadArg(1)  )  
+			//forward robotmvc -m robotCmd : robotCmd( $payloadArg(0) ) 
+			ifSolved emit modelChanged : modelChanged(  robot,  $payloadArg(1)  )  
 		} 
 	}
 	Goto waitModelChange
@@ -86,29 +83,21 @@ QActor resourcemodel context ctxRobotMvc{
 QActor robotmvc context ctxRobotMvc{   
 	State s0 initial {		
 		println("robotplayer STARTS")	
-		run resources.robotSupport.create( myself, "realmbot" ) //(2) REQ : virtual or realmbot	
+		run resources.robotSupport.create( myself, "virtual" ) //(2) REQ : virtual or realmbot	
 	}
 	Goto waitCmd
 	
 	State waitCmd{  } 
-	Transition t0 whenMsg  robotCmd        -> handleCmd
+	Transition t0 //whenMsg  robotCmd        -> handleCmd
 				  whenEvent modelChanged  -> handleModelChanged
 	              whenEvent envCond    -> handleCond
 	              whenEvent sonarRobot ->  handleCond  //the robot hits
 	
 	State handleModelChanged{
-		printCurrentMessage
+		//printCurrentMessage
 		onMsg ( modelChanged : modelChanged(robot,CMD) ){
 			run resources.robotSupport.move( "msg(${payloadArg(1)})"  )
 		}
-	}
-	Goto waitCmd
-	
-	State handleCmd{
-		onMsg ( robotCmd : robotCmd(CMD) ){			
-			run resources.robotSupport.move( "msg(${payloadArg(0)})"  )
-			//println("msg(${payloadArg(0)})")
-		}	
 	}
 	Goto waitCmd
 	
@@ -116,16 +105,16 @@ QActor robotmvc context ctxRobotMvc{
 		printCurrentMessage
 		//Logically correct, but perhaps no adequate as regards reactivity
 		//run resources.robotSupport.move( "msg(stop)"  ) //do the action
-		forward resourcemodel -m modelChange : modelChange( robot, h   )
+		forward resourcemodel -m modelChange : modelChange( robot, h )
 	}
 	Goto waitCmd
 }
 
 /*
- * sonarhandler: looks at sonar events and sends polar to radar
+ * sonarhandler: looks at sonar events and emits info (via mqtt) for the radar
  * REQ : receiveSensorInfo, showSonarData
  */
-QActor sonarhandlermvc context ctxSonarMvc{
+QActor sonarhandlermvc context ctxSonarHandler{  
  	State init initial{
 		println("sonardatahandler STARTS ")
 	}         
@@ -138,47 +127,15 @@ QActor sonarhandlermvc context ctxSonarMvc{
  	State sendToRadar{                      
  		printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
-[" val D = Integer.parseInt( payloadArg(1) ) * 1"] 
+[" val D = Integer.parseInt( payloadArg(1) ) * 5"] //AMPLIFY
 			emit polar : p( $D, 90  )  
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-[" val D = Integer.parseInt( payloadArg(0) ) * 5"] 
+[" val D = Integer.parseInt( payloadArg(0) ) * 5"] //AMPLIFY
 			emit polar : p( $D, 180  ) 
  		}
  	} 
  	Goto waitForEvents
 }
 
-/*
- * Introspector
- */
-QActor introspectormvc context ctxRobotMvc{
-	State init initial{
-		solve( consult("sysRules.pl")	 )       
-		solve( consult("ddrworkermvc.pl")	 )  
-		solve( showSystemConfiguration )
-	}
-}
-/*
- * radar: show polar data on a radar GUI (radarPojo)
- * REQ : showSonarData
-
-QActor radarreq context ctxRobotReq{  //should work in ctxRadar
-	State s0 initial {		
-		//run resources.radarSupport.activate()	
-		run radarPojo.radarSupport.setUpRadarGui()  //(3)	REUSE radarPojo
-	}
-	Goto waitMsg
-	
-	State waitMsg{}
-	Transition t0 whenMsg   polar -> showPoint
-	
-	State showPoint{
-		printCurrentMessage
-		onMsg ( polar : p( D,A )){
-			 run radarPojo.radarSupport.update( payloadArg(0), payloadArg(1)  )			 
-		}
-	}
-	Goto waitMsg
-}
- */
+ 

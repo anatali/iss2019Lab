@@ -19,6 +19,9 @@ class Consolemvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("s0") { //this:State
 					action { //it:State
 						resources.guiMvcSupport.create(myself ,"" )
+						solve("consult('sysRules.pl')","") //set resVar	
+						solve("consult('ddrworkermvc.pl')","") //set resVar	
+						solve("showSystemConfiguration","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

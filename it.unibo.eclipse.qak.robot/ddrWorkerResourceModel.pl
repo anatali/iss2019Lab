@@ -18,7 +18,7 @@ changeModel( CATEG, NAME, VALUE ) :-
    showResourceModel.	%% at each change, show the model
 				
 showResourceModel :- 
-	stdout <- print("[ "),
+	stdout <- print("RESOURCE MODEL: [ "),
 	model( CATEG, NAME, STATE ),
  	stdout <- print( model( CATEG, NAME, STATE ) ),
 	stdout <- println(" ]").

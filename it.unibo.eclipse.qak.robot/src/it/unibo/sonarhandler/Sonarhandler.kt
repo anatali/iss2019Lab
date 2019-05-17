@@ -19,32 +19,37 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("init") { //this:State
 					action { //it:State
 						println("sonardatahandler STARTS ")
-						connectToMqttBroker("tcp://127.0.0.1:1883")
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
 				state("waitForEvents") { //this:State
 					action { //it:State
+						stateTimer = TimerActor("timer_waitForEvents", scope, context!!, "local_tout_sonarhandler_waitForEvents", 60000.toLong())
 					}
-					 transition(edgeName="t03",targetState="sendToRadar",cond=whenEvent("sonar"))
-					transition(edgeName="t04",targetState="sendToRadar",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t13",targetState="endOfJob",cond=whenTimeout("local_tout_sonarhandler_waitForEvents"))   
+					transition(edgeName="t14",targetState="sendToRadar",cond=whenEvent("sonar"))
+					transition(edgeName="t15",targetState="showObstacle",cond=whenEvent("sonarDetect"))
 				}	 
 				state("sendToRadar") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("sonar(SONAR,DISTANCE)"), Term.createTerm("sonar(SONAR,DISTANCE)"), 
+						if( checkMsgContent( Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 val D = Integer.parseInt( payloadArg(1) ) * 5
-								val evtopic = "unibo/qak/events"
-								val evpolar = MsgUtil.buildEvent("$name","polar", "p( $D, 90  )").toString()
-								publish(evpolar, evtopic )
-						}
-						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 val D = Integer.parseInt( payloadArg(0) ) * 5
+								 val D = Integer.parseInt( payloadArg(2) ) * 5
+								emit("polar", "p($D,90)" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
+				}	 
+				state("showObstacle") { //this:State
+					action { //it:State
+						println("sonardetector showObstacle")
+					}
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
+				}	 
+				state("endOfJob") { //this:State
+					action { //it:State
+					}
 				}	 
 			}
 		}

@@ -1,5 +1,5 @@
-System robotWorker  
-
+System robotworker  
+ 
 mqttBroker "127.0.0.1" : 1883    //192.168.1.18
 
 Event    sonar  	 : sonar(SONAR, TARGET, DISTANCE)	//From (virtual) sonar

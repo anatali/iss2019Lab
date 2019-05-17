@@ -19,33 +19,22 @@ class Robotmvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("s0") { //this:State
 					action { //it:State
 						println("robotplayer STARTS")
-						resources.robotSupport.create(myself ,"realmbot" )
+						resources.robotSupport.create(myself ,"virtual" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t02",targetState="handleCmd",cond=whenDispatch("robotCmd"))
-					transition(edgeName="t03",targetState="handleModelChanged",cond=whenEvent("modelChanged"))
-					transition(edgeName="t04",targetState="handleCond",cond=whenEvent("envCond"))
-					transition(edgeName="t05",targetState="handleCond",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t02",targetState="handleModelChanged",cond=whenEvent("modelChanged"))
+					transition(edgeName="t03",targetState="handleCond",cond=whenEvent("envCond"))
+					transition(edgeName="t04",targetState="handleCond",cond=whenEvent("sonarRobot"))
 				}	 
 				state("handleModelChanged") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("modelChanged(TARGET,VALUE)"), Term.createTerm("modelChanged(robot,CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								resources.robotSupport.move("msg(${payloadArg(1)})" )
-						}
-					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
-				}	 
-				state("handleCmd") { //this:State
-					action { //it:State
-						if( checkMsgContent( Term.createTerm("robotCmd(X)"), Term.createTerm("robotCmd(CMD)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.robotSupport.move("msg(${payloadArg(0)})" )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
