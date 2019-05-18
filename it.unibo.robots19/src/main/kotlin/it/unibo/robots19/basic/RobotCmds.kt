@@ -29,8 +29,6 @@ public sealed class  RobotCmds(val cmd: String, val arg : Int=0, val id : String
 
     }
 
-
-
     class MoveForward   : RobotCmds(forwardStr, -1 )    //forever
     class MoveBackward  : RobotCmds(backwardStr, -1 )  //forever
     class MoveStop      : RobotCmds(stopStr )

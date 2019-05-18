@@ -1,10 +1,10 @@
 System radar
-mqttBroker "127.0.0.1" : 1883 
+mqttBroker "localhost" : 1883 
 
 Dispatch  polar : p( Distance, Angle )  
 Event     polar : p( Distance, Angle )   
  
-Context ctxRadar ip [host="localhost" port=8015] -mqtt //192.168.1.18
+Context ctxRadar ip [host="localhost" port=8017] -mqtt //192.168.1.18
 
 QActor radar context ctxRadar{    
 	  
@@ -12,7 +12,7 @@ QActor radar context ctxRadar{
 		 run resources.radarSupport.activate()
 		 solve( consult("radarData.pl")	 )
   	}
-	Goto waitMsg //radarTest   
+	Goto waitMsg //radarTest    
 	   
 	State radarTest{ 
 		solve( getData(D,A)	 ) 

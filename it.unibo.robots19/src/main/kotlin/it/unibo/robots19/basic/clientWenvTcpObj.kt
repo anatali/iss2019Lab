@@ -19,7 +19,7 @@ import org.json.JSONObject
         private var inFromServer: BufferedReader? = null
 
 
-         fun initClientConn(hostNameStr: String = hostName, portStr: String = "" + port) {
+         fun initClientConn(hostNameStr: String = hostName, portStr: String = "$port"  ) {
             hostName         = hostNameStr
             port             = Integer.parseInt(portStr)
              try {

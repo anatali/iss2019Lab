@@ -9,8 +9,8 @@ object robotSupport{
 		when( robotKind ){
 			"virtual"    ->  { resources.clientWenvObjTcp.initClientConn( actor, "localhost" ) }
 			"realmbot"   ->  { mbotSupport.create( actor, "COM6") }  //"/dev/ttyUSB0"   "COM6"
-			"relacustom" ->  {}
-			else -> println( "robot unknown" )
+			"realnano"   ->  {}
+			else -> println( "robotSupport-create: robot unknown" )
 		}
 	}
 	
@@ -19,7 +19,8 @@ object robotSupport{
 		when( robotKind ){
 			"virtual"  -> { resources.clientWenvObjTcp.sendMsg(  cmd ) }	
 			"realmbot" -> { mbotSupport.move( cmd ) }
-			else       -> println( "robot unknown" )
+			"realnano" ->  {}
+			else       -> println( "robotSupport-move: robot unknown" )
 		}
 		
 	}

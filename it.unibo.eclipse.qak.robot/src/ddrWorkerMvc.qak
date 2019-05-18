@@ -90,8 +90,8 @@ QActor robotmvc context ctxRobotMvc{
 	State waitCmd{  } 
 	Transition t0 //whenMsg  robotCmd        -> handleCmd
 				  whenEvent modelChanged  -> handleModelChanged
-	              whenEvent envCond    -> handleCond
-	              whenEvent sonarRobot ->  handleCond  //the robot hits
+	              whenEvent envCond       -> handleCond
+	              whenEvent sonarRobot    -> handleCond  //the robot hits
 	
 	State handleModelChanged{
 		//printCurrentMessage

@@ -1,0 +1,23 @@
+System consolegui
+
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+
+Context ctxConsoleGui ip [host="localhost" port=8015]   -mqtt
+
+QActor consolegui context ctxConsoleGui{   
+	State s0 initial {		
+		run itunibo.console.guiSupport.create( myself , "userCmd")    	
+	}
+//	Goto waitCmd
+//	
+//	State waitCmd{ }
+//	Transition t0 whenMsg userCmd -> handleUserCmd
+//	
+//	State handleUserCmd{
+//		printCurrentMessage
+//		onMsg ( userCmd : userCmd(CMD) ) { 
+//			forward robotreq -m robotCmd : robotCmd($payloadArg(0))
+//		}
+//	}
+//	Goto waitCmd  
+}
