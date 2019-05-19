@@ -1,6 +1,6 @@
 System consolegui
 
-mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+mqttBroker "192.168.1.4" : 1883    //192.168.1.18  192.168.43.229
 
 Context ctxConsoleGui ip [host="localhost" port=8015]   -mqtt
 
@@ -9,7 +9,7 @@ QActor consolegui context ctxConsoleGui{
 		run itunibo.console.guiSupport.create( myself , "userCmd")    	
 	}
 //	Goto waitCmd
-//	
+//	 
 //	State waitCmd{ }
 //	Transition t0 whenMsg userCmd -> handleUserCmd
 //	
