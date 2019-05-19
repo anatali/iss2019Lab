@@ -473,9 +473,43 @@ sudo python
 <a href="../src/motors/nanoMotorDriveA.sh" target="code">nanoMotorDriveA.sh</a><br/>
 <a href="../src/motors/nanoMotorDriveB.sh" target="code">nanoMotorDriveB.sh</a><br/>
 
-	   
 
-         
+<h2 id="usefulnotes">Useful notes</h2>
+Remember:
+
+<pre>
+sudo apt-get update
+sudo apt-get upgrade
+</pre>
+
+<h3>WiringPi Gpio and Pi4J</h3>
+WiringPi is developed and tested on a Raspberry Pi ONLY. The command
+<pre>
+gpio -v
+</pre>
+give the output:
+
+<pre>
+gpio version: 2.46
+Copyright (c) 2012-2018 Gordon Henderson
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type: gpio -warranty
+
+Raspberry Pi Details:
+  Type: Model B+, Revision: 02, Memory: 512MB, Maker: Sony
+  * Device tree is enabled.
+  *--> Raspberry Pi Model B Plus Rev 1.2
+  * This Raspberry Pi supports user-level GPIO access.
+</pre>
+
+ 
+<pre>
+sudo apt-get update
+sudo apt-get upgrade
+</pre>	   
+For the <bc>Rasperry B+  (V1.2)</bc> the <bc>Pi4J</bc> library to use can be found in 
+<pre><k>it.unibo.libs2018/libs/pi4j/pi4j-core.jar</k></pre> 
+This library has been built from the <em>2-12 SNAPSHOT</em> and is not available in <tt>MavenCentral</tt>.
 
  
       <br/> <br/>

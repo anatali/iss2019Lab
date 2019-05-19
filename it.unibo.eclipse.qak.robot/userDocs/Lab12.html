@@ -196,11 +196,13 @@ See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 
 <tbody>	
 <tr>
 <td style="width:58%">
-<center><img src="./nanoskel.jpg" alt="nanoskel.jpg" width="90%" height="30%"/></center
+<center><img src="./nanoSoftware.png" alt="nanoSoftware.jpg" width="90%" height="30%"/></center
 </td>
 <td>
 <m>
-See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3</a>.
+<li>See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3</a>.</li>
+<li>See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.raspIntroK/userDocs/Lab8.html#usefulnotes" target="lecture">Lab8.html</a>
+(important for the motors).</li>
 <br/><br/>
 <bc>robotplayer</bc> is an actor that 
 <ul>
@@ -209,12 +211,57 @@ See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 
 <li>emits the event <bc>polar : p( Distance, Angle )</bc></li>
 </ul>
 
+
+
 </m>
 
 </td>
  </tr>
  </table>
 </center> 
+
+<h3>Work to do</h3>
+With reference to the project <em>it.unibo.eclipse.qak.robots19</em>:
+
+<ol>
+<li>Execute 
+<pre>
+gradle -b build_ctxBasicRobot.gradle distZip
+</pre>
+
+</li>
+<li>Copy the distribution file <bc>it.unibo.eclipse.qak.robots19-1.0.zip</bc> on RaspberryPi</li>
+<li>Unzip the file </li>
+<li>In the directory <bc>bin</bc> the files: 
+	<ul>
+	<li>copy the file <bc>basicrobot.pl</bc></li>
+	<li>copy the file <bc>sysRules.pl</bc></li>
+	<li>copy the file <bc>hardwareConfiguration.properties</bc></li>
+	<li>create the directory <em>configuration/nano/</em> and copy in it the file <bc>iotRobot.properties</bc> </li>
+	<li>copy the file <bc>SonarAlone.c</bc> and compile it (<tt>g++  SonarAlone.c -l wiringPi -o  SonarAlone</tt>)</li>
+	</ul>
+
+
+</li>
+<li>in the directory <em>bin</em> execute: 
+<pre>
+bash it.unibo.eclipse.qak.robots19
+</pre>
+</li>
+
+<li>(On the <tt>PC</tt>) launch the radar and execute (to open a command console)
+<pre>
+MainCtxConsoleGui
+</pre>
+ </li>
+ 
+
+</ol>
+
+ 
+
+
+
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

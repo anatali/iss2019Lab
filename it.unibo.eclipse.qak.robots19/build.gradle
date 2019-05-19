@@ -73,12 +73,13 @@ compileTestKotlin {
 
 sourceSets {
     main.java.srcDirs += 'src'
+    main.java.srcDirs += 'resources'
 }
 
-mainClassName = 'it.unibo.TODOKt'
+mainClassName = 'it.unibo.ctxBasicRobot.MainCtxBasicRobotKt'
 
 jar {
-    println("executing jar")
+    println(" executing jar")
     from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"

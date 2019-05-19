@@ -61,7 +61,8 @@ dependencies {
 	compile group: 'org.pushingpixels', name: 'trident', version: '1.3'
 	//ROBOT nano (SAM)
     compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs',  include: 'labbaseRobotSam.jar')
-	//compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs',  include: 'pi4j-core.jar')
+	compile fileTree(dir: 'C:/Didattica2018Work/iss2019Lab/libs',  include: 'pi4j-core.jar') //2-12 SNAPSHOT non in gradle
+
 }
 
 compileKotlin {
@@ -73,12 +74,13 @@ compileTestKotlin {
 
 sourceSets {
     main.java.srcDirs += 'src'
+    main.java.srcDirs += 'resources'
 }
 
-mainClassName = 'it.unibo.TODOKt'
+mainClassName = 'it.unibo.ctxBasicRobot.MainCtxBasicRobotKt'
 
 jar {
-    println("executing jar")
+    println("build_ctxBasicRobot.gradle executing jar")
     from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"

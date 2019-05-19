@@ -20,11 +20,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R)","") //set resVar	
-						if(currentSolution.isSuccess()) println("USING ROBOT : ${getCurSol("R")} ")
-						 		else{
-						 			 println("no robot")
-						 		}
-						if(currentSolution.isSuccess()) itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString() )
+						itunibo.robot.robotSupport.create(myself ,"realnano" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

@@ -1,6 +1,6 @@
 %====================================================================================
 % radar description   
 %====================================================================================
-mqttBroker("localhost", "1883").
+mqttBroker("192.168.137.1", "1883").
 context(ctxradar, "localhost",  "MQTT", "0" ).
  qactor( radar, ctxradar, "it.unibo.radar.Radar").

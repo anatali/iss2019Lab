@@ -18,7 +18,7 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		return { //this:ActionBasciFsm
 				state("init") { //this:State
 					action { //it:State
-						println("sonarhandler STARTS ")
+						println("sonarhandler STARTS ... ")
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 

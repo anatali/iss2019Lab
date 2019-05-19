@@ -1,5 +1,6 @@
 package itunibo.robot
 import it.unibo.kactor.ActorBasic
+ 
 
 object robotSupport{
 	lateinit var robotKind : String
@@ -9,7 +10,7 @@ object robotSupport{
 		when( robotKind ){
 			"virtual"    ->  { itunibo.robotVirtual.clientWenvObjTcp.initClientConn( actor, "localhost" ) }
 			"realmbot"   ->  { itunibo.robotMbot.mbotSupport.create( actor, "COM6") }  //"/dev/ttyUSB0"   "COM6"
-			//"realnano" ->    { it.unibo.robotRaspOnly }
+			"realnano" ->    { it.unibo.robotRaspOnly.nanoSupport.create(actor, true ) }
 			else -> println( "robot unknown" )
 		}
 	}
@@ -19,6 +20,7 @@ object robotSupport{
 		when( robotKind ){
 			"virtual"  -> { itunibo.robotVirtual.clientWenvObjTcp.sendMsg(  cmd ) }	
 			"realmbot" -> { itunibo.robotMbot.mbotSupport.move( cmd ) }
+			"realnano" -> { it.unibo.robotRaspOnly.nanoSupport.move( cmd ) }
 			else       -> println( "robot unknown" )
 		}
 		
