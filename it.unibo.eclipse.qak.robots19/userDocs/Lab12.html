@@ -157,31 +157,198 @@ table, th, td {
  <h2>Index</h2>
  <ol>
 <li><a href="#project">The project</a></li>
-<li><a href="#mbotusage">Using mbot </a></li>
-<li><a href="#nanousage">Using nano </a></li>
+<li><a href="#robot">The robot</a></li>
+<li><a href="#console">The console</a></li>
+<li><a href="#handson">Hands on</a></li>
+<li><a href="#todo">Work to to</a></li>
  </ol>
  
  <h2 id="project">The project</h2>
 The project <em>it.unibo.eclipse.qak.robots19</em> builds a software systems that allows us to send commands to a
-real robot by using a <bc>MQTT broker</bc> running on a conventional <tt>PC</tt>.
+real robot, by using a <bc>MQTT broker</bc> running on a conventional <tt>PC</tt>. 
+<p>
+Our starting point is the architecture introduced in
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#radaralone" target="lecture">Lab11.html</a>
+in which is component of the system can be activated in independent way from the other components.
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:33%">
+<center><img src="./consolegui.png" alt="consolegui" width="50%" height="30%"/></center>
+</td>
+<td style="width:33%">
+<center><img src="./basicrobot.png" alt="basicrobot" width="50%" height="30%"/></center>
+</td>
+<td>
+<center><img src="./radar.png" alt="radar" width="50%" height="30%"/></center>
+</td>
+ </tr>
+ </table>
+</center> 
+
+<div class="remark">
+The system consists now in a dynamic configuration of components.<br/>
+There is no static description of system configuration.
+</div>
 
 
 <center><table style="width:98%">
 <tbody>	
 <tr>
-<td style="width:75%">
- 
-<center><img src="./basicrobotmodel.png" alt="basicrobotmodel.jpg" width="90%" height="30%"/></center> 
-
+<td style="width:60%">
+<center><img src="./basicrobotsystem.png" alt="basicrobotsystem." width="90%" height="30%"/></center>
 </td>
 <td>
-Workflow:
 <m>
+The system can be  built in <em>incremental way</em>, by activating one component after the other, with reference to the <bc>same MQTT broker</bc>.
+<br/><br/>
+The interaction is provided by a proper set of topics:
+<ul>
+<li> a unique topic (<kc>unibo/qak/events</kc>) for the events, used by the <bc>emit</bc> operation; </li>
+<li> a specific topic for each actor (e.g. <kc>unibo/qak/basicrobot</kc> ), used by the <bc>forward</bc> operation.</li>
+</ul>
+Thus, each actor can perceive an event emitted by any other actor (including itself). 
+</m>
+</td>
+ </tr>
+ </table>
+</center> 
+
+</p>
+
+<h3>From the logic level to a real thing</h3>
+
+Each component is described by a <tt>QActor</tt> model and exploits some <em>support</em> to map its logical behavior into physical actions.
+In particular, with reference to the project <tt>it.unibo.eclipse.qak.robots19</tt>:
+
+<ul>
+<li><a href="../resources/itunibo/console/guiSupport.kt" target="code">guiSupport.kt</a>: creates a <tt>GUI console</tt>
+that emits the event <bc>userCmd : userCmd(X)</bc> with <kc>X = w | a | s | d | h </kc><br/><br/></li>
+<li><a href="../resources/itunibo/robot/robotSupport.kt" target="code">robotSupport.kt</a>: provides a 
+<a href="https://en.wikipedia.org/wiki/Facade_pattern" target="code">Facade</a>
+to more specific supports, related to our three different types of robots: <em>virtual</em>, <em>realbot</em> and <em>realnano</em> 
+(see <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3</a>).
+</li>
+</ul>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<h3>Robot mbot (See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf section 3</a>)</h3>
+ 
+<center><img src="./mbotSoftware.png" alt="mbotSoftware" width="90%" height="30%"/></center><br/>
+ 
+<a href="../resources/itunibo/robotMbot/mbotSupport.kt" target="code">mbotSupport.kt</a> 
+(<bc>emit<bc> <tt>sonarRobot : sonar( DISTANCE )</tt> )
+ 
+</td>
+<td>
+<h3>Robot nano (See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf section 4</a>)</h3>
+
+	
+ <center><img src="./nanoSoftware.png" alt="nanoSoftware.jpg" width="100%" height="30%"/></center>
+See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.raspIntroK/userDocs/Lab8.html#usefulnotes" target="lecture">Lab8.html</a>
+(important for the motors).<br/>
+<a href="../resources/itunibo/robotRaspOnly/nanoSupport.kt" target="code">nanoSupport.kt</a> <br/> 
+<m>
+	<a href="../resources/itunibo/robotRaspOnly/sonarHCSR04Support.kt" target="code">sonarHCSR04Support.kt</a> <br/>
+	(<bc>emit</bc> <tt>sonarRobot : sonar( DISTANCE )</tt> using <em>SonarAlone</em>)
+</m>
+</td>
+ </tr>
+ </table>
+</center> 
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%">
+<h3>Robot virtual (See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf section 1</a>)</h3>
+ 
+<center><img src="./virtualRobotSoftware.png" alt="virtualRobotSoftware" width="90%" height="30%"/></center><br/>
+ 
+<a href="../resources/itunibo/robotVirtual/clientWenvObjTcp.kt" target="code">clientWenvObjTcp.kt</a> 
+(<bc>emit<bc> <tt>sonarRobot : sonar( DISTANCE )</tt> )
+ 
+</td>
+<td>
+<h3>Console </h3>
+
+<center><img src="./consoleSoftware.png" alt="consoleSoftware" width="90%" height="30%"/></center><br/>
+
+<a href="../resources/itunibo/console/guiSupport.kt" target="code">guiSupport.kt</a> 
+(<bc>emit<bc> <tt>userCmd : userCmd( X )</tt> <kc>X = w | a | s | d | h </kc>)
+
+ <m>
+ </m>
+</td>
+ </tr>
+ </table>
+</center> 
+ 
+	 
+
+<h2 id="robot">The robot logic</h2>
+ 
+The actor <bc>bascirobot</bc> is a simple executor of commands. It does not introduce any other 'business logic'
+including the handling of alarms. The concrete robot to use must be defined in the file <bc>basicRobotConfig.pl</bc>.
+For example:
+<pre>
+robot( virtual ).
+%% robot( realmbot ).
+%% robot( realnano ).
+</pre>
+
+ 
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:75%">
+<center><img src="./basicrobotmodel.png" alt="basicrobotmodel.jpg" width="90%" height="30%"/></center> 
+</td>
+<td>
+
+<m>
+The code is <a href="../src/basicrobot.qak" target="code">basicrobot.qak</a>
+<br/><br/>
+Workflow:
 <ol>
-<li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.x.y</bc>.<br/><br/></li>
+<li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.a.b</bc>.<br/><br/></li>
 <li>activate the <bc>WEnv</bc> simulator, if you want to use the <bc>virtual robot</bc> (see <em>runWenv.bat</em>,
 and then open <em>localhost:8090</em> in a browser). <br/><br/></li>
-<li></li>
+<li>activate a real robot.</li>
+</ol>
+
+</m>
+
+</td>
+ </tr>
+ </table>
+</center> 
+
+
+<h2 id="console">The console logic</h2>
+
+At the moment, the console is a <tt>GUI</tt> that allows an user to send commands to the robot.
+Q work to to will be the introduction of a more advanced front end for the system.
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:75%">
+<center><img src="./consolemodel.png" alt="consolemodel" width="90%" height="30%"/></center> 
+</td>
+<td>
+
+<m>
+The code is <a href="../src/consolegui.qak" target="code">consolegui.qak</a>
+<br/><br/>
+Workflow:
+<ol>
+<li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.a.b</bc>.<br/><br/></li>
 </ol>
 
 </m>
@@ -193,68 +360,7 @@ and then open <em>localhost:8090</em> in a browser). <br/><br/></li>
 
 
 
-<h2 id="mbotusage">The nano robot</h2>
-
-<center><table style="width:98%">
-<tbody>	
-<tr>
-<td style="width:58%">
-<center><img src="./mbotSoftware.png" alt="mbotSoftware" width="90%" height="30%"/></center
-</td>
-<td>
-<m>
-See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3</a>.
-<br/><br/>
-<bc>robotplayer</bc> is an actor that 
-<ul>
-<li>executes basic robot commands <bc>w|a|s|d|h</bc></li>
-<li>handles the event  <bc>sonarRobot: sonar( DISTANCE )</bc>  </li>
-<li>emits the event <bc>polar : p( Distance, Angle )</bc></li>
-</ul>
-
-</m>
-
-</td>
- </tr>
- </table>
-</center> 
-
-
-
-<h2 id="nanousage">Using nano</h2>
- 
-  
- 
-
-<center><table style="width:98%">
-<tbody>	
-<tr>
-<td style="width:58%">
-<center><img src="./nanoSoftware.png" alt="nanoSoftware.jpg" width="90%" height="30%"/></center>
-</td>
-<td>
-<m>
-<li>See <a href="UsingRobots2019.pdf" target="lecture">UsingRobots2019.pdf sections 3</a>.</li>
-<li>See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.raspIntroK/userDocs/Lab8.html#usefulnotes" target="lecture">Lab8.html</a>
-(important for the motors).</li>
-<br/><br/>
-<bc>robotplayer</bc> is an actor that 
-<ul>
-<li>executes basic robot commands <bc>w|a|s|d|h</bc></li>
-<li>handles the event  <bc>sonarRobot: sonar( DISTANCE )</bc>  </li>
-<li>emits the event <bc>polar : p( Distance, Angle )</bc></li>
-</ul>
-
-
-
-</m>
-
-</td>
- </tr>
- </table>
-</center> 
-
-<h3>Work to do</h3>
+<h2 id="handson">Hands on</h2>
 With reference to the project <em>it.unibo.eclipse.qak.robots19</em>:
 
 <ol>
@@ -266,7 +372,7 @@ gradle -b build_ctxBasicRobot.gradle distZip
 </li>
 <li>Copy the distribution file <bc>it.unibo.eclipse.qak.robots19-1.0.zip</bc> on RaspberryPi</li>
 <li>Unzip the file </li>
-<li>In the directory <bc>bin</bc> the files: 
+<li>In the directory <bc>bin</bc>: 
 	<ul>
 	<li>copy the file <bc>basicrobot.pl</bc></li>
 	<li>copy the file <bc>sysRules.pl</bc></li>
@@ -294,9 +400,28 @@ MainCtxConsoleGui
 </ol>
 
  
+<h2 id="todo">Work to to</h2>
+
+Our next steps (sprint) will be:
+
+<ol>
+<li>The introduction of some 'business logic'. For example, we could define a component that implements the last
+requirement of Lab11.html: 
+
+<div class="req">
+<em>handleConds</em>: allow the robot to <bc>stop</bc> its behavior under some specific condition, 
+like for example an <b>alarm</b> emitted by some external entity, or when the <b>ambient temperature</b> overcomes a given limit value 
+or when the robot <b>hits an obstacle</b>.
+ 
+</div>
+
+<center><img src="./robotWithMind.png" alt="robotWithMind" width="90%" height="32%"/></center>
 
 
+</li>
 
+<li>The design and development of a system front end.</li>
+</ol>
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

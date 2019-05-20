@@ -18,29 +18,11 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						solve("consult('basicRobotConfig.pl')","") //set resVar	
+						println("ctxBasicRobot STARTED")
+						solve("consult('basicRobotConfig')","") //set resVar	
 						solve("robot(R)","") //set resVar	
-						if(currentSolution.isSuccess()) println("USING ROBOT : ${getCurSol("R")} ")
-						 		else{
-						 			 println("no robot")
-						 		}
-						if(currentSolution.isSuccess()) itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString() )
+						if(currentSolution.isSuccess()) println("robot( payloadArg(${getCurSol("R")} )")
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
-				}	 
-				state("waitCmd") { //this:State
-					action { //it:State
-					}
-					 transition(edgeName="t00",targetState="handleUserCmd",cond=whenEvent("userCmd"))
-				}	 
-				state("handleUserCmd") { //this:State
-					action { //it:State
-						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(MOVE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
-						}
-					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 			}
 		}

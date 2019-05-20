@@ -20,6 +20,18 @@ class Consolegui ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 						itunibo.console.guiSupport.create(myself ,"userCmd" )
 					}
+					 transition( edgeName="goto",targetState="showTheCommandEmitted", cond=doswitch() )
+				}	 
+				state("showTheCommandEmitted") { //this:State
+					action { //it:State
+					}
+					 transition(edgeName="t00",targetState="showUserCmd",cond=whenDispatch("userCmd"))
+				}	 
+				state("showUserCmd") { //this:State
+					action { //it:State
+						println("$name in ${currentState.stateName} | $currentMsg")
+					}
+					 transition( edgeName="goto",targetState="showTheCommandEmitted", cond=doswitch() )
 				}	 
 			}
 		}

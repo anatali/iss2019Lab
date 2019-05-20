@@ -54,7 +54,7 @@ object mbotSupport{
  							if( delta < 7 && delta > 0.5 ) {
 								dataSonar = v;
 								println("mbotSupport sonar:" + dataSonar);								
-								actor.emit("sonar", "sonar( ${dataSonar.toInt()} )");
+								actor.emit("sonarRobot", "sonar( ${dataSonar.toInt()} )");
  							}
 						} catch ( e : Exception) {
  							println("getDataFromArduino | ERROR $e   ")

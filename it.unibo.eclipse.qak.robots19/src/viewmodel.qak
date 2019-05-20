@@ -1,0 +1,30 @@
+System viewmodel
+
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+
+Event  modelContent : content( STATE )
+
+Context ctxViewModel  ip [host="localhost" port=8035]   -mqtt
+
+QActor viewmodel context ctxViewModel{   
+
+	State s0 initial {	  
+ 		run itunibo.console.outguiSupport.create( myself, "")
+		run itunibo.console.outguiSupport.output("hello")
+	}
+	Goto waitCmd
+	 
+	State waitCmd {		} 
+	Transition t0 whenEvent modelContent -> handleModelContent
+	
+ 	State handleModelContent{  
+		printCurrentMessage
+		run itunibo.console.outguiSupport.output("hello")
+//		onMsg ( modelChanged : modelChanged(robot,CMD) ){
+//			 println("")
+//		}
+	}
+	Goto waitCmd
+   
+  
+ }

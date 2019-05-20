@@ -40,11 +40,4 @@ object nanoSupport {
 		}
 		robot.execute(command)
 	}
-	
-//	fun addObserverToSensors(  observer : ISensorObserver<SensorData> ){ //<T : ISensorData!>
-//		for ( sensor in basicRobot.getSensors() ) {  
-//			println( "adding observer to sensor: "  + sensor.getDefStringRep()  );
-// 			//sensor.addObserver (observer  );
-//		}
-//	}		
 }

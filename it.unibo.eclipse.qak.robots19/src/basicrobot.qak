@@ -1,11 +1,13 @@
 System basicrobot
 
-mqttBroker "192.168.1.4" : 1883    //192.168.1.18  192.168.43.229
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
 Event  userCmd      : userCmd(X)		         //from GUI X = w | a | s | d | h 
 Event  sonar        : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment   
 Event  sonarRobot   : sonar( DISTANCE )	         //from  sonar on robot 
 Event  polar        : p( Distance, Angle )            
+ 
+Dispatch robotCmd   : robotCmd( CMD )
 
 Context ctxBasicRobot ip [host="localhost" port=8005]   -mqtt
 
@@ -15,21 +17,25 @@ QActor basicrobot context ctxBasicRobot {
  		solve( robot(R) )  //R = virtual | realmbot | realnano
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")} " ) else println("no robot")
   		ifSolved run itunibo.robot.robotSupport.create(myself, @R )
- 		//run itunibo.robot.robotSupport.create(myself, "realnano" )
  	}  
-	Goto waitCmd
+	Goto waitCmd 
  	 
-	State waitCmd{  } //userCmd comes froma console OUTSIDE this (sub)system
-	Transition t0 whenEvent userCmd -> handleUserCmd
+	State waitCmd{  } //userCmd comes from a console OUTSIDE this (sub)system
+	Transition t0 whenEvent userCmd   -> handleUserCmd
+		          whenMsg   robotCmd  -> handleUserCmd
 	
 	State handleUserCmd{ //does not handle alarms
-		onMsg( userCmd : userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
+		printCurrentMessage 
+		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
 		}	
-	}
+		onMsg( userCmd : userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
+ 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
+		}	
+	}  
 	Goto waitCmd
-}
-
+} 
+ 
 QActor sonarhandler context ctxBasicRobot{  
  	State init initial{
 		println("sonarhandler STARTS ... ")
@@ -37,10 +43,10 @@ QActor sonarhandler context ctxBasicRobot{
 	Goto waitForEvents
 	   
 	State waitForEvents{  }      
-   	Transition t0 whenEvent sonar      ->  sendToRadar
-   	              whenEvent sonarRobot ->  sendToRadar
+   	Transition t0 whenEvent sonar      ->  handleSonar
+   	              whenEvent sonarRobot ->  handleSonar
    	               
- 	State sendToRadar{                      
+ 	State handleSonar{                      
  		printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
 [" val D = Integer.parseInt( payloadArg(1) ) * 5"] //AMPLIFY
