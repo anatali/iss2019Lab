@@ -5,6 +5,7 @@ mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 Event  local_userCmd  : local_userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment (simulated)
 Dispatch robotCmd     : robotCmd( cmd )
+Event   robotCmd      : robotCmd( cmd )
 
 Context ctxFrontEnd  ip [host="localhost"  port=8045]   -mqtt
 Context ctxRobotMind ip [host="otherhost"  port=8035]   -mqtt
@@ -16,7 +17,7 @@ QActor frontend context ctxFrontEnd{
 		run itunibo.console.guiSupport.create(myself,"local_userCmd")  //emits event userCmd   			
 	}
 	Goto handleUserCmd
-	 
+	  
 	State handleUserCmd{ }
 	Transition t0 whenEvent local_userCmd -> sendToRobot
 		          whenEvent envCond       -> sendToRobot
@@ -26,10 +27,11 @@ QActor frontend context ctxFrontEnd{
 		onMsg( local_userCmd : local_userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
 		    println( "frontend handling local_userCmd( ${payloadArg(0)} )" )
 			forward  robotmind -m robotCmd	: robotCmd(   $payloadArg(0)    )	
+			emit  robotCmd	: robotCmd(   $payloadArg(0) )	 //introduced for robotmindnomvc
 		}
 		onMsg( envCond : envCond( COND ) ) {  
 		    println( "frontend handling envCond( ${payloadArg(0)} )" )
-			//forward  robotmind -m robotCmd	: robotCmd(   $payloadArg(0)    )	
+			//events are already propagated
 		}
  	}
 	Goto handleUserCmd  

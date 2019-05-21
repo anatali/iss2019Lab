@@ -10,7 +10,7 @@ QActor viewmodel context ctxViewModel{
 
 	State s0 initial {	  
  		run itunibo.console.outguiSupport.create( myself, "")
-		run itunibo.console.outguiSupport.output("hello")
+		run itunibo.console.outguiSupport.output("WELCOME to viewmodel")
 	}
 	Goto waitCmd
 	 
@@ -19,10 +19,9 @@ QActor viewmodel context ctxViewModel{
 	
  	State handleModelContent{  
 		printCurrentMessage
-		run itunibo.console.outguiSupport.output("hello")
-//		onMsg ( modelChanged : modelChanged(robot,CMD) ){
-//			 println("")
-//		}
+ 		onMsg ( modelContent : content( STATE ) ){
+			 run itunibo.console.outguiSupport.output(  payloadArg(0)  )
+		}
 	}
 	Goto waitCmd
    

@@ -35,6 +35,7 @@ class Frontend ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("frontend handling local_userCmd( ${payloadArg(0)} )")
 								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"robotmind" ) 
+								emit("robotCmd", "robotCmd(${payloadArg(0)})" ) 
 						}
 						if( checkMsgContent( Term.createTerm("envCond(CONDTYPE)"), Term.createTerm("envCond(COND)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList

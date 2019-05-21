@@ -1,0 +1,68 @@
+System robotmindnomvc
+ 
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+
+Event  envCond        : envCond( CONDTYPE )        //from the environment 
+ 
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
+
+//Dispatch robotCmd    : robotCmd( CMD )
+Event   robotCmd      : robotCmd( cmd )
+
+Context ctxRobotMindNoMv        ip [host="localhost" port=8035]   -mqtt
+Context ctxDummyForBasicRobot   ip [host="otherhost" port=8005]   -mqtt
+
+ExternalQActor basicrobot context ctxDummyForBasicRobot 
+
+QActor robotmindnomvc context ctxRobotMindNoMv{   
+["var obstacle = false"]
+	State s0 initial {	  
+		println("ROBOT MIND STARTED")	
+		forward basicrobot -m robotCmd : robotCmd( a )
+		delay 700
+		forward basicrobot -m robotCmd : robotCmd( d )
+		delay 700
+		forward basicrobot -m robotCmd : robotCmd( h )
+	}
+	Goto waitCmd
+	 
+	State waitCmd {		} 
+	Transition t0 whenEvent robotCmd     -> handleCmd
+		          whenEvent envCond      -> handleEnvCond
+		          whenEvent sonarRobot   -> handleSonarRobot
+ 	
+	State handleCmd{  //command from the frontend
+		printCurrentMessage
+ 		onMsg( robotCmd : robotCmd(CMD) ) {
+ 			forward basicrobot -m robotCmd : robotCmd( $payloadArg(0) ) 
+		}
+	} 
+	Goto waitCmd
+
+	State handleEnvCond{   
+ 		onMsg( envCond : envCond(CMD) ) {
+ 			forward basicrobot -m robotCmd : robotCmd( h )  
+		}
+		printCurrentMessage
+	} 
+	Goto waitCmd
+    
+ 	State handleSonarRobot{
+ 		printCurrentMessage
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){
+			["obstacle = Integer.parseInt( payloadArg(0) ) < 10 "]
+ 		}//onMsg 	 
+ 	}
+	Goto handeObstacle if "obstacle" else waitCmd 
+	
+	State handeObstacle{		
+		println("robotmindnomvc handeObstacle: going back START")  
+ 		forward basicrobot -m robotCmd : robotCmd( s )
+ 		delay 300
+ 		println("robotmindnomvc handeObstacle: going back STOP")  
+	    forward basicrobot -m robotCmd : robotCmd( h )
+  	}
+	Goto waitCmd
+ 
+ }

@@ -1,0 +1,37 @@
+System radar
+mqttBroker "localhost" : 1883 
+
+Dispatch  polar : p( Distance, Angle )  
+Event     polar : p( Distance, Angle )   
+ 
+Context ctxRadar ip [host="localhost" port=8017] -mqtt //192.168.1.18
+
+QActor radar context ctxRadar{    
+	  
+	State radarUsageInit initial{
+		 run resources.radarSupport.activate()
+		 solve( consult("radarData.pl")	 )
+  	}
+	Goto waitMsg //radarTest    
+	   
+	State radarTest{ 
+		solve( getData(D,A)	 ) 
+ 		ifSolved run resources.radarSupport.spot( @D,@A  ) 
+ 		delay 500
+	}
+	Goto radarTest if "currentSolution.isSuccess()" else waitMsg
+	 
+	State waitMsg{}
+	Transition t0 whenMsg   polar -> showPoint
+				  whenEvent polar -> showPoint
+	
+	State showPoint{
+		printCurrentMessage
+		onMsg ( polar : p( D,A )){
+			 run resources.radarSupport.spot( payloadArg(0), payloadArg(1)  )			 
+		}
+	}
+	Goto waitMsg
+	
+}
+

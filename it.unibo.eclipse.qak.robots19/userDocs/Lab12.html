@@ -296,9 +296,10 @@ The actor <bc>bascirobot</bc> is a simple executor of commands. It does not intr
 including the handling of alarms. The concrete robot to use must be defined in the file <bc>basicRobotConfig.pl</bc>.
 For example:
 <pre>
-robot( virtual ).
-%% robot( realmbot ).
-%% robot( realnano ).
+robot( virtual, "8999" ).  %%the port is the default used by clientWenvObjTcp.kt
+%% robot( realmbot, "/dev/ttyUSB0" ).  %%COM6 for PC
+%% robot( realnano, "" ).
+
 </pre>
 
  
@@ -374,19 +375,19 @@ gradle -b build_ctxBasicRobot.gradle distZip
 <li>Unzip the file </li>
 <li>In the directory <bc>bin</bc>: 
 	<ul>
-	<li>copy the file <bc>basicrobot.pl</bc></li>
+	<li>copy the file <bc>basicrobot.pl</bc> and edit it according the address of the MQTT server </li>
 	<li>copy the file <bc>sysRules.pl</bc></li>
-	<li>copy the file <bc>basicRobotConfig.pl</bc></li>
-	<li>copy the file <bc>hardwareConfiguration.properties</bc></li>
-	<li>create the directory <em>configuration/nano/</em> and copy in it the file <bc>iotRobot.properties</bc> </li>
-	<li>copy the file <bc>SonarAlone.c</bc> and compile it (<tt>g++  SonarAlone.c -l wiringPi -o  SonarAlone</tt>)</li>
+	<li>copy the file <bc>basicRobotConfig.pl</bc> and edit it according the type of the robot</li>
+	<li><kc>ONLY FOR nano</kc>: copy the file <bc>hardwareConfiguration.properties</bc></li>
+	<li><kc>ONLY FOR nano</kc>: create the directory <em>configuration/nano/</em> and copy in it the file <bc>iotRobot.properties</bc> </li>
+	<li><kc>ONLY FOR nano</kc>: copy the file <bc>SonarAlone.c</bc> and compile it (<tt>g++  SonarAlone.c -l wiringPi -o  SonarAlone</tt>)</li>
 	</ul>
 
 
 </li>
 <li>in the directory <em>bin</em> execute: 
 <pre>
-sudo bash it.unibo.eclipse.qak.robots19
+(sudo) bash it.unibo.eclipse.qak.robots19
 </pre>
 </li>
 
@@ -415,13 +416,99 @@ or when the robot <b>hits an obstacle</b>.
  
 </div>
 
-<center><img src="./robotWithMind.png" alt="robotWithMind" width="90%" height="32%"/></center>
-
-
 </li>
 
 <li>The design and development of a system front end.</li>
 </ol>
+
+
+<h2>A possible SPRINT sequence</h2>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:100%">
+<h3>First sprint: basic workflow</h3>
+<center><img src="./robotWithMindNomvc.png" alt="robotWithMindNomvc" width="90%" height="32%"/></center>
+</td>
+</tr>
+<tr>
+<td>
+
+<m>
+The code is <a href="../src/robotmindnomvc.qak" target="code">robotmindnomvc.qak</a>.
+<br/>
+<ol>
+<li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.a.b</bc></li>
+<li>set the robot to use in <em>basicRobotConfig.pl</em></li>
+<li>activate each component in any order. Hint: during the testing phase, launch first <bc>bascirobot</bc> and
+check it with <bc>console</bc>.</li>
+</ol>
+The <bc>robotmindnomvc</bc> reacts to user commands emitted by the <bc>frontend</bc>
+by sending a <em>robotCmd</em> to the <bc>basicrobot</bc>.<br/>
+The <ks>obstacle detection</ks> is implemented as a check on the value of the value given by the <bc>sonarRobot</bc> event.
+<br/><br/>
+<kc>Sprint review</kc>: when the virtual robot is going back and hits the <tt>wallUp</tt>, the system does not work well.<br/> 
+<kc>Sprint retrospective</kc>: The Retrospective is not just about the work processes and tools, 
+but very much about people and relationships too. A Scrum Team also works toward improving the work-environment and its morale.
+</m>
+</td>
+ </tr>
+ </table>
+</center> 
+
+
+<br/><br/>
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:100%">
+<h3>Second sprint: the mind with a resource model</h3>
+<center><img src="./robotWithMind.png" alt="robotWithMind" width="90%" height="32%"/></center>
+</td>
+</tr>
+<tr>
+<td>
+
+<m>
+The code is <a href="../src/robotmind.qak" target="code">robotmind.qak</a>.
+
+<ol>
+<li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.a.b</bc></li>
+<li>set the robot to use in <em>basicRobotConfig.pl</em></li>
+<li>activate each component in any order. </li>
+</ol>
+ 
+The <bc>robotmind</bc> reacts to user commands sent by the <bc>frontend</bc>, by changing the <ks>resource model</ks>. 
+Each change in the resource model produces some <em>action</em> that is actuated by the <bc>basicrobot</bc>.
+<br/>
+</m>
+</td>
+ </tr>
+ </table>
+</center> 
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:100%">
+<h3>Third sprint: a better frontend. The robot on the Web</h3>
+<center><img src="./robotOnWeb.png" alt="robotOnWeb.png" width="90%" height="32%"/></center>
+</td>
+</tr>
+<tr>
+<td>
+
+<m>
+
+<br/>
+<br/>
+ </m>
+</td>
+ </tr>
+ </table>
+</center> 
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

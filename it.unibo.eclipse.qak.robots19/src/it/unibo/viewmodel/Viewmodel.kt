@@ -19,7 +19,7 @@ class Viewmodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("s0") { //this:State
 					action { //it:State
 						itunibo.console.outguiSupport.create(myself ,"" )
-						itunibo.console.outguiSupport.output("hello" )
+						itunibo.console.outguiSupport.output("WELCOME to viewmodel" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
@@ -31,7 +31,10 @@ class Viewmodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("handleModelContent") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						itunibo.console.outguiSupport.output("hello" )
+						if( checkMsgContent( Term.createTerm("content(STATE)"), Term.createTerm("content(STATE)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								itunibo.console.outguiSupport.output(payloadArg(0) )
+						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

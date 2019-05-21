@@ -18,11 +18,40 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("ctxBasicRobot STARTED")
-						solve("consult('basicRobotConfig')","") //set resVar	
-						solve("robot(R)","") //set resVar	
-						if(currentSolution.isSuccess()) println("robot( payloadArg(${getCurSol("R")} )")
+						solve("consult('basicRobotConfig.pl')","") //set resVar	
+						solve("robot(R,PORT)","") //set resVar	
+						if(currentSolution.isSuccess()) println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")
+						 		else{
+						 			 println("no robot")
+						 		}
+						if(currentSolution.isSuccess()) itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString() )
+						itunibo.robot.robotSupport.move("msg(a)" )
+						delay(700) 
+						itunibo.robot.robotSupport.move("msg(d)" )
+						delay(700) 
+						itunibo.robot.robotSupport.move("msg(h)" )
 					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("waitCmd") { //this:State
+					action { //it:State
+					}
+					 transition(edgeName="t00",targetState="handleUserCmd",cond=whenEvent("userCmd"))
+					transition(edgeName="t01",targetState="handleUserCmd",cond=whenDispatch("robotCmd"))
+				}	 
+				state("handleUserCmd") { //this:State
+					action { //it:State
+						println("$name in ${currentState.stateName} | $currentMsg")
+						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
+						}
+						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(MOVE)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
+						}
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 			}
 		}

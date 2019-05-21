@@ -14,13 +14,14 @@ object mbotSupport{
 	}
 	
 	fun move( cmd : String ){
-		//println("mbotSupport move cmd=$cmd conn=$conn")
+		println("mbotSupport move cmd=$cmd conn=$conn")
 		when( cmd ){
-			"msg(w)" -> conn.sendCmd("w")
-			"msg(s)" -> conn.sendCmd("s")
-			"msg(a)" -> conn.sendCmd("a")
-			"msg(d)" -> conn.sendCmd("d")
-			"msg(h)" -> conn.sendCmd("h")
+			"msg(w)" -> conn.sendALine("w")
+			"msg(s)" -> conn.sendALine("s")
+			"msg(a)" -> conn.sendALine("a")
+			"msg(d)" -> conn.sendALine("d")
+			"msg(h)" -> conn.sendALine("h")
+			else -> println("mbotSupport command unknown")
 		}
 	}
 	
@@ -31,11 +32,12 @@ object mbotSupport{
 			conn = serialConn.connect(port)	//returns a SerialPortConnSupport
 			println("mbotSupport initConn conn= $conn")
 			if( conn === null ) return;
-			//while(true){
+			while(true){ 
 				val curDataFromArduino = conn.receiveALine()  //consume "start" sent by Arduino
-				println("mbotSupport received: $curDataFromArduino"  )
-				//if( curDataFromArduino == "start" ) break
-			//}
+				val istart = curDataFromArduino.contains("start")
+				println("mbotSupport initConn received: $curDataFromArduino istart=$istart "   )
+				if( istart ) break
+			}
 			getDataFromArduino();
 		}catch(  e : Exception) {
 			println("mbotSupport ERROR ${e }"   );
@@ -47,13 +49,13 @@ object mbotSupport{
                 while (true) {
  						try {
 							var curDataFromArduino = conn.receiveALine();
-// 	 						println("getDataFromArduino received:" + curDataFromArduino );
+ 	 						//println("getDataFromArduino received: $curDataFromArduino"    );
  							var v =    curDataFromArduino.toDouble() ;
 							//handle too fast change
  							var delta =  Math.abs( v - dataSonar);
  							if( delta < 7 && delta > 0.5 ) {
 								dataSonar = v;
-								println("mbotSupport sonar:" + dataSonar);								
+								println("mbotSupport sonar: $dataSonar"   );								
 								actor.emit("sonarRobot", "sonar( ${dataSonar.toInt()} )");
  							}
 						} catch ( e : Exception) {

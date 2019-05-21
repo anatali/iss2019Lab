@@ -52,7 +52,7 @@ public class SerialPortSupport extends SituatedPlainObject implements ISerialPor
 //		if (portId == null) {
 //			throw new Exception("Could not find COM port");
 //		}
- 		 println("*** SerialPortSupport connect "+ name + " portName=" + portName);
+ 		 println("*** SerialPortSupport connect "+ name + " portName=" + portName + " datarate=" + DATA_RATE);
 		// open serial port, and use class name for the appName.
 //		serialPort = (SerialPort) portId.open( name, TIME_OUT);
 		 serialPort = new SerialPort(portName);

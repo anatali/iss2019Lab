@@ -15,6 +15,7 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		var dobackstep = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -32,19 +33,13 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				state("changeModel") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(robot,back)"), 
+						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(internal,backstep)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								solve("action(robot,move(s))","") //set resVar	
-								if(currentSolution.isSuccess()) emit("modelChanged", "modelChanged(robot,s)" ) 
-								solve("model(A,R,STATE)","") //set resVar	
-								var RobotState = getCurSol("STATE") 
-								emit("modelContent", "content(robot($RobotState))" ) 
-								delay(200) 
-								solve("action(robot,move(h))","") //set resVar	
-								emit("modelChanged", "modelChanged(robot,h)" ) 
-								solve("model(A,R,STATE)","") //set resVar	
-								RobotState = getCurSol("STATE") 
-								emit("modelContent", "content(robot($RobotState))" ) 
+								solve("model(_,_,state(movingForward))","") //set resVar	
+								if(currentSolution.isSuccess()) dobackstep = true
+								 		else{
+								 			 dobackstep = false
+								 		}
 						}
 						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(robot,V)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
@@ -54,6 +49,24 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 								val RobotState = getCurSol("STATE") 
 								emit("modelContent", "content(robot($RobotState))" ) 
 						}
+					}
+					 transition( edgeName="goto",targetState="doBackStep", cond=doswitchGuarded({dobackstep}) )
+					transition( edgeName="goto",targetState="waitModelChange", cond=doswitchGuarded({! dobackstep}) )
+				}	 
+				state("doBackStep") { //this:State
+					action { //it:State
+						solve("action(robot,move(s))","") //set resVar	
+						emit("modelChanged", "modelChanged(robot,s)" ) 
+						solve("model(A,R,STATE)","") //set resVar	
+						var RobotState = getCurSol("STATE") 
+						emit("modelContent", "content(robot($RobotState))" ) 
+						delay(200) 
+						solve("action(robot,move(h))","") //set resVar	
+						emit("modelChanged", "modelChanged(robot,h)" ) 
+						solve("model(A,R,STATE)","") //set resVar	
+						RobotState = getCurSol("STATE") 
+						emit("modelContent", "content(robot($RobotState))" ) 
+						dobackstep = false
 					}
 					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )
 				}	 

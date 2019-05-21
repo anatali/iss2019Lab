@@ -1,12 +1,11 @@
 System robotmind
-
+ 
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
-Event  userCmd        : userCmd(X)	//from GUI X = w | a | s | d | h 
+//Event  userCmd        : userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
 Event  modelChanged   : modelChanged( TARGET, VALUE )
-Event  modelContent   : content( VALUE )
-
+Event  modelContent   : content( VALUE ) 
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
@@ -15,12 +14,12 @@ Dispatch modelChange  : modelChange( TARGET, VALUE )
 Dispatch robotCmd     : robotCmd( CMD )
 
 Context ctxRobotMind  ip [host="localhost" port=8035]   -mqtt
-Context ctxBasicRobot ip [host="otherhost" port=8005]   -mqtt
+Context ctxDummyForBasicRobot ip [host="otherhost" port=8005]   -mqtt
 
-ExternalQActor basicrobot context ctxRobotMind 
+ExternalQActor basicrobot context ctxDummyForBasicRobot 
 
 QActor resourcemodel context ctxRobotMind{
-
+["var dobackstep = false"]
 	State s0 initial {		
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("resourceModel.pl")	 )
@@ -33,18 +32,9 @@ QActor resourcemodel context ctxRobotMind{
 
 	State changeModel{  
 		printCurrentMessage 
-		onMsg( modelChange : modelChange( robot,back) ) {
-			solve(  action( robot, move(s) ) )  
-			ifSolved  emit modelChanged : modelChanged(  robot,  s  ) 
-			solve( model( A, R, STATE ) )
-			["var RobotState = getCurSol(\"STATE\") "]
-			emit modelContent : content( robot( $RobotState ) )
-			delay 200
-			solve(  action( robot, move(h) ) )  
-			emit modelChanged : modelChanged(  robot,  h  )
-			solve( model( A, R, STATE ) )
-			["RobotState = getCurSol(\"STATE\") "]
-			emit modelContent : content( robot( $RobotState ) )
+		onMsg( modelChange : modelChange(internal,backstep ) ) { //introduced for the virtual robot			 
+ 			solve( model( _, _, state(movingForward) ) )
+  			ifSolved ["dobackstep = true"]  else  ["dobackstep = false"]
 		}
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			solve(  action( robot, move($payloadArg(1)) ) )  
@@ -53,6 +43,22 @@ QActor resourcemodel context ctxRobotMind{
 			["val RobotState = getCurSol(\"STATE\") "]
 			emit modelContent : content( robot( $RobotState ) )
 		} 
+	}
+	Goto doBackStep if "dobackstep" else waitModelChange
+	
+	State doBackStep{ 
+			solve(  action( robot, move(s) ) )  
+			emit modelChanged : modelChanged(robot,s)  //trigger move
+			solve( model( A, R, STATE ) )
+			["var RobotState = getCurSol(\"STATE\") "]
+			emit modelContent : content( robot( $RobotState ) ) //export model content
+			delay 200   
+			solve(  action( robot, move(h) ) )  
+			emit modelChanged : modelChanged(robot,h)
+			solve( model( A, R, STATE ) )
+			["RobotState = getCurSol(\"STATE\") "]
+			emit modelContent : content( robot( $RobotState ) )		
+			["dobackstep = false"]  //reset
 	}
 	Goto waitModelChange
 }
@@ -71,7 +77,7 @@ QActor robotmind context ctxRobotMind{
 	 
 	State waitCmd {		} 
 	Transition t0 whenMsg   robotCmd     -> handleCmd
-		          whenEvent envCond      -> handleCmd
+		          whenEvent envCond      -> handleEnvCond
 		          whenEvent sonarRobot   -> handleSonarRobot
 		          whenEvent modelChanged -> handleModelChanged
 	
@@ -79,6 +85,14 @@ QActor robotmind context ctxRobotMind{
 		printCurrentMessage
  		onMsg( robotCmd : robotCmd(CMD) ) {
  			forward resourcemodel -m modelChange : modelChange(robot,$payloadArg(0)) 
+		}
+	} 
+	Goto waitCmd
+	
+	State handleEnvCond{   
+		printCurrentMessage
+ 		onMsg( envCond : envCond(CMD) ) {
+ 			forward resourcemodel -m modelChange : modelChange(robot,h) 
 		}
 	} 
 	Goto waitCmd
@@ -99,17 +113,9 @@ QActor robotmind context ctxRobotMind{
  	}
 	Goto handeObstacle if "obstacle" else waitCmd 
 	
-	State handeObstacle{
+	State handeObstacle{		
 		println("handeObstacle: going back START")  
-		forward resourcemodel -m modelChange : modelChange(robot,back) 
-		/* 
-		//forward basicrobot -m robotCmd : robotCmd( s )
-		forward resourcemodel -m modelChange : modelChange(robot,s) //must wait the completion
-		//delay 1000
- 		println("handeObstacle: going back STOP")  
-		//forward basicrobot -m robotCmd : robotCmd( h )
-		forward resourcemodel -m modelChange : modelChange(robot,h) 
-		*/
+		forward resourcemodel -m modelChange : modelChange(internal,backstep) 
 	}
 	Goto waitCmd
  
