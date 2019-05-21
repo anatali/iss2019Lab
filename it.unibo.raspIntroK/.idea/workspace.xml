@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6556fa3b-4282-4c84-8b4b-5404c869db91" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/radar.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/radar.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/radar.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/radar.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot-tcplocalhost1883/.lck" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/resources/itunibo/robotRaspOnly/nanoSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/resources/itunibo/robotRaspOnly/nanoSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/basicrobot.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/basicrobot.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/sonarhandler-tcplocalhost1883/.lck" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/sonarhandler/Sonarhandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/sonarhandler/Sonarhandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/basicrobotmodel.png" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/basicrobotmodel.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/Lab8.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab8.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -30,18 +26,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="24" column="24" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="24" />
-              <folding>
-                <element signature="e#26#168#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/ControlActork.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
@@ -59,7 +43,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/MainLedOnRasp.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
@@ -67,6 +51,15 @@
               <folding>
                 <element signature="e#26#128#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/userDocs/devsDdr.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -172,6 +165,7 @@
         <option value="$PROJECT_DIR$/ledOnRaspSysDescr.pl" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/led/LedOnRasp.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/sonar/sonarShow.kt" />
+        <option value="$PROJECT_DIR$/userDocs/devsDdr.html" />
       </list>
     </option>
   </component>
@@ -189,6 +183,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -205,45 +201,6 @@
               <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
               <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-              <item name="led" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="qak" type="462c0819:PsiDirectoryNode" />
-              <item name="sonar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.raspIntroK" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.raspIntroK" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="sensors" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -255,12 +212,10 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558258043875" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558458767075" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/backup" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -268,19 +223,19 @@
     <property name="settings.editor.selected.configurable" value="gradle.experimental" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\backup" />
-    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="it.unibo.qak.led" />
       <recent name="it.unibo.qak.sonar" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\userDocs" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\led" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\bls\bash\gpio" />
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\userDocs" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\src\main\kotlin\it\unibo\qak\sonar" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.raspIntroK\backup" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -374,7 +329,7 @@
     <frame x="98" y="32" width="1141" height="630" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2960222" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24514338" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -590,6 +545,13 @@
           <folding>
             <element signature="e#26#128#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/userDocs/devsDdr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="25" column="4" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="4" />
         </state>
       </provider>
     </entry>
