@@ -24,16 +24,10 @@ showResourceModel :-
 	stdout <- println(" ]").
  			
 
-dialog( FileName ) :-  
-	java_object('javax.swing.JFileChooser', [], Dialog),
-	Dialog <- showOpenDialog(_),
-	Dialog <- getSelectedFile returns File,
-	File <- getName returns FileName. 		 
-
 output( M ) :- stdout <- println( M ).
 
 
-initResourceTheory :- output("resourceModel").
+initResourceTheory :- output("resourceModel loaded").
 :- initialization(initResourceTheory).
 		
 		

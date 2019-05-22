@@ -3,12 +3,10 @@ System robotmindnomvc
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
- 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
-
-//Dispatch robotCmd    : robotCmd( CMD )
-Event   robotCmd      : robotCmd( cmd )
+Event  robotCmd       : robotCmd( CMD )
+Event  modelContent   : content( STATE )
 
 Context ctxRobotMindNoMv        ip [host="localhost" port=8035]   -mqtt
 Context ctxDummyForBasicRobot   ip [host="otherhost" port=8005]   -mqtt
@@ -19,34 +17,47 @@ QActor robotmindnomvc context ctxRobotMindNoMv{
 ["var obstacle = false"]
 	State s0 initial {	  
 		println("ROBOT MIND STARTED")	
-		forward basicrobot -m robotCmd : robotCmd( a )
-		delay 700
-		forward basicrobot -m robotCmd : robotCmd( d )
-		delay 700
-		forward basicrobot -m robotCmd : robotCmd( h )
+		solve( consult("sysRules.pl")	 ) //utilities (replaceRule)
+		solve( consult("resourceModel.pl")	 )
+		//Just to show that it is alive ...
+//		forward basicrobot -m robotCmd : robotCmd( a )
+//		delay 500
+//		forward basicrobot -m robotCmd : robotCmd( d )
+//		delay 500
+//		forward basicrobot -m robotCmd : robotCmd( h )
 	}
-	Goto waitCmd
+	Goto waitForEvents
 	 
-	State waitCmd {		} 
+	State waitForEvents {		} 
 	Transition t0 whenEvent robotCmd     -> handleCmd
 		          whenEvent envCond      -> handleEnvCond
+		          whenEvent sonar        -> handleSonarEnv
 		          whenEvent sonarRobot   -> handleSonarRobot
  	
 	State handleCmd{  //command from the frontend
 		printCurrentMessage
  		onMsg( robotCmd : robotCmd(CMD) ) {
  			forward basicrobot -m robotCmd : robotCmd( $payloadArg(0) ) 
+ 			//UPDATE the model : explicit actions
+ 			solve(  action( robot, move($payloadArg(0)) ) ) //change the robot state model
+			solve( model( A, R, STATE ) )
+			["val RobotState = getCurSol(\"STATE\") "]
+			emit modelContent : content( robot( $RobotState ) )
+			
 		}
 	} 
-	Goto waitCmd
+	Goto waitForEvents
 
 	State handleEnvCond{   
  		onMsg( envCond : envCond(CMD) ) {
  			forward basicrobot -m robotCmd : robotCmd( h )  
+ 			//UPDATE the model : supported action
+ 			run itunibo.robot.resourceModelSupport.updateModel( myself, "h" )
+ 			//solve(  action( robot, move(h) ) ) //change the robot state model
 		}
 		printCurrentMessage
 	} 
-	Goto waitCmd
+	Goto waitForEvents
     
  	State handleSonarRobot{
  		printCurrentMessage
@@ -54,15 +65,30 @@ QActor robotmindnomvc context ctxRobotMindNoMv{
 			["obstacle = Integer.parseInt( payloadArg(0) ) < 10 "]
  		}//onMsg 	 
  	}
-	Goto handeObstacle if "obstacle" else waitCmd 
+	Goto handeObstacle if "obstacle" else waitForEvents 
 	
 	State handeObstacle{		
 		println("robotmindnomvc handeObstacle: going back START")  
- 		forward basicrobot -m robotCmd : robotCmd( s )
+ 		forward basicrobot -m robotCmd : robotCmd( s ) 		
+ 			//UPDATE the model : supported action
+ 			run itunibo.robot.resourceModelSupport.updateModel( myself, "s" )
+ 		//solve(  action( robot, move(s) ) ) //change the robot state model
  		delay 300
  		println("robotmindnomvc handeObstacle: going back STOP")  
 	    forward basicrobot -m robotCmd : robotCmd( h )
+ 			//UPDATE the model : supported action
+ 			run itunibo.robot.resourceModelSupport.updateModel( myself, "h" )
+	    //solve(  action( robot, move(h) ) ) //change the robot state model
   	}
-	Goto waitCmd
+	Goto waitForEvents
  
+ 
+ 	State handleSonarEnv{
+ 		println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+ 		printCurrentMessage
+ 		println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+ 	}
+ 	Goto waitForEvents
  }
+
+  

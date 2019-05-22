@@ -20,40 +20,43 @@ class Robotmindnomvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("s0") { //this:State
 					action { //it:State
 						println("ROBOT MIND STARTED")
-						forward("robotCmd", "robotCmd(a)" ,"basicrobot" ) 
-						delay(700) 
-						forward("robotCmd", "robotCmd(d)" ,"basicrobot" ) 
-						delay(700) 
-						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						solve("consult('sysRules.pl')","") //set resVar	
+						solve("consult('resourceModel.pl')","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
-				state("waitCmd") { //this:State
+				state("waitForEvents") { //this:State
 					action { //it:State
 					}
 					 transition(edgeName="t00",targetState="handleCmd",cond=whenEvent("robotCmd"))
 					transition(edgeName="t01",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t02",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					transition(edgeName="t02",targetState="handleSonarEnv",cond=whenEvent("sonar"))
+					transition(edgeName="t03",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
 				}	 
 				state("handleCmd") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("robotCmd(cmd)"), Term.createTerm("robotCmd(CMD)"), 
+						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"basicrobot" ) 
+								solve("action(robot,move(${payloadArg(0)}))","") //set resVar	
+								solve("model(A,R,STATE)","") //set resVar	
+								val RobotState = getCurSol("STATE") 
+								emit("modelContent", "content(robot($RobotState))" ) 
 						}
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("envCond(CONDTYPE)"), Term.createTerm("envCond(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+								itunibo.robot.resourceModelSupport.updateModel(myself ,"h" )
 						}
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
 				state("handleSonarRobot") { //this:State
 					action { //it:State
@@ -64,17 +67,27 @@ class Robotmindnomvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 						}
 					}
 					 transition( edgeName="goto",targetState="handeObstacle", cond=doswitchGuarded({obstacle}) )
-					transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({! obstacle}) )
+					transition( edgeName="goto",targetState="waitForEvents", cond=doswitchGuarded({! obstacle}) )
 				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
 						println("robotmindnomvc handeObstacle: going back START")
 						forward("robotCmd", "robotCmd(s)" ,"basicrobot" ) 
+						itunibo.robot.resourceModelSupport.updateModel(myself ,"s" )
 						delay(300) 
 						println("robotmindnomvc handeObstacle: going back STOP")
 						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						itunibo.robot.resourceModelSupport.updateModel(myself ,"h" )
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
+				}	 
+				state("handleSonarEnv") { //this:State
+					action { //it:State
+						println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+						println("$name in ${currentState.stateName} | $currentMsg")
+						println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+					}
+					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
 			}
 		}

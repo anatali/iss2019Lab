@@ -10,7 +10,7 @@ Event  polar        : p( Distance, Angle )
 Dispatch robotCmd   : robotCmd( CMD )
 
 Context ctxBasicRobot ip [host="localhost" port=8005]   -mqtt
-
+   
 QActor basicrobot context ctxBasicRobot {	
 	State s0 initial {  
   		solve( consult("basicRobotConfig.pl") )   
