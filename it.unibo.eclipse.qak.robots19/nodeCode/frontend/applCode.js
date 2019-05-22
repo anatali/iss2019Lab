@@ -40,9 +40,9 @@ app.get('/info', function (req, res) {
   res.send('This is the frontend-Unibo!')
 });
 
-	app.get('/', function(req, res) {
-  		res.render("index");
-  	});	
+app.get('/', function(req, res) {
+	res.render("index");
+});	
 
 /*
  * ====================== COMMANDS ================
