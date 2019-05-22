@@ -12,7 +12,6 @@ object resourceModelSupport{
 			actor.scope.launch{
  				actor.emit( "modelContent" , "content( robot( $RobotState ) )" )
  			}	
-	}
-	
+	}	
 }
 

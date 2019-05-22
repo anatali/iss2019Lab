@@ -1,7 +1,8 @@
-bin
+	bin
 bin/default
 .metadata
 build
+nodeCode/frontend/node_modules/
  
  # Ignore Gradle project-specific cache directory
 .gradle
@@ -14,3 +15,17 @@ gradle
 docker/
 /.metadata/
 /src-gen/
+
+
+
+# MQTT generated
+*-tcp*
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar

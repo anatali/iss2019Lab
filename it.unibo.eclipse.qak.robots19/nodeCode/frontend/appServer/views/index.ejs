@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ResourceAccess</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<!-- <script type="text/javascript" src="QActorWebUI.js"></script> -->
+</head>
+
+<body>
+<div class="container">
+<h1>Robot Control</h1>
+ 
+   
+<br/><br/>
+<center>
+			<table style="background-color: #d9f7f3">
+					<tr>
+						<td>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<form action="w" method="post">
+							  	<input type="submit" value="forward" class="btn btn-primary btn-block">
+							</form>
+						</td>
+						<td align="center">
+							<form action="a" method="post">
+							  	<input type="submit" value="left" class="btn btn-primary btn-block">
+							</form>
+						</td>
+						<td align="center">
+							<form action="d" method="post">
+							  	<input type="submit" value="right" class="btn btn-primary btn-block">
+							</form>
+						</td>
+						<td align="center">
+							<form action="s" method="post">
+							  	<input type="submit" value="backward" class="btn btn-primary btn-block">
+							</form>
+						</td>
+						<td align="center">
+							<form action="h" method="post">
+							  	<input type="submit" value="stop" class="btn btn-primary btn-block">
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<br/>
+						</td>
+					</tr>
+				</table>
+</center>
+<br/><br/>
+</div>
+<center>
+	<div>
+		<span id="state">State area</span><br/>
+		UPDATE CLIENT: <span id="display">updates</span>
+	</div>
+</center>
+</body>
+</html>

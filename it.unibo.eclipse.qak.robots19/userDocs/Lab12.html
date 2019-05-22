@@ -474,7 +474,13 @@ let us introduce a model for the state of the robot:
 <k>model( actuator, robot, state(stopped) ).</k> <kc>%% initial state</kc>
 </pre></font>
 
-The file <a href="../resourceModel.pl" target="code">resourceModel.pl</a> includes this model and rules to handle it.
+<ul>
+<li>The file <a href="../resourceModel.pl" target="code">resourceModel.pl</a> includes this model and rules to handle it.<br/><br/></li>
+<li>The file <a href="../resources/it/unibo/robot/resourceModelSupport.kt" target="code">resourceModelSupport.kt</a> 
+provides an operation (<tt>updateModel</tt>) that changes the model and emits the event <bc>modelContent : content( STATE )</bc>.</li>
+
+</ul>
+
  
 <center><table style="width:95%">
 <tbody>	
@@ -498,8 +504,6 @@ target="code">TestRobotmindnomvc.kt</a>:<br/><br/>
 An example of test plan expressed in <tt>JUnit</tt> is given in <a href="../testSrc/it/unibo/eclipse/qak/robots19/TestRobotmindnomvc.kt" 
 target="code">TestRobotmindnomvc.kt</a>.
 
-
-
 </m>
  </td></tr>
  <tr> <td>
@@ -516,17 +520,75 @@ We already know that: testing is necessary, but a correct testing does not assur
 but very much about people and relationships too. A Scrum Team also works toward improving the work-environment and its morale.
 </m>
   </td></tr>
- 
- 
+ </table>
+</center> 
+
+<h3>Sprint II: a better console</h3>
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:100%">
+<m>
+<h4>Viewing the model</h4>
+It is quite easy to introduce a new component that shows the current state of the robot model by handling the event 
+<bc>modelContent : content( STATE )</bc>. See for example <a href="../src/viewmodel.qak" target="code">viewmodel.qak</a>.
+
+	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./robotWithViewmodel.png" alt="robotWithViewmodel.png" width="90%" height="32%"/></center>
+	</td> 
+	<td>
+	 The system is (now (dynamically) composed of 4 components, to be activated by the end user. 
+	</td>
+	 </table>
+	</center> 
+</td>
+</tr>
+<tr>
+<td>
+<br/> 
+A useful refactoring can be related now to the introduction of a better user-console, showing  both the input device and the output device.
+Moreover the user-console should be provided within a browser.
+
+<h4>A better frontend</h4>
+
+	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./robotOnWeb.png" alt="robotOnWeb.png" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	 The system now runs behind a Web server and provides a 'service' to the final user.
+See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#lab11iot" 
+target="lecture">Lab11.html The Application Domain</a>.
+
+ 	 
+	</td>
+	 </table>
+	</center> 
+
+
+
+  
+<m>
+
+ </m>
+</td>
+ </tr>
  </table>
 </center> 
 
 
-<h3>Sprint II: the resource model at the center</h3>
+
+<h3>Sprint III: the resource model at the center</h3>
 
 As introduced in 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#domainmodel" 
-target="lecture">Lab11.html Resource model</a>
+target="lecture">Lab11.html The Resource Model in the center</a>, let us set a <bc>Resource Model at the center</bc> of our system and let us
+define a set of 'adapters' around it. 
 
 <center><table style="width:98%">
 <tbody>	
@@ -561,29 +623,6 @@ Each change in the resource model produces some <em>action</em> that is <bc>actu
  </table>
 </center> 
 
-<h3>Sprint III: the robot on the Web</h3>
-<center><table style="width:98%">
-<tbody>	
-<tr>
-<td style="width:100%">
-<m>
-<h4>A better frontend</h4>
-<center><img src="./robotOnWeb.png" alt="robotOnWeb.png" width="90%" height="32%"/></center>
-</m>
-</td>
-</tr>
-<tr>
-<td>
-
-<m>
-
-<br/>
-<br/>
- </m>
-</td>
- </tr>
- </table>
-</center> 
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
