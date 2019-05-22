@@ -3,6 +3,7 @@ bin/default
 .metadata
 build
 nodeCode/frontend/node_modules/
+*.lck
  
  # Ignore Gradle project-specific cache directory
 .gradle
