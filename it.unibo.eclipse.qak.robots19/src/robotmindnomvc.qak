@@ -5,8 +5,10 @@ mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
-Event  robotCmd       : robotCmd( CMD )
+Event  userCmd        : userCmd( CMD )
 Event  modelContent   : content( STATE )
+
+Dispatch robotCmd     : robotCmd( CMD )
 
 Context ctxRobotMindNoMv        ip [host="localhost" port=8035]   -mqtt
 Context ctxDummyForBasicRobot   ip [host="otherhost" port=8005]   -mqtt
@@ -19,27 +21,21 @@ QActor robotmindnomvc context ctxRobotMindNoMv{
 		println("ROBOT MIND STARTED")	
 		solve( consult("sysRules.pl")	 ) //utilities (replaceRule)
 		solve( consult("resourceModel.pl")	 )
-		//Just to show that it is alive ...
-//		forward basicrobot -m robotCmd : robotCmd( a )
-//		delay 500
-//		forward basicrobot -m robotCmd : robotCmd( d )
-//		delay 500
-//		forward basicrobot -m robotCmd : robotCmd( h )
 	}
 	Goto waitForEvents
-	 
+	  
 	State waitForEvents {		} 
-	Transition t0 whenEvent robotCmd     -> handleCmd
+	Transition t0 whenEvent userCmd      -> handleCmd
 		          whenEvent envCond      -> handleEnvCond
 		          whenEvent sonar        -> handleSonarEnv
 		          whenEvent sonarRobot   -> handleSonarRobot
  	
 	State handleCmd{  //command from the frontend
 		printCurrentMessage
- 		onMsg( robotCmd : robotCmd(CMD) ) {
+ 		onMsg( userCmd : userCmd(CMD) ) {
  			forward basicrobot -m robotCmd : robotCmd( $payloadArg(0) ) 
  			//UPDATE the model : explicit actions
- 			solve(  action( robot, move($payloadArg(0)) ) ) //change the robot state model
+ 			solve( action( robot, move($payloadArg(0)) ) ) //change the robot state model
 			solve( model( A, R, STATE ) )
 			["val RobotState = getCurSol(\"STATE\") "]
 			emit modelContent : content( robot( $RobotState ) )

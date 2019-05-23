@@ -28,7 +28,7 @@ class Robotmindnomvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("waitForEvents") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t00",targetState="handleCmd",cond=whenEvent("robotCmd"))
+					 transition(edgeName="t00",targetState="handleCmd",cond=whenEvent("userCmd"))
 					transition(edgeName="t01",targetState="handleEnvCond",cond=whenEvent("envCond"))
 					transition(edgeName="t02",targetState="handleSonarEnv",cond=whenEvent("sonar"))
 					transition(edgeName="t03",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
@@ -36,7 +36,7 @@ class Robotmindnomvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("handleCmd") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(CMD)"), 
+						if( checkMsgContent( Term.createTerm("userCmd(CMD)"), Term.createTerm("userCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"basicrobot" ) 
 								solve("action(robot,move(${payloadArg(0)}))","") //set resVar	

@@ -4,8 +4,8 @@ mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
 Event  local_userCmd  : local_userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment (simulated)
-Dispatch robotCmd     : robotCmd( cmd )
-Event   robotCmd      : robotCmd( cmd )
+//Dispatch robotCmd     : robotCmd( cmd )
+Event   userCmd      : userCmd( cmd )
 
 Context ctxFrontEnd  ip [host="localhost"  port=8045]   -mqtt
 Context ctxRobotMind ip [host="otherhost"  port=8035]   -mqtt
@@ -26,8 +26,8 @@ QActor frontend context ctxFrontEnd{
 		printCurrentMessage
 		onMsg( local_userCmd : local_userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
 		    println( "frontend handling local_userCmd( ${payloadArg(0)} )" )
-			forward  robotmind -m robotCmd	: robotCmd(   $payloadArg(0)    )	
-			emit  robotCmd	: robotCmd(   $payloadArg(0) )	 //introduced for robotmindnomvc
+			//forward  robotmind -m robotCmd	: robotCmd(   $payloadArg(0)    )	
+			emit  userCmd	: userCmd(   $payloadArg(0) )	 //introduced for robotmindnomvc
 		}
 		onMsg( envCond : envCond( COND ) ) {  
 		    println( "frontend handling envCond( ${payloadArg(0)} )" )

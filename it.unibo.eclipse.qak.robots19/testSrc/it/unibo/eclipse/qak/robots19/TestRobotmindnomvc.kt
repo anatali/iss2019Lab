@@ -26,7 +26,7 @@ class TestRobotmindnomvc {
 		//if( ! startUpDone ){
  		/*
             IT IS NOT NECESSARY TO START the basic robot.
- 			In any case the basic robot must be lanched froma another isntance of JVM
+ 			In any case the basic robot must be lanched from a another isntance of JVM
         */ 
 	 		GlobalScope.launch{
  			    println(" %%%%%%% TestRobotmindnomvc starts robot mind ")
@@ -128,7 +128,8 @@ class TestRobotmindnomvc {
 	fun moveRobot( actor : ActorBasic, move : String, time : Long ){
 		actor.scope.launch{
 			//println("emit robotCmd($move)")
-			robot!!.emit("robotCmd","robotCmd($move)") //simulate the effect of an user command
+			robot!!.emit("userCmd","userCmd($move)") //simulate the effect of an user command
+			//MsgUtil.sendMsg("robotCmd","robotCmd($move)",robot!!)
  		}
 		delay(time) //give time to do the move
   	}

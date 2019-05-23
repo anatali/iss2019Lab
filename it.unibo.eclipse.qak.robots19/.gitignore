@@ -2,9 +2,11 @@
 bin/default
 .metadata
 build
+
 nodeCode/frontend/node_modules/
 *.lck
- 
+package-lock.json
+
  # Ignore Gradle project-specific cache directory
 .gradle
 gradlew

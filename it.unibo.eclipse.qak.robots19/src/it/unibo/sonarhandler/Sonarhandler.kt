@@ -25,8 +25,8 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("waitForEvents") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t02",targetState="handleSonar",cond=whenEvent("sonar"))
-					transition(edgeName="t03",targetState="handleSonar",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t01",targetState="handleSonar",cond=whenEvent("sonar"))
+					transition(edgeName="t02",targetState="handleSonar",cond=whenEvent("sonarRobot"))
 				}	 
 				state("handleSonar") { //this:State
 					action { //it:State

@@ -6,10 +6,12 @@ var logger       	= require('morgan');	//see 10.1 of nodeExpressWeb.pdf;
 var bodyParser   	= require('body-parser');
 var fs           	= require('fs');
 var index           = require('./appServer/routes/index');				 
-
+var io              ; 	//Upgrade for socketIo;
 mqttUtils           = require('./uniboSupports/mqttUtils'); //(***)
  
-var app = express();
+var app             = express();
+
+
 
 // view engine setup;
 app.set('views', path.join(__dirname, 'appServer', 'views'));	 
@@ -48,6 +50,7 @@ app.get('/', function(req, res) {
  * ====================== COMMANDS ================
  */
 	app.post("/w", function(req, res) {
+		req.result = "Web server done w : " 
  		delegate( "w", "moving forward", req, res);		
 	});	
 	app.post("/s", function(req, res) {
@@ -64,14 +67,30 @@ app.get('/', function(req, res) {
  	});		
 
 //=================== UTILITIES =========================
-function delegate( hlcmd, newState, req, res ){
-	emitRobotCmd(hlcmd);
-    res.render("index");	
+
+var result = "";
+
+app.setIoSocket = function( iosock ){
+ 	io    = iosock;
+ 	mqttUtils.setIoSocket(iosock);
+	console.log("app SETIOSOCKET io=" + io);
 }
-var emitRobotCmd = function( cmd ){ //called by delegate;
- 	var eventstr = "msg(usercmd,event,js,none,usercmd("+cmd +"),1)"
-  	console.log("emits> "+ eventstr);
- 	mqttUtils.publish( eventstr );	//topic  = "unibo/qasys";
+
+function delegate( hlcmd, newState, req, res ){
+    result = "Web server doing: " + hlcmd;
+	//sendRobotCmd(hlcmd); //interaction with the basicrobot
+	emitRobotCmd(hlcmd); //interaction with the robotmind
+    //res.render("index");	
+}
+var sendRobotCmd = function( cmd ){  
+  	var msgstr = "msg(robotCmd,dispatch,js,basicrobot,robotCmd("+cmd +"),1)"  ;  
+  	console.log("forward> "+ msgstr);
+   	mqttUtils.publish( msgstr, "unibo/qak/basicrobot" );
+}
+var emitRobotCmd = function( cmd ){  
+ 	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
+    console.log("emits> "+ eventstr);
+ 	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
 }
 
 /*
@@ -81,7 +100,9 @@ var emitRobotCmd = function( cmd ){ //called by delegate;
 app.use( function(req,res){
 	console.info("SENDING THE ANSWER " + req.result  );
 	try{
+	    console.log("answer> "+ result + " io=" + io);
 		if( req.result != undefined) serverWithSocket.updateClient( JSON.stringify(req.result ) );
+		//io.sockets.send( result  );
 		res.send(req.result);
 	}catch(e){console.info("SORRY ...");}
 	} 

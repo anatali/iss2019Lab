@@ -3,6 +3,8 @@
  */
 var appl   = require('./applCode');  //previously was app;
 var http   = require('http');
+var io              ; 	//Upgrade for socketIo;
+
 
 var createServer = function ( port ) {
   console.log("process.env.PORT=" + process.env.PORT + " port=" + port);
@@ -10,12 +12,41 @@ var createServer = function ( port ) {
   //else if (port === undefined) port = resourceModel.customFields.port;
  
   server = http.createServer(appl);   
+  
+  io     = require('socket.io').listen(server); //Upgrade for socketio;  
+  
   server.on('listening', onListening);
   server.on('error', onError);
+  
+  //setInterval( tick, 5000 );
+  
   server.listen( port );
+
+  io.sockets.on('connection', function(socket) {
+	    socket.on('room', function(room) {
+	        socket.join(room);
+	    });
+	});
+
+	appl.setIoSocket( io );
 };
 
+
+function tick(){
+	var now = new Date().toString();
+	console.log("sending ... " + io);
+	io.sockets.send("HELLO FROM SERVER time=" + now);
+}
+
+
 createServer(3000);
+
+
+
+
+
+
+
 
 function onListening() {
 	  var addr = server.address();

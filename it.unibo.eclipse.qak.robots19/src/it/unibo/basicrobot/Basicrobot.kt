@@ -36,17 +36,12 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t00",targetState="handleUserCmd",cond=whenEvent("userCmd"))
-					transition(edgeName="t01",targetState="handleUserCmd",cond=whenDispatch("robotCmd"))
+					 transition(edgeName="t00",targetState="handleUserCmd",cond=whenDispatch("robotCmd"))
 				}	 
 				state("handleUserCmd") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
-						}
-						if( checkMsgContent( Term.createTerm("userCmd(X)"), Term.createTerm("userCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
 						}

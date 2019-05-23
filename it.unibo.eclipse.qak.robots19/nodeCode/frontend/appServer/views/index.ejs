@@ -5,64 +5,70 @@
 <title>ResourceAccess</title>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+<script>
+       var socket  = io.connect();
+       socket.on('connect', function(){ console.log("socket connected");});
+       socket.on('message', function(v){ document.getElementById('displayAnsw').innerHTML=v; });
+</script>
 <!-- <script type="text/javascript" src="QActorWebUI.js"></script> -->
 </head>
 
 <body>
-<div class="container">
-<h1>Robot Control</h1>
  
-   
-<br/><br/>
-<center>
-			<table style="background-color: #d9f7f3">
+<div style="background-color: #D2B4DE">
+<h2>Robot Console</h2>   
+			<table >
 					<tr>
-						<td>
-							<br/>
+						<td></td>
+						<td align="center">
+							<form action="/w" method="post">
+							  	<input type="submit" style="font-size:30px;" value="forward" >
+							</form>
+						</td>
+						<td></td>
+					</tr>
+					
+
+					<tr>
+						<td align="center">
+							<form action="/a" method="post">
+							  	<input type="submit" style="font-size:30px;"  value="left" >
+							</form>
+						</td>
+						<td align="center">
+							
+							<form action="/h" method="post">
+							    <font size="3" color="red">
+							  	<input type="submit" style="font-size:40px;"  value="stop"  >
+							  	</font>
+							</form>
+						</td>
+						<td align="center">
+							<form action="/d" method="post">
+							  	<input type="submit" style="font-size:30px;" value="right"  >
+							</form>
 						</td>
 					</tr>
 					<tr>
+						<td></td>
 						<td align="center">
-							<form action="w" method="post">
-							  	<input type="submit" value="forward" class="btn btn-primary btn-block">
+							<form action="/s" method="post">
+							  	<input type="submit" style="font-size:30px;"  value="backward"  >
 							</form>
 						</td>
-						<td align="center">
-							<form action="a" method="post">
-							  	<input type="submit" value="left" class="btn btn-primary btn-block">
-							</form>
-						</td>
-						<td align="center">
-							<form action="d" method="post">
-							  	<input type="submit" value="right" class="btn btn-primary btn-block">
-							</form>
-						</td>
-						<td align="center">
-							<form action="s" method="post">
-							  	<input type="submit" value="backward" class="btn btn-primary btn-block">
-							</form>
-						</td>
-						<td align="center">
-							<form action="h" method="post">
-							  	<input type="submit" value="stop" class="btn btn-primary btn-block">
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<br/>
-						</td>
+						<td></td>
 					</tr>
 				</table>
-</center>
-<br/><br/>
+
+ 
+ 
+
 </div>
 <center>
 	<div>
-		<span id="state">State area</span><br/>
-		UPDATE CLIENT: <span id="display">updates</span>
+ 		<b>ROBOT STATE</b>: <span id="displayAnsw"></span>
 	</div>
+
 </center>
 </body>
 </html>
