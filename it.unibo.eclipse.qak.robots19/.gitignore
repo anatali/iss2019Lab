@@ -3,6 +3,7 @@ bin/default
 .metadata
 build
 
+#node
 nodeCode/frontend/node_modules/
 *.lck
 package-lock.json
@@ -18,8 +19,6 @@ gradle
 docker/
 /.metadata/
 /src-gen/
-
-
 
 # MQTT generated
 *-tcp*

@@ -8,9 +8,7 @@ var io              ; 	//Upgrade for socketIo;
 
 var createServer = function ( port ) {
   console.log("process.env.PORT=" + process.env.PORT + " port=" + port);
-  //if (process.env.PORT) port = process.env.PORT;
-  //else if (port === undefined) port = resourceModel.customFields.port;
- 
+  
   server = http.createServer(appl);   
   
   io     = require('socket.io').listen(server); //Upgrade for socketio;  
@@ -39,7 +37,7 @@ function tick(){
 }
 
 
-createServer(3000);
+createServer(8080);
 
 
 
