@@ -26,3 +26,5 @@
 ::1 - POST /h HTTP/1.1 - - - - ms
 ::1 - POST /w HTTP/1.1 - - - - ms
 ::1 - POST /w HTTP/1.1 - - - - ms
+::1 - GET / HTTP/1.1 304 - - 23.834 ms
+::1 - GET /favicon.ico HTTP/1.1 200 - - 5.710 ms
