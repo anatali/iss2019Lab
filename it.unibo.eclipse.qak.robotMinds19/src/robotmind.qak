@@ -12,7 +12,6 @@ Event  polar          : p( Distance, Angle )
 Event  modelChanged   : modelChanged( TARGET, VALUE )
 Event  modelContent   : content( VALUE ) 
 
-
 Dispatch modelChange  : modelChange( TARGET, VALUE )  //sent from outside (frontend)
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind
 Dispatch modelGet     : modelGet( TARGET  )
@@ -21,14 +20,13 @@ Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobo
 Context ctxRobotMind  ip [host="localhost" port=8035]   -mqtt
 Context ctxBasicRobot ip [host="localhost" port=8005]   //no mqtt: works as a local actuator
 
- 
 QActor resourcemodel context ctxRobotMind{
 ["var dobackstep = false"]
 	State s0 initial {		
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("resourceModel.pl")	 )
 		solve( showResourceModel ) 		
-		run itunibo.coap.modelResourceCoap.create( myself, "resourcemodel" )
+		run itunibo.coap.modelResourceCoap.create( myself, "resourcemodel" ) //CoAP access
 	} 
 	Goto waitModelChange
 	

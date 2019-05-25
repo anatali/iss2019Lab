@@ -5,6 +5,7 @@ var appl   = require('./applCode');  //previously was app;
 var http   = require('http');
 var io              ; 	//Upgrade for socketIo;
 
+var port = 8080;
 
 var createServer = function ( port ) {
   console.log("process.env.PORT=" + process.env.PORT + " port=" + port);

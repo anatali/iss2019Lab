@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "coap": "^0.23.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "^2.6.1",
@@ -14,6 +15,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
     "mqtt": "^2.18.8",
+    "node-coap-client": "^1.0.2",
     "socket.io": "^2.2.0"
   }
 }

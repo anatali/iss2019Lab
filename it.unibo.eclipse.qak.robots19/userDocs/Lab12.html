@@ -553,7 +553,6 @@ A useful refactoring can be related now to the introduction of a better user-con
 Moreover the user-console should be provided within a browser.
 
 <h4>A better frontend</h4>
-
 	<center><table style="width:95%">
 	<tbody>	
 	<tr>
@@ -561,17 +560,16 @@ Moreover the user-console should be provided within a browser.
 	<center><img src="./robotOnWeb.png" alt="robotOnWeb.png" width="95%" height="32%"/></center>
 	</td> 
 	<td>
-	 The system now runs behind a Web server and provides a 'service' to the final user.
-See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#lab11iot" 
-target="lecture">Lab11.html The Application Domain</a>.
-
- 	 
+	<m>
+	 The system now runs behind a Web server and provides a 'service' to the final user.<br/>
+<li>See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#lab11iot" 
+target="lecture">Lab11.html The Application Domain</a>.</li>
+<li>See <a href="Lab13.html" 
+target="lecture">LAB13 | A frontend in Node.js</a>.</li>
+	 </m>
 	</td>
 	 </table>
 	</center> 
-
-
-
   
 <m>
 
@@ -604,17 +602,23 @@ define a set of 'adapters' around it.
 <td>
 
 <m>
-The code is <a href="../src/robotmind.qak" target="code">robotmind.qak</a>.
+See Lab14.html
+<!--
+  The code is <a href="../src/robotmind.qak" target="code">robotmind.qak</a>. 
 
 <ol>
 <li>activate the  <bc>MQTT</bc> broker on a <tt>PC</tt> of IP address= <bc>192.168.a.b</bc></li>
 <li>set the robot to use in <em>basicRobotConfig.pl</em></li>
-<li>activate each component in any order. </li>
+<li>activate the <bc>web server</bc></li>
+<li>activate the <bc>robotmind</bc> component</li>
 </ol>
  
-The <bc>robotmind</bc> (<a href="../src/robotmind.qak" target="code">robotmind.qak</a>) reacts to user commands sent 
-by the <bc>frontend</bc> (<a href="../src/frontend.qak" target="code">frontend.qak</a>), 
-by changing the <ks>resource model</ks> (<a href="../resourceModel.pl" target="code">resourceModel.pl</a>). 
+The <bc>robotmind</bc> 
+(<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" 
+target="code">robotmind.qak</a>)  reacts to user commands sent  by the <bc>web server</bc>, 
+by changing the <ks>resource model</ks> 
+(<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/resourceModel.pl" 
+target="code">resourceModel.pl</a>). 
 Each change in the resource model produces some <em>action</em> that is <bc>actuated</bc> by the <bc>basicrobot</bc>.
 <br/>
 </m>
@@ -622,7 +626,7 @@ Each change in the resource model produces some <em>action</em> that is <bc>actu
  </tr>
  </table>
 </center> 
-
+-->
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

@@ -8,10 +8,17 @@ var fs           	= require('fs');
 var index           = require('./appServer/routes/index');				 
 var io              ; 	//Upgrade for socketIo;
 mqttUtils           = require('./uniboSupports/mqttUtils'); //(***)
- 
-var app             = express();
 
+const coap           = require("node-coap-client").CoapClient; 
 
+var app              = express();
+
+coap
+    .tryToConnect("localhost:5683" /* string */)
+    .then((result /* true or error code or Error instance */) => {
+        cosnile.log("coap connection done"); // do something with the result */ 
+    })
+    ;
 
 // view engine setup;
 app.set('views', path.join(__dirname, 'appServer', 'views'));	 
@@ -80,8 +87,27 @@ function delegate( hlcmd, newState, req, res ){
     result = "Web server doing: " + hlcmd;
 	//sendRobotCmd(hlcmd); //interaction with the robotmind 
 	//emitRobotCmd(hlcmd); //interaction with the basicrobot
-	changeResourceModel(hlcmd);		//for hexagonal mind
+	changeResourceModel(hlcmd);		    //for hexagonal mind
+	changeResourceModelCoap(hlcmd);		//for hexagonal mind RESTful m2m
     //res.render("index");	
+}
+
+function coapPut(){
+
+coap
+    .request(
+        "resourcemodel" /* string */,
+        "put" /* "get" | "post" | "put" | "delete" */,
+        //[payload /* Buffer */,
+        //[options /* RequestOptions */]]
+    )
+    .then(response => { /* handle response */}
+    	console.log("coap put done> " );
+     )
+    .catch(err => { /* handle error */ }
+    	console.log("coap put error> " );
+    )
+    ;
 }
 var sendRobotCmd = function( cmd ){  
   	var msgstr = "msg(robotCmd,dispatch,js,robotmind,robotCmd("+cmd +"),1)"  ;  
@@ -94,7 +120,10 @@ var changeResourceModel = function( cmd ){
   	console.log("forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
 }
- 
+
+var changeResourceModelCoap = function( cmd ){  
+}
+
 var emitRobotCmd = function( cmd ){  
  	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
     console.log("emits> "+ eventstr);
