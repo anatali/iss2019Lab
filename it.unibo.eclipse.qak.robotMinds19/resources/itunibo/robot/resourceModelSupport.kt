@@ -11,10 +11,9 @@ object resourceModelSupport{
 			val RobotState = actor.getCurSol("STATE")
 			//println("			resourceModelSupport updateModel RobotState=$RobotState")
 			actor.scope.launch{
- 				actor.emit( "modelContent" , "content( robot( $RobotState ) )" )
-				//if( content.)
-					actor.emit( "modelChanged" ,"modelChanged(  robot,  $content)" )  //for the robotmind
- 			}	
+ 				actor.emit( "modelChanged" ,"modelChanged(  robot,  $content)" )  //for the robotmind
+				actor.emit( "modelContent" , "content( robot( $RobotState ) )" )
+  			}	
 	}	
 	fun updateSonarRobotModel( actor: ActorBasic, content: String ){
  			actor.solve( "action( sonarRobot,  $content )" ) //change the robot state model

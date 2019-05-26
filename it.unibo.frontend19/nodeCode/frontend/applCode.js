@@ -49,6 +49,10 @@ app.get('/', function(req, res) {
 	res.render("index");
 });	
 
+app.get('/appl', function(req, res) {
+	res.render("indexAppl");
+});	
+
 /*
  * ====================== COMMANDS ================
  */
@@ -68,6 +72,13 @@ app.get('/', function(req, res) {
 	app.post("/h", function(req, res) {
   		delegate( "h", "stopped", req, res );
  	});		
+ 	//APPLICATION
+	app.post("/startappl", function(req, res) {
+  		delegateForAppl( "startappl", "startApplication", req, res );
+ 	});		
+	app.post("/stopappl", function(req, res) {
+  		delegateForAppl( "stopappl", "stopApplication", req, res );
+ 	});		
 
 //=================== UTILITIES =========================
 
@@ -80,13 +91,19 @@ app.setIoSocket = function( iosock ){
 }
 
 function delegate( cmd, newState, req, res ){
-    result = "Web server doing: " + cmd;
+    result = "Web server delegate: " + cmd;
 	//publishMsgToRobotmind(cmd); //interaction with the robotmind 
 	//publishEmitUserCmd(cmd); //interaction with the basicrobot
-	//publishMsgToResourceModel(cmd);		    //for hexagonal mind
-	changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
+	publishMsgToResourceModel(cmd);		    //for hexagonal mind
+	//changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
     //res.render("index");	
-}
+} 
+function delegateForAppl( cmd, newState, req, res ){
+    result = "Web server delegateForAppl: " + cmd;
+ 	publishMsgToResourceModel("application", cmd);		    //for hexagonal mind
+	//changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
+    //res.render("index");	
+} 
 
 /*
  * ============ TO THE BUSINESS LOGIC =======
@@ -94,13 +111,13 @@ function delegate( cmd, newState, req, res ){
  
 var publishMsgToRobotmind = function( cmd ){  
   	var msgstr = "msg(robotCmd,dispatch,js,robotmind,robotCmd("+cmd +"),1)"  ;  
-  	console.log("forward> "+ msgstr);
+  	console.log("publishMsgToRobotmind forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/robotmind" );
 }
 
-var publishMsgToResourceModel = function( cmd ){  
-  	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,modelChange(robot, "+cmd +"),1)"  ;  
-  	console.log("forward> "+ msgstr);
+var publishMsgToResourceModel = function( target, cmd ){  
+  	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,modelChange("+target+", "+cmd +"),1)"  ;  
+  	console.log("publishMsgToResourceModel forward> "+ msgstr); 	
    	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
 }
 

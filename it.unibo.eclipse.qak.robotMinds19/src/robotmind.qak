@@ -12,10 +12,17 @@ Event  polar          : p( Distance, Angle )
 Event  modelChanged   : modelChanged( TARGET, VALUE )
 Event  modelContent   : content( VALUE ) 
 
+Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
+
 Dispatch modelChange  : modelChange( TARGET, VALUE )  //sent from outside (frontend)
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind
-Dispatch modelGet     : modelGet( TARGET  )
-Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
+ 
+Dispatch stopAppl      : stopAppl( CMD )
+Dispatch startAppl     : startAppl( CMD )
+
+Dispatch onestep       : onetstep
+Dispatch stepOk        : stepOk  
+Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
 
 Context ctxRobotMind  ip [host="localhost" port=8035]   -mqtt
 Context ctxBasicRobot ip [host="localhost" port=8005]   //no mqtt: works as a local actuator
@@ -46,16 +53,99 @@ QActor resourcemodel context ctxRobotMind{
     
 	State changeModel{  
 		printCurrentMessage 
+		//ROBOT MOVE
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateRobotModel( myself, payloadArg(1) )
 			//emit modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
 		} 
+		//SONAR DATA  
 		onMsg( modelChange : modelChange( sonarRobot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )
 		}
-	}
+		//APPLICATION COMMAND
+		onMsg( modelChange : modelChange( application,startappl ) ) { // V= startappl | stopappl
+			forward robotmindapplication -m startAppl : startAppl(noarg)
+  		} 
+		onMsg( modelChange : modelChange( application,stopappl ) ) { // V= startappl | stopappl
+			forward robotmindapplication -m stopAppl : stopAppl(noarg)
+  		} 
+	}  
 	Goto  waitModelChange
 }
+
+/*
+ * APPLICATION
+ */
+QActor robotmindapplication context ctxRobotMind{
+	State s0 initial {	  
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("floorMap.pl")	 )
+		println("robotmindapplication STARTED")	
+	}
+	Goto waitCmd
+	 
+	State waitCmd {		} 
+	Transition t0 whenMsg stopAppl  -> endApplication 
+		          whenMsg startAppl -> doApplication 
+	
+	
+	State doApplication{
+		println("robotmindapplication doApplication ... ")	
+		forward onecellforward -m onestep : onestep		
+	}//wait the answer
+	Transition t0   whenMsg stepOk -> hadleStepOk
+					whenMsg stepFail -> hadleStepFail
+	State endApplication{
+		println("robotmindapplication endApplication ... ")			
+	} 
+	Goto waitCmd
+	
+	State hadleStepOk{
+		println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ ")	
+		solve( updateMapAfterStep )
+		//solve( showMap )
+	}
+	Goto doApplication
+	 
+	State hadleStepFail{
+		printCurrentMessage		
+		println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf  ")
+	}
+	Goto waitCmd
+}
+
+//Application move step
+QActor onecellforward context ctxRobotMind {
+	State s0 initial {	   
+		println("onecellforward waits ... ")	
+	}
+	Transition t0 whenMsg onestep -> doMoveForward
+	
+	State doMoveForward{
+		//forward resourcemodel -m modelChange : modelChange(robot,w)
+ 		forward basicrobot -m robotCmd : robotCmd( w )	//First do ...
+ 		forward resourcemodel -m modelUpdate : modelUpdate(robot,w) //... then update the model
+	}
+	Transition t0 whenTime 300           -> endDoMoveForward
+		          whenEvent sonarRobot   -> handleSonarRobot
+		
+	State endDoMoveForward{
+ 		forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
+ 		forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
+		printCurrentMessage 
+		println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ")
+		forward robotmindapplication -m stepOk : stepOk  //answer
+	}
+	Goto s0
+	
+	State handleSonarRobot{
+		printCurrentMessage
+		println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO ")
+		forward robotmindapplication -m stepFail : stepFail(obstacle,10) //answer
+	}
+	Goto s0
+}
+
 
 /*
  * MIND
