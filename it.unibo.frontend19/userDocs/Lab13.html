@@ -167,8 +167,7 @@ Read section 7.8 of <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb
 <li>Execute <bc>express</bc></li>
 <li>Execute <bc>npm install</bc></li>
 <!-- <li>Move <bc>node_modules</bc> under <bc>nodeCode</bc> (to share it with other projects)</li> -->
-<li>Execute <bc>node bin/www</bc></li>
-<li>Open a browser on <ks>http://localhost:3000/</ks>.
+<li>Execute <ks>node bin/www</ks> and  open a browser on <ks>http://localhost:3000/</ks>.
 </ol>
 
 
@@ -200,8 +199,9 @@ methods and properties</bc> for developer convenience.</li>
 <ul>
 <li>The code in the generated file <bc>bin/www</bc> (see <a href="../nodeCode/frontend/bin/www" target="code">nodeCode/frontend/bin/www</a>) 
 creates a <em>httpServer</em> and passes <bc>app</bc> as the handler.</li>
-<li>The file <bc>app.js</bc> (see <a href="../nodeCode/frontend/appOriginal.js" target="code">appOriginal.js</a>) defines the application logic of the server and is structured according to the Express
-pattern introduced in <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a> section 7.8</li>
+<li>The file <bc>app.js</bc> (see <a href="../nodeCode/frontend/appOriginal.js" target="code">appOriginal.js</a>) defines 
+the application logic of the server and is structured according to the <kc>Express
+pattern</kc> introduced in <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a> section 7.8</li>
 <li>To understand the work of the server during the rendering phase, read sections 7.5, 7.6, 7.7 of 
 <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a>.</li>
 </ul>
@@ -243,7 +243,7 @@ Let us now:
 <li>move the code of the server from <tt>bin/www</tt> into a user-defined file <bc>frontend/frontendServer.js</bc> 
 (see <a href="../nodeCode/frontend/frontendServer.js" target="code">frontendServer.js</a>).</li>
 <li>define the application code of the server in a new file <bc>frontend/frontendServer.js</bc> 
-(see <a href="../nodeCode/frontend/applCode.js" target="code">frontendServer.js</a>).</li>
+(see <a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a>).</li>
 </ul>
 
 <!--

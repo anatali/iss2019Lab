@@ -48,7 +48,7 @@ QActor resourcemodel context ctxRobotMind{
 		printCurrentMessage 
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateRobotModel( myself, payloadArg(1) )
-			emit modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
+			//emit modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
 		} 
 		onMsg( modelChange : modelChange( sonarRobot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )

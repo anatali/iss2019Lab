@@ -561,11 +561,18 @@ Moreover the user-console should be provided within a browser.
 	</td> 
 	<td>
 	<m>
-	 The system now runs behind a Web server and provides a 'service' to the final user.<br/>
+	 The system now provides a 'service'.<br/>
 <li>See <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#lab11iot" 
-target="lecture">Lab11.html The Application Domain</a>.</li>
+target="lecture">Lab11.html Application Domain</a>.</li>
+ <br/>
+	The Web server handles the command sent by the user and then puts in execution the 'business logic'
+	by calling the function <ks>delegate</ks> that emits (via <tt>MQTT</tt>) the <tt>qak</tt> event  <tt> userCmd</tt>  by calling:
+	<ul>
+	<li><k>publishEmitUserCmd</k>(cmd) </li>
+  	</ul>
 <li>See <a href="Lab13.html" 
 target="lecture">LAB13 | A frontend in Node.js</a>.</li>
+
 	 </m>
 	</td>
 	 </table>
@@ -585,24 +592,47 @@ target="lecture">LAB13 | A frontend in Node.js</a>.</li>
 
 As introduced in 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#domainmodel" 
-target="lecture">Lab11.html The Resource Model in the center</a>, let us set a <bc>Resource Model at the center</bc> of our system and let us
-define a set of 'adapters' around it. 
+target="lecture">Lab11.html The Resource Model in the center</a>, let us set a <bc>Resource Model at the center</bc> of our system. 
 
 <center><table style="width:98%">
 <tbody>	
 <tr>
-<td style="width:100%">
+<td style="width:65%">
 <m>
 <h4>A model-centered mind</h4>
 <center><img src="./robotWithMind.png" alt="robotWithMind" width="90%" height="32%"/></center>
 </m>
 </td>
-</tr>
-<tr>
-<td>
 
-<m>
-See Lab14.html
+	<td>
+	<m>
+	The Web server handles the command sent by the user and then puts in execution the 'business logic'
+	by sending (via <tt>MQTT</tt>) :
+	<ol>
+	<li>the <tt>qak</tt> dispatch  <tt>robotCmd</tt> to the  <k>robotmind</k>, or</li>
+	<li>the <tt>qak</tt> dispatch  <tt>modelChange</tt> to the  <k>resourcemodel</k> </li>
+	</ol>
+<div class="remark">
+In the second interaction mode, all the actions, including
+the execution of the business logic by the 'mind', are  a consequence of a change in the resource model.
+</div>
+
+ 
+ 	
+	<li>See <a href="Lab14.html" 
+target="lecture">LAB14|Resource(domain) model</a>.</li>
+
+	 </m>
+	</td>
+	</tr>
+	 </table>
+	</center> 
+  
+ 
+ <br/> <br/>
+
+ 
+
 <!--
   The code is <a href="../src/robotmind.qak" target="code">robotmind.qak</a>. 
 

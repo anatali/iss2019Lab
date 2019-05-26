@@ -1,24 +1,20 @@
-var express     	= require('express');
-var path         	= require('path');
-//var favicon      	= require('serve-favicon');
-var logger       	= require('morgan');	//see 10.1 of nodeExpressWeb.pdf;
-//var cookieParser 	= require('cookie-parser');
-var bodyParser   	= require('body-parser');
-var fs           	= require('fs');
-var index           = require('./appServer/routes/index');				 
+const express     	= require('express');
+const path         	= require('path');
+//const favicon     = require('serve-favicon');
+const logger       	= require('morgan');	//see 10.1 of nodeExpressWeb.pdf;
+//const cookieParser= require('cookie-parser');
+const bodyParser   	= require('body-parser');
+const fs           	= require('fs');
+const index         = require('./appServer/routes/index');				 
 var io              ; 	//Upgrade for socketIo;
-mqttUtils           = require('./uniboSupports/mqttUtils'); //(***)
 
-const coap           = require("node-coap-client").CoapClient; 
+//for delegate
+const mqttUtils     = require('./uniboSupports/mqttUtils');  
+const coap          = require('./uniboSupports/coapClientToResourceModel');  
+//require("node-coap-client").CoapClient; 
 
 var app              = express();
 
-coap
-    .tryToConnect("localhost:5683" /* string */)
-    .then((result /* true or error code or Error instance */) => {
-        cosnile.log("coap connection done"); // do something with the result */ 
-    })
-    ;
 
 // view engine setup;
 app.set('views', path.join(__dirname, 'appServer', 'views'));	 
@@ -83,48 +79,37 @@ app.setIoSocket = function( iosock ){
 	console.log("app SETIOSOCKET io=" + io);
 }
 
-function delegate( hlcmd, newState, req, res ){
-    result = "Web server doing: " + hlcmd;
-	//sendRobotCmd(hlcmd); //interaction with the robotmind 
-	//emitRobotCmd(hlcmd); //interaction with the basicrobot
-	changeResourceModel(hlcmd);		    //for hexagonal mind
-	changeResourceModelCoap(hlcmd);		//for hexagonal mind RESTful m2m
+function delegate( cmd, newState, req, res ){
+    result = "Web server doing: " + cmd;
+	//publishMsgToRobotmind(cmd); //interaction with the robotmind 
+	//publishEmitUserCmd(cmd); //interaction with the basicrobot
+	//publishMsgToResourceModel(cmd);		    //for hexagonal mind
+	changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
     //res.render("index");	
 }
 
-function coapPut(){
-
-coap
-    .request(
-        "resourcemodel" /* string */,
-        "put" /* "get" | "post" | "put" | "delete" */,
-        //[payload /* Buffer */,
-        //[options /* RequestOptions */]]
-    )
-    .then(response => { /* handle response */}
-    	console.log("coap put done> " );
-     )
-    .catch(err => { /* handle error */ }
-    	console.log("coap put error> " );
-    )
-    ;
-}
-var sendRobotCmd = function( cmd ){  
+/*
+ * ============ TO THE BUSINESS LOGIC =======
+ */
+ 
+var publishMsgToRobotmind = function( cmd ){  
   	var msgstr = "msg(robotCmd,dispatch,js,robotmind,robotCmd("+cmd +"),1)"  ;  
   	console.log("forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/robotmind" );
 }
 
-var changeResourceModel = function( cmd ){  
+var publishMsgToResourceModel = function( cmd ){  
   	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,modelChange(robot, "+cmd +"),1)"  ;  
   	console.log("forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
 }
 
 var changeResourceModelCoap = function( cmd ){  
+    console.log("coap PUT> "+ cmd);
+	coap.coapPut(cmd);
 }
 
-var emitRobotCmd = function( cmd ){  
+var publishEmitUserCmd = function( cmd ){  
  	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
     console.log("emits> "+ eventstr);
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
@@ -133,7 +118,6 @@ var emitRobotCmd = function( cmd ){
 /*
 * ====================== REPRESENTATION ================
 */
-
 app.use( function(req,res){
 	console.info("SENDING THE ANSWER " + req.result  );
 	try{
@@ -146,6 +130,10 @@ app.use( function(req,res){
 );
 
 //app.use(converter());
+
+/*
+ * ============ ERROR HANDLING =======
+ */
 
 // catch 404 and forward to error handler;
 app.use(function(req, res, next) {
@@ -164,5 +152,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+/*
+ * ========= EXPORTS =======
+ */
 
 module.exports = app;

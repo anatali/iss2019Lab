@@ -12,6 +12,8 @@ object resourceModelSupport{
 			//println("			resourceModelSupport updateModel RobotState=$RobotState")
 			actor.scope.launch{
  				actor.emit( "modelContent" , "content( robot( $RobotState ) )" )
+				//if( content.)
+					actor.emit( "modelChanged" ,"modelChanged(  robot,  $content)" )  //for the robotmind
  			}	
 	}	
 	fun updateSonarRobotModel( actor: ActorBasic, content: String ){

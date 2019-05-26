@@ -21,7 +21,7 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 		
 		fun create( a: ActorBasic, name: String  ){
 			actor = a
-			val server  = CoapServer(5683);
+			val server  = CoapServer(5683);		//COAP SERVER
 			server.add( modelResourceCoap( name ) );
 			server.start();
 			println("--------------------------------------------------")
