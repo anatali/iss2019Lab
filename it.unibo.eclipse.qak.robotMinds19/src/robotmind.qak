@@ -1,6 +1,6 @@
 System robotmind
  
-mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+mqttBroker "192.168.43.229" : 1883    //192.168.1.18  192.168.43.229
 
 //Event  userCmd        : userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
@@ -240,11 +240,11 @@ QActor sonarhandler context ctxRobotMind{
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
   		 else println("no robot")
    		ifSolved run itunibo.robot.robotSupport.create(myself, @R, @PORT )
-   		run itunibo.robot.robotSupport.move( "msg(a)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(d)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(h)" )
+//   		run itunibo.robot.robotSupport.move( "msg(a)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(d)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(h)" )
  	}  
 	Goto waitCmd   
  	 

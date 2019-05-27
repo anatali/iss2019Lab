@@ -94,7 +94,7 @@ function delegate( cmd, newState, req, res ){
     result = "Web server delegate: " + cmd;
 	//publishMsgToRobotmind(cmd); //interaction with the robotmind 
 	//publishEmitUserCmd(cmd); //interaction with the basicrobot
-	publishMsgToResourceModel(cmd);		    //for hexagonal mind
+	publishMsgToResourceModel("robot",cmd);		    //for hexagonal mind
 	//changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
     //res.render("index");	
 } 

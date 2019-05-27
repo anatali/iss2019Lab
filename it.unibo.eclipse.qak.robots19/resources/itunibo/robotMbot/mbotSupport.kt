@@ -31,7 +31,9 @@ object mbotSupport{
 			val serialConn = JSSCSerialComm()
 			conn = serialConn.connect(port)	//returns a SerialPortConnSupport
 			println("mbotSupport initConn conn= $conn")
-			if( conn === null ) return;
+			while( conn === null ){
+				//return;
+			} 
 			while(true){ 
 				val curDataFromArduino = conn.receiveALine()  //consume "start" sent by Arduino
 				val istart = curDataFromArduino.contains("start")

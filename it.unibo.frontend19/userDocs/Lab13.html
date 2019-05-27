@@ -251,9 +251,111 @@ Let us now:
  file to via http://localhost:<port>/socket.io/socket.io.js.
 -->	
 	
+	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./webScheme.png" alt="webScheme.png" width="100%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+ 	</m>
+	</td>
+	</tr> </table>
+	</center> 
+	
+ <h2>The function delegate</h2>
+	The function <bc>delegate</bc> in <a href="">applCode.pl</a> sends commands to the application logic. Since in our case
+	the application logic is described as a qak model, we define at the moment the following actions:
+	
+ 
+	
+	<center><table style="width:95%"><tbody><tr>
+	<td style="width:45%"><h3>publishEmitUserCmd</h3>
+	<center><img src="./delegateUserCmd.png" alt="delegateUserCmd" width="90%" height="32%"/></center>
+	</td> <td>Publish (via <tt>MQTT</tt>) the qak event <bc>userCmd</bc> on the topic <em>unibo/qak/events</em>
+ 	<pre>
+ var publishEmitUserCmd = function( cmd ){  
+	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
+	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
+ }
+</pre>	
+	</td>
+	</tr></table></center> 
+<br/><br/>
+
+	<center><table style="width:95%"><tbody><tr>
+	<td style="width:45%"><h3>publishMsgToRobotmind</h3>
+	<center><img src="./delegateToMind.png" alt="delegateToMind" width="90%" height="32%"/></center>
+	</td> 
+	<td>
+	Publish (via <tt>MQTT</tt>) the qak dispatch <bc>robotCmd</bc> 
+	on the topic <em>unibo/qak/robotmind</em> 
+ 	<pre>
+var publishMsgToRobotmind = function( cmd ){  
+	var msgstr = "msg(robotCmd,dispatch,js,
+					robotmind,robotCmd("+cmd +"),1)"  ;  
+	mqttUtils.publish( msgstr, "unibo/qak/robotmind" );
+}
+</pre>	
+	</td>
+	</tr></table></center> 
+<br/><br/>
+
+
+
+	<center><table style="width:95%"><tbody><tr>
+	<td style="width:45%"><h3>publishMsgToResourceModel</h3>
+	<center><img src="./delegateToResourcemodel.png" alt="delegateToResourcemodel" width="90%" height="32%"/></center>
+	</td> 
+	<td>Publish (via <tt>MQTT</tt>) the qak dispatch <bc>modelChange</bc> 
+	on the topic <em>unibo/qak/resourcemodel</em> 
+<pre>
+var publishMsgToResourceModel = function( target, cmd ){  
+  	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,
+	                      modelChange("+target+", "+cmd +"),1)"  ;  
+  	console.log("publishMsgToResourceModel forward> "+ msgstr); 	
+   	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
+}
+</pre>	
+<m>For the resource model see <a href="Lab14.html#m2mcoap">Lab14.html - Machine-to-machine interaction using CoAP</a>
+</m>	</td>
+	</tr></table></center> 
+<br/><br/>
+	
+
+
+	<center><table style="width:95%"><tbody><tr>
+	<td style="width:45%"><h3>changeResourceModelCoap</h3>
+	<center><img src="./delegateToResourcecoap.png" alt="delegateToResourcecoap" width="90%" height="32%"/></center>
+	</td> 
+	<td>Publish (via <tt>MQTT</tt>) the qak dispatch <bc>modelChange</bc> 
+	on the topic <em>unibo/qak/resourcemodel</em> 
+<pre>
+var changeResourceModelCoap = function( cmd ){  
+ 	coap.coapPut(cmd);
+}
+</pre>	
+
+<m>For the <tt>CoAP</tt> support see <a href="../frontend/unibosupports/coapClientToResourceModel.js" 
+	target="code">frontend/unibosupports/coapClientToResourceModel.js</a>
+	</m>
+	</td>
+	</tr></table></center> 
 	
 	
-<h2>Next</h2>		
+	<ul>
+	<li>For the <tt>CoAP</tt> support see <a href="../frontend/unibosupports/coapClientToResourceModel.js" 
+	target="code">frontend/unibosupports/coapClientToResourceModel.js</a></li>
+	<li>For the resource model see <a href="Lab14.html#m2mcoap">Lab14.html - Machine-to-machine interaction using CoAP</a>
+	</ul>
+</li>
+  
+	
+ <h4>Configuration</h4>	
+ 
+ 
+ 	
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

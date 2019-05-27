@@ -1,7 +1,7 @@
 %====================================================================================
 % robotmind description   
 %====================================================================================
-mqttBroker("localhost", "1883").
+mqttBroker("192.168.43.229", "1883").
 context(ctxrobotmind, "localhost",  "MQTT", "0" ).
 context(ctxbasicrobot, "localhost",  "TCP", "8005" ).
  qactor( resourcemodel, ctxrobotmind, "it.unibo.resourcemodel.Resourcemodel").

@@ -5,7 +5,7 @@ const coap  = require("node-coap-client").CoapClient;
 
 /*
 coap
-    .tryToConnect("localhost:5683" )
+    .tryToConnect("192.168.43.67:5683" )
     .then((result ) => { //  true or error code or Error instance  
         cosnile.log("coap connection done"); // do something with the result  
     })
@@ -15,7 +15,7 @@ coap
 exports.coapGet = function (  ){
 	coap
 	    .request(
-	        "coap://localhost:5683/resourcemodel" /* string */,
+	        "coap://192.168.43.67:5683/resourcemodel" /* string */,
 	        "get" /* "get" | "post" | "put" | "delete" */
  	        //[payload /* Buffer */,
 	        //[options /* RequestOptions */]]
@@ -33,7 +33,7 @@ exports.coapGet = function (  ){
 exports.coapPut = function (  cmd ){ 
 	coap
 	    .request(
-	        "coap://localhost:5683/resourcemodel",     
+	        "coap://192.168.43.67:5683/resourcemodel",     
 	        "put" ,			                          // "get" | "post" | "put" | "delete"   
 	        new Buffer(cmd )                          // payload Buffer 
  	        //[options]]							//  RequestOptions 

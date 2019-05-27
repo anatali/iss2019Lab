@@ -8,7 +8,7 @@ const topic  = "unibo/qak/events";
 
 //var client = mqtt.connect('mqtt://iot.eclipse.org');
 //var client = mqtt.connect('mqtt://192.168.1.100');
-var client   = mqtt.connect('mqtt://localhost');
+var client   = mqtt.connect('mqtt://192.168.43.229');
 var io  ; 	//Upgrade for socketIo;
 
 console.log("mqtt client= " + client );

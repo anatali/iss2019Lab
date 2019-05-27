@@ -84,7 +84,7 @@ sourceSets {
     main.java.srcDirs += 'resources'
 }
 
-mainClassName = 'it.unibo.TODOKt'
+mainClassName = 'it.unibo.ctxRobotMind.MainCtxRobotMindKt'
 
 jar {
     println("executing jar")

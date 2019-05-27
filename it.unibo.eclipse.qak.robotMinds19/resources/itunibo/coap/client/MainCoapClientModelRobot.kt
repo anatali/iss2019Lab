@@ -38,7 +38,7 @@ import itunibo.coap.observer.AsynchListener
 
 	fun main() {
 		val resourceName = "resourcemodel"
-		createClient("localhost", 5683, resourceName)
+		createClient("192.168.43.67", 5683, resourceName)
 		synchGet()
 		put("w")
 		Thread.sleep(500)

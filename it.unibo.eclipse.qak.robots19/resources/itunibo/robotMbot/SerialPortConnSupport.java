@@ -35,8 +35,8 @@ private String curString = "";
 	public void sendALine(String msg) throws Exception {
 		System.out.println("SerialPortConnSupport sendALine ... " + msg);
   		serialPort.writeBytes(msg.getBytes());
-  		serialPort.writeString("\n");
-//		System.out.println("SerialPortConnSupport has sent   " + msg);
+  		//serialPort.writeString("\n");
+ //		System.out.println("SerialPortConnSupport has sent   " + msg);
 	}
 	//EXTENSION for mBot
 	public void sendCmd(String msg) throws Exception {

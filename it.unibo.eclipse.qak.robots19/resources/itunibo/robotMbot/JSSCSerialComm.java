@@ -29,10 +29,10 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 		portNames     = SerialPortList.getPortNames();
         
 		if (portNames.length == 0) {
-		    System.out.println("There are no serial-ports");
+		    System.out.println("JSSCSerialComm: There are no serial-ports");
 		    return;
 		}else{
-			System.out.println("FOUND " + portNames.length + " serial-ports");
+			System.out.println("JSSCSerialComm: FOUND " + portNames.length + " serial-ports");
 			for( int i=0; i<portNames.length;i++){
 				System.out.println("FOUND " + portNames[i] + " PORT");
 			}
@@ -40,25 +40,33 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 		
 	}
 
-	public SerialPortConnSupport connect(String commPortName) throws Exception{
-		System.out.println("CONNECT TO " + commPortName + " ports num=" + portNames.length);
+	public SerialPortConnSupport connect(String commPortName)  {
+		System.out.println("JSSCSerialComm CONNECT TO " + commPortName + " ports num=" + portNames.length);
 		commPortName = commPortName.replace("'", "");
 		serialPort = null;
 		for (int i = 0; i < portNames.length; i++){
 			if(portNames[i].equals(commPortName)){
 				System.out.println("CONNECTING TO " + portNames[i]  );
 				serialPort = new SerialPort(commPortName);
-				serialPort.openPort();
-			    serialPort.setParams(SerialPort.BAUDRATE_115200,
-				                         SerialPort.DATABITS_8,
-				                         SerialPort.STOPBITS_1,
-				                         SerialPort.PARITY_NONE);
-//				serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
-			    return new SerialPortConnSupport( serialPort );
-//				break;
+				try {
+					System.out.println("CONNECTED TO " + serialPort.getPortName() );
+					serialPort.openPort();
+				    serialPort.setParams(SerialPort.BAUDRATE_115200,
+					                         SerialPort.DATABITS_8,
+					                         SerialPort.STOPBITS_1,
+					                         SerialPort.PARITY_NONE);
+	//				serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
+				    return new SerialPortConnSupport( serialPort );
+	//				break;
+				}catch(Exception e) {
+					System.out.println("CONNECTION ERROR " +e.getMessage() );
+					System.exit(1);
+				}
 			}
 		}
-		return null;		
+		System.out.println("CONNECTION ERROR: no port "   );
+		System.exit(2);			//todo
+		return null;
  	}
 	
 	

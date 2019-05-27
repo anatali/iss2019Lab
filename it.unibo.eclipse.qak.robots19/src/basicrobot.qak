@@ -1,7 +1,8 @@
 System basicrobot 
 
-mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+mqttBroker "192.168.43.229" : 1883    //192.168.1.18  192.168.43.229
 
+Event  userCmd      : userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  sonar        : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment   
 Event  sonarRobot   : sonar( DISTANCE )	         //from  sonar on robot 
 Event  polar        : p( Distance, Angle )            
@@ -17,16 +18,16 @@ QActor basicrobot context ctxBasicRobot {
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
   		 else println("no robot")
    		ifSolved run itunibo.robot.robotSupport.create(myself, @R, @PORT )
-   		run itunibo.robot.robotSupport.move( "msg(a)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(d)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(h)" )
+//   		run itunibo.robot.robotSupport.move( "msg(a)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(d)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(h)" )
  	}  
 	Goto waitCmd   
  	 
 	State waitCmd{  } //userCmd comes from a console OUTSIDE this (sub)system
-	Transition t0 //whenEvent userCmd   -> handleUserCmd
+	Transition t0 whenEvent userCmd   -> handleUserCmd
 		          whenMsg   robotCmd  -> handleUserCmd
 	
 	State handleUserCmd{ //does not handle alarms 
@@ -34,9 +35,9 @@ QActor basicrobot context ctxBasicRobot {
 		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
 		}	
-//		onMsg( userCmd : userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
-// 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
-//		}	
+		onMsg( userCmd : userCmd( MOVE ) ) { //MOVE = w | a | s | d | h
+ 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
+		}	
 	}  
 	Goto waitCmd 
 } 
