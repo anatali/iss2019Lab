@@ -8,9 +8,9 @@ Event  envCond        : envCond( CONDTYPE )        //from the environment (simul
 Event   userCmd      : userCmd( cmd )
 
 Context ctxFrontEnd  ip [host="localhost"  port=8045]   -mqtt
-Context ctxRobotMind ip [host="otherhost"  port=8035]   -mqtt
+Context ctxRobotMindNoMv ip [host="otherhost"  port=8035]   -mqtt
  
-ExternalQActor robotmind context ctxRobotMind
+ExternalQActor robotmind context ctxRobotMindNoMv
 
 QActor frontend context ctxFrontEnd{   
 	State s0 initial {		 
