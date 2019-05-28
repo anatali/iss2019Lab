@@ -25,13 +25,18 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						 			 println("no robot")
 						 		}
 						if(currentSolution.isSuccess()) itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString() )
+						itunibo.robot.robotSupport.move("msg(a)" )
+						delay(700) 
+						itunibo.robot.robotSupport.move("msg(d)" )
+						delay(700) 
+						itunibo.robot.robotSupport.move("msg(h)" )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t014",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
+					 transition(edgeName="t07",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State

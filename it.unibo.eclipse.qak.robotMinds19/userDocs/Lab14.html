@@ -176,11 +176,13 @@ target="lecture">Lab12.html-SprintIII</a> that builds the software system around
 
 
  <ol>
-<li><a href="#project">...</a></li>
+<li><a href="#hexbase">A robot control system based on a Resource-Model</a></li>
+<li><a href="#m2mcoap">Machine-to-machine interaction</a></li>
+<li><a href="#test">Experiments</a></li>
  </ol>
  
  
-<h2>A robot control system basd on a  Resource-Model</h2>
+<h2 id="hexbase">A robot control system based on a Resource-Model</h2>
  
 	The Web server handles the command sent by the user and then puts in execution the 'business logic'
 	by sending (via <tt>MQTT</tt>) the <tt>qak</tt> dispatch  <em>modelChange</em> to the  <k>resourcemodel</k>.
@@ -246,7 +248,7 @@ var publishMsgToResourceModel = function( target, cmd ){
 	<center><table style="width:98%">
 	<tbody>	
 	<tr>
-	<td style="width:70%">
+	<td style="width:66%">
 	<center><img src="./robotWithMindCoap.png" alt="robotWithMindCoap.png" width="95%" height="32%"/></center>
 	</td> 
 	<td>
@@ -259,15 +261,24 @@ is accesses in a standard, <k>RESTful</k> way.
 See
 <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="web">Representational state transfer</a>
 and  <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb sections 6,11</a> 
-
-The resource CoAP:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>
+<br/><br/>
+CoAP-resource:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>
  	</m>
  	</td>
 	 </table>
 	</center> 
 
- 
+ <h2 id="test">Experiments</h2>
  	
+<ol>
+<li>Start the <tt>MQTT</tt> broker.</li>
+<li>Start the frontend server ( <bc>node frontendServer.js</bc>).<(li>
+<li>Start the robot (real or virtual) and set it into <bc>basicRobotConfig.pl</bc>.</li>
+<li>Activate the basic robotmind (<bc>it.unibo.ctxRobotMind/MainCtxRobotMind.kt</bc>) </li>
+<li>Open a browser on <bc>http://192.168.43.229:8080/</bc></li>
+<li>Open <bc>http://192.168.43.229:8080/appl</li>
+</ol>	
+	
 <br/><br/>	
 	
  	

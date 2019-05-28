@@ -25,6 +25,7 @@ output( M ) :- stdout <- println( M ).
 
 initMap :-
 	output("initMap  "),
+	retractall( cell(X,Y,STATE) ), 
 	assign(x,1),
 	assign(y,1),
 	addRule( cell(1,1,1) ).		

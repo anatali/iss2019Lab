@@ -15,12 +15,14 @@ class Onecellforward ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		 var foundObstacle = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("onecellforward waits ... ")
+						println("&&& robotmindapplication onecellforward waits ... ")
+						foundObstacle = false 
 					}
-					 transition(edgeName="t06",targetState="doMoveForward",cond=whenDispatch("onestep"))
+					 transition(edgeName="t04",targetState="doMoveForward",cond=whenDispatch("onestep"))
 				}	 
 				state("doMoveForward") { //this:State
 					action { //it:State
@@ -28,15 +30,15 @@ class Onecellforward ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 						forward("modelUpdate", "modelUpdate(robot,w)" ,"resourcemodel" ) 
 						stateTimer = TimerActor("timer_doMoveForward", scope, context!!, "local_tout_onecellforward_doMoveForward", 300.toLong())
 					}
-					 transition(edgeName="t07",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onecellforward_doMoveForward"))   
-					transition(edgeName="t08",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t05",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onecellforward_doMoveForward"))   
+					transition(edgeName="t06",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
 					action { //it:State
 						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
 						forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
 						println("$name in ${currentState.stateName} | $currentMsg")
-						println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE ")
+						println("&&& robotmindapplication endDoMoveForward ")
 						forward("stepOk", "stepOk" ,"robotmindapplication" ) 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
@@ -44,8 +46,19 @@ class Onecellforward ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("handleSonarRobot") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO ")
-						forward("stepFail", "stepFail(obstacle,10)" ,"robotmindapplication" ) 
+						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								val distance = Integer.parseInt( payloadArg(0) ) 
+								              foundObstacle = (distance<20) 
+						}
+					}
+					 transition( edgeName="goto",targetState="stepFail", cond=doswitchGuarded({foundObstacle}) )
+					transition( edgeName="goto",targetState="s0", cond=doswitchGuarded({! foundObstacle}) )
+				}	 
+				state("stepFail") { //this:State
+					action { //it:State
+						println("&&& robotmindapplication stepfail ")
+						forward("stepFail", "stepFail(obstacle,150)" ,"robotmindapplication" ) 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 

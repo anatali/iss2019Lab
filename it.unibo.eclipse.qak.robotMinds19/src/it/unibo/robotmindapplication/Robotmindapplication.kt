@@ -20,33 +20,37 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('floorMap.pl')","") //set resVar	
-						println("robotmindapplication STARTED")
+						println("&&&  robotmindapplication STARTED")
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t02",targetState="endApplication",cond=whenDispatch("stopAppl"))
-					transition(edgeName="t03",targetState="doApplication",cond=whenDispatch("startAppl"))
+					 transition(edgeName="t00",targetState="stopApplication",cond=whenDispatch("stopAppl"))
+					transition(edgeName="t01",targetState="startApplication",cond=whenDispatch("startAppl"))
+				}	 
+				state("stopApplication") { //this:State
+					action { //it:State
+						println("&&& robotmindapplication stopApplication ... ")
+					}
+				}	 
+				state("startApplication") { //this:State
+					action { //it:State
+						solve("initMap","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
 				}	 
 				state("doApplication") { //this:State
 					action { //it:State
-						println("robotmindapplication doApplication ... ")
 						forward("onestep", "onestep" ,"onecellforward" ) 
 					}
-					 transition(edgeName="t04",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
-					transition(edgeName="t05",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
-				}	 
-				state("endApplication") { //this:State
-					action { //it:State
-						println("robotmindapplication endApplication ... ")
-					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition(edgeName="t02",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t03",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
 				}	 
 				state("hadleStepOk") { //this:State
 					action { //it:State
-						println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ ")
+						println("&&& robotmindapplication step ok")
 						solve("updateMapAfterStep","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
@@ -54,7 +58,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				state("hadleStepFail") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFf  ")
+						println("&&& robotmindapplication step failed")
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

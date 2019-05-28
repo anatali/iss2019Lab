@@ -26,9 +26,9 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t09",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t010",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
-					transition(edgeName="t011",targetState="handleModelChanged",cond=whenEvent("modelChanged"))
+					 transition(edgeName="t02",targetState="handleEnvCond",cond=whenEvent("envCond"))
+					transition(edgeName="t03",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("modelChanged"))
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State
@@ -64,10 +64,6 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
-						println("handeObstacle: first react, the update the model")
-						forward("robotCmd", "robotCmd(s)" ,"basicrobot" ) 
-						forward("modelUpdate", "modelUpdate(robot,s)" ,"resourcemodel" ) 
-						delay(200) 
 						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
 						forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
 					}
