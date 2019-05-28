@@ -1,6 +1,6 @@
 /*
 * =====================================
-* uniboSupports/mqttUtils.js
+* frontend/uniboSupports/mqttUtils.js
 * =====================================
 */
 const mqtt   = require ('mqtt');  //npm install --save mqtt

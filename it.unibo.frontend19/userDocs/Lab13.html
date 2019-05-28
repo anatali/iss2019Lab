@@ -154,12 +154,42 @@ table, th, td {
 <h1>72939 - LAB13 | A frontend in Node.js</h1> 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
  
- <h2>Index</h2>
+ <h2>Overview</h2>
+ The goal of this section is to design and build a front-end application component by using 
+ <a href="https://en.wikipedia.org/wiki/Node.js">Node.js</a>
+ and <a href="https://en.wikipedia.org/wiki/Express.js">Express</a>. <br/><br/>
+ 	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td >
+	<center><img src="./javascript.png" alt="meanBook.png" width="75%" height="32%"/></center>
+	</td> 
+	<td>
+	<center><img src="./meanBook.png" alt="meanBook.png" width="75%" height="32%"/></center>
+ 	</td>
+	<td>
+	<center><img src="./wot.png" alt="meanBook.png" width="75%" height="32%"/></center>
+ 	</td>
+	<td>
+	<m>
+	 <a href="eventProgramming2.pdf" target="lecture">Event programming in JavaScript and Node.js:
+an introduction (pdf)</a> <br/><br/>
+ 	 <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb (pdf)</a> <br/><br/>
+
+	</m>
+	</td>
+	 </table>
+	</center> 
+
  <ol>
-<li><a href="#project">...</a></li>
+<li><a href="#starting">Starting</a></li>
+<li><a href="#mvcrefact">Refactoring according to the MVC pattern</a></li>
+<li><a href="#serverode">Define the code of the server</a></li>
+<li><a href="#delegate">Interacting with the application</a></li>
+<li><a href="#config">Notes about configuration</a></li>
  </ol>
  
-<h2 id="project">Starting</h2>
+<h2 id="starting">Starting</h2>
 Read section 7.8 of <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a> and execute the following steps:
 <ol>
 <li>Execute <bc>npm install -g express-generator</bc>.</li>
@@ -208,7 +238,7 @@ pattern</kc> introduced in <a href="nodeExpressWeb.pdf" target="lecture">nodeExp
 
 
 
-<h3>Refactoring according to the MVC pattern</h3>
+<h3 id="mvcrefact">Refactoring according to the MVC pattern</h3>
 Read section 7.9 of <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a> and execute the steps 1-3:
 
 <ol>
@@ -233,16 +263,16 @@ Now modify the <bc>app.js</bc> to keep into account the modifications:
 	 </table>
 	</center> 
 
-<h3>Define the code of the server </h3>	
+<h3 id="serverode">Define the code of the server </h3>	
 Let us now:
 
 <ul>
 <li>Execute <bc>npm install --save ejs</bc> in order to use the <em>EJS</em> (now replaced by done.js) rendering engine instead of <em>Jade</em> (also named Pug). </li>
 <li>Execute <bc>npm install --save mqtt</bc></li>
 <li>Execute <bc>npm install --save socket.io</bc></li>
-<li>move the code of the server from <tt>bin/www</tt> into a user-defined file <bc>frontend/frontendServer.js</bc> 
+<li>Move the code of the server from <tt>bin/www</tt> into a user-defined file <bc>frontend/frontendServer.js</bc> 
 (see <a href="../nodeCode/frontend/frontendServer.js" target="code">frontendServer.js</a>).</li>
-<li>define the application code of the server in a new file <bc>frontend/frontendServer.js</bc> 
+<li>Define the application code of the server in a new file <bc>frontend/frontendServer.js</bc> 
 (see <a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a>).</li>
 </ul>
 
@@ -258,14 +288,28 @@ Let us now:
 	<center><img src="./webScheme.png" alt="webScheme.png" width="100%" height="32%"/></center>
 	</td> 
 	<td>
-	<m>
- 	</m>
+	<h3>Templates <m>(in frontend/addserver/views)</m> </h3>
+	<li><a href="../nodeCode/frontend/appServer/views/index.ejs" target="code">index.ejs</a></li>
+	<li><a href="../nodeCode/frontend/appServer/views/indexAppl.ejs" target="code">indexAppl.ejs</a></li>
+
+	<h3>Server  <m>(in frontend)</m></h3>
+	<li><a href="../nodeCode/frontend/frontendServer.js" target="code">frontendServer.js</a></li>
+
+	<h3>Supports  <m>(in frontend/uniboSupports)</m></h3>
+	<li><a href="../nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" target="code">coapClientToResourceModel.js</a></li>
+	<li><a href="../nodeCode/frontend/uniboSupports/mqttUtils.js" target="code">mqttUtils.js</a></li>
+
+	
+	<h3>Application  <m>(in frontend)</m></h3>
+	<li><a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a></li>
+ 	 
 	</td>
 	</tr> </table>
 	</center> 
 	
- <h2>The function delegate</h2>
-	The function <bc>delegate</bc> in <a href="">applCode.pl</a> sends commands to the application logic. Since in our case
+ <h2 id="delegate">Interacting with the application</h2>
+	The function <bc>delegate</bc> in <a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a>
+	sends commands to the application logic. Since in our case
 	the application logic is described as a qak model, we define at the moment the following actions:
 	
  
@@ -318,7 +362,12 @@ var publishMsgToResourceModel = function( target, cmd ){
    	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
 }
 </pre>	
-<m>For the resource model see <a href="Lab14.html#m2mcoap">Lab14.html - Machine-to-machine interaction using CoAP</a>
+<m>For the <bc>resource model</bc> see 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#m2mcoap" 
+target="code">Lab14.html - Machine-to-machine interaction</a>
+
+
+ 
 </m>	</td>
 	</tr></table></center> 
 <br/><br/>
@@ -337,23 +386,29 @@ var changeResourceModelCoap = function( cmd ){
 }
 </pre>	
 
-<m>For the <tt>CoAP</tt> support see <a href="../frontend/unibosupports/coapClientToResourceModel.js" 
+<m>For the <bc>CoAP support</bc> see <a href="../nodeCode/frontend/unibosupports/coapClientToResourceModel.js" 
 	target="code">frontend/unibosupports/coapClientToResourceModel.js</a>
 	</m>
 	</td>
 	</tr></table></center> 
 	
 	
-	<ul>
-	<li>For the <tt>CoAP</tt> support see <a href="../frontend/unibosupports/coapClientToResourceModel.js" 
-	target="code">frontend/unibosupports/coapClientToResourceModel.js</a></li>
-	<li>For the resource model see <a href="Lab14.html#m2mcoap">Lab14.html - Machine-to-machine interaction using CoAP</a>
-	</ul>
+ 
 </li>
   
 	
- <h4>Configuration</h4>	
- 
+ <h3 id="config">Notes about configuration</h3>	
+<ul>
+<li>Set the <kc>MQTT address</kc>:  <bc>client</bc> variable in 
+<a href="../nodeCode/frontend/unibosupports/mqttUtils.js", target="code"> 
+<em>frontend/uniboSupports/mqttUtils.js</em></a>.</li>
+<li>Set the <kc>CoAP address</kc>:  <bc>coapResourceAddr</bc> variable in 
+<a href="../nodeCode/frontend/unibosupports/coapClientToResourceModel.js", target="code">
+<em>frontend/uniboSupports/coapClientToResourceModel</em></a>.</li>
+
+<li></li>
+<li></li>
+</ul> 
  
  	
 

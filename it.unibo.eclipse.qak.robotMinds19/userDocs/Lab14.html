@@ -154,13 +154,37 @@ table, th, td {
 <h1>72939 - LAB14 | Resource(domain) model  </h1> 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
  
- <h2>Index</h2>
+ <h2>Overview</h2>
+The goal of this section is to perform the <em>SprintIII</em> introduced in 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robots19/userDocs/Lab12.html#sprintIII" 
+target="lecture">Lab12.html-SprintIII</a> that builds the software system around a <bc>Resource Model</bc>.
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:30%">
+ 	<center><img src="./wot.png" alt="wot.png" width="45%" height="32%"/></center>
+ 	</td>
+	<td>
+	<m>
+	 <a href="https://w3c.github.io/wot/current-practices/wot-practices.html" target="web">Wot practices</a> <br/><br/>
+ 	 <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb (pdf)</a> <br/><br/>
+
+	</m>
+	</td>
+	 </table>
+	</center> 
+
+
  <ol>
 <li><a href="#project">...</a></li>
  </ol>
  
  
-
+<h2>A robot control system basd on a  Resource-Model</h2>
+ 
+	The Web server handles the command sent by the user and then puts in execution the 'business logic'
+	by sending (via <tt>MQTT</tt>) the <tt>qak</tt> dispatch  <em>modelChange</em> to the  <k>resourcemodel</k>.
+ 
 	<center><table style="width:98%">
 	<tbody>	
 	<tr>
@@ -169,38 +193,56 @@ table, th, td {
 	</td> 
 	<td>
 	<m>
-	The Web server handles the command sent by the user and then puts in execution the 'business logic'
-	by sending (via <tt>MQTT</tt>) :
-	<ol>
-	<li>the <tt>qak</tt> dispatch  <tt>robotCmd</tt> to the  <k>robotmind</k>, or</li>
-	<li>the <tt>qak</tt> dispatch  <tt>modelChange</tt> to the  <k>resourcemodel</k> </li>
-	</ol>
-	
+ 	
 <div class="remark">
-In the second interaction mode, all the actions, including
-the execution of the business logic by the 'mind', are  a consequence of a change in the resource model.
+All the actions, including
+the execution of the business logic by the 'mind', are  a consequence of a change in the <k>resourcemodel</k>.
 </div>	
+The system model:<a href="../src/robotmind.qak" target="code">robotmind.qak</a>	<br/><br/>
+ 
+A resource model expressed in Prolog:<a href="../resourceModel.pl" target="code">resourceModel.pl</a>		<br/><br/>
+
+See also
+<a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb section 11</a> 
+
  	</m>
  	</td>
 	 </table>
 	</center> 
- 
-<h3>The function delegate</h3>
-	The function <bc>delegate</bc> in <a href="">applCode.pl</a> can do one of these possible actions:
-	<ol>
-	<li><em>publishMsgToRobotmind</em>(cmd): </li>
-	<li><em>publishEmitUserCmd</em>(cmd)</li>
-	<li><em>publishMsgToResourceModel</em>(cmd)</li>
-	<li><em>changeResourceModelCoap</em>(cmd)</li>
- 	</ol>
+   <br/>
 
-<h3>The code</h3>
-The system model:<a href="../src/robotmind.qak" target="code">robotmind.qak</a>	<br/><br/>
+ The Human-machine interaction supported by the front-end server 
+ (see <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.frontend19/userDocs/Lab13.html#delegate" 
+target="code">Lab13.html -Interacting with the application</a>)
+  must now implement the delegate function as follows:
+<br/><br/>
+<center><table style="width:95%"><tbody><tr>
+	<td style="width:45%"><h3>publishMsgToResourceModel</h3>
+	<center><img src="./delegateToResourcemodel.png" alt="delegateToResourcemodel" width="90%" height="32%"/></center>
+	</td> 
+	<td>Publish (via <tt>MQTT</tt>) the qak dispatch <bc>modelChange</bc> 
+	on the topic <em>unibo/qak/resourcemodel</em> 
+<pre>
+var publishMsgToResourceModel = function( target, cmd ){  
+  	var msgstr = "msg(modelChange,dispatch,js,resourcemodel,
+	                      modelChange("+target+", "+cmd +"),1)"  ;  
+  	console.log("publishMsgToResourceModel forward> "+ msgstr); 	
+   	mqttUtils.publish( msgstr, "unibo/qak/resourcemodel" );
+}
+</pre>	
+<m>  
+</m>	</td>
+	</tr></table></center> 
+<br/><br/>
+
+
  
- The resource model:<a href="../resourceModel.pl" target="code">resourceModel.pl</a>		<br/><br/>
  
- <h2>Machine-to-machine interaction using CoAP</h2>
- 
+ <h2 id="m2mcoap">Machine-to-machine interaction</h2>
+ 	The Web server handles the command sent by the user and then puts in execution the 'business logic'
+	by sending  (via <tt>CoAP</tt>): a <k> PUT</k>  request to change the  <k>resourcemodel</k>.
+	<br/><br/>
+
 	<center><table style="width:98%">
 	<tbody>	
 	<tr>
@@ -209,31 +251,26 @@ The system model:<a href="../src/robotmind.qak" target="code">robotmind.qak</a>	
 	</td> 
 	<td>
 	<m>
-	The Web server handles the command sent by the user and then puts in execution the 'business logic'
-	by sending  :
-	<ol>
- 	<li>(via <tt>MQTT</tt>): the <tt>qak</tt> dispatch  <tt>modelChange</tt> to the  <k>resourcemodel</k> </li>
- 	<li>(via <tt>CoAP</tt>): a <k> PUT</k>  request to change the  <tt>resourcemodel</tt> </li>
-	</ol>
-	
+ 	
 <div class="remark">
 In the CoAP-based interaction mode, the resource model,
 is accesses in a standard, <k>RESTful</k> way.
 </div>	
+See
+<a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="web">Representational state transfer</a>
+and  <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb sections 6,11</a> 
+
+The resource CoAP:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>
  	</m>
  	</td>
 	 </table>
 	</center> 
 
-
-<h3>The code</h3>
-The resource CoAP:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>	<br/><br/>
  
- 	<br/><br/>
  	
+<br/><br/>	
 	
-	
-<h2>Next</h2>		
+ 	
 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

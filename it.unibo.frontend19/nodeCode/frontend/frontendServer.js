@@ -26,7 +26,6 @@ var createServer = function ( port ) {
 	        socket.join(room);
 	    });
 	});
-
 	appl.setIoSocket( io );
 };
 
