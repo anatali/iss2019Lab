@@ -22,21 +22,20 @@ class Onecellforward ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 						println("&&& robotmindapplication onecellforward waits ... ")
 						foundObstacle = false 
 					}
-					 transition(edgeName="t04",targetState="doMoveForward",cond=whenDispatch("onestep"))
+					 transition(edgeName="t05",targetState="doMoveForward",cond=whenDispatch("onestep"))
 				}	 
 				state("doMoveForward") { //this:State
 					action { //it:State
-						forward("robotCmd", "robotCmd(w)" ,"basicrobot" ) 
-						forward("modelUpdate", "modelUpdate(robot,w)" ,"resourcemodel" ) 
+						forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
 						stateTimer = TimerActor("timer_doMoveForward", scope, context!!, "local_tout_onecellforward_doMoveForward", 300.toLong())
 					}
-					 transition(edgeName="t05",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onecellforward_doMoveForward"))   
-					transition(edgeName="t06",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t06",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onecellforward_doMoveForward"))   
+					transition(edgeName="t07",targetState="s0",cond=whenDispatch("stopAppl"))
+					transition(edgeName="t08",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
 					action { //it:State
-						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
-						forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						println("$name in ${currentState.stateName} | $currentMsg")
 						println("&&& robotmindapplication endDoMoveForward ")
 						forward("stepOk", "stepOk" ,"robotmindapplication" ) 

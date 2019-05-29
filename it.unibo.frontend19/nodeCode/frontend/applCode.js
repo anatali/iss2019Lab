@@ -52,6 +52,14 @@ app.get('/', function(req, res) {
 	res.render("index");
 });	
 
+app.get('/robotmodel', function(req, res) {
+	res.send( mqttUtils.getrobotmodel() )
+});	
+app.get('/sonarrobotmodel', function(req, res) {
+	res.send( mqttUtils.getsonarrobotmodel() )
+});	
+
+
 app.get('/appl', function(req, res) {
 	res.render("indexAppl");
 });	
@@ -77,10 +85,10 @@ app.get('/appl', function(req, res) {
  	});		
  	//APPLICATION
 	app.post("/startappl", function(req, res) {
-  		delegateForAppl( "startappl", "startApplication", req, res );
+  		delegateForAppl( "startAppl", req, res );
  	});		
 	app.post("/stopappl", function(req, res) {
-  		delegateForAppl( "stopappl", "stopApplication", req, res );
+  		delegateForAppl( "stopAppl",  req, res );
  	});		
 
 //=================== UTILITIES =========================
@@ -95,17 +103,17 @@ app.setIoSocket = function( iosock ){
 
 function delegate( cmd, newState, req, res ){
     result = "Web server delegate: " + cmd;
-	//publishMsgToRobotmind(cmd); //interaction with the robotmind 
-	//publishEmitUserCmd(cmd); //interaction with the basicrobot
-	publishMsgToResourceModel("robot",cmd);		    //for hexagonal mind
-	//changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
+ 	//publishMsgToRobotmind(cmd);                  //interaction with the robotmind 
+	//publishEmitUserCmd(cmd);                     //interaction with the basicrobot
+	//publishMsgToResourceModel("robot",cmd);	    //for hexagonal mind
+	changeResourceModelCoap(cmd);		            //for hexagonal mind RESTful m2m
     //res.render("index");	
 } 
-function delegateForAppl( cmd, newState, req, res ){
-    result = "Web server delegateForAppl: " + cmd;
- 	publishMsgToResourceModel("application", cmd);		    //for hexagonal mind
-	//changeResourceModelCoap(cmd);		        //for hexagonal mind RESTful m2m
-    //res.render("index");	
+function delegateForAppl( cmd, req, res ){
+     console.log("app delegateForAppl cmd=" + cmd); 
+     result = "Web server delegateForAppl: " + cmd;
+ 	 publishMsgToRobotapplication( cmd );		     
+     //res.render("index");	
 } 
 
 /*
@@ -133,6 +141,12 @@ var publishEmitUserCmd = function( cmd ){
  	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
     console.log("emits> "+ eventstr);
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
+}
+
+var publishMsgToRobotapplication = function (cmd){
+   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmind,"+ cmd +"(go),1)"  ;  
+  	console.log("publishMsgToRobotapplication forward> "+ msgstr);
+   	mqttUtils.publish( msgstr, "unibo/qak/robotmindapplication" );
 }
 
 /*

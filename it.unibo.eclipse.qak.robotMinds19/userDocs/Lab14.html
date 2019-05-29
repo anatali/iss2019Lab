@@ -266,16 +266,16 @@ var publishMsgToResourceModel = function( target, cmd ){
 	</td> 
 	<td>
 	<m>
- 	
 <div class="remark">
-In the CoAP-based interaction mode, the resource model,
-is accesses in a standard, <k>RESTful</k> way.
+The resource model is accesses in a standard, <k>RESTful</k> way.<br/>
+A CoAP resource can be mande <k>observable</k> by CoAP clients.
 </div>	
+ 
 See
 <a href="https://en.wikipedia.org/wiki/Representational_state_transfer" target="web">Representational state transfer</a>
 and  <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb sections 6,11</a> 
 <br/><br/>
-CoAP-resource:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>
+Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">modelResourceCoap.kt</a>
  	</m>
  	</td>
 	 </table>
@@ -284,6 +284,39 @@ CoAP-resource:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="c
 
  <h2 id="test">Experiments</h2>
  	
+	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+	<h3>Testing the core logic</h3>
+	<center><img src="./archLogicCoap.png" alt="archLogicCoap" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+	Project <tt>it.unibo.eclipse.qak.robotMinds19</tt>
+ <ol>
+<li>Start the <bc>MQTT</bc> broker on the <tt>PC</tt>.</li>
+<li>Set the used robot into <bc>basicRobotConfig.pl</bc>.</li>
+<li>Activate <bc>MainCtxRobotMind.kt</bc> on <tt>RaspberryPi</tt>. </li>
+<li>Activate <bc>viewmodelkt</bc> on the <tt>PC</tt>. </li>
+<li>Activate <bc>resourceObserverCoapClient.kt</bc> on the <tt>PC</tt>. </li>
+</ol>	 
+  	</m>
+ 	</td>
+	 </table>
+	</center> 	
+
+	<br/><br/>	
+
+	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+	<h3>Remote human control</h3>
+	<center><img src="./archBaseCoap.png" alt="archBaseCoap" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
 <ol>
 <li>Start the <tt>MQTT</tt> broker.</li>
 <li>Start the frontend server ( <bc>node frontendServer.js</bc>).<(li>
@@ -291,12 +324,50 @@ CoAP-resource:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="c
 <li>Activate the basic robotmind (<bc>it.unibo.ctxRobotMind/MainCtxRobotMind.kt</bc>) </li>
 <li>Open a browser on <bc>http://192.168.43.229:8080/</bc></li>
 <li>Open <bc>http://192.168.43.229:8080/appl</li>
-</ol>	
+</ol>	 
+  	</m>
+ 	</td>
+	 </table>
+	</center> 
+<pre>
+curl -X POST -d "name=Alice&age=25&password=pswdAlice" http://localhost:3000/adduser
+</pre>
 	
 <br/><br/>	
 	
- 	
+ 	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+	<h3>Adding an application</h3>
+	<center><img src="./archApplCoap.png" alt="archApplCoap" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+   	</m>
+ 	</td>
+	 </table>
+	</center> 	
 
+	<br/><br/>	
+	
+ 	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+	<h3>Adding custom observers</h3>
+	<center><img src="./archRadarCoap.png" alt="archRadarCoap" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+   	</m>
+ 	</td>
+	 </table>
+	</center> 	
+
+	<br/><br/>	
+	
+ 	
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
 By AN Unibo-DISI    

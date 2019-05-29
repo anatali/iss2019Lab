@@ -10,15 +10,27 @@ import org.eclipse.californium.core.CoapHandler
 import org.eclipse.californium.core.CoapObserveRelation
 import org.eclipse.californium.core.CoapResponse
 import itunibo.outgui.outguiSupport
+import java.awt.Color
  
+object Listener : CoapHandler {
+
+	val outDev = outguiSupport.create("Resource Coap OBSERVER", Color.green)
+	
+	override fun onLoad(response: CoapResponse?) {
+		val content = response!!.getResponseText()
+		outguiSupport.output("$content"  )
+	}
+	override fun onError() {
+		outguiSupport.output("Listener Error")
+	}
+}
 
 	fun main(args: Array<String>?) {
-		//outguiSupport.create("OBSERVER")
 		val client = CoapClient("coap://localhost:5683/resourcemodel")
 // observe
 		println("CoapLedObserverClient.java: OBSERVE (press enter to exit)")
  
-		val relation = client.observe(  AsynchListener )  //CoapHandler
+		val relation = client.observe(  Listener )  //CoapHandler
 		 
 // After you have setup your observe relation you need to make sure your program is still doing something
 		// wait for user

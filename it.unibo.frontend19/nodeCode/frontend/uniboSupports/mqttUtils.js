@@ -6,10 +6,14 @@
 const mqtt   = require ('mqtt');  //npm install --save mqtt
 const topic  = "unibo/qak/events";
 
-//var client = mqtt.connect('mqtt://iot.eclipse.org');
-//var client = mqtt.connect('mqtt://192.168.1.100');
-var client   = mqtt.connect('mqtt://192.168.43.229');
+var mqttAddr = 'mqtt://localhost'
+//var mqttAddr = 'mqtt://192.168.43.229'
+//var mqttAddr = 'mqtt://iot.eclipse.org'
+
+var client   = mqtt.connect(mqttAddr);
 var io  ; 	//Upgrade for socketIo;
+var robotModel    = "none";
+var sonarModel    = "none";
 
 console.log("mqtt client= " + client );
 
@@ -21,7 +25,7 @@ exports.setIoSocket = function ( iosock ) {
 
 client.on('connect', function () {
 	  client.subscribe( topic );
-	  console.log('client has connected successfully ');
+	  console.log('client has connected successfully with ' + mqttAddr);
 });
 
 //The message usually arrives as buffer, so I had to convert it to string data type;
@@ -37,9 +41,10 @@ client.on('message', function (topic, message){
   var sp2    = msgStr.indexOf("))");
   if( spRobot > 0 ) 
   var msg    = "";
-  if( spRobot > 0 )      msg = "robot - "
-  if( spSonarRobot > 0 ) msg = "sonarRobot - "
-  msg = msg + message.toString().substr(sp1,sp2+1);
+  var content =  message.toString().substr(sp1,sp2+1);
+  if( spRobot > 0 )      { msg = "robot - "; robotModel=msg+content        }
+  if( spSonarRobot > 0 ) { msg = "sonarRobot - "; sonarModel = msg+content }
+  msg = msg + content// message.toString().substr(sp1,sp2+1);
   io.sockets.send( msg );
 });
 
@@ -48,3 +53,9 @@ exports.publish = function( msg, topic ){
 	client.publish(topic, msg);
 }
 
+exports.getrobotmodel = function(){
+	return robotModel;
+}
+exports.getsonarrobotmodel = function(){
+	return sonarModel;
+}

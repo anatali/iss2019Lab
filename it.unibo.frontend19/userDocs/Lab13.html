@@ -182,13 +182,36 @@ an introduction (pdf)</a> <br/><br/>
 	 </table>
 	</center> 
 
+<h3>Node architecture</h3>	
+IO operations can be orders of magnitude slower than data processing. 
+Reading just one kilobyte of data would take 1.4 microseconds (read speed of 200-730 MB/s), 
+but during this time a CPU clocked at 2GHz could have performed 28000 of instruction-processing cycles.
+
+ 	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td >
+	<center><img src="./nodeArch.png" alt="nodeArch" width="100%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+	<h3>Reading</h3>
+	 <a href="https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/.pdf" target="web">
+	 Understanding the Node.js Event Loop</a> <br/><br/>
+  
+	</m>
+	</td>
+	 </table>
+	</center> 	
+	
  <ol>
 <li><a href="#starting">Starting</a></li>
 <li><a href="#mvcrefact">Refactoring according to the MVC pattern</a></li>
 <li><a href="#serverode">Define the code of the server</a></li>
 <li><a href="#delegate">Interacting with the application</a></li>
 <li><a href="#config">Notes about configuration</a></li>
- </ol>
+ </ol>	 
+
  
 <h2 id="starting">Starting</h2>
 Read section 7.8 of <a href="nodeExpressWeb.pdf" target="lecture">nodeExpressWeb.pdf</a> and execute the following steps:
@@ -366,12 +389,27 @@ For an example:
 	<td>
 	<m>
 	<h4>Robot command page: Body</h4>
-	 The page provide an input section (for the user commands) and an output section (the system-state display area).
+	 The page provides an input section (for the user commands) and an output section (the system-state display area).
 	<br/>	<br/>
 	<center><img src="./indexView.png" alt="indexView" width="95%" height="32%"/></center>
  	</m>
  	</td>
 	</tr>
+	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./applView.png" alt="applView" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+	<h4>Application page</h4>
+	 The page provides the input/output sections for a robot application).
+	<br/>	<br/>
+	The code: <a href="../nodeCode/frontend/appServer/views/indexAppl.ejs" target="code">indexAppl.ejs</a>
+ 	</m>
+ 	</td>
+	</tr>
+
 	 </table>
 	</center> 
 	

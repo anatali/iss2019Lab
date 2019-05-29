@@ -14,9 +14,9 @@ object outguiSupport {
 
 	lateinit var p :  OutDevPanel
 	 		
-		fun create(  title: String  ){
+		fun create(  title: String, color: Color  ){
 			val frame = Utils.initFrame()
-			p = OutDevPanel( 19,60, Color.yellow, Color.black)
+			p = OutDevPanel( 19,60, color, Color.black)
 			frame.add(BorderLayout.CENTER, p )
 			frame.setTitle(title);
 			frame.validate()

@@ -12,22 +12,26 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.GlobalScope
 import org.eclipse.californium.core.coap.CoAP.Type
+import itunibo.robot.resourceModelSupport
 
 class modelResourceCoap (name : String ) : CoapResource(name) {
 	
 	companion object {
 		lateinit var actor : ActorBasic
-		var result = "unknown"
+		var curmodelval = "unknown"
+		lateinit var resourceCoap : modelResourceCoap
 		
 		fun create( a: ActorBasic, name: String  ){
 			actor = a
 			val server  = CoapServer(5683);		//COAP SERVER
-			server.add( modelResourceCoap( name ) );
-			server.start();
+			resourceCoap = modelResourceCoap( name )
+			server.add( resourceCoap );
 			println("--------------------------------------------------")
 			println("Coap Server started");	
 			println("--------------------------------------------------")
-		}		
+			server.start();
+			resourceModelSupport.setCoapResource(resourceCoap)  //Injects a reference
+ 		}		
 	}
 	
 	init{ 
@@ -39,11 +43,11 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 		//getAttributes().setObservable();	// mark observable in the Link-Format			
 	}
 	
-	fun updateState(){
-		val curState = result		
-		actor.solve("model( actuator, robot, state(STATE) )")
-		result = actor.getCurSol("STATE").toString()
-		//println("%%%%%%%%%%%%%%%% updateState from $curState to $result" )
+	fun updateState( modelitem : String ){
+// 		actor.solve("model( actuator, robot, state(STATE) )")
+//		curmodelval = actor.getCurSol("STATE").toString()
+		curmodelval = modelitem
+		//println("%%%%%%%%%%%%%%%% updateState from $curState to $curmodelval" )
 		changed()	// notify all CoAp observers		
         	/*
         	 * Notifies all CoAP clients that have established an observe relation with
@@ -56,8 +60,8 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 	}
 	 
 	override fun handleGET(exchange: CoapExchange?) {
- 		//println("%%%%%%%%%%%%%%%% handleGET  result=$result  "  )			
-		exchange!!.respond(ResponseCode.CONTENT, result, MediaTypeRegistry.TEXT_PLAIN)
+ 		//println("%%%%%%%%%%%%%%%% handleGET  curmodelval=$curmodelval  "  )			
+		exchange!!.respond(ResponseCode.CONTENT, curmodelval, MediaTypeRegistry.TEXT_PLAIN)
 	}
 
 	override fun handlePOST(exchange: CoapExchange?) {
@@ -67,14 +71,13 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 		try {
 			val value = exchange!!.getRequestText()//new String(payload, "UTF-8");
 			//println("%%%%%%%%%%%%%%%% handlePUT value= $value"  )
-			//itunibo.robot.resourceModelSupport.updateRobotModel( actor, value )//HAREMFUL SHERTCUT		
-			
-			val curState = result		
+			//itunibo.robot.resourceModelSupport.updateRobotModel( actor, value )//HAREMFUL SHERTCUT					
+			val curState = curmodelval		
 			GlobalScope.launch{
 				MsgUtil.sendMsg( "modelChange", "modelChange( robot,$value )", actor )
 				delay(100)  //give the time to change the model
-				updateState()
- 				exchange.respond(CHANGED, "handlePUT FROM $curState to $result")
+				//updateState()
+ 				exchange.respond(CHANGED, "handlePUT FROM $curState to $curmodelval")
 			}			
  		} catch (e: Exception) {
 			exchange!!.respond(BAD_REQUEST, "Invalid String")

@@ -1,6 +1,6 @@
 System robotmind
  
-mqttBroker "192.168.43.229" : 1883    //192.168.1.18  192.168.43.229
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
 //Event  userCmd        : userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
@@ -14,7 +14,7 @@ Event  modelContent   : content( VALUE )
 
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
-Dispatch modelChange  : modelChange( TARGET, VALUE )  //sent from outside (frontend)
+Dispatch modelChange  : modelChange( TARGET, VALUE )  //force a resource-model change
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind
  
 Dispatch stopAppl      : stopAppl( CMD )
@@ -95,7 +95,7 @@ QActor robotmind context ctxRobotMind{
  			forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
 		}
 	} 
-	Goto waitCmd
+	Goto waitCmd 
  
  	State handleModelChanged{ //action to actuate
 		printCurrentMessage

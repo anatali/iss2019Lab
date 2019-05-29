@@ -1,3 +1,6 @@
+/*
+ MainCoapClientModelRobot.kt
+ */
 package itunibo.coap.client
 
 import org.eclipse.californium.core.CoapClient
@@ -10,7 +13,6 @@ import itunibo.coap.observer.AsynchListener
 	
 	fun createClient(serverAddr: String, port: Int, resourceName: String?) {
 		coapClient = CoapClient("coap://$serverAddr:" + port + "/" + resourceName)
-//new CoapClient("coap://localhost:8010/robot" );
 		println("Client started")
 	}
 
@@ -38,10 +40,11 @@ import itunibo.coap.observer.AsynchListener
 
 	fun main() {
 		val resourceName = "resourcemodel"
-		createClient("192.168.43.67", 5683, resourceName)
+		createClient("localhost", 5683, resourceName)
+		 
 		synchGet()
 		put("w")
-		Thread.sleep(500)
+		Thread.sleep(1500)
 		synchGet()
 		put("s")
 		synchGet()
@@ -58,5 +61,5 @@ import itunibo.coap.observer.AsynchListener
 		put("h")
 		Thread.sleep(100)
 		synchGet()
-		
+		 
 	}

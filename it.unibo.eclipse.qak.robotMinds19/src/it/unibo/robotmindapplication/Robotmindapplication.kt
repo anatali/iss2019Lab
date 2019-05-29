@@ -33,11 +33,15 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				state("stopApplication") { //this:State
 					action { //it:State
 						println("&&& robotmindapplication stopApplication ... ")
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						forward("stopAppl", "stopAppl(user)" ,"onecellforward" ) 
 					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("startApplication") { //this:State
 					action { //it:State
-						solve("initMap","") //set resVar	
+						println("$name in ${currentState.stateName} | $currentMsg")
+						solve("initMap(sud)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
 				}	 
@@ -45,13 +49,15 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						forward("onestep", "onestep" ,"onecellforward" ) 
 					}
-					 transition(edgeName="t02",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
-					transition(edgeName="t03",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+					 transition(edgeName="t02",targetState="stopApplication",cond=whenDispatch("stopAppl"))
+					transition(edgeName="t03",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t04",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
 				}	 
 				state("hadleStepOk") { //this:State
 					action { //it:State
 						println("&&& robotmindapplication step ok")
 						solve("updateMapAfterStep","") //set resVar	
+						delay(500) 
 					}
 					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
 				}	 
@@ -59,8 +65,13 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						println("&&& robotmindapplication step failed")
+						forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
+						solve("changeDirection","") //set resVar	
+						solve("direction(D)","") //set resVar	
+						delay(500) 
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({getCurSol("D").toString().equals("sud")}) )
+					transition( edgeName="goto",targetState="doApplication", cond=doswitchGuarded({! getCurSol("D").toString().equals("sud")}) )
 				}	 
 			}
 		}
