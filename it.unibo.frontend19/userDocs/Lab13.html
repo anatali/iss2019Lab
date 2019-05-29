@@ -162,16 +162,17 @@ table, th, td {
 	<tbody>	
 	<tr>
 	<td >
-	<center><img src="./javascript.png" alt="meanBook.png" width="75%" height="32%"/></center>
+	<center><img src="./javascript.png" alt="javascript.png" width="75%" height="32%"/></center>
 	</td> 
+	<td>
+	<center><img src="./nodebook.png" alt="nodebook.png" width="75%" height="32%"/></center>
+ 	</td>
 	<td>
 	<center><img src="./meanBook.png" alt="meanBook.png" width="75%" height="32%"/></center>
  	</td>
 	<td>
-	<center><img src="./wot.png" alt="meanBook.png" width="75%" height="32%"/></center>
- 	</td>
-	<td>
 	<m>
+	<h3>Readings</h3>
 	 <a href="eventProgramming2.pdf" target="lecture">Event programming in JavaScript and Node.js:
 an introduction (pdf)</a> <br/><br/>
  	 <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb (pdf)</a> <br/><br/>
@@ -253,15 +254,36 @@ Now modify the <bc>app.js</bc> to keep into account the modifications:
 	<tbody>	
 	<tr>
 	<td style="width:75%">
-	<center><img src="./appModified.png" alt="appModified.png" width="100%" height="32%"/></center>
+	<center><img src="./appModified.png" alt="appModified.png" width="100%" height="32%"/></center><br/><br/>
+	Execute <bc>node bin/www</bc>: all goes as before.<br/><br/>
 	</td> 
 	<td>
- 	Execute <bc>node bin/www</bc>: all goes as before.<br/><br/>
-	<center><img src="./expressStart.png" alt="expressStart.png" width="95%" height="32%"/></center>
+ 	<m>
+	<!-- <center><img src="./expressStart.png" alt="expressStart.png" width="65%" height="32%"/></center> -->
+	
+	Express has mainly two kind of apis: <em>middleware</em> and <em>routing</em>.<br/>
+	
+	<h4>Middleware</h4>
+	The middleware functions will be executed in the order they are called. 
+	Middleware layers can be added one by one in multiple invocations of <bc>use</bc>.<br/>
+	The <bc>next()</bc> function pass the request to the next middleware, it form a <em>chain</em> until the request is handled.<br/>
+	See <a href="https://expressjs.com/it/guide/using-middleware.html" target="web">Express middleware</a>.
+
+	<h4>Routing</h4>
+The routing api includes 
+<bc>app.METHOD()</bc> and 
+<bc> app.route().METHOD()</bc>, <tt>METHOD</tt> can be any <tt>HTTP</tt> method. 
+It is used to assign a handler functions for specific <em>request url path</em> and <tt>HTTP</tt> method.
+	
+	</m>
 	
 	</td>
 	 </table>
 	</center> 
+ 	
+	
+
+
 
 <h3 id="serverode">Define the code of the server </h3>	
 Let us now:
@@ -285,31 +307,78 @@ Let us now:
 	<tbody>	
 	<tr>
 	<td style="width:65%">
+
 	<center><img src="./webScheme.png" alt="webScheme.png" width="100%" height="32%"/></center>
 	</td> 
 	<td>
-	<h3>Templates <m>(in frontend/addserver/views)</m> </h3>
+	<m>
+	<h4>Templates <m>(in frontend/addserver/views)</m> </h4>
 	<li><a href="../nodeCode/frontend/appServer/views/index.ejs" target="code">index.ejs</a></li>
 	<li><a href="../nodeCode/frontend/appServer/views/indexAppl.ejs" target="code">indexAppl.ejs</a></li>
 
-	<h3>Server  <m>(in frontend)</m></h3>
+	<h4>Server  <m>(in frontend)</m></h3>
 	<li><a href="../nodeCode/frontend/frontendServer.js" target="code">frontendServer.js</a></li>
 
-	<h3>Supports  <m>(in frontend/uniboSupports)</m></h3>
+	<h4>Supports  <m>(in frontend/uniboSupports)</m></h4>
 	<li><a href="../nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" target="code">coapClientToResourceModel.js</a></li>
 	<li><a href="../nodeCode/frontend/uniboSupports/mqttUtils.js" target="code">mqttUtils.js</a></li>
 
 	
-	<h3>Application  <m>(in frontend)</m></h3>
+	<h4>Application  <m>(in frontend)</m></h4>
 	<li><a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a></li>
- 	 
+ 	</m> 
 	</td>
 	</tr> </table>
 	</center> 
 	
+	
+<h3 id="views">Define the structure of the HTML page</h3>	
+In our implementation of the web-server, we use the <a href="https://ejs.co/">ejs<a> template engine to generate HTML pages
+with plain JavaScript.
+
+
+For an example:
+
+
+	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./indexejshead.png" alt="indexejshead" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	 <m>
+	See the code: <a href="../nodeCode/frontend/appServer/views/index.ejs" target="code">index.ejs</a>
+	
+	<h4>Robot command page: Head</h4>
+	The page loaded on the client makes use of the <a href="https://en.wikipedia.org/wiki/Socket.IO" target="web">socket.io</a>
+	 support to receive from the server update messages related to the current state of the system.
+ 	</m>
+ 	</td>
+	</tr>
+	
+	
+	
+	<tr>
+	<td style="width:65%">
+	<center><img src="./indexejsbody.png" alt="indexejsbody" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+	<h4>Robot command page: Body</h4>
+	 The page provide an input section (for the user commands) and an output section (the system-state display area).
+	<br/>	<br/>
+	<center><img src="./indexView.png" alt="indexView" width="95%" height="32%"/></center>
+ 	</m>
+ 	</td>
+	</tr>
+	 </table>
+	</center> 
+	
+	
  <h2 id="delegate">Interacting with the application</h2>
-	The function <bc>delegate</bc> in <a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a>
-	sends commands to the application logic. Since in our case
+ In our implementation of the web-server, we introduce (in <a href="../nodeCode/frontend/applCode.js" target="code">applCode.js</a>)
+ a function named <bc>delegate</bc>, whose task is to sends commands to the application logic. Since in our case
 	the application logic is described as a qak model, we define at the moment the following actions:
 	
  
@@ -348,7 +417,7 @@ var publishMsgToRobotmind = function( cmd ){
 
 
 
-	<center><table style="width:95%"><tbody><tr>
+<center><table style="width:95%"><tbody><tr>
 	<td style="width:45%"><h3>publishMsgToResourceModel</h3>
 	<center><img src="./delegateToResourcemodel.png" alt="delegateToResourcemodel" width="90%" height="32%"/></center>
 	</td> 

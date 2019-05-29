@@ -12,7 +12,7 @@ Dispatch robotCmd     : robotCmd( CMD )
 
 Context ctxRobotMindNoMv        ip [host="localhost" port=8035]   -mqtt
 Context ctxDummyForBasicRobot   ip [host="otherhost" port=8005]   -mqtt
-
+ 
 ExternalQActor basicrobot context ctxDummyForBasicRobot 
 
 QActor robotmindnomvc context ctxRobotMindNoMv{   
@@ -36,7 +36,7 @@ QActor robotmindnomvc context ctxRobotMindNoMv{
  			forward basicrobot -m robotCmd : robotCmd( $payloadArg(0) ) 
  			//UPDATE the model : explicit actions
  			solve( action( robot, move($payloadArg(0)) ) ) //change the robot state model
-			solve( model( A, R, STATE ) )
+			solve( model( A, robot, STATE ) )
 			["val RobotState = getCurSol(\"STATE\") "]
 			emit modelContent : content( robot( $RobotState ) )
 			

@@ -51,18 +51,11 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(robot,V)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.resourceModelSupport.updateRobotModel(myself ,payloadArg(1) )
+								emit("modelChanged", "modelChanged(robot,${payloadArg(1)})" ) 
 						}
 						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(sonarRobot,V)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.resourceModelSupport.updateSonarRobotModel(myself ,payloadArg(1) )
-						}
-						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(application,startappl)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								forward("startAppl", "startAppl(noarg)" ,"robotmindapplication" ) 
-						}
-						if( checkMsgContent( Term.createTerm("modelChange(TARGET,VALUE)"), Term.createTerm("modelChange(application,stopappl)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								forward("stopAppl", "stopAppl(noarg)" ,"robotmindapplication" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )

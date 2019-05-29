@@ -162,10 +162,11 @@ target="lecture">Lab12.html-SprintIII</a> that builds the software system around
 	<tbody>	
 	<tr>
 	<td style="width:30%">
- 	<center><img src="./wot.png" alt="wot.png" width="45%" height="32%"/></center>
+ 	<center><img src="./wot.png" alt="wot.png" width="55%" height="32%"/></center>
  	</td>
 	<td>
 	<m>
+	<h3>Readings</h3>
 	 <a href="https://w3c.github.io/wot/current-practices/wot-practices.html" target="web">Wot practices</a> <br/><br/>
  	 <a href="nodeExpressWeb.pdf" target="lecture">NodeExpressWeb (pdf)</a> <br/><br/>
 
@@ -216,10 +217,10 @@ See also
  The Human-machine interaction supported by the front-end server 
  (see <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.frontend19/userDocs/Lab13.html#delegate" 
 target="code">Lab13.html -Interacting with the application</a>)
-  must now implement the delegate function as follows:
+  must now implement the <bc>delegate</bc> function as follows:
 <br/><br/>
 <center><table style="width:95%"><tbody><tr>
-	<td style="width:45%"><h3>publishMsgToResourceModel</h3>
+	<td style="width:45%"><h4>publishMsgToResourceModel</h4>
 	<center><img src="./delegateToResourcemodel.png" alt="delegateToResourcemodel" width="90%" height="32%"/></center>
 	</td> 
 	<td>Publish (via <tt>MQTT</tt>) the qak dispatch <bc>modelChange</bc> 
@@ -237,6 +238,18 @@ var publishMsgToResourceModel = function( target, cmd ){
 	</tr></table></center> 
 <br/><br/>
 
+	 <h3 id="config">Notes about configuration</h3>	
+<ul>
+<li>Set the <kc>MQTT address</kc>:  <bc>client</bc> variable in 
+<a href="../nodeCode/frontend/unibosupports/mqttUtils.js", target="code"> 
+<em>frontend/uniboSupports/mqttUtils.js</em></a>.</li>
+<li>Set the <kc>CoAP address</kc>:  <bc>coapResourceAddr</bc> variable in 
+<a href="../nodeCode/frontend/unibosupports/coapClientToResourceModel.js", target="code">
+<em>frontend/uniboSupports/coapClientToResourceModel</em></a>.</li>
+
+<li></li>
+<li></li>
+</ul> 
 
  
  
@@ -267,6 +280,7 @@ CoAP-resource:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="c
  	</td>
 	 </table>
 	</center> 
+
 
  <h2 id="test">Experiments</h2>
  	

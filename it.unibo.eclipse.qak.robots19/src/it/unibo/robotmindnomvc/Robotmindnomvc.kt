@@ -40,7 +40,7 @@ class Robotmindnomvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(${payloadArg(0)})" ,"basicrobot" ) 
 								solve("action(robot,move(${payloadArg(0)}))","") //set resVar	
-								solve("model(A,R,STATE)","") //set resVar	
+								solve("model(A,robot,STATE)","") //set resVar	
 								val RobotState = getCurSol("STATE") 
 								emit("modelContent", "content(robot($RobotState))" ) 
 						}
