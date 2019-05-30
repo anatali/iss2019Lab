@@ -2,9 +2,10 @@
 frontend/uniboSupports/coapClientToResourceModel
 */
 const coap             = require("node-coap-client").CoapClient; 
-//const coapAddr         = "coap://192.168.43.67:5683"
-const coapAddr         = "coap://localhost:5683"
+const coapAddr         = "coap://192.168.43.67:5683"
+//const coapAddr         = "coap://localhost:5683"
 const coapResourceAddr = coapAddr + "/resourcemodel"
+
 /*
 coap
     .tryToConnect( coapAddr )
@@ -41,7 +42,7 @@ exports.coapPut = function (  cmd ){
  	        //[options]]							//  RequestOptions 
 	    )
 	    .then(response => { 			// handle response  
-	    	console.log("coap put done> " );}
+	    	console.log("coap put done> " + cmd);}
 	     )
 	    .catch(err => { // handle error  
 	    	console.log("coap put error> " + err );}
@@ -50,15 +51,17 @@ exports.coapPut = function (  cmd ){
 	    
 }//coapPut
 
+const myself          = require('./coapClientToResourceModel');
+
 function test(){
-	//coapPut("w")
-	coapGet();
-	console.log("PUT");
-	coapPut("w")
-	coapGet();
+//	console.log("GET");
+// 	myself.coapGet();
+ 	console.log("PUT");
+ 	myself.coapPut("w")
+//	myself.coapGet();
 }
 
-//test()
+test()
 
 /*
  * ========= EXPORTS =======

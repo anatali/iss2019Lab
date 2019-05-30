@@ -23,7 +23,7 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 		
 		fun create( a: ActorBasic, name: String  ){
 			actor = a
-			val server  = CoapServer(5683);		//COAP SERVER
+			val server   = CoapServer(5683);		//COAP SERVER
 			resourceCoap = modelResourceCoap( name )
 			server.add( resourceCoap );
 			println("--------------------------------------------------")
@@ -65,7 +65,8 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 	}
 
 	override fun handlePOST(exchange: CoapExchange?) {
- 		//println("%%%%%%%%%%%%%%%% handlePOST  "  )			
+ 		//println("%%%%%%%%%%%%%%%% handlePOST  "  )
+		handlePUT( exchange )		
 	}
 	override fun handlePUT(exchange: CoapExchange?) {
 		try {

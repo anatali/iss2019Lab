@@ -59,7 +59,6 @@ app.get('/sonarrobotmodel', function(req, res) {
 	res.send( mqttUtils.getsonarrobotmodel() )
 });	
 
-
 app.get('/appl', function(req, res) {
 	res.render("indexAppl");
 });	
@@ -67,30 +66,27 @@ app.get('/appl', function(req, res) {
 /*
  * ====================== COMMANDS ================
  */
-	app.post("/w", function(req, res) {
-		req.result = "Web server done w : " 
- 		delegate( "w", "moving forward", req, res);		
-	});	
-	app.post("/s", function(req, res) {
-		delegate( "s", "moving backward", req, res );
-	});	
-	app.post("/a", function(req, res) {
- 		delegate( "a", "moving left", req, res );
- 	});	
-	app.post("/d", function(req, res) {
-  		delegate( "d", "moving right", req, res );
- 	});	
-	app.post("/h", function(req, res) {
-  		delegate( "h", "stopped", req, res );
- 	});		
- 	//APPLICATION
-	app.post("/startappl", function(req, res) {
+	app.post("/w", function(req, res,next) { handlePostMove("w","moving forward", req,res,next); });	
+	app.post("/s", function(req, res,next) { handlePostMove("s","moving backward",req,res,next); });
+	app.post("/a", function(req, res,next) { handlePostMove("a","moving left",    req,res,next); });	
+	app.post("/d", function(req, res,next) { handlePostMove("d","moving right",   req,res,next); });
+	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",        req,res,next); });	
+ 
+  	//APPLICATION
+	app.post("/startappl", function(req, res,next) {
   		delegateForAppl( "startAppl", req, res );
+  		next();
  	});		
-	app.post("/stopappl", function(req, res) {
+	app.post("/stopappl", function(req, res,next) {
   		delegateForAppl( "stopAppl",  req, res );
+  		next();
  	});		
 
+function handlePostMove( cmd, msg, req, res, next ){
+		result = "Web server done: " + cmd
+ 		delegate( cmd, msg, req, res);	
+  		next();
+} 	
 //=================== UTILITIES =========================
 
 var result = "";
@@ -102,18 +98,15 @@ app.setIoSocket = function( iosock ){
 }
 
 function delegate( cmd, newState, req, res ){
-    result = "Web server delegate: " + cmd;
  	//publishMsgToRobotmind(cmd);                  //interaction with the robotmind 
 	//publishEmitUserCmd(cmd);                     //interaction with the basicrobot
 	//publishMsgToResourceModel("robot",cmd);	    //for hexagonal mind
 	changeResourceModelCoap(cmd);		            //for hexagonal mind RESTful m2m
-    //res.render("index");	
-} 
-function delegateForAppl( cmd, req, res ){
+ } 
+function delegateForAppl( cmd, req, res, next ){
      console.log("app delegateForAppl cmd=" + cmd); 
      result = "Web server delegateForAppl: " + cmd;
  	 publishMsgToRobotapplication( cmd );		     
-     //res.render("index");	
 } 
 
 /*
@@ -153,13 +146,18 @@ var publishMsgToRobotapplication = function (cmd){
 * ====================== REPRESENTATION ================
 */
 app.use( function(req,res){
-	console.info("SENDING THE ANSWER " + req.result  );
+	console.info("SENDING THE ANSWER " + result + " json:" + req.accepts('josn') );
 	try{
-	    console.log("answer> "+ result + " io=" + io);
-		if( req.result != undefined) serverWithSocket.updateClient( JSON.stringify(req.result ) );
-		//io.sockets.send( result  );
-		res.send(req.result);
-	}catch(e){console.info("SORRY ...");}
+	    console.log("answer> "+ result  );
+	    /*
+	   if (req.accepts('json')) {
+	       return res.send(result);		//give answer to curl / postman
+	   } else {
+	       return res.render('index' );
+	   };
+	   */
+	   return res.render('index' );
+	}catch(e){console.info("SORRY ..." + e);}
 	} 
 );
 

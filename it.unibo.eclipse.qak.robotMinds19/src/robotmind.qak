@@ -9,7 +9,7 @@ Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
 Event  polar          : p( Distance, Angle ) 
 
-Event  modelChanged   : modelChanged( TARGET, VALUE )
+Event  local_modelChanged   : modelChanged( TARGET, VALUE )
 Event  modelContent   : content( VALUE ) 
 
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
@@ -22,9 +22,6 @@ Dispatch startAppl     : startAppl( CMD )
 
   
 Context ctxRobotMind     ip [host="localhost" port=8035]      -mqtt
-//Context ctxDummyForAppl  ip [host="otherapplhost" port=8005]  -mqtt  
-
-//ExternalQActor robotmindapplication context ctxDummyForAppl 
 
 QActor resourcemodel context ctxRobotMind{
 ["var dobackstep = false"]
@@ -55,19 +52,12 @@ QActor resourcemodel context ctxRobotMind{
 		//ROBOT MOVE
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateRobotModel( myself, payloadArg(1) )
-			emit modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
+			emit local_modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
 		} 
 		//SONAR DATA  
 		onMsg( modelChange : modelChange( sonarRobot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )
 		}
-		//APPLICATION COMMAND
-//		onMsg( modelChange : modelChange( application,startappl ) ) {  
-//			forward robotmindapplication -m startAppl : startAppl(noarg)
-//  		} 
-//		onMsg( modelChange : modelChange( application,stopappl ) ) {  
-//			forward robotmindapplication -m stopAppl : stopAppl(noarg)
-//  		} 
 	}  
 	Goto  waitModelChange
 }
@@ -86,7 +76,7 @@ QActor robotmind context ctxRobotMind{
 	State waitCmd {		} 
 	Transition t0 whenEvent envCond      -> handleEnvCond
 		          whenEvent sonarRobot   -> handleSonarRobot
-		          whenEvent modelChanged -> handleModelChanged
+		          whenEvent local_modelChanged -> handleModelChanged
 
 	State handleEnvCond{   
 		printCurrentMessage
@@ -99,7 +89,7 @@ QActor robotmind context ctxRobotMind{
  
  	State handleModelChanged{ //action to actuate
 		printCurrentMessage
-		onMsg ( modelChanged : modelChanged(robot,CMD) ){ 
+		onMsg ( local_modelChanged : modelChanged(robot,CMD) ){ 
 			forward basicrobot -m robotCmd : robotCmd( $payloadArg(1) )
 		}
 	}

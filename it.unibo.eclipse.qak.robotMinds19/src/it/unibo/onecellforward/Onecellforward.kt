@@ -27,7 +27,7 @@ class Onecellforward ( name: String, scope: CoroutineScope ) : ActorBasicFsm( na
 				state("doMoveForward") { //this:State
 					action { //it:State
 						forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
-						stateTimer = TimerActor("timer_doMoveForward", scope, context!!, "local_tout_onecellforward_doMoveForward", 300.toLong())
+						stateTimer = TimerActor("timer_doMoveForward", scope, context!!, "local_tout_onecellforward_doMoveForward", 750.toLong())
 					}
 					 transition(edgeName="t06",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onecellforward_doMoveForward"))   
 					transition(edgeName="t07",targetState="s0",cond=whenDispatch("stopAppl"))

@@ -49,7 +49,7 @@ object mbotSupport{
                 while (true) {
  						try {
 							var curDataFromArduino = conn.receiveALine();
- 	 						//println("getDataFromArduino received: $curDataFromArduino"    );
+ 	 						println("getDataFromArduino received: $curDataFromArduino"    );
  							var v =    curDataFromArduino.toDouble() ;
 							//handle too fast change
  							var delta =  Math.abs( v - dataSonar);

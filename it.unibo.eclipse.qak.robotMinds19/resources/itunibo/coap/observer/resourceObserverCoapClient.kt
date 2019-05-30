@@ -25,8 +25,9 @@ object Listener : CoapHandler {
 	}
 }
 
-	fun main(args: Array<String>?) {
-		val client = CoapClient("coap://localhost:5683/resourcemodel")
+	fun main( ) {
+		//val client = CoapClient("coap://localhost:5683/resourcemodel")
+		val client = CoapClient("coap://192.168.43.67:5683/resourcemodel")
 // observe
 		println("CoapLedObserverClient.java: OBSERVE (press enter to exit)")
  

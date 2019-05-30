@@ -282,13 +282,42 @@ Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">mode
 	</center> 
 
 
- <h2 id="test">Experiments</h2>
+ <h2 id="test">Experiments (SPRINT sequence)</h2>
  	
+	
 	<center><table style="width:98%">
 	<tbody>	
 	<tr>
 	<td style="width:70%">
-	<h3>Testing the core logic</h3>
+	<h3>Design and testing the core-logic</h3>
+	<center><img src="./archCoreCoap.png" alt="archCoreCoap" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	<m>
+	<h4>Project <tt>it.unibo.eclipse.qak.robotMinds19</tt></h4>
+ <ol>
+<li>Start the <bc>MQTT</bc> broker on the <tt>PC</tt>.</li>
+<li>Set the used robot into <bc>basicRobotConfig.pl</bc>.</li>
+</ol>	
+<h4>Testing</h4> 
+ <li><a href="../testSrc/it/unibo/eclipse/qak/robotMinds19/TestRobotmind.kt" target="code">TestRobotmind.kt</a>. </li>
+ <li><a href="../testSrc/it/unibo/eclipse/qak/robotMinds19/TestRobotmindAlarm.kt" target="code">TestRobotmindAlarm.kt</a>. </li>
+ <li><a href="../testSrc/it/unibo/eclipse/qak/robotMinds19/TestRobotmindObstacle.kt" target="code">TestRobotmindObstacle.kt</a>. </li>
+<h4>Using</h4> 
+ <li><a href="../resources/itunibo/coap/observer/resourceObserverCoapClient.kt" target="code">resourceObserverCoapClient.kt</a>. </li>
+ <li><a href="../resources/itunibo/coap/client/MainCoapClientModelRobot.kt" target="code">MainCoapClientModelRobot.kt</a>. </li>
+ 	</m>
+ 	</td>
+	 </table>
+	</center> 	
+
+	<br/><br/>	
+	
+	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+	<h3>Core logic on RaspberryPi</h3>
 	<center><img src="./archLogicCoap.png" alt="archLogicCoap" width="95%" height="32%"/></center>
 	</td> 
 	<td>
@@ -299,7 +328,10 @@ Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">mode
 <li>Set the used robot into <bc>basicRobotConfig.pl</bc>.</li>
 <li>Activate <bc>MainCtxRobotMind.kt</bc> on <tt>RaspberryPi</tt>. </li>
 <li>Activate <bc>viewmodelkt</bc> on the <tt>PC</tt>. </li>
-<li>Activate <bc>resourceObserverCoapClient.kt</bc> on the <tt>PC</tt>. </li>
+<li>Activate <a href="../resources/itunibo/coap/observer/resourceObserverCoapClient.kt" target="code">resourceObserverCoapClient.kt</a>
+ on the <tt>PC</tt>. </li>
+<li>Launch <a href="../resources/itunibo/coap/client/MainCoapClientModelRobot.kt" target="code">MainCoapClientModelRobot.kt</a>
+ on the <tt>PC</tt>. </li>
 </ol>	 
   	</m>
  	</td>
@@ -317,23 +349,30 @@ Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">mode
 	</td> 
 	<td>
 	<m>
-<ol>
+<h4>Support</h4>
 <li>Start the <tt>MQTT</tt> broker.</li>
-<li>Start the frontend server ( <bc>node frontendServer.js</bc>).<(li>
+
+<h4>Robot system</h4>
+<ol>
 <li>Start the robot (real or virtual) and set it into <bc>basicRobotConfig.pl</bc>.</li>
 <li>Activate the basic robotmind (<bc>it.unibo.ctxRobotMind/MainCtxRobotMind.kt</bc>) </li>
+</ol>	
+
+<h4>Front end</h4>
+<ol>
+<li>Start the frontend server ( <bc>node frontendServer.js</bc>).<(li>
 <li>Open a browser on <bc>http://192.168.43.229:8080/</bc></li>
-<li>Open <bc>http://192.168.43.229:8080/appl</li>
 </ol>	 
   	</m>
  	</td>
 	 </table>
 	</center> 
 <pre>
-curl -X POST -d "name=Alice&age=25&password=pswdAlice" http://localhost:3000/adduser
+curl -H -X POST http://localhost:8080/a
+curl -H "Content-Type: application/json" -X POST http://localhost:8080/a
 </pre>
 	
-<br/><br/>	
+ <h2 id="appls">Applications</h2>
 	
  	<center><table style="width:98%">
 	<tbody>	
@@ -344,7 +383,8 @@ curl -X POST -d "name=Alice&age=25&password=pswdAlice" http://localhost:3000/add
 	</td> 
 	<td>
 	<m>
-   	</m>
+ <li>Open <bc>http://192.168.43.229:8080/appl</li>
+  	</m>
  	</td>
 	 </table>
 	</center> 	

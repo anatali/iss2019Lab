@@ -28,7 +28,7 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					}
 					 transition(edgeName="t02",targetState="handleEnvCond",cond=whenEvent("envCond"))
 					transition(edgeName="t03",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
-					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("modelChanged"))
+					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State

@@ -93,7 +93,7 @@ QActor onecellforward context ctxRobotAppl {
 // 		forward resourcemodel -m modelUpdate : modelUpdate(robot,w) //... then update the model
 		forward resourcemodel -m modelChange : modelChange(robot,w)
 	}
-	Transition t0 whenTime 300           -> endDoMoveForward
+	Transition t0 whenTime 750           -> endDoMoveForward
 	 			  whenMsg stopAppl       -> s0					
 		          whenEvent sonarRobot   -> handleSonarRobot
 		
