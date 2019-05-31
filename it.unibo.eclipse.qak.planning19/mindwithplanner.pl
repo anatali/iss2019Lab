@@ -1,5 +1,5 @@
 %====================================================================================
-% basicrobot description   
+% mindwithplanner description   
 %====================================================================================
-context(ctxbasicrobot, "localhost",  "TCP", "8005" ).
- qactor( basicrobot, ctxbasicrobot, "it.unibo.basicrobot.Basicrobot").
+context(ctxmindwithplan, "localhost",  "TCP", "8038" ).
+ qactor( plantester, ctxmindwithplan, "it.unibo.plantester.Plantester").
