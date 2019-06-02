@@ -67,7 +67,7 @@ QActor resourcemodel context ctxRobotMind{
  * reacts to changes in the model
  */
 QActor robotmind context ctxRobotMind{   
-["var obstacle = false"]
+["var obstacle = false"] 
 	State s0 initial {	  
 		println("ROBOT MIND STARTED")	
 	}

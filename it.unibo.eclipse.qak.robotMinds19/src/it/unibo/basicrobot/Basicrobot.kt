@@ -25,11 +25,11 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						 			 println("no robot")
 						 		}
 						if(currentSolution.isSuccess()) itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString() )
-						itunibo.robot.robotSupport.move("msg(a)" )
+						itunibo.robot.robotSupport.move( "msg(a)"  )
 						delay(700) 
-						itunibo.robot.robotSupport.move("msg(d)" )
+						itunibo.robot.robotSupport.move( "msg(d)"  )
 						delay(700) 
-						itunibo.robot.robotSupport.move("msg(h)" )
+						itunibo.robot.robotSupport.move( "msg(h)"  )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
@@ -42,7 +42,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								itunibo.robot.robotSupport.move("msg(${payloadArg(0)})" )
+								itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})"  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )

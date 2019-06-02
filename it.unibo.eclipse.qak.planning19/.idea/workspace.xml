@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03da066b-8e84-46ba-bd01-5845ec6128b2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/ctxRadar/MainCtxRadar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/ctxRadar/MainCtxRadar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/radar/Radar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/radar/Radar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonarhandler/Sonarhandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonarhandler/Sonarhandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onecellforward/Onecellforward.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onecellforward/Onecellforward.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotappl.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotappl.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/planner/aiutil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/planner/plannerSupport.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/default/" />
@@ -24,23 +17,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/aiutil.kt">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/moveUtils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="162" column="13" selection-start-line="162" selection-start-column="13" selection-end-line="162" selection-end-column="13" />
+            <state relative-caret-position="204">
+              <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
               <folding>
-                <element signature="e#25#642#0" expanded="true" />
+                <element signature="e#25#88#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/mainPlanDemo.kt">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+            <state relative-caret-position="1020">
+              <caret line="72" lean-forward="true" selection-start-line="65" selection-end-line="72" />
             </state>
           </provider>
         </entry>
@@ -63,6 +56,8 @@
         <option value="$PROJECT_DIR$/resources/itunibo/planner/planUtil.kt" />
         <option value="$PROJECT_DIR$/resources/itunibo/planner/aiutil.kt" />
         <option value="$PROJECT_DIR$/resources/itunibo/planner/mainPlanDemo.kt" />
+        <option value="$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt" />
+        <option value="$PROJECT_DIR$/resources/itunibo/planner/moveUtils.kt" />
       </list>
     </option>
   </component>
@@ -105,7 +100,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559297403668" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559312325280" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.gutterIcons" />
   </component>
@@ -168,7 +163,7 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.24978165" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.24978165" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Messages" weight="0.32879376" />
       <window_info anchor="bottom" id="Terminal" order="0" />
@@ -176,7 +171,7 @@
       <window_info anchor="bottom" id="Version Control" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.41439688" />
+      <window_info anchor="bottom" id="Run" order="5" visible="true" weight="0.41439688" />
       <window_info anchor="bottom" id="Debug" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
@@ -190,18 +185,6 @@
       <window_info anchor="right" id="Ant Build" order="6" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
     </layout>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/resources/itunibo/planner/aiutil.kt</url>
-          <line>2</line>
-          <properties />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/resources/planner/aiutil.java">
@@ -231,10 +214,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="72" lean-forward="true" selection-start-line="65" selection-end-line="72" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/mainPlanDemo.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/moveUtils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+          <folding>
+            <element signature="e#25#88#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

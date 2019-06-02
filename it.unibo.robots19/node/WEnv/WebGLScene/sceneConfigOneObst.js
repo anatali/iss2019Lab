@@ -4,8 +4,8 @@ const config = {
     },
     player: {
         //position: { x: 0.5, y: 0.5 },		//CENTER
-        position: { x: 0.2, y: 0.2 },		//INIT
-        //position: { x: 0.8, y: 0.85 },		//END
+        //position: { x: 0.3, y: 0.2 },		//INIT
+        position: { x: 0.5, y: 0.85 },	//END
         speed: 0.2
     },
     sonars: [
@@ -41,19 +41,12 @@ const config = {
 		 */
     ],
    staticObstacles: [
-   /*
+ 
         {
-            name: "wall",
-            centerPosition: { x: 0.5, y: 0.9},
-            size: { x: 0.1, y: 0.1}
+            name: "obs1",
+            centerPosition: { x: 0.3, y: 0.38 }, 
+            size: { x: 0.05, y: 0.045}
         },
-
-        {
-            name: "wall",
-            centerPosition: { x: 0.6, y: 0.7},
-            size: { x: 0.1, y: 0.1}
-        },
- */
         {
         name: "wallUp",
 			centerPosition: { x: 0.48, y: 0.98},

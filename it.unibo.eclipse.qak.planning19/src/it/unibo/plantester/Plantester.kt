@@ -20,33 +20,33 @@ class Plantester ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("s0") { //this:State
 					action { //it:State
 						println("&&&  plantester STARTED")
-						itunibo.planner.plannerUtil.initAI()
+						itunibo.planner.plannerUtil.initAI(  )
 						println("INITIAL MAP")
-						itunibo.planner.plannerUtil.showMap()
+						itunibo.planner.plannerUtil.showMap(  )
 						println("------------------------------------")
-						itunibo.planner.plannerUtil.startTimer()
+						itunibo.planner.plannerUtil.startTimer(  )
 					}
 					 transition( edgeName="goto",targetState="exploreStep", cond=doswitch() )
 				}	 
 				state("exploreStep") { //this:State
 					action { //it:State
 						stepCounter = stepCounter + 1
-						itunibo.planner.plannerUtil.setGoal("$stepCounter", "$stepCounter" )
-						itunibo.planner.plannerUtil.doPlan()
-						itunibo.planner.plannerUtil.executeMoves()
+						itunibo.planner.plannerUtil.setGoal( "$stepCounter", "$stepCounter"  )
+						itunibo.planner.plannerUtil.doPlan(  )
+						itunibo.planner.plannerUtil.executeMoves(  )
 						println("MAP AFTER EXPLORE STEP")
-						itunibo.planner.plannerUtil.showMap()
+						itunibo.planner.plannerUtil.showMap(  )
 						println("------------------------------------")
 					}
 					 transition( edgeName="goto",targetState="backToHome", cond=doswitch() )
 				}	 
 				state("backToHome") { //this:State
 					action { //it:State
-						itunibo.planner.plannerUtil.setGoal(0, 0 )
-						itunibo.planner.plannerUtil.doPlan()
-						itunibo.planner.plannerUtil.executeMoves()
+						itunibo.planner.plannerUtil.setGoal( 0, 0  )
+						itunibo.planner.plannerUtil.doPlan(  )
+						itunibo.planner.plannerUtil.executeMoves(  )
 						println("MAP AFTER BACK TO HOME")
-						itunibo.planner.plannerUtil.showMap()
+						itunibo.planner.plannerUtil.showMap(  )
 						println("------------------------------------")
 					}
 					 transition( edgeName="goto",targetState="exploreStep", cond=doswitchGuarded({(stepCounter < 4)}) )
@@ -54,7 +54,7 @@ class Plantester ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				}	 
 				state("endOfJob") { //this:State
 					action { //it:State
-						itunibo.planner.plannerUtil.getDuration()
+						itunibo.planner.plannerUtil.getDuration(  )
 					}
 				}	 
 			}

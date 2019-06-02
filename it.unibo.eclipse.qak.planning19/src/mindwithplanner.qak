@@ -9,13 +9,13 @@ QActor plantester context ctxMindWithPlan{
 		println("&&&  plantester STARTED")
 		//run  itunibo.planner.mainPlanDemo.demo()  
 		run itunibo.planner.plannerUtil.initAI()
-		println("INITIAL MAP")
- 		run itunibo.planner.plannerUtil.showMap()
+		println("INITIAL MAP") 
+ 		run itunibo.planner.plannerUtil.showMap() 
 		println("------------------------------------")
 		run itunibo.planner.plannerUtil.startTimer()
  	}
-	Goto  exploreStep 
-	
+	Goto  exploreStep   
+	 
 	State exploreStep{
 	["stepCounter = stepCounter + 1"]
 		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")

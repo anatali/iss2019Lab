@@ -1,0 +1,208 @@
+System mindexplore
+mqttBroker "localhost" : 1883  
+
+Dispatch modelChange  : modelChange( TARGET, VALUE )   
+
+Dispatch onestep       : onestep(DURATION)
+Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
+Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
+
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+
+Context ctxMindExplore  ip [host="localhost" port=8038]    -mqtt 
+Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+
+ExternalQActor resourcemodel context ctxDummyForMind
+
+QActor explorer context ctxMindExplore{     
+["
+var stepCounter = 0
+var Curmove = \"\"
+var curmoveIsForward = false
+var StepTime = 330L	//long
+"]	
+	State s0 initial {	
+		println("&&&  explorer STARTED")
+	    solve( consult("moves.pl")	 )
+		run itunibo.planner.plannerUtil.initAI()
+		println("INITIAL MAP")
+ 		run itunibo.planner.plannerUtil.showMap()
+ 	}
+	Goto  doExploreStep 
+	
+	/*
+	 * 1) Exploration phase: from (0,0) to (stepCounter,stepCounter)
+	 */
+	State doExploreStep{
+	["stepCounter = stepCounter + 1"]
+ 		println("MAP BEFORE EXPLORE STEP $stepCounter")
+ 		solve( direction(D) )
+   		println("direction at start: ${getCurSol(\"D\").toString()}")
+		run itunibo.planner.plannerUtil.showMap()		
+		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")
+   		if  "stepCounter > 1"    solve( dialog(F) )		
+		
+		run itunibo.planner.moveUtils.doPlan( myself )
+ 	}
+	Goto executePlannedActions if "itunibo.planner.moveUtils.existPlan()"  else endOfJob //if "(stepCounter < 4)" else endOfJob
+	
+	
+	/*
+	 * 2) Execute the planned action, with attention to w
+	 * the actions are stored in the actpr-kb as a sequence of facts: move(M)
+	 */
+	
+	State executePlannedActions{
+		//solve( showMoves ) 
+		solve( retract( move(M) ) ) 
+		ifSolved  ["{Curmove = getCurSol(\"M\").toString(); curmoveIsForward=(Curmove == \"w\")}"]  
+		else ["Curmove = \"\"; curmoveIsForward=false"]
+ 	}
+	Goto checkAndDoAction  if "(Curmove.length>0) " else backToHome 
+ 	
+ 	//Execute the move if it is a rotation or halt
+	State checkAndDoAction{	}
+	Goto doForwardMove if "curmoveIsForward" else doTheMove
+	
+	State doTheMove{
+ 		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) 
+		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
+		delay 300 //rotate
+		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
+ 		delay 500		
+	}
+	Goto executePlannedActions
+	
+	//Delegate a forward move to onecellforward
+	State doForwardMove{
+		run itunibo.planner.plannerUtil.startTimer()
+		forward onecellforward -m onestep : onestep($StepTime)	
+	}
+	Transition t0   //whenMsg stopAppl -> stopApplication 
+					whenMsg stepOk   -> handleStepOk   
+					whenMsg stepFail -> hadleStepFail 
+	 
+	//onecellforward has completed 
+	State handleStepOk{
+		//run itunibo.planner.plannerUtil.doMove( "w" )    
+		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")		
+	}
+	Goto executePlannedActions
+	
+	//onecellforward has found an obstacle
+	State hadleStepFail{ 
+		["var Tback = 0L"]
+ 		println("MAP when hadleStepFail")
+		run itunibo.planner.plannerUtil.showMap()	
+		onMsg( stepFail:stepFail(R,D) ) {
+			["Tback=payloadArg(1).toString().toLong() "]
+			println(" ..................................  BACK TIME= $Tback")
+		}
+		//run itunibo.planner.moveUtils.setDuration( myself ) 
+		printCurrentMessage		
+//		solve( wduration(DT) ) 
+//		["Tback= Integer.parseInt( getCurSol(\"DT\").toString() ).toLong()"]
+ 		forward resourcemodel -m modelChange : modelChange(robot,s)  
+		//run itunibo.planner.plannerUtil.doMove( "s" )    //NO UPDATE OD THE MAP
+ 		delayVar Tback 
+  		forward resourcemodel -m modelChange : modelChange(robot,h) 
+   		//FOUND AN OBSTACLE ALONG THE CURRENT DIRECTION. DO NOT REMOVE (change the namses)
+   		solve( direction(D) )		//FIND THE REASON OF THE OBSTACLE
+   		println("direction at fail: ${getCurSol(\"D\").toString()}")
+  		run itunibo.planner.plannerUtil.doMove( @D )  //change the operation name to doMoveObstacle
+  		//["stepCounter = stepCounter - 1"] //the step counter must remain the previous one
+  		delay 500		//just to wait a time before returning to home		  			
+	}
+	Goto backToHome
+	 
+/*
+ * Exploration step done: go back to home
+ */	 
+	 
+	State backToHome{
+		println("&&&  backToHome")
+ 		solve( direction(D) )
+   		println("direction at backToHome: ${getCurSol(\"D\").toString()}")
+ 		println("MAP BEFORE backToHome")
+		run itunibo.planner.plannerUtil.showMap()	
+		solve( retractall( move(_) ))		//clean the actor kb
+ 		run itunibo.planner.plannerUtil.setGoal(0,0)
+ 		//run itunibo.planner.plannerUtil.doPlan() 
+ 		run itunibo.planner.moveUtils.doPlan( myself )
+ 		//solve( showMoves ) 
+ 		//run itunibo.planner.moveUtils.storeMoves( myself, "" )
+ 	} 
+	Goto doGoHomeActions 
+	
+	State doGoHomeActions{
+		//solve( showMoves ) 
+ 		solve( retract( move(M) ) )
+ 		//println("&&&  doGoHomeActions ") 
+		ifSolved  ["Curmove = getCurSol(\"M\").toString() "] else ["Curmove = \"\" "]
+		//ifSolved  ["println(Curmove)"] 
+		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,#M) 
+		ifSolved  //run itunibo.planner.plannerUtil.doMove( @M )
+			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
+		delayVar StepTime 
+		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,h)  
+//		 	solve( direction(D) )
+//   			println("direction at doGoHomeActions: ${getCurSol(\"D\").toString()}") 		
+  		delay 100 
+  	}
+	Goto doGoHomeActions  if "(Curmove.length>0) " else doExploreStep
+	
+	
+	State endOfJob{
+		println("EXPLRATION ENDS")
+		//run itunibo.planner.plannerUtil.getDuration()
+	}
+}	
+
+
+
+
+//Application move step
+QActor onecellforward context ctxMindExplore {
+[" var foundObstacle = false; var StepTime = 0L"]  
+	State s0 initial {	   
+		["foundObstacle = false "]
+	} 
+	Transition t0 whenMsg onestep -> doMoveForward
+	
+	State doMoveForward{		  
+		onMsg( onestep : onestep( TIME ) ) {
+			["StepTime = payloadArg(0).toLong()"]
+			forward resourcemodel -m modelChange : modelChange(robot,w)
+			run itunibo.planner.plannerUtil.startTimer()
+		}
+	} 
+	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
+ 		          whenEvent sonarRobot  -> handleSonarRobot
+		  
+	State endDoMoveForward{
+		forward resourcemodel -m modelChange : modelChange(robot,h)
+		forward explorer -m stepOk : stepOk(ok)  //answer
+	}
+	Goto s0
+	
+	//Substitute with an ad-hoc actor for a real robot
+	State handleSonarRobot{  //before than the step time
+		run itunibo.planner.moveUtils.setDuration(myself)
+		printCurrentMessage
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			["val distance = Integer.parseInt( payloadArg(0) ) 
+              foundObstacle = (distance<20) "]  
+   		}
+	}
+	Goto stepFail if "foundObstacle" else s0
+	
+	State stepFail{
+		println("&&& onecellforward stepfail ")
+		solve( wduration( TIME ) )
+		forward explorer -m stepFail : stepFail(obstacle,#TIME)  	
+	}
+	Goto s0
+
+
+
+}    

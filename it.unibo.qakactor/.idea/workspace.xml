@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/ctxRadar/MainCtxRadar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/ctxRadar/MainCtxRadar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/radar/Radar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/radar/Radar.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonarhandler/Sonarhandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/src/it/unibo/sonarhandler/Sonarhandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onecellforward/Onecellforward.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onecellforward/Onecellforward.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotappl.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotappl.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/basicrobot.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/uniboSupports/coapClientToResourceModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/plannerUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/plannerUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/planner/aiutil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/planner/plannerSupport.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />

@@ -33,18 +33,10 @@ object plannerUtil {
         search = BreadthFirstSearch(GraphSearch())
     }
 
-//    @Throws(Exception::class)
-//    fun cleanQa() {
-//        println("plannerUtil cleanQa")
-//        setGoalInit()
-//        RoomMap.getRoomMap().setDirty()
-//    }
-
-    @Throws(Exception::class)
-    fun cell0DirtyForHome() {
-        RoomMap.getRoomMap().put(0, 0, Box(false, true, false))
+    fun getActions() : List<Action>{
+        return actions!!
     }
-
+ 
     @Throws(Exception::class)
     fun doPlan(): List<Action>? {
         //var actions: List<Action>?
@@ -89,7 +81,7 @@ object plannerUtil {
         val dimMapy = RoomMap.getRoomMap().dimY
         val x = initialState!!.x 
         val y = initialState!!.y
-       //println("plannerUtil: doMove move=$move  dir=$dir x=$x y=$y dimMapX=$dimMapx dimMapY=$dimMapy")
+        //println("plannerUtil: doMove move=$move  dir=$dir x=$x y=$y dimMapX=$dimMapx dimMapY=$dimMapy")
        try {
             when (move) {
                 "w" -> {
@@ -115,11 +107,12 @@ object plannerUtil {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.FORWARD)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
-                "obstacleOnRight" -> RoomMap.getRoomMap().put(x + 1, y, Box(true, false, false))
-                "obstacleOnLeft" -> RoomMap.getRoomMap().put(x - 1, y, Box(true, false, false))
-                "obstacleOnUp" -> RoomMap.getRoomMap().put(x, y - 1, Box(true, false, false))
-                "obstacleOnDown" -> RoomMap.getRoomMap().put(x, y + 1, Box(true, false, false))
-            }//switch
+				//Box(boolean isObstacle, boolean isDirty, boolean isRobot)
+                "rightDir" -> RoomMap.getRoomMap().put(x + 1, y, Box(true, false, false)) 
+                "leftDir"  -> RoomMap.getRoomMap().put(x - 1, y, Box(true, false, false))
+                "upDir"    -> RoomMap.getRoomMap().put(x, y - 1, Box(true, false, false))
+                "downDir"  -> RoomMap.getRoomMap().put(x, y + 1, Box(true, false, false))
+			           }//switch
         } catch (e: Exception) {
             println("plannerUtil doMove: ERROR:" + e.message)
         }
@@ -129,22 +122,6 @@ object plannerUtil {
         val y1     = initialState!!.y
         //update the kb
         //println("plannerUtil: doMove move=$move newdir=$newdir x1=$x1 y1=$y1")
-    }
-
-    fun checkIfNextCellCleaned() {
-        val dir = initialState!!.direction.toString()
-        val dimMapx = RoomMap.getRoomMap().dimX
-        val dimMapy = RoomMap.getRoomMap().dimY
-        val x = initialState!!.x
-        val y = initialState!!.y
-        var clean = false
-        when (dir) {
-            "upDir"    -> clean = y > 0 && !RoomMap.getRoomMap().isDirty(x, y - 1)
-            "downDir"  -> clean = y < dimMapy - 1 && !RoomMap.getRoomMap().isDirty(x, y + 1)
-            "leftDir"  -> clean = x > 0 && !RoomMap.getRoomMap().isDirty(x - 1, y)
-            "rigthDir" -> clean = x < dimMapx - 1 && !RoomMap.getRoomMap().isDirty(x + 1, y)
-        }
-        //		  if( clean) qa.addRule( "nextCellIsClean" );
     }
 
     @Throws(Exception::class)
@@ -162,6 +139,7 @@ object plannerUtil {
 		setGoal( Integer.parseInt(x), Integer.parseInt(y))
 	}	
 
+	//Box(boolean isObstacle, boolean isDirty, boolean isRobot)
     fun setGoal( x: Int, y: Int) {
         try {
             println("setGoal $x,$y")
@@ -178,11 +156,24 @@ object plannerUtil {
     fun startTimer() {
         timeStart = System.currentTimeMillis()
     }
-    fun getDuration() {
+	
+    fun getDuration() : Int{
         val duration = (System.currentTimeMillis() - timeStart).toInt()
-        //		qa.replaceRule("moveWDuration(_)", "moveWDuration("+ duration + ")");
 		println("DURATION = $duration")
+		return duration
     }
+	
+	fun getDirection() : String{
+		//val direction = initialState!!.direction.toString()
+		val direction = initialState!!.direction 
+		when( direction ){
+			Direction.UP    -> return "upDir"
+			Direction.RIGHT -> return "rightDir"
+			Direction.LEFT  -> return "leftDir"
+			Direction.DOWN  -> return "downDir"
+			else            -> return "unknownDir"
+ 		}
+  	}
 
 /*
  * Direction
