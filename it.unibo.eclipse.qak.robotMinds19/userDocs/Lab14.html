@@ -280,6 +280,19 @@ Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">mode
  	</td>
 	 </table>
 	</center> 
+	
+<h3>Coap Californium</h3>	
+	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:66%">
+	<center><img src="./californium.png" alt="californium.png" width="95%" height="32%"/></center>
+	</td> 
+	<td>
+	See <a href="https://www.eclipse.org/californium/" target="web">Californium (Cf) core</a>
+	</td>
+	 </table>
+	</center> 
 
 
  <h2 id="test">Experiments (SPRINT sequence)</h2>
@@ -368,7 +381,9 @@ Code:<a href="../resources/itunibo/coap/modelResourceCoap.kt" target="code">mode
 	 </table>
 	</center> 
 <pre>
-curl -H -X POST http://localhost:8080/a
+curl -X GET http://localhost:8080/robotmodel
+curl -X GET http://localhost:8080/sonarrobotmodel
+curl -X POST http://localhost:8080/a
 curl -H "Content-Type: application/json" -X POST http://localhost:8080/a
 </pre>
 	
