@@ -20,11 +20,11 @@ class Robotreq ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						println("robotplayer STARTS")
 						resources.robotSupport.create(myself ,"virtual" )
-						resources.robotSupport.move("msg(a)" )
+						resources.robotSupport.move( "msg(a)"  )
 						delay(1000) 
-						resources.robotSupport.move("msg(d)" )
+						resources.robotSupport.move( "msg(d)"  )
 						delay(1000) 
-						resources.robotSupport.move("msg(h)" )
+						resources.robotSupport.move( "msg(h)"  )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
@@ -38,14 +38,14 @@ class Robotreq ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("robotCmd(X)"), Term.createTerm("robotCmd(CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.robotSupport.move("msg(${payloadArg(0)})" )
+								resources.robotSupport.move( "msg(${payloadArg(0)})"  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("handleCond") { //this:State
 					action { //it:State
-						resources.robotSupport.move("msg(stop)" )
+						resources.robotSupport.move( "msg(stop)"  )
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

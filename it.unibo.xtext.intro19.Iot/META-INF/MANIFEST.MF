@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: it.unibo.xtext.intro19.Iot
+Bundle-ManifestVersion: 2
+Bundle-Name: it.unibo.xtext.intro19.Iot
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: it.unibo.xtext.intro19.Iot; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.common,
+ org.eclipse.xtend.lib;bundle-version="2.14.0",
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: it.unibo.xtext.intro19.validation,
+ it.unibo.xtext.intro19.parser.antlr.internal,
+ it.unibo.xtext.intro19,
+ it.unibo.xtext.intro19.iot,
+ it.unibo.xtext.intro19.iot.impl,
+ it.unibo.xtext.intro19.parser.antlr,
+ it.unibo.xtext.intro19.scoping,
+ it.unibo.xtext.intro19.generator,
+ it.unibo.xtext.intro19.iot.util,
+ it.unibo.xtext.intro19.services,
+ it.unibo.xtext.intro19.serializer
+Import-Package: org.apache.log4j

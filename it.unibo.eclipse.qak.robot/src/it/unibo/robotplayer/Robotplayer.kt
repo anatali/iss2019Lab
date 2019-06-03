@@ -20,9 +20,9 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 					action { //it:State
 						println("robotplayer STARTS")
 						resources.robotSupport.create(myself ,"localhost" )
-						resources.robotSupport.move("msg(moveleft)" )
+						resources.robotSupport.move( "msg(moveleft)"  )
 						delay(1000) 
-						resources.clientWenvObjTcp.sendMsg("msg(moveright)" )
+						resources.clientWenvObjTcp.sendMsg( "msg(moveright)"  )
 					}
 					 transition(edgeName="t00",targetState="handleCmd",cond=whenDispatch("robotCmd"))
 					transition(edgeName="t01",targetState="handleCmd",cond=whenEvent("robotCmd"))
@@ -37,7 +37,7 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 						 		else{
 						 			 if( checkMsgContent( Term.createTerm("robotCmd(X)"), Term.createTerm("robotCmd(CMD)"), 
 						 			                         currentMsg.msgContent()) ) { //set msgArgList
-						 			 		resources.clientWenvObjTcp.sendMsg("msg(${payloadArg(0)})" )
+						 			 		resources.clientWenvObjTcp.sendMsg( "msg(${payloadArg(0)})"  )
 						 			 }
 						 		}
 					}
@@ -45,9 +45,9 @@ class Robotplayer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 				}	 
 				state("handleSonar") { //this:State
 					action { //it:State
-						resources.clientWenvObjTcp.sendMsg("msg(movebackward)" )
+						resources.clientWenvObjTcp.sendMsg( "msg(movebackward)"  )
 						delay(1000) 
-						resources.clientWenvObjTcp.sendMsg("msg(stop)" )
+						resources.clientWenvObjTcp.sendMsg( "msg(stop)"  )
 					}
 					 transition( edgeName="goto",targetState="handleCmd", cond=doswitch() )
 				}	 

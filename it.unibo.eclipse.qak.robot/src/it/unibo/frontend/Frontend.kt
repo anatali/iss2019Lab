@@ -20,7 +20,8 @@ class Frontend ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						println("frontend STARTS")
 						resources.buttonEventEmitter.create(myself ,"" )
-						stateTimer = TimerActor("timer_s0", scope, context!!, "local_tout_frontend_s0", 600000.toLong())
+						stateTimer = TimerActor("timer_s0", 
+							scope, context!!, "local_tout_frontend_s0", 600000.toLong() )
 					}
 					 transition(edgeName="t00",targetState="s0",cond=whenTimeout("local_tout_frontend_s0"))   
 				}	 

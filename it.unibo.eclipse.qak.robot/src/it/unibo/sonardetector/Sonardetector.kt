@@ -24,7 +24,8 @@ class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				}	 
 				state("waitForEvents") { //this:State
 					action { //it:State
-						stateTimer = TimerActor("timer_waitForEvents", scope, context!!, "local_tout_sonardetector_waitForEvents", 60000.toLong())
+						stateTimer = TimerActor("timer_waitForEvents", 
+							scope, context!!, "local_tout_sonardetector_waitForEvents", 60000.toLong() )
 					}
 					 transition(edgeName="t14",targetState="endOfJob",cond=whenTimeout("local_tout_sonardetector_waitForEvents"))   
 					transition(edgeName="t15",targetState="sendToRadar",cond=whenEvent("sonar"))

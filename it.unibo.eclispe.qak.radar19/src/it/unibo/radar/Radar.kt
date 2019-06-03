@@ -18,7 +18,7 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 		return { //this:ActionBasciFsm
 				state("radarUsageInit") { //this:State
 					action { //it:State
-						resources.radarSupport.activate()
+						resources.radarSupport.activate(  )
 						solve("consult('radarData.pl')","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )
@@ -26,7 +26,7 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 				state("radarTest") { //this:State
 					action { //it:State
 						solve("getData(D,A)","") //set resVar	
-						if(currentSolution.isSuccess()) resources.radarSupport.spot(getCurSol("D").toString(), getCurSol("A").toString() )
+						if(currentSolution.isSuccess()) resources.radarSupport.spot( getCurSol("D").toString(), getCurSol("A").toString()  )
 						delay(500) 
 					}
 					 transition( edgeName="goto",targetState="radarTest", cond=doswitchGuarded({currentSolution.isSuccess()}) )
@@ -43,7 +43,7 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("p(Distance,Angle)"), Term.createTerm("p(D,A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.radarSupport.spot(payloadArg(0), payloadArg(1) )
+								resources.radarSupport.spot( payloadArg(0), payloadArg(1)  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )

@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>Lab15ISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LAB15 | Towards Software Factories  </h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">LabISS-lectures site</a></font> 
+ 
+ <h2>Overview</h2>
+The goal of this section is to introduce the main ideas related to <bc>Model Driven Software Development (MDSD)</bc>, by
+starting from the <bc>Xtext framework</bc>. Moreover, the description of the qak langauge is given. <br/><br/>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:60%">
+ 	<center><img src="./bookbettini.png" alt="bookbettini.png" width="45%" height="32%"/></center>
+ 	</td>
+	<td>
+	<h3>Reading</h3>
+	<m> 
+<h4>Basic </h4>   
+<li> <a href="UMLHarelRumpe.pdf" target="lecture">On semantics</a></li>    
+<li> <a href="Whatmodelsmean.pdf" target="lecture">What models mean</a></li>   
+
+<h4>On Xtext </h4>   
+<li> <a href="IntroXtext2013.pdf" target="lecture">IntroXtextISS.pdf</a></li>    
+<li> <a href="MOF-UML.pdf" target="lecture">MOF-UML.pdf</a></li>    
+<li> <a href="CustomGenXtext.pdf" target="lecture">CustomGenXtext.pdf</a></li> 
+
+ 
+<h4>On Tools</h4>
+<li> <a href="https://www.eclipse.org/ecoretools/overview.html" target="web">Ecore tools</a></li>    
+<li> <a href="XtendUserGuide.pdf" target="lecture">XtendUserGuide.pdf</a></li>    
+
+
+	</m>
+	</td>
+	 </table>
+	</center> 
+
+
+ <ol>
+<li><a href="#startxtext">Starting</a></li>
+<li><a href="#mdsd">Model Driven Software Development</a></li>
+<li><a href="#ddd">Domain Driven Design</a></li>
+<li><a href="#qakfactory">The Qak Software Factory</a></li>
+<li><a href="#qaklang">The qak (metamodel) language</a> </li>
+<li> </li>
+ </ol>
+ 
+ 
+<h2 id="startxtext">Starting </h2>
+<ol>
+<li>Create a new <bc>Xtext project</bc> named <ks>it.unibo.xtext.intro19.Iot</ks>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:50%">
+ 	<center><img src="./xtextiotstart.png" alt="xtextiotstart.png" width="75%" height="32%"/></center>
+ 	</td>
+	<td style="width:50%">
+ 	<center><img src="./xtextiotstartcode.png" alt="xtextiotstartcode.png" width="95%" height="32%"/></center>
+ 	</td>
+	 </table>
+	</center> 
+ 
+</li>
+<li>Insert in <bc>Xtext project</bc> the description of the language and generate the artifacts:
+
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:50%">
+<pre>
+grammar it.unibo.xtext.intro19.Iot with org.eclipse.xtext.common.Terminals
+generate iot "http://www.unibo.it/xtext/intro19/Iot"
+
+IotSystem: "System" spec=IotSystemSpec ;
+terminal VARID  :  ('A'..'Z'|'_ ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+QualifiedName : ID ('.' ID)* ;
+
+IotSystemSpec: name=ID  			 
+	 (mqttBroker = BrokerSpec)?     // Optional
+	 (message   += Message   )*     // N >=0
+;
+BrokerSpec : "mqttBroker" brokerHost=STRING ":" brokerPort=INT ;
+
+Message :  Event | Dispatch  ;
+
+Event: 	  "Event"    name=ID  ":" msg = STRING  ;
+Dispatch: "Dispatch" name=ID  ":" msg = STRING  ;
+
+</pre> 	
+</td>
+	<td>
+	<m><ul>
+	<li>On <k>Io.xtext</k>, RunAs <ks>Generate Xtext Artifacts</ks> </li>
+	<li>On <k>Io.xtext</k>, RunAs <ks>Generate Xtext Artifacts</ks> </li>
+	</ul>
+	<br/><br/>
+	<k>WARNING:</k> you should be connected to the network, to allow the system to load the correct version of <ks>ANT</ks>.
+ 	</m>
+	</td>
+	 </table>
+	</center> 
+
+</li>
+
+<li>
+Generate a new run configuration named <bc>Iot</bc>:
+<br/>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+ 	<center><img src="./iotrunconfig.png" alt="iotrunconfig.png" width="75%" height="52%"/></center>
+ 	</td>
+	<td>
+ 	<m><ul>
+	<li>Run the <k>Iot</k> configuration: a new Eclipse workspace will appear. </li>
+	<li>Create a new Java (or Kotlin) project <k>iotTest</k>, and create the file <ks>src/sys1.iot</ks>.</li>
+	<li>Convert, as required, the project into an Xtext project.</li>
+	<li>Write the code of the model, by exploiting the given syntax.driven editor.</li>
+	</ul>
+ 	</m>
+  	</td>
+	 </table>
+	</center> 
+
+
+</li>
+<li>
+Save the model, if it is correctly written
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:50%">
+ 	<center><img src="./xtextiotsys1.png" alt="xtextiotsys1.png" width="85%" height="52%"/></center>
+ 	</td>
+	<td>
+	<pre>
+System sys1
+
+mqttBroker "localhost" : 1883  //could be omitted
+
+Event    alarm : "alarm"
+Dispatch info  : "info"
+	</pre>
+ 	<m>Our first iot system defines an event and a dispatch. <br/>
+	
+	At the moment we do not have any structure, neither behavior.<br/>
+	
+	Moreover, we hav not yet defined any code generator. See <a href="CustomGenXtext.pdf" target="lecture">CustomGenXtext.pdf</a>
+	
+ 	</m>
+  	</td>
+	 </table>
+	</center> 
+
+
+</li>
+ 
+</ol>
+
+
+<h2 id="models">The role of models</h2>
+
+<h3 id="mdsd">Model Driven Software Development</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+	<center><img src="./mdsdpng.png" alt="mdsdpng.png" width="100%" height="52%"/></center>  
+	</td>
+	<td>
+		<m>
+		See <a href="Whatmodelsmean.pdf" target="lecture">What models mean</a> 
+		</m>
+	</td>
+	</tr> 
+	 </table>
+	</center> 
+
+<h3 id="ddd">Domain Driven design</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+ 	<center><img src="./ddd.png" alt="ddd.png" width="100%" height="52%"/></center>
+	<pre>
+
+	</pre>
+	</td>
+	<td>
+	
+		<m>
+	See <a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="web">DDD</a> 	
+		</m>
+	</td>
+	</tr>
+	 </table>
+	</center> 
+	
+<h3 id="dsl">Domain Specific Languages</h3>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+ 	<center><img src="./softwareFactory.png" alt="softwareFactory.png" width="100%" height="52%"/></center>
+	
+	See:
+
+	<li><a href="https://www.slideshare.net/zirrus/domainspecific-langauges" traget="web">Domain-specific
+Languages, by Javier Luis Cánovas Izquierdo</a>, Inria </li>
+ 
+<li><a href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="web">Powers of Ten</a></li>
+	</td>
+	<td>
+	<center><img src="./dsl.png" alt="dsl.png" width="100%" height="52%"/></center><br/>
+	<center><img src="./dslengineering.png" alt="dslengineering.png" width="100%" height="52%"/></center>
+	</td>
+	</tr>
+
+	 </table>
+	</center> 
+
+
+	
+<h3 id="qakfactory">The Qak Software Factory</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+	<center><img src="./softwareFactoryQak.png" alt="softwareFactoryQak.png" width="100%" height="52%"/></center>
+	</td>
+	<td>
+		<m>
+		
+		</m>
+	</td>
+	</tr>
+
+	 </table>
+	</center> 
+ 
+<h2 id="qaklang">The qak (metamodel) language</h2> 
+This section reports the language specification related to the qak metamodel, version 1.1.3.
+
+
+<h3>Structure</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:60%">
+	<h4>System</h4>
+	<pre>
+grammar it.unibo.Qactork with org.eclipse.xtext.common.Terminals
+generate qactork "http://www.unibo.it/Qactork"
+
+QActorSystem: "System" spec=QActorSystemSpec ;
+
+terminal VARID  :  ('A'..'Z'|'_ ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+QualifiedName : ID ('.' ID)* ;
+
+QActorSystemSpec:
+	 name=ID  
+	( mqttBroker = BrokerSpec)? 
+	( message   += Message   )*
+	( context   += Context   )*
+	( actor     += QActorDeclaration    )*
+;
+BrokerSpec : "mqttBroker" brokerHost=STRING ":" brokerPort=INT ;
+ 
+</pre>
+ 	</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+	</tr>
+	
+<tr>
+<td>
+<h4>Messages</h4>
+<pre>
+Message :     	    OutOnlyMessage | OutInMessage  ;
+OutOnlyMessage : 	Dispatch |  Event | Signal | Token ; 
+OutInMessage: 		Request  | Invitation ;
+
+Event: 		"Event"      name=ID  ":" msg = PHead  ;
+Signal: 	"Signal"     name=ID  ":" msg = PHead  ;
+Token:		"Token"      name=ID  ":" msg = PHead  ;
+Dispatch: 	"Dispatch"   name=ID  ":" msg = PHead  ;
+Request: 	"Request"    name=ID  ":" msg = PHead  ;
+Invitation:	"Invitation" name=ID  ":" msg = PHead  ;
+</pre>
+</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+
+</tr>
+
+<tr>
+<td>
+<h4>PROLOG-like syntax</h4>
+<pre>
+PHead :	PAtom | PStruct	| PStructRef ;
+PAtom : PAtomString | Variable | PAtomNum | PAtomic | 
+		VarRef | VarSolRef | VarRefInStr;
+PAtomString : val = STRING ;
+PAtomic     : val = ID ;
+PAtomNum    : val = INT ;
+PStructRef  : "$" struct = PStruct;   
+PStruct     : functor=ID "(" (msgArg += PHead)? ("," msgArg += PHead)* ")" ;
+Variable    : {Variable} varName= VARID ;
+//USING vars (from solve or from code)
+VarRef      : "$" varName= VARID ;	//=> $Curmove in msg payload   
+VarRefInStr : "#" varName= VARID ;	//=> ${getCurSol("M").toString()}        
+VarSolRef   : "@" varName= VARID ;	//=> getCurSol("V").toString()  </pre>
+</pre>
+</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+
+</tr>
+
+<tr>
+<td>
+<h4>Contexts</h4>
+<pre>
+Context     : "Context" name=ID "ip"  ip = ComponentIP  ( mqtt ?= "-mqtt" )? ;
+ComponentIP : {ComponentIP} "[" "host=" host=STRING "port=" port=INT "]" ; 
+</pre>
+</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+
+</tr>
+
+<tr>
+<td>
+<h4>Actors</h4>
+<pre>
+QActorDeclaration : QActor | QActorCoded | QActorExternal ;
+QActorExternal    : "ExternalQActor" name=ID "context" context = [ Context ] ;
+QActorCoded       : "CodedQActor" name=ID 
+             "context" context = [ Context ] "className" className = STRING ;
+QActor :
+	"QActor" name=ID "context" context = [ Context ]  	
+    "{"      	
+    	( start = AnyAction )?
+		( states += State )*
+	"}"
+; 
+</pre>
+</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+</tr>
+
+<tr>
+<td>
+<h4>...</h4>
+<pre>
+
+</pre>
+</td>
+	<td>
+ 	<m>
+	
+ 	</m>
+  	</td>
+
+</tr>
+
+	 </table>
+	</center> 
+
+<h3>Behavior</h3>	 
+
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:60%">
+<h4>State</h4>
+	<pre>
+State :
+	"State" name=ID  ( normal ?= "initial" )?
+	"{" ( actions += GuardedStateAction )*  "}"
+	( transition = Transition )?
+;
+
+GuardedStateAction : ("if" guard = STRING   | ( solveGuard ?= "ifSolved") )? 
+	action=StateAction 
+	("else" elseaction=StateAction )?
+;
+ 	</td>
+	<td>
+ 	<m>.
+	
+ 	</m>
+  	</td>
+	</tr>
+	
+	<tr>
+	<td>
+	<h4>Action</h4>
+	<pre>
+StateAction    : 
+	Print | PrintCurMsg | SolveGoal |			//general
+	Forward | Emit | Delay | MsgCond |	    	//qak kotlin
+	CodeRun | AnyAction	| Exec					//extra code
+; 
+
+PrintCurMsg :  {PrintCurMsg} "printCurrentMessage"  ;
+Print       :  {Print} "println" "(" args=PHead ")"    ; 
+SolveGoal   :  {SolveGoal} "solve" "(" goal=PHead ("," resVar=Variable)? ")";
+
+Delay     : DelayInt | DelayVar | DelayVref | DelaySol ;
+DelayInt  : "delay" time=INT  ;
+DelayVar  : "delayVar"    refvar     = Variable ;
+DelayVref : "delayVarRef" reftime    = VarRef ;
+DelaySol  : "delaySol"    refsoltime = VarSolRef ;
+
+AnyAction :  "[" body=STRING "]"; 
+
+CodeRun   : CodeRunActor | CodeRunSimple  ; 
+CodeRunActor   : "run" item=QualifiedName 
+	"(" "myself" ( "," args+=PHead ("," args+=PHead)* )? ")" ;
+CodeRunSimple  : "run" item=QualifiedName 
+	"(" (args+=PHead ("," args+=PHead)* )? ")";
+ 
+Exec      : "machineExec" action=STRING ; 
+
+	</pre>
+	</td>
+		<td>
+		<m>
+		
+		</m>
+		</td>
+	</tr>
+
+
+	
+	<tr>
+	<td>
+	<h4>Transitions</h4>
+	<pre>
+Transition         :  EmptyTransition | NonEmptyTransition ;
+EmptyTransition    : "Goto" targetState=[State]  
+					 ("if" guard=STRING "else" othertargetState=[State] )?  ;
+
+NonEmptyTransition :  "Transition" name=ID  (duration=Timeout)? 
+					( trans += InputTransition)* ;
+Timeout            : TimeoutInt | TimeoutVar | TimeoutSol ;
+TimeoutInt         : "whenTime"    msec=INT                 
+						"->" targetState = [State]  ;   
+TimeoutVar         : "whenTimeVar"    variable   = Variable    
+						"->" targetState = [State]  ;  
+TimeoutVarRef      : "whenTimeVarRef" refvar     = VarRef      
+						"->" targetState = [State]  ;  
+TimeoutSol         : "whenTimeSol"    refsoltime = VarSolRef   
+						"->" targetState = [State]  ;  
+
+InputTransition    : EventTransSwitch | MsgTransSwitch  ;
+EventTransSwitch   : "whenEvent" message=[Event] ("and"  guard=STRING)?  
+						"->"  targetState=[State]  ;
+MsgTransSwitch     : "whenMsg" message=[Message] ("and"  guard=STRING)?  
+						"->"  targetState=[State]  ;
+
+	</pre>
+	</td>
+		<td>
+		<m>
+		
+		</m>
+		</td>
+	</tr>
+	
+	 </table>
+	</center> 
+
+ <h3>Interaction</h3>	
+
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:60%">
+	<h4>Send-side</h4>
+	<pre>
+Forward   : "forward" dest=[QActorDeclaration] 
+				"-m" msgref=[Message] ":" val = PHead	;
+Emit      : "emit" msgref=[Event] ":" val = PHead	;
+	</td>
+	<td></td>
+	</tr>
+	
+	<tr>
+	<td>
+	<h4>Receive-side</h4>
+	<pre>
+MsgCond   :	"onMsg" "(" message=[Message] ":" msg = PHead ")" 
+			"{" ( actions += GuardedStateAction )*  "}"
+			("else" ifnot = NoMsgCond )? ;
+NoMsgCond :	{NoMsgCond}  "{" (  actions += GuardedStateAction )*  "}"  ;
+	</pre>
+	</td>
+		<td>
+		<m>
+		
+		</m>
+		</td>
+	</tr>
+
+	 </table>
+	</center> 
+	
+	
+	
+	
+ 	<br/><br/>	
+	
+ 	
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

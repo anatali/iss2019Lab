@@ -34,7 +34,7 @@ class Robotmvc ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("modelChanged(TARGET,VALUE)"), Term.createTerm("modelChanged(robot,CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.robotSupport.move("msg(${payloadArg(1)})" )
+								resources.robotSupport.move( "msg(${payloadArg(1)})"  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )

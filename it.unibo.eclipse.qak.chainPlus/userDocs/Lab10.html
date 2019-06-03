@@ -657,14 +657,28 @@ ifSolved println( "all lines=${getCurSol(\"L\")} " )
 </pre>
 </td>
  <td>
-  <h3>Unification to access messages: shortcut</h3>
- 
-  <bc>payloadArg(0)</bc>: 
-  <li>gives the argument <tt>0</tt> (as String) of the msg payload </li>
-  <br/>
-  <bc>@V</bc>  
- <li>is translated into <bc>getCurSol("V").toString()</bc></li>
+  <h3>Shortcut</h3>
+<pre> 
+ "<k>payloadArg(N)</k> 
+gives (as String)  the argument <kc>N (0<=N<=arity)</kc> of a msg payload 
+ <kc>example:</kc>: <ks>run ...(payloadArg(0))</ks> 
+ <kc>example:</kc>: <ks>onMsg( m : m(X) ){ println("...$payloadArg(0)") }</ks>
 
+ "<k>$</k>" varName= ID  <kc>=></kc> <k>$VARID</k>
+used within a (produced) String 
+<kc>example:</kc>: <ks>msg(_,$Curmove)</ks> 
+
+ "<k>#</k>" varName= VARID  <kc>=></kc> <k>${getCurSol("VARID").toString()}</k>
+used to access a logic variable in a (produced) String 
+ <kc>example:</kc>:<ks>solve(move(M));println("result: #M")</ks> 
+ 
+ "<k>@</k>" varName= VARID  <kc>=></kc> <k>getCurSol("VARID").toString()</k>
+used to access a logic variable
+ <kc>example:</kc>:<ks>solve(move(M));doMove(#M")</ks> 
+
+ 
+ </pre> 
+  
   
 </td>
 </tr>

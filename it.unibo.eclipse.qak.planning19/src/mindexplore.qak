@@ -40,7 +40,8 @@ var StepTime = 330L	//long
    		println("direction at start: ${getCurSol(\"D\").toString()}")
 		run itunibo.planner.plannerUtil.showMap()		
 		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")
-   		if  "stepCounter > 1"    solve( dialog(F) )		
+
+   		if  "stepCounter > 1"    solve( dialog(F) )			//to facilitate testing
 		
 		run itunibo.planner.moveUtils.doPlan( myself )
  	}
@@ -52,7 +53,7 @@ var StepTime = 330L	//long
 	 * the actions are stored in the actpr-kb as a sequence of facts: move(M)
 	 */
 	
-	State executePlannedActions{
+	State executePlannedActions{ 
 		//solve( showMoves ) 
 		solve( retract( move(M) ) ) 
 		ifSolved  ["{Curmove = getCurSol(\"M\").toString(); curmoveIsForward=(Curmove == \"w\")}"]  
@@ -84,7 +85,6 @@ var StepTime = 330L	//long
 	 
 	//onecellforward has completed 
 	State handleStepOk{
-		//run itunibo.planner.plannerUtil.doMove( "w" )    
 		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")		
 	}
 	Goto executePlannedActions

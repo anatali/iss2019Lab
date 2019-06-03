@@ -1,0 +1,6 @@
+System sys1
+
+mqttBroker "localhost" : 1883  //could be omitted
+
+Event    alarm : "alarm"
+Dispatch info  : "info"
