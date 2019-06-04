@@ -43,6 +43,9 @@ dependencies {
 //MQTT
 // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.1'
+//JSON
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20160810'
 //COAP
 	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
 	compile group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M12'
@@ -51,9 +54,6 @@ dependencies {
 //MONGO
 	// https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver
 	//compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.8.2'
-//JSON
-    // https://mvnrepository.com/artifact/org.json/json
-    compile group: 'org.json', name: 'json', version: '20160810'
 
 //CUSTOM
     compile name: 'uniboInterfaces'

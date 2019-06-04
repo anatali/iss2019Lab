@@ -11,7 +11,7 @@ ExternalQActor resourcemodel context ctxDummyForMind
 
 QActor appltest context ctxApplTest{   
 ["
-var stepCounter = 0
+var stepCounter = 0 
 var Curmove = \"\"
 var curmoveIsForward = false
 var StepTime   = 2700L	//long		//330L	//for virtual

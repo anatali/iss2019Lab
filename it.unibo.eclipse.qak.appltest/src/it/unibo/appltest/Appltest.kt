@@ -16,7 +16,7 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var stepCounter = 0
+		var stepCounter = 0 
 		var Curmove = ""
 		var curmoveIsForward = false
 		var StepTime   = 2700L	//long		//330L	//for virtual
