@@ -7,6 +7,7 @@ build
 nodeCode/frontend/node_modules/
 *.lck
 package-lock.json
+nodeCode/frontend/*.log
 
 # MQTT generated
 *-tcp*
