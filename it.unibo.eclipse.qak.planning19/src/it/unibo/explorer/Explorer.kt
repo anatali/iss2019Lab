@@ -19,7 +19,9 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		var stepCounter = 0
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime = 330L	//long
+		var StepTime   = 700L	//long		//330L	//for virtual
+		var RotateTime = 610L	//long		//300L	//for virtual
+		var PauseTime  = 500L 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -66,9 +68,9 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
-						delay(300) 
+						delay(RotateTime)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						delay(500) 
+						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
@@ -83,6 +85,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("handleStepOk") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
+						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
@@ -103,7 +106,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						solve("direction(D)","") //set resVar	
 						println("direction at fail: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.doMove( getCurSol("D").toString()  )
-						delay(500) 
+						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="backToHome", cond=doswitch() )
 				}	 
@@ -129,9 +132,12 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						 		}
 						if(currentSolution.isSuccess()) forward("modelChange", "modelChange(robot,${getCurSol("M").toString()})" ,"resourcemodel" ) 
 						if(currentSolution.isSuccess()) itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("M").toString() )
-						delay(StepTime)
+						if(Curmove == "w" )delay(StepTime)
+						 		else{
+						 			 delay(RotateTime)
+						 		}
 						if(currentSolution.isSuccess()) forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						delay(100) 
+						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitchGuarded({(Curmove.length>0) }) )
 					transition( edgeName="goto",targetState="doExploreStep", cond=doswitchGuarded({! (Curmove.length>0) }) )

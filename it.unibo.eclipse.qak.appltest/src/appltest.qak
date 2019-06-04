@@ -1,0 +1,47 @@
+System mindexplore
+mqttBroker "localhost" : 1883  
+
+Dispatch modelChange  : modelChange( TARGET, VALUE )   
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+
+Context ctxApplTest       ip [host="localhost" port=8068]                -mqtt 
+Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+
+ExternalQActor resourcemodel context ctxDummyForMind
+
+QActor appltest context ctxApplTest{   
+["
+var stepCounter = 0
+var Curmove = \"\"
+var curmoveIsForward = false
+var StepTime   = 2700L	//long		//330L	//for virtual
+var RotateTime = 610L	//long		//300L	//for virtual
+var PauseTime  = 500L 
+var foundObstacle = false 
+"]
+	State s0 initial {	
+		println("&&&  appltest STARTED")
+		forward resourcemodel -m modelChange : modelChange(robot,w)
+	}
+	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
+ 		          whenEvent sonarRobot  -> handleSonarRobot
+
+	State endDoMoveForward{
+		forward resourcemodel -m modelChange : modelChange(robot,h)
+ 	} 
+ 	
+    //Substitute with an ad-hoc actor for a real robot
+	State handleSonarRobot{  //before than the step time
+ 		printCurrentMessage
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			["val distance = Integer.parseInt( payloadArg(0) ) 
+              foundObstacle = (distance<20) "]  
+   		}
+	}
+	Goto stepFail if "foundObstacle" else s0
+
+	State stepFail{
+		println("&&& onecellforward stepfail ")
+ 	}
+	
+}

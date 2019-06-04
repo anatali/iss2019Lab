@@ -2,8 +2,8 @@
 frontend/uniboSupports/coapClientToResourceModel
 */
 const coap             = require("node-coap-client").CoapClient; 
-//const coapAddr         = "coap://192.168.43.67:5683"
-const coapAddr         = "coap://localhost:5683"
+const coapAddr         = "coap://192.168.43.67:5683"	//RESOURCE ON RASPBERRY PI
+//const coapAddr         = "coap://localhost:5683"
 const coapResourceAddr = coapAddr + "/resourcemodel"
 
 /*

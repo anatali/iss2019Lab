@@ -9,7 +9,7 @@ Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 
-Context ctxMindExplore  ip [host="localhost" port=8038]    -mqtt 
+Context ctxMindExplore    ip [host="localhost" port=8038]    -mqtt 
 Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
 
 ExternalQActor resourcemodel context ctxDummyForMind
@@ -19,7 +19,9 @@ QActor explorer context ctxMindExplore{
 var stepCounter = 0
 var Curmove = \"\"
 var curmoveIsForward = false
-var StepTime = 330L	//long
+var StepTime   = 700L	//long		//330L	//for virtual
+var RotateTime = 610L	//long		//300L	//for virtual
+var PauseTime  = 500L 
 "]	
 	State s0 initial {	
 		println("&&&  explorer STARTED")
@@ -68,9 +70,10 @@ var StepTime = 330L	//long
 	State doTheMove{
  		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) 
 		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
-		delay 300 //rotate
+		delayVar RotateTime //rotate
 		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
- 		delay 500		
+ 		delayVar PauseTime		
+		//solve( dialog(F) )	//to CALIBRATE rotation time
 	}
 	Goto executePlannedActions
 	
@@ -85,7 +88,8 @@ var StepTime = 330L	//long
 	 
 	//onecellforward has completed 
 	State handleStepOk{
-		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")		
+		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")	
+		delayVar PauseTime	
 	}
 	Goto executePlannedActions
 	
@@ -111,7 +115,7 @@ var StepTime = 330L	//long
    		println("direction at fail: ${getCurSol(\"D\").toString()}")
   		run itunibo.planner.plannerUtil.doMove( @D )  //change the operation name to doMoveObstacle
   		//["stepCounter = stepCounter - 1"] //the step counter must remain the previous one
-  		delay 500		//just to wait a time before returning to home		  			
+  		delayVar PauseTime		//just to wait a time before returning to home		  			
 	}
 	Goto backToHome
 	 
@@ -135,19 +139,16 @@ var StepTime = 330L	//long
 	Goto doGoHomeActions 
 	
 	State doGoHomeActions{
-		//solve( showMoves ) 
  		solve( retract( move(M) ) )
  		//println("&&&  doGoHomeActions ") 
 		ifSolved  ["Curmove = getCurSol(\"M\").toString() "] else ["Curmove = \"\" "]
 		//ifSolved  ["println(Curmove)"] 
 		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,#M) 
-		ifSolved  //run itunibo.planner.plannerUtil.doMove( @M )
-			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
-		delayVar StepTime 
+		ifSolved  run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
+		if "Curmove == \"w\" "  delayVar StepTime  else  delayVar RotateTime 
 		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,h)  
-//		 	solve( direction(D) )
-//   			println("direction at doGoHomeActions: ${getCurSol(\"D\").toString()}") 		
-  		delay 100 
+ 		//if "Curmove !== \"w\" " solve( dialog(F) )	//to CALIBRATE rotation time
+  		delayVar PauseTime		 
   	}
 	Goto doGoHomeActions  if "(Curmove.length>0) " else doExploreStep
 	

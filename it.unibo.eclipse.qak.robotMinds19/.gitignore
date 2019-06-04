@@ -22,6 +22,3 @@ gradle
 docker/
 /.metadata/
 /src-gen/
-/robotappl.pl
-/robotmind.pl
-/sysRules.pl
