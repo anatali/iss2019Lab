@@ -157,6 +157,239 @@ table, th, td {
  <h2>Overview</h2>
 The goal of this section is to introduce the main ideas related to <bc>Model Driven Software Development (MDSD)</bc>, by
 starting from the <bc>Xtext framework</bc>. Moreover, the description of the <bc>qak</bc> language is given. <br/><br/>
+
+
+ <ol>
+<li><a href="#platform">Platforms</a></li>
+<li><a href="#topdown">Top Down process</a></li>
+<li><a href="#microserv">Microservices</a></li>
+<li><a href="#mdsd">Model Driven Software Development</a></li>
+<li><a href="#domains">Domains</a></li>
+<li><a href="#ddd">Domain Driven Design</a></li>
+<li><a href="#dsl">Domain Specific Languages</a></li>
+
+<li><a href="#mtocode">From models to code</a></li>
+<li><a href="#qakfactory">The Qak Software Factory</a></li>
+<li><a href="#xtext">The Xtext framework</a></li>
+<li><a href="#qaklang">The qak (metamodel) language</a> </li>
+<li> </li>
+ </ol>
+ 
+ 
+
+<h2 id="softdev">Software Development</h2>
+
+<h3 id="platform">Starting from the Platform</h3>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+ 	<center><img src="./platforms.png" alt="domains" width="95%" height="52%"/></center>
+ 
+	</td>
+	<td>
+	<m>
+	<h4>Platform first? (bottom up)</h4>
+	<li>Software as a service <a href="https://it.wikipedia.org/wiki/Software_as_a_service" target="web">SaaS</a></li>
+	<li>Platform as a service <a href="https://it.wikipedia.org/wiki/Platform_as_a_service" target="web">PaaS</a></li>
+	<li>Infrastructure as a service <a href="https://en.wikipedia.org/wiki/Infrastructure_as_a_service" target="web">IaaS</a></li>
+	
+	</m>
+ 	</td>
+	</tr>
+
+	 </table>
+	</center> 
+
+<h3 id="topdown">Starting from the problem</h3>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:70%">
+ 	<center><img src="./topdownprocess.png" alt="topdownprocess" width="100%" height="52%"/></center>
+ 	<li> </li>
+	</td>
+	<td>
+	<m>
+	<h4>Problem first? (top down)</h4>
+	<li><a href="https://en.wikipedia.org/wiki/Requirements_analysis" target="web">Requirements_analysis</a></li>
+	<li><a href="https://www.eclipse.org/rmf/" target="web">Eclipse rmf</a></li>
+
+	</m>
+	<td>
+ 	</td>
+	</tr>
+	 </table>
+	</center> 
+
+<h3 id="microserv">Microservices</h3> 	
+	
+    	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+	<center><img src="./microservices.png" alt="microservices" width="100%" height="52%"/></center>
+	</td>
+	<td>
+	<center><img src="./microservBook.png" alt="microservBook" width="100%" height="52%"/ 
+		<m>
+		
+		</m>
+	</td>
+	</tr>
+
+	 </table>
+	</center> 
+
+ 
+
+<h2 id="mdsd">Model Driven Software Development</h2>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+	<center><img src="./mdsdpng.png" alt="mdsdpng.png" width="100%" height="52%"/></center>  
+	</td>
+	<td>
+		<m>
+		See <a href="Whatmodelsmean.pdf" target="lecture">What models mean</a> <br/>
+	<!--	
+		<h4>Analysis (what)</h4>
+		<ul>
+		<li>Feasibility</li>
+		<li>Test plans</li>
+		<li>Logic architecture</li>
+		<li>Evaluation of costs, time, resources</li>
+		<li>Technology aware (but independent)</li>
+		</ul>
+		<h4>Design (how)</h4>
+		<ul>
+		<li>Design patterns</li>
+		<li>Architecture refinement</li>
+		<li>Working prototype</li>
+		<li>Selection of appropriate technologies</li>
+		<li>Prototype refinement</li>
+		</ul>
+		<h4>Development</h4>
+		<h4>Testing</h4>
+		<h4>Deployment</h4
+	-->	
+		</m>
+	</td>
+	</tr> 
+	 </table>
+	</center> 
+	
+	
+	
+	 
+
+
+	<h3 id="domains">Domains</h3>
+
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+ 	<center><img src="./domains.png" alt="domains" width="100%" height="52%"/></center>
+ 	<li> </li>
+	</td>
+	<td>
+	<m>
+	<h4>Problem first? (top down)</h4>
+	</m>
+	<td>
+ 	</td>
+	</tr>
+	 </table>
+	</center> 
+
+	
+<h3 id="ddd">Domain Driven design</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+ 	<center><img src="./ddd.png" alt="ddd.png" width="100%" height="52%"/></center>
+	</td>
+	<td>
+		<m>
+ 	See <a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="web">DDD</a> 	
+		</m>
+		
+	<h4>Hexagonal architectures</h4>
+	<img src="./portAdapterArch.png" alt="portAdapterArch" width="100%" />
+	
+		<m>
+	See 	
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#domainmodel"
+target="lecture">Lab11: Resource model</a>	
+	
+	
+	<br/><br/>
+ 		</m>
+	</td>
+	</tr>
+	 </table>
+	</center> 
+
+	
+<h3 id="dsl">Domain Specific Languages</h3>
+  	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:100%">
+ 	<center><img src="./dslSlide.png" alt="dslSlide" width="100%" height="52%"/></center><br/>
+ 	<li><a href="https://www.slideshare.net/zirrus/domainspecific-langauges" traget="web">Domain-specific
+Languages, by Javier Luis Cánovas Izquierdo</a>, Inria <br/></li>
+ 
+<li><a href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="web">Powers of Ten</a></li>
+	</td>
+	</tr>
+
+	 </table>
+	</center> 
+
+
+<h2 id="mtocode">From models to code</h2>
+ 	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:50%">
+ 	<center><img src="./dimensions.png" alt="dimensions" width="100%" height="52%"/></center>
+	
+	See:
+	</td>
+	<td>
+	<center><img src="./softwareFactory.png" alt="softwareFactory.png" width="100%" height="52%"/></center>
+	<m>
+
+	</m>
+ 	</td>
+	</tr>
+
+	 </table>
+	</center> 	
+	
+<h3 id="qakfactory">The Qak Software Factory</h3>
+   	<center><table style="width:95%">
+	<tbody>	
+	<tr>
+	<td style="width:80%">
+	<center><img src="./softwareFactoryQak.png" alt="softwareFactoryQak.png" width="100%" height="52%"/></center>
+	</td>
+	<td>
+		<m>
+		
+		</m>
+	</td>
+	</tr>
+
+	 </table>
+	</center> 
+	
+<h3 id="xtext">The Xtext framework</h3>
+
   	<center><table style="width:95%">
 	<tbody>	
 	<tr>
@@ -164,7 +397,7 @@ starting from the <bc>Xtext framework</bc>. Moreover, the description of the <bc
  	<center><img src="./bookbettini.png" alt="bookbettini.png" width="45%" height="32%"/></center>
  	</td>
 	<td>
-	<h3>Reading</h3>
+ 
 	<m> 
 <h4>Basic </h4>   
 <li> <a href="UMLHarelRumpe.pdf" target="lecture">On semantics</a></li>    
@@ -186,19 +419,7 @@ starting from the <bc>Xtext framework</bc>. Moreover, the description of the <bc
 	 </table>
 	</center> 
 
-
- <ol>
-<li><a href="#startxtext">Starting</a></li>
-<li><a href="#mdsd">Model Driven Software Development</a></li>
-<li><a href="#ddd">Domain Driven Design</a></li>
-<li><a href="#qakfactory">The Qak Software Factory</a></li>
-<li><a href="#microserv">Microservices</a></li>
-<li><a href="#qaklang">The qak (metamodel) language</a> </li>
-<li> </li>
- </ol>
- 
- 
-<h2 id="startxtext">Starting </h2>
+	
 <ol>
 <li>Create a new <bc>Xtext project</bc> named <ks>it.unibo.xtext.intro19.Iot</ks>
   	<center><table style="width:95%">
@@ -310,115 +531,8 @@ Dispatch info  : "info"
 </li>
  
 </ol>
-
-
-<h2 id="models">The role of models</h2>
-
-<h3 id="mdsd">Model Driven Software Development</h3>
-   	<center><table style="width:95%">
-	<tbody>	
-	<tr>
-	<td style="width:80%">
-	<center><img src="./mdsdpng.png" alt="mdsdpng.png" width="100%" height="52%"/></center>  
-	</td>
-	<td>
-		<m>
-		See <a href="Whatmodelsmean.pdf" target="lecture">What models mean</a> 
-		</m>
-	</td>
-	</tr> 
-	 </table>
-	</center> 
-
-<h3 id="ddd">Domain Driven design</h3>
-   	<center><table style="width:95%">
-	<tbody>	
-	<tr>
-	<td style="width:80%">
- 	<center><img src="./ddd.png" alt="ddd.png" width="100%" height="52%"/></center>
-	</td>
-	<td>
-		<m>
- 	See <a href="https://en.wikipedia.org/wiki/Domain-driven_design" target="web">DDD</a> 	
-		</m>
-		
-	<h4>Hexagonal architectures</h4>
-	<img src="./portAdapterArch.png" alt="portAdapterArch" width="100%" />
 	
-		<m>
-	See 	
-<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robot/userDocs/Lab11.html#domainmodel"
-target="lecture">Lab11: Resource model</a>	
-	
-	
-	<br/><br/>
- 		</m>
-	</td>
-	</tr>
-	 </table>
-	</center> 
-	
-<h3 id="dsl">Domain Specific Languages</h3>
-  	<center><table style="width:95%">
-	<tbody>	
-	<tr>
-	<td style="width:80%">
- 	<center><img src="./softwareFactory.png" alt="softwareFactory.png" width="100%" height="52%"/></center>
-	
-	See:
 
-	<li><a href="https://www.slideshare.net/zirrus/domainspecific-langauges" traget="web">Domain-specific
-Languages, by Javier Luis Cánovas Izquierdo</a>, Inria </li>
- 
-<li><a href="https://www.youtube.com/watch?v=0fKBhvDjuy0" target="web">Powers of Ten</a></li>
-	</td>
-	<td>
-	<center><img src="./dsl.png" alt="dsl.png" width="100%" height="52%"/></center><br/>
-	<center><img src="./dslengineering.png" alt="dslengineering.png" width="100%" height="52%"/></center>
-	</td>
-	</tr>
-
-	 </table>
-	</center> 
-
-
-	
-<h3 id="qakfactory">The Qak Software Factory</h3>
-   	<center><table style="width:95%">
-	<tbody>	
-	<tr>
-	<td style="width:80%">
-	<center><img src="./softwareFactoryQak.png" alt="softwareFactoryQak.png" width="100%" height="52%"/></center>
-	</td>
-	<td>
-		<m>
-		
-		</m>
-	</td>
-	</tr>
-
-	 </table>
-	</center> 
-	
-	
-<h2 id="microserv">Microservices</h2> 	
-	
-    	<center><table style="width:95%">
-	<tbody>	
-	<tr>
-	<td style="width:80%">
-	<center><img src="./microservices.png" alt="microservices" width="100%" height="52%"/></center>
-	</td>
-	<td>
-	<center><img src="./microservBook.png" alt="microservBook" width="100%" height="52%"/ 
-		<m>
-		
-		</m>
-	</td>
-	</tr>
-
-	 </table>
-	</center> 
 
 <h2 id="qaklang">The qak (metamodel) language</h2> 
 This section reports the language specification related to the qak metamodel, version 1.1.3.
