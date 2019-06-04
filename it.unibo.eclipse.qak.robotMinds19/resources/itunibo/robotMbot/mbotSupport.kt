@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 object mbotSupport{
 	lateinit var actor   : ActorBasic
  	lateinit var conn    : SerialPortConnSupport
-	var dataSonar        : Double = 0.0
+	var dataSonar        : Int = 0 ; //Double = 0.0
 	
 	fun create( myactor: ActorBasic, port : String ){
 		actor = myactor
@@ -14,7 +14,7 @@ object mbotSupport{
 	}
 	
 	fun move( cmd : String ){
-		println("mbotSupport move cmd=$cmd conn=$conn")
+		//println("mbotSupport move cmd=$cmd conn=$conn")
 		when( cmd ){
 			"msg(w)" -> conn.sendALine("w")
 			"msg(s)" -> conn.sendALine("s")
@@ -49,15 +49,15 @@ object mbotSupport{
                 while (true) {
  						try {
 							var curDataFromArduino = conn.receiveALine();
- 	 						println("getDataFromArduino received: $curDataFromArduino"    );
- 							var v =    curDataFromArduino.toDouble() ;
+ 	 						//println("getDataFromArduino received: $curDataFromArduino"    );
+ 							var v = curDataFromArduino.toDouble() ;
 							//handle too fast change
- 							var delta =  Math.abs( v - dataSonar);
- 							if( delta < 7 && delta > 0.5 ) {
-								dataSonar = v;
-								println("mbotSupport sonar: $dataSonar"   );								
-								actor.emit("sonarRobot", "sonar( ${dataSonar.toInt()} )");
- 							}
+// 							var delta =  Math.abs( v - dataSonar);
+// 							if( delta < 7 && delta > 0.5 ) {
+ 								dataSonar = v.toInt();
+								//println("mbotSupport sonar: ${ dataSonar }"   );								
+								actor.emit("sonarRobot", "sonar( ${ dataSonar } )");
+// 							}
 						} catch ( e : Exception) {
  							println("getDataFromArduino | ERROR $e   ")
  							//System.exit(1)

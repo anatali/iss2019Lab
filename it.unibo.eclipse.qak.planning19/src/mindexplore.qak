@@ -159,9 +159,9 @@ var PauseTime  = 500L
 	}
 }	
 
+ 
 
-
-
+ 
 //Application move step
 QActor onecellforward context ctxMindExplore {
 [" var foundObstacle = false; var StepTime = 0L"]  

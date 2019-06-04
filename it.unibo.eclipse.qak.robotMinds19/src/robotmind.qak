@@ -1,13 +1,13 @@
 System robotmind
  
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229 
-
+ 
 //Event  userCmd        : userCmd(X)	//from GUI X = w | a | s | d | h 
 Event  envCond        : envCond( CONDTYPE )        //from the environment 
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
-Event  polar          : p( Distance, Angle ) 
+Event  polar          : p( Distance, Angle )  
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
 Event  modelContent   : content( VALUE ) 
@@ -75,7 +75,7 @@ QActor robotmind context ctxRobotMind{
 	 
 	State waitCmd {		} 
 	Transition t0 whenEvent envCond      -> handleEnvCond
-		          whenEvent sonarRobot   -> handleSonarRobot
+		          //whenEvent sonarRobot   -> handleSonarRobot
 		          whenEvent local_modelChanged -> handleModelChanged
 
 	State handleEnvCond{   
@@ -119,6 +119,9 @@ QActor robotmind context ctxRobotMind{
  * Works in ctxRobotMind since it is a policy
  */
 QActor sonarhandler context ctxRobotMind{  
+["var LastSonarDistance = 0
+  val amplify=5
+"]
  	State init initial{
 		println("sonarhandler STARTS ... ")
 	}         
@@ -129,15 +132,17 @@ QActor sonarhandler context ctxRobotMind{
    	              whenEvent sonarRobot ->  handleSonar
    	               
  	State handleSonar{                      
- 		printCurrentMessage                                        
+ 		//printCurrentMessage                                        
  		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
-[" val D = Integer.parseInt( payloadArg(1) ) * 5"] //AMPLIFY
+[" val D = Integer.parseInt( payloadArg(1) ) * amplify"] //AMPLIFY
 			emit polar : p( $D, 90  )  
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-[" val D = Integer.parseInt( payloadArg(0) ) * 5"] //AMPLIFY
+[" val D = Integer.parseInt( payloadArg(0) ) * amplify"] //AMPLIFY
 			emit polar : p( $D, 180  ) 
+			if "LastSonarDistance  != D"  
 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
+			if "LastSonarDistance  != D" ["LastSonarDistance=D"] 
  		}
  	} 
  	Goto waitForEvents

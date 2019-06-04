@@ -35,13 +35,16 @@ var foundObstacle = false
  		printCurrentMessage
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
 			["val distance = Integer.parseInt( payloadArg(0) ) 
-              foundObstacle = (distance<20) "]  
+              println( \"distance= $distance\"  )
+              foundObstacle = (distance < 15 ) 
+              println( \"foundObstacle= $foundObstacle\"  )"]  
    		}
 	}
 	Goto stepFail if "foundObstacle" else s0
 
 	State stepFail{
+		forward resourcemodel -m modelChange : modelChange(robot,h)
 		println("&&& onecellforward stepfail ")
- 	}
+ 	} 
 	
 }
