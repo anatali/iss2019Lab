@@ -23,7 +23,7 @@ object plannerUtil {
  * ------------------------------------------------
  */
     private var search: BreadthFirstSearch? = null
-    lateinit var goalTest: GoalTest
+    var goalTest: GoalTest? = null
     private var timeStart: Long = 0
 
     @Throws(Exception::class)
@@ -73,8 +73,10 @@ object plannerUtil {
 * MAP UPDATE
 * ------------------------------------------------
 */
-
-    @Throws(Exception::class)
+	
+    fun getPosX() : Int{ return initialState!!.x }
+    fun getPosY() : Int{ return initialState!!.y }
+     
     fun doMove(move: String) {
         val dir = initialState!!.direction
         val dimMapx = RoomMap.getRoomMap().dimX

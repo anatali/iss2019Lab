@@ -50,17 +50,6 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
-				state("handleSonarRobot") { //this:State
-					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								obstacle = Integer.parseInt( payloadArg(0) ) < 10 
-						}
-					}
-					 transition( edgeName="goto",targetState="handeObstacle", cond=doswitchGuarded({obstacle}) )
-					transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({! obstacle}) )
-				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
 						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 

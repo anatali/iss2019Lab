@@ -46,4 +46,11 @@ object moveUtils{
 		plannerUtil.doMove( move )
 		setDirection( actor )
 	}
+	
+	fun setPosition(actor : ActorBasic){
+		val posx = plannerUtil.getPosX()
+		val posy = plannerUtil.getPosY()
+		actor.solve("retract( curPos(_._) )")		//remove old data
+		actor.solve("assert( curPos($posx,$posy) )")			
+	}
 }

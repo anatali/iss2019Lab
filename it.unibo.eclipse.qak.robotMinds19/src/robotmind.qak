@@ -94,7 +94,7 @@ QActor robotmind context ctxRobotMind{
 		}
 	}
 	Goto waitCmd
-   
+/*   
  	State handleSonarRobot{
  		printCurrentMessage
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){
@@ -102,6 +102,7 @@ QActor robotmind context ctxRobotMind{
  		}//onMsg 	 
  	} 
 	Goto handeObstacle if "obstacle" else waitCmd 
+*/ 
 	
 	State handeObstacle{		
 //		println("handeObstacle: first react, the update the model")  

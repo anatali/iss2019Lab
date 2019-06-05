@@ -7,7 +7,11 @@ Event     polar : p( Distance, Angle )
 Context ctxRadar ip [host="localhost" port=8017] -mqtt //192.168.1.18
 
 QActor radar context ctxRadar{    
-	  
+["
+var LastData = 0
+var CurData  = 0
+var ShowData = false
+"]	  
 	State radarUsageInit initial{
 		 run resources.radarSupport.activate()
 		 solve( consult("radarData.pl")	 )
@@ -26,9 +30,15 @@ QActor radar context ctxRadar{
 				  whenEvent polar -> showPoint
 	
 	State showPoint{
-		printCurrentMessage
+		//printCurrentMessage
 		onMsg ( polar : p( D,A )){
-			 run resources.radarSupport.spot( payloadArg(0), payloadArg(1)  )			 
+["
+println(  \"${payloadArg(0)}\" )
+CurData  = Integer.parseInt( payloadArg(0)  )
+val D : Int   = CurData/5
+ShowData = Math.abs( CurData - LastData ) > 5  
+"]
+			 if "ShowData" run resources.radarSupport.spot( "$D", payloadArg(1)  )			 
 		}
 	}
 	Goto waitMsg

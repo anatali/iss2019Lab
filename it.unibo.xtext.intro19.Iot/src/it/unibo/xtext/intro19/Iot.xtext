@@ -10,7 +10,7 @@ IotSystemSpec: name=ID  			//
 	 (message   += Message   )*		// N >=0
 ;
 BrokerSpec : "mqttBroker" brokerHost=STRING ":" brokerPort=INT ;
-Message    :  Event | Dispatch  ;
+Message    : Event | Dispatch  ;
 
 Event: 		"Event"    name=ID  ":" msg = STRING  ;
 Dispatch: 	"Dispatch" name=ID  ":" msg = STRING  ;

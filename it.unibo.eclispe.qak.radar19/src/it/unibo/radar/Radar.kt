@@ -15,6 +15,10 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		
+		var LastData = 0
+		var CurData  = 0
+		var ShowData = false
 		return { //this:ActionBasciFsm
 				state("radarUsageInit") { //this:State
 					action { //it:State
@@ -40,10 +44,14 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 				}	 
 				state("showPoint") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("p(Distance,Angle)"), Term.createTerm("p(D,A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								resources.radarSupport.spot( payloadArg(0), payloadArg(1)  )
+								
+								println(  "${payloadArg(0)}" )
+								CurData  = Integer.parseInt( payloadArg(0)  )
+								val D : Int   = CurData/5
+								ShowData = Math.abs( CurData - LastData ) > 5  
+								if(ShowData)resources.radarSupport.spot( "$D", payloadArg(1)  )
 						}
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )

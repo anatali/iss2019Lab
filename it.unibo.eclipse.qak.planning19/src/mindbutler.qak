@@ -1,0 +1,147 @@
+System mindbutler
+mqttBroker "localhost" : 1883  
+
+Dispatch modelChange  : modelChange( TARGET, VALUE )   
+
+Dispatch onestep       : onestep(DURATION)
+Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
+Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
+
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Event  obstacle       : obstacle( DISTANCE )	     //from  sonar handler
+
+Context ctxMindButler    ip [host="localhost" port=8038]    -mqtt 
+Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+
+ExternalQActor resourcemodel context ctxDummyForMind
+
+QActor butler context ctxMindButler{     
+["
+var MaxDimY = \"6\"
+var MaxDimX = \"8\"
+var Curmove = \"\"
+var curmoveIsForward = false
+var StepTime   = 300L	//long		//330L	//for virtual
+var RotateTime = 610L	//long		//300L	//for virtual
+var PauseTime  = 500L 
+
+//var StepTime   = 330L	//for virtual
+//var RotateTime = 300L	//for virtual
+//var PauseTime  = 100L 
+
+var Direction = \"\" 
+"]	
+	State s0 initial {	
+		println("&&&  butler STARTED")
+		solve( consult("sysRules.pl")	 )       
+		solve( consult("floorMap.pl")	 )
+		solve( showMap	 )
+ 	}
+	Goto moveAhead
+	
+ 	State moveAhead{ 
+		forward butlerstep -m onestep : onestep( $StepTime )
+ 	}
+	Transition t0   whenMsg stepOk   -> hadleStepOk
+					whenMsg stepFail -> hadleStepKo 
+
+	State hadleStepOk{
+		println("&&& moveAhead ok")	
+		solve( updateMapAfterStep )
+		delayVar PauseTime 
+	}
+	Goto moveAhead 
+	
+	State hadleStepKo{
+		printCurrentMessage		
+		println("&&& moveAhead failed")
+		solve( showMap	 )
+		forward resourcemodel -m modelChange : modelChange(robot,a)
+		delayVar RotateTime
+		solve( changeDirection )
+		solve( robotdirection(D) )
+		delayVar PauseTime 
+	}
+    Goto endOfJob  if "(getCurSol(\"D\").toString() == \"sud\")" else moveAhead   
+
+	State endOfJob{
+		println("EXPLRATION ENDS")
+		//run itunibo.planner.plannerUtil.getDuration()
+	}
+}	
+
+ 
+
+ 
+QActor butlerstep context ctxMindButler {
+[" var foundObstacle = false; var StepTime = 0L"]  
+	State s0 initial {	   
+		["foundObstacle = false "]
+	} 
+	Transition t0 whenMsg onestep -> doMoveForward
+	
+	State doMoveForward{		  
+		onMsg( onestep : onestep( TIME ) ) { 
+			["StepTime = payloadArg(0).toLong(); println(StepTime)"]
+			forward resourcemodel -m modelChange : modelChange(robot,w)
+			run itunibo.planner.plannerUtil.startTimer()
+		}
+	} 
+	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
+ 		          whenEvent obstacle  -> stepFail
+		  
+	State endDoMoveForward{
+		forward resourcemodel -m modelChange : modelChange(robot,h)
+		forward butler -m stepOk : stepOk(ok)  //answer
+	}
+	Goto s0
+	
+	//Substitute with an ad-hoc actor for a real robot
+	State handleObstacle{  //before than the step time
+		run itunibo.planner.moveUtils.setDuration(myself)
+		printCurrentMessage
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			["val distance = Integer.parseInt( payloadArg(0) ) 
+              foundObstacle = (distance<20) "]  
+   		}
+	}
+	Goto stepFail if "foundObstacle" else s0
+	
+	State stepFail{
+		run itunibo.planner.moveUtils.setDuration(myself)
+		println("&&& butlerstep stepfail ")
+		solve( wduration( TIME ) )
+		forward butler -m stepFail : stepFail(obstacle,#TIME)  	
+	}
+	Goto s0
+
+
+
+}    
+
+QActor sonarhandlerbutler context ctxMindButler{  
+ 	State init initial{
+		println("sonarhandler STARTS ... ")
+	}         
+	Goto waitForEvents 
+	   
+	State waitForEvents{  }      
+   	Transition t0  whenEvent sonarRobot ->  handleSonar
+   	               
+ 	State handleSonar{                      
+		println("==================================")
+ 		printCurrentMessage                                        
+  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+			["val Distance = Integer.parseInt( payloadArg(0) ); println(Distance) 
+              val foundObstacle = (Distance<10) "]  
+            if "foundObstacle" emit obstacle :  obstacle(10)  
+   		}
+ 		println("==================================")
+  	} 
+ 	Goto waitForEvents
+}
+
+
+/*
+
+ */

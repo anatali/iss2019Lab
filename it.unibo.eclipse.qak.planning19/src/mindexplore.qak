@@ -25,7 +25,7 @@ var curmoveIsForward = false
 
 var StepTime   = 330L	//for virtual
 var RotateTime = 300L	//for virtual
-var PauseTime  = 500L 
+var PauseTime  = 250L 
 
 var Direction = \"\" 
 "]	
@@ -162,7 +162,7 @@ var Direction = \"\"
 		println( @D ) 
    		println("direction at home: ${getCurSol(\"D\").toString()}")
    		if "Direction == \"leftDir\" || Direction == \"upDir\" " 
-   			forward resourcemodel -m modelChange : modelChange(robot,w) //tuning   		
+   			forward resourcemodel -m modelChange : modelChange(robot,w)   		
 	}
 	Transition t0 whenEvent sonarRobot -> tuning
 	
@@ -173,7 +173,8 @@ var Direction = \"\"
    		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) //
    		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)	
    		delayVar RotateTime
-    	forward resourcemodel -m modelChange : modelChange(robot,w) //   	
+   		println(" ---- AT HOME END TUNING ROTATION DONE $Curmove--- ")
+    	forward resourcemodel -m modelChange : modelChange(robot,w)   	
    		//run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)	
    		println(" ---- AT HOME forward --- ")
 	} 
@@ -189,9 +190,7 @@ var Direction = \"\"
 	}           
 	Goto doExploreStep
 
-	
-	
-	
+
 	
 	State endOfJob{
 		println("EXPLRATION ENDS")
@@ -249,31 +248,24 @@ QActor onecellforward context ctxMindExplore {
 }    
 
 
-/*
- * 
-|r, 1, 1, 1, X, 
-|1, X, X, X, 
-|1, X, 0, 
-|X, 0, 0, 0, 
+QActor sonarhandler context ctxMindExplore{  
+ 	State init initial{
+		println("sonarhandler STARTS ... ")
+	}         
+	Goto waitForEvents 
+	   
+	State waitForEvents{  }      
+   	Transition t0  whenEvent sonarRobot ->  handleSonar
+   	               
+ 	State handleSonar{                      
+		println("==================================")
+ 		printCurrentMessage                                        
+ 		println("==================================")
+  	} 
+ 	Goto waitForEvents
+}
 
-|r, 1, 1, 1, X, 
-|1, 1, 1, 1, X, 
-|1, X, X, X, 
-|X, 1, 1, 1, X, 
-|X, 0, 0, 0, 0, 
-* 
-* 
-|r, 1, 1, 1, X, 
-|1, X, X, 1, X, 
-|1, X, X, 1, X, 
-|X, 1, 1, X, 
-* 
-* 
-* 
-|r, 1, 1, 1, X, 
-|1, X, 0, 1, X, 
-|1, X, X, 1, X, 
-|X, 0, 0, X, X, 
-* 
-* 
+
+/*
+
  */

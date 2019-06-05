@@ -25,7 +25,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 		var StepTime   = 330L	//for virtual
 		var RotateTime = 300L	//for virtual
-		var PauseTime  = 500L 
+		var PauseTime  = 250L 
 		
 		var Direction = "" 
 		return { //this:ActionBasciFsm
@@ -166,6 +166,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
 						delay(RotateTime)
+						println(" ---- AT HOME END TUNING ROTATION DONE $Curmove--- ")
 						forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
 						println(" ---- AT HOME forward --- ")
 					}
