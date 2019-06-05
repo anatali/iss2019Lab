@@ -19,9 +19,15 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		var stepCounter = 0
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime   = 700L	//long		//330L	//for virtual
-		var RotateTime = 610L	//long		//300L	//for virtual
+		//var StepTime   = 700L	//long		//330L	//for virtual
+		//var RotateTime = 610L	//long		//300L	//for virtual
+		//var PauseTime  = 500L 
+		
+		var StepTime   = 330L	//for virtual
+		var RotateTime = 300L	//for virtual
 		var PauseTime  = 500L 
+		
+		var Direction = "" 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -41,7 +47,6 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						println("direction at start: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.showMap(  )
 						itunibo.planner.plannerUtil.setGoal( "$stepCounter", "$stepCounter"  )
-						if(stepCounter > 1)solve("dialog(F)","") //set resVar	
 						itunibo.planner.moveUtils.doPlan(myself)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitchGuarded({itunibo.planner.moveUtils.existPlan()}) )
@@ -139,8 +144,43 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						if(currentSolution.isSuccess()) forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						delay(PauseTime)
 					}
-					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitchGuarded({(Curmove.length>0) }) )
-					transition( edgeName="goto",targetState="doExploreStep", cond=doswitchGuarded({! (Curmove.length>0) }) )
+					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitchGuarded({(Curmove.length>0)}) )
+					transition( edgeName="goto",targetState="atHome", cond=doswitchGuarded({! (Curmove.length>0)}) )
+				}	 
+				state("atHome") { //this:State
+					action { //it:State
+						println(" ---- AT HOME --- ")
+						solve("direction(D)","") //set resVar	
+						Direction = getCurSol("D").toString() 
+						println(getCurSol("D").toString())
+						println("direction at home: ${getCurSol("D").toString()}")
+						if(Direction == "leftDir" || Direction == "upDir" )forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
+					}
+					 transition(edgeName="t02",targetState="tuning",cond=whenEvent("sonarRobot"))
+				}	 
+				state("tuning") { //this:State
+					action { //it:State
+						println(" ---- AT HOME END TUNING --- ")
+						if(Direction == "leftDir"  )Curmove="d"
+						if(Direction == "upDir"    )Curmove="a"
+						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
+						println(" ---- AT HOME forward --- ")
+					}
+					 transition(edgeName="t13",targetState="tuned",cond=whenEvent("sonarRobot"))
+				}	 
+				state("tuned") { //this:State
+					action { //it:State
+						println(" ---- AT HOME TUNED --- ")
+						println("$name in ${currentState.stateName} | $currentMsg")
+						solve("direction(D)","") //set resVar	
+						Direction = getCurSol("D").toString() 
+						println(getCurSol("D").toString())
+						solve("dialog(F)","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="doExploreStep", cond=doswitch() )
 				}	 
 				state("endOfJob") { //this:State
 					action { //it:State

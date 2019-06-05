@@ -19,9 +19,15 @@ QActor explorer context ctxMindExplore{
 var stepCounter = 0
 var Curmove = \"\"
 var curmoveIsForward = false
-var StepTime   = 700L	//long		//330L	//for virtual
-var RotateTime = 610L	//long		//300L	//for virtual
+//var StepTime   = 700L	//long		//330L	//for virtual
+//var RotateTime = 610L	//long		//300L	//for virtual
+//var PauseTime  = 500L 
+
+var StepTime   = 330L	//for virtual
+var RotateTime = 300L	//for virtual
 var PauseTime  = 500L 
+
+var Direction = \"\" 
 "]	
 	State s0 initial {	
 		println("&&&  explorer STARTED")
@@ -41,10 +47,7 @@ var PauseTime  = 500L
  		solve( direction(D) )
    		println("direction at start: ${getCurSol(\"D\").toString()}")
 		run itunibo.planner.plannerUtil.showMap()		
-		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")
-
-   		if  "stepCounter > 1"    solve( dialog(F) )			//to facilitate testing
-		
+		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")		
 		run itunibo.planner.moveUtils.doPlan( myself )
  	}
 	Goto executePlannedActions if "itunibo.planner.moveUtils.existPlan()"  else endOfJob //if "(stepCounter < 4)" else endOfJob
@@ -131,7 +134,6 @@ var PauseTime  = 500L
 		run itunibo.planner.plannerUtil.showMap()	
 		solve( retractall( move(_) ))		//clean the actor kb
  		run itunibo.planner.plannerUtil.setGoal(0,0)
- 		//run itunibo.planner.plannerUtil.doPlan() 
  		run itunibo.planner.moveUtils.doPlan( myself )
  		//solve( showMoves ) 
  		//run itunibo.planner.moveUtils.storeMoves( myself, "" )
@@ -150,7 +152,45 @@ var PauseTime  = 500L
  		//if "Curmove !== \"w\" " solve( dialog(F) )	//to CALIBRATE rotation time
   		delayVar PauseTime		 
   	}
-	Goto doGoHomeActions  if "(Curmove.length>0) " else doExploreStep
+	Goto doGoHomeActions  if "(Curmove.length>0)" else atHome
+	
+	State atHome{  //reposition
+	
+	println(" ---- AT HOME --- ")
+ 		solve( direction(D) )
+ 		["Direction = getCurSol(\"D\").toString() "]
+		println( @D ) 
+   		println("direction at home: ${getCurSol(\"D\").toString()}")
+   		if "Direction == \"leftDir\" || Direction == \"upDir\" " 
+   			forward resourcemodel -m modelChange : modelChange(robot,w) //tuning   		
+	}
+	Transition t0 whenEvent sonarRobot -> tuning
+	
+	State tuning{	
+		println(" ---- AT HOME END TUNING --- ")
+		if "Direction == \"leftDir\"  " ["Curmove=\"d\""]
+		if "Direction == \"upDir\"    " ["Curmove=\"a\""]
+   		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) //
+   		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)	
+   		delayVar RotateTime
+    	forward resourcemodel -m modelChange : modelChange(robot,w) //   	
+   		//run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)	
+   		println(" ---- AT HOME forward --- ")
+	} 
+	Transition t1 whenEvent  sonarRobot -> tuned
+
+	State tuned{	
+		println(" ---- AT HOME TUNED --- ")
+		printCurrentMessage
+ 		solve( direction(D) )
+ 		["Direction = getCurSol(\"D\").toString() "]
+		println( @D ) 
+   		solve( dialog(F) )			//to facilitate testing
+	}           
+	Goto doExploreStep
+
+	
+	
 	
 	
 	State endOfJob{
@@ -207,3 +247,33 @@ QActor onecellforward context ctxMindExplore {
 
 
 }    
+
+
+/*
+ * 
+|r, 1, 1, 1, X, 
+|1, X, X, X, 
+|1, X, 0, 
+|X, 0, 0, 0, 
+
+|r, 1, 1, 1, X, 
+|1, 1, 1, 1, X, 
+|1, X, X, X, 
+|X, 1, 1, 1, X, 
+|X, 0, 0, 0, 0, 
+* 
+* 
+|r, 1, 1, 1, X, 
+|1, X, X, 1, X, 
+|1, X, X, 1, X, 
+|X, 1, 1, X, 
+* 
+* 
+* 
+|r, 1, 1, 1, X, 
+|1, X, 0, 1, X, 
+|1, X, X, 1, X, 
+|X, 0, 0, X, X, 
+* 
+* 
+ */

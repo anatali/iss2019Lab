@@ -1,10 +1,10 @@
 const config = {
     floor: {
-        size: { x: 25, y: 20 }
+        size: { x: 30, y: 24                   }
     },
     player: {
         //position: { x: 0.5, y: 0.5 },		//CENTER
-        position: { x: 0.2, y: 0.2 },		//INIT
+        position: { x: 0.1, y: 0.16 },		//INIT
         //position: { x: 0.8, y: 0.85 },		//END
         speed: 0.2
     },
@@ -15,13 +15,13 @@ const config = {
             position: { x: 0.12, y: 0.05 },
             senseAxis: { x: false, y: true }
         },
-		*/
-        {
+       {
             name: "sonar2",
             position: { x: 0.94, y: 0.88},
             senseAxis: { x: true, y: false }
         }
-     ],
+		*/
+      ],
     movingObstacles: [
 /*      {
             name: "movingobstacle",
@@ -41,23 +41,34 @@ const config = {
 		 */
     ],
    staticObstacles: [
-   /*
+   
         {
-            name: "wall",
-            centerPosition: { x: 0.5, y: 0.9},
-            size: { x: 0.1, y: 0.1}
+            name: "fridge",
+            centerPosition: { x: 0.85, y: 1.0},
+            size: { x: 0.24, y: 0.1}
         },
 
         {
-            name: "wall",
-            centerPosition: { x: 0.6, y: 0.7},
-            size: { x: 0.1, y: 0.1}
-        },
- */
+            name: "dishwasher",
+            centerPosition: { x: 0.85, y: 0.0},
+            size: { x: 0.2, y: 0.051        }
+		},
+        {
+            name: "pantry",
+            centerPosition: { x: 0.18, y: 0.0},
+            size: { x: 0.2, y: 0.051        }
+		},
+		
+        {
+            name: "table",
+            centerPosition: { x: 0.52, y: 0.40},
+            size: { x: 0.13, y: 0.10      }
+		},
+
         {
         name: "wallUp",
-			centerPosition: { x: 0.48, y: 0.98},
-			size: { x: 0.8, y: 0.01}
+			centerPosition: { x: 0.48, y: 0.97},
+			size: { x: 0.89, y: 0.01}
         },
         {
             name: "wallDown",
@@ -65,14 +76,14 @@ const config = {
             size: { x: 0.85, y: 0.01}
         },
         {
-            name: "wallRight",
-            centerPosition: { x: 0.05, y: 0.45},
-            size: { x: 0.01, y: 0.75}
+            name: "wallLeft",
+            centerPosition: { x: 0.02, y: 0.45},
+            size: { x: 0.01, y: 0.88}
         },
         {
-            name: "wallLeft",
-            centerPosition: { x: 0.9, y: 0.5},
-            size: { x: 0.01, y: 0.65}
+            name: "wallRight",
+            centerPosition: { x: 0.98, y: 0.5},
+            size: { x: 0.01, y: 0.99}
         }
     ]
 }
