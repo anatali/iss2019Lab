@@ -57,6 +57,14 @@ showCells.
  
 output( M ) :- stdout <- println( M ).
 
+%-------------------------------------------------
+%  TuProlo FEATURES of the QActor mind
+%-------------------------------------------------
+dialog( FileName ) :-  
+	java_object('javax.swing.JFileChooser', [], Dialog),
+	Dialog <- showOpenDialog(_),
+	Dialog <- getSelectedFile returns File,
+	File <- getName returns FileName. 		 
 
  
 :- initialization(initMap(sud)).

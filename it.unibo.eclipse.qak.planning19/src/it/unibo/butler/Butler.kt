@@ -50,6 +50,7 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 					action { //it:State
 						println("&&& moveAhead ok")
 						solve("updateMapAfterStep","") //set resVar	
+						solve("showMap","") //set resVar	
 						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
@@ -61,12 +62,20 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						solve("showMap","") //set resVar	
 						forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
 						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						solve("changeDirection","") //set resVar	
 						solve("robotdirection(D)","") //set resVar	
 						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="endOfJob", cond=doswitchGuarded({(getCurSol("D").toString() == "sud")}) )
-					transition( edgeName="goto",targetState="moveAhead", cond=doswitchGuarded({! (getCurSol("D").toString() == "sud")}) )
+					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (getCurSol("D").toString() == "sud")}) )
+				}	 
+				state("tuning") { //this:State
+					action { //it:State
+						println(" ---- TUNING --- ")
+						solve("dialog(F)","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
 				}	 
 				state("endOfJob") { //this:State
 					action { //it:State

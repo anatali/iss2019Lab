@@ -15,10 +15,12 @@ class Sonarhandlerbutler ( name: String, scope: CoroutineScope ) : ActorBasicFsm
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		
+		var LastDistance = 0
 		return { //this:ActionBasciFsm
 				state("init") { //this:State
 					action { //it:State
-						println("sonarhandler STARTS ... ")
+						println("sonarhandlerbutler STARTS ... ")
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 
@@ -29,15 +31,13 @@ class Sonarhandlerbutler ( name: String, scope: CoroutineScope ) : ActorBasicFsm
 				}	 
 				state("handleSonar") { //this:State
 					action { //it:State
-						println("==================================")
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								val Distance = Integer.parseInt( payloadArg(0) ); println(Distance) 
-								              val foundObstacle = (Distance<10) 
+								val Distance = Integer.parseInt( payloadArg(0) ); 
+											  if( Math.abs( Distance - LastDistance ) > 1 ){println(Distance) ; LastDistance = Distance}
+								              val foundObstacle = (Distance<13) 
 								if(foundObstacle)emit("obstacle", "obstacle(10)" ) 
 						}
-						println("==================================")
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )
 				}	 

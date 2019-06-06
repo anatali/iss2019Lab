@@ -45,7 +45,7 @@ const config = {
         {
             name: "fridge",
             centerPosition: { x: 0.85, y: 1.0},
-            size: { x: 0.24, y: 0.085}
+            size: { x: 0.24, y: 0.07}
         },
 
         {

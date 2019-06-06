@@ -72,7 +72,8 @@ dependencies {
 	compile group: 'org.pushingpixels', name: 'trident', version: '1.3'
 	//ROBOT nano (SAM)
     compile name: 'labbaseRobotSam'
-	//compile mame: 'pi4j-core' //2-12 SNAPSHOT non in gradle
+	//compile name: 'pi4j-core'   //2-12 SNAPSHOT non in gradle
+	compile name: 'pi4j-core-1.1'  
  	//PLANNER
     //compile name: 'it.unibo.planner'
  	// https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core

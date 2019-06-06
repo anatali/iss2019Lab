@@ -151,40 +151,121 @@ table, th, td {
 
 <div class="body"> 
 
-<h1>72939 - Final task 2019</h1> 
+<h1>72939 - Final task ISS-2019 Bologna</h1> 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">
 LabISS-lectures site</a></font> 
  
-<h2>Final task ISS-2019 - 72939 </h2> 
+<h2>Overview</h2> 
 
-A dining room is equipped with a <em>table</em>, and a set of (electrical) devices: 
-a <em>fridge</em>, a <em>dishwasher</em> and a <em>pantry</em>. Each device is embedded into a wall of the room, 
-so to exclude any protuberance from the wall itself. The following picture shows an example of such a room:
+A room dedicated to support a <kc>Standing Buffet Service</kc> is equipped  with a set of (smart and non-smart) resources including
+a <em>fridge</em>, a <em>dishwasher</em>, a <em>pantry</em>, and a ddr robot able to work as a <em>Room Butler</em> (called from
+now on <bc>RBR</bc> (<tt>Room Butter Robot</tt>).
+
+<br/><br/>
+The <em>fridge</em>, the <em>dishwasher</em> and the <em>pantry</em> are embedded into a wall of the room, 
+so to exclude any protuberance from the wall itself. 
+<br/><br/>
+A <em>Table</em> is put at the center of the room, so that a possible room configuration
+looks like that shown in the following picture:
 
 	<center><table style="width:98%">
 	<tbody>	
 	<tr>
 	<td style="width:60%">
-	<h3> </h3>
+	<h3>Standing Buffet Service room </h3>
 	<center><img src="./roomLayout.png" alt="roomLayout" width="75%" height="32%"/></center>
 	</td> 
 	<td><m>
-	<em>RH</em> is the home location of a ddr robot working as a room butler.
-    	</m>
+	<li><em>RH</em> : home location of the <bc>RBR</bc></li>
+ 	<li><em>fridge</em> a 'Internet Thing'</li>
+	<br/><br/>
+	For a possible virtual environment, see <a href="../sceneConfig.js" target="lecture">sceneConfig.js</a>
+   	</m>
  	</td>
 	 </table>
 	</center> 	
+The behavior of the <tt>Buffet Service</tt> is supervised by a <em>Maître de salle</em> (or simply <bc>Maitre</bc>) 
+which can tell the <bc>RBR</bc> to perform a set of  tasks, including:
 
+<ol>
+<li><i>Prepare the room</i>. This task consists in putting on the <em>Table</em> dishes taken from the 
+<em>pantry</em>, and food taken from the <em>fridge</em>. The set of items to put on the table 
+in this phase is fixed and properly described somewhere.</li>
+
+<li><i>Clear the room</i>. This task consists in bringing non-consumed food  again  in the <em>fridge</em> and 
+the dishes in the <em>dishwasher</em>.</li>
+<li><i>Add food</i> on the table. This task consists in bringing some specific food (if it exists)
+from the <em>fridge</em> to the <em>Table</em>.
+</ol>
+
+Thus, the <em>fridge</em> is intended to be a smart device owning explicit knowledge of the food stored in it.
+Moreover, it should be able to answer (via <ks>CoAP</ks>) to questions about its content, asked by humans or machines.
+
+<br/><br/>
+The <em>pantry</em>  and the <em>dishwasher</em> are (at the moment) non-smart resources.
+<h2>Requirements</h2> 	
 
 <div class="req">
-Refactoring the <tt>BLS</tt> system introduced in <a href="Lab1.html" target="info">Lab1.html</a> so to provide a reusable software 
-<a href="https://en.wikipedia.org/wiki/Software_framework">framework</a> for <tt>BLS</tt> applications.
+Design and build the software to put on board of the <em>fridge</em> and of the <bc>RBR</bc>. In particular,
+the <bc>RBR</bc> must be able to accept the following commands sent by the <ks>smart-phone</ks> of <bc>Maitre</bc>:
+
+<ul>
+<li><em>prepare</em>: the <bc>RBR</bc> must execute in autonomous way the <i>Prepare the room</i> task.</li>
+<li><em>add food</em>:   the <bc>RBR</bc> must execute in autonomous way  the <i>Add food</i> task.</li>
+<li><em>clear</em>:  the <bc>RBR</bc> must execute in autonomous way the <i>Clear the room</i> task.</li>
+</ul>
+
+These tasks are normally executed in sequence, and the main scenario can be summarized as follows:
+
+<ol>
+<li>At start, the room is empty (i.e. no people is in it, besides the <bc>Maitre</bc>) while the <em>pantry</em>
+and the <em>fridge</em> are filled with a proper set of items. The <bc>RBR</bc> is in its <ks>RH</ks> location
+and the <em>dishwasher</em> is empty.</li>
+<li>The <bc>Maitre</bc> sends to the <bc>RBR</bc> the <em>prepare</em> command and waits for the completion
+of the related task. At the end, the <bc>RBR</bc> is in its <ks>RH</ks> location again. </li>
+<li>The <bc>Maitre</bc> opens the room to people. During the service, the <bc>Maitre</bc> can send to the <bc>RBR</bc>
+the <em>add food</em> command, by specifying a <em>food-code</em>. The <bc>RBR</bc> executes the task only if food
+with the given code is available in the <em>fridge</em>, otherwise it sends a warning to the <bc>Maitre</bc>. After the task completion,
+the <bc>RBR</bc> returns is in its <ks>RH</ks> location.
+</li>
+<li>At the end of the party, the <bc>Maitre</bc> <bc>Maitre</bc> sends to the <bc>RBR</bc> the <em>clear</em> command
+and waits for the completion of the task. The <bc>RBR</bc> returns is in its <ks>RH</ks> location again.
+</ol>
+
+
+
+However, the <bc>Maitre</bc> is able, at any time, to
+use his/her smart-phone to:
+<ul>
+<li><em>consult</em> the <kc>state of the room</kc>, e.g. to known what are the objects related to each resource;
+for example, the object currently posed on the <em>Table</em>, in the <em>dishwasher</em>, etc;</li>
+<li><em>stop</em> or <em>reactivate</em> an activated task.</li>
+</ul>
+ 
+Finally, the <bc>RBR</bc> must be able to 
+<ul>
+<li><em>avoid </em>the impact with mobile obstacles (e.g. the <bc>Maitre</bc> 
+or other humans / animals present in the room).</li>
+</ul>
+
+The software to put on the <em>fridge</em> should make the device able to:
+<ul>
+<li><em>expose</em> its current content on the <bc>Maitre</bc> smart-phone;</li>
+<li><em>answer</em> to questions about its content (e.g. if it contains food with a given code ).</li>
+</ul>
+
+
 </div>	    
 
-Butler robot
-	<br/><br/>	
-A ddr robot, name <em>rbutler</em> dinner room 	
-	<br/><br/>	 	
+<h2>Non functional requirements</h2>  
+<ol>
+<li>The ideal work team is composed of 3 persons. Teams of 1 or 2 persons (NOT 4 or more) are also allowed. </li>
+<li>The team must present a workplan as the result of the requirement/problem analysis,
+including at least one TestPlan.</li>
+<li>The team must present the sequence of SPRINT performed, with appropriate motivations.</li>
+<li>The team must present (in synthetic, schematic way) the specific activity of each team-component.</li>
+</ol>	
+ 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
 By AN Unibo-DISI    

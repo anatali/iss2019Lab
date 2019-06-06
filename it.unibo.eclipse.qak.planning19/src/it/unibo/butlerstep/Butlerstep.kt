@@ -44,19 +44,6 @@ class Butlerstep ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
-				state("handleObstacle") { //this:State
-					action { //it:State
-						itunibo.planner.moveUtils.setDuration(myself)
-						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								val distance = Integer.parseInt( payloadArg(0) ) 
-								              foundObstacle = (distance<20) 
-						}
-					}
-					 transition( edgeName="goto",targetState="stepFail", cond=doswitchGuarded({foundObstacle}) )
-					transition( edgeName="goto",targetState="s0", cond=doswitchGuarded({! foundObstacle}) )
-				}	 
 				state("stepFail") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.setDuration(myself)

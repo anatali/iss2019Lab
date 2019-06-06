@@ -48,6 +48,7 @@ var Direction = \"\"
 	State hadleStepOk{
 		println("&&& moveAhead ok")	
 		solve( updateMapAfterStep )
+		solve( showMap	 )
 		delayVar PauseTime 
 	}
 	Goto moveAhead 
@@ -58,12 +59,20 @@ var Direction = \"\"
 		solve( showMap	 )
 		forward resourcemodel -m modelChange : modelChange(robot,a)
 		delayVar RotateTime
+		forward resourcemodel -m modelChange : modelChange(robot,h)
 		solve( changeDirection )
 		solve( robotdirection(D) )
 		delayVar PauseTime 
 	}
-    Goto endOfJob  if "(getCurSol(\"D\").toString() == \"sud\")" else moveAhead   
+    Goto endOfJob  if "(getCurSol(\"D\").toString() == \"sud\")" else tuning   
 
+
+   	State tuning{	
+		println(" ---- TUNING --- ")
+		solve( dialog(F) )	//to tune at hand
+	} 
+	Goto moveAhead
+	
 	State endOfJob{
 		println("EXPLRATION ENDS")
 		//run itunibo.planner.plannerUtil.getDuration()
@@ -96,16 +105,16 @@ QActor butlerstep context ctxMindButler {
 	}
 	Goto s0
 	
-	//Substitute with an ad-hoc actor for a real robot
-	State handleObstacle{  //before than the step time
-		run itunibo.planner.moveUtils.setDuration(myself)
-		printCurrentMessage
- 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-			["val distance = Integer.parseInt( payloadArg(0) ) 
-              foundObstacle = (distance<20) "]  
-   		}
-	}
-	Goto stepFail if "foundObstacle" else s0
+//	//Substitute with an ad-hoc actor for a real robot
+//	State handleObstacle{  //before than the step time
+//		run itunibo.planner.moveUtils.setDuration(myself)
+//		printCurrentMessage
+// 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+//			["val distance = Integer.parseInt( payloadArg(0) ) 
+//              foundObstacle = (distance<14) "]  
+//   		}
+//	}
+//	Goto stepFail if "foundObstacle" else s0
 	
 	State stepFail{
 		run itunibo.planner.moveUtils.setDuration(myself)
@@ -120,8 +129,11 @@ QActor butlerstep context ctxMindButler {
 }    
 
 QActor sonarhandlerbutler context ctxMindButler{  
+["
+var LastDistance = 0
+"]
  	State init initial{
-		println("sonarhandler STARTS ... ")
+		println("sonarhandlerbutler STARTS ... ")
 	}         
 	Goto waitForEvents 
 	   
@@ -129,14 +141,15 @@ QActor sonarhandlerbutler context ctxMindButler{
    	Transition t0  whenEvent sonarRobot ->  handleSonar
    	               
  	State handleSonar{                      
-		println("==================================")
- 		printCurrentMessage                                        
+		//println("==================================")
+ 		//printCurrentMessage                                        
   		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-			["val Distance = Integer.parseInt( payloadArg(0) ); println(Distance) 
-              val foundObstacle = (Distance<10) "]  
+			["val Distance = Integer.parseInt( payloadArg(0) ); 
+			  if( Math.abs( Distance - LastDistance ) > 1 ){println(Distance) ; LastDistance = Distance}
+              val foundObstacle = (Distance<13) "]  
             if "foundObstacle" emit obstacle :  obstacle(10)  
    		}
- 		println("==================================")
+ 		//println("==================================")
   	} 
  	Goto waitForEvents
 }
