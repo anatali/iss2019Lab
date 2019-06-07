@@ -7,10 +7,6 @@ object moveUtils{
     private val actions : List<Action>? = null
     private var existPlan = false
 	
-//    fun storeMoves( actor : ActorBasic ){
-//        storeeMovesInActor( actor, plannerUtil.getActions()  ) 
-//    }
-
     private fun storeeMovesInActor( actor : ActorBasic, actions : List<Action>?  ) {
         if( actions == null ) return
         val iter = actions!!.iterator()

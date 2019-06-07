@@ -1,5 +1,5 @@
 %====================================================================================
-% mindwithplanner description   
+% planex0 description   
 %====================================================================================
-context(ctxmindwithplan, "localhost",  "MQTT", "0" ).
- qactor( plantester, ctxmindwithplan, "it.unibo.plantester.Plantester").
+context(ctxpanex0, "localhost",  "TCP", "8038" ).
+ qactor( planex0, ctxpanex0, "it.unibo.planex0.Planex0").

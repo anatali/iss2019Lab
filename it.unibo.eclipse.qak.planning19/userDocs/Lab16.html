@@ -151,31 +151,168 @@ table, th, td {
 
 <div class="body"> 
 
-<h1>72939 - LAB16 | Planning</h1> 
+<h1>72939 - LAB16 | Exploiting Planning Tools</h1> 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">
 LabISS-lectures site</a></font> 
  
  <h2>Overview</h2>
+ In many ddr-robot applications, there is the need to discovery the topology of the floor and to define test plans to check
+ that the robot covers all the free-areas of the floor.
  
- 	<center><table style="width:98%">
+ In these applications, the robot control software could logically operate in two phases (<em>plan-first/schedule later</em>, 
+ sez. <tt>11.1</tt> of <a href="#AIBook">AIBook</a>):
+ <ol>
+ <li>first, the robot <ks>detects</ks> (by using a planner) a proper sequence of moves according its current position 
+ and the current state of the world  (the room in which it is working. This phase col</li>
+ <li>next, the robot <ks>actuates</ks> the move sequence, with the caution the the execution of a <em>basicStep</em> 
+ can works also as a <i>'discovery action'</i> that could lead to the interruption of the sequence for the presence of a (fixed or mobile) obstacle.</li>
+</ol>
+
+To promote the development of plan-based applications, it is wise to encapsulate the planning activity into a specialized component, 
+named, from now on, 'the <bc>planner</bc>'. At this level of analysis, the details of the behavior of the planner can be ignored. 
+In fact, we will exploit a set of available supports built upon the <a href="https://github.com/aimacode/aima-java" target="web">AIMA3e-Java</a>
+library:  	
+<br/><br/>
+
+  	<center><table style="width:98%">
 	<tbody>	
 	<tr>
-	<td style="width:70%">
-	<h3> </h3>
-	<center><img src="./plant0.png" alt="plant0" width="45%" height="32%"/></center>
+	<td style="width:40%">
+	<h3>AIMA library</h3>
+    <a href="https://github.com/aimacode/aima-java" target="web">AIMA3e-Java</a> <br/> <br/>
+	<m>
+	In particular, the Best-first search algorithm (sez. <tt>3.5.2</tt> of the book) as a support for search-based problem-solving agents:<br/>
+	<a href="https://github.com/aimacode/aima-java/blob/AIMA3e/aima-core/src/main/java/aima/core/search/informed/AStarSearch.java" 
+	target="web">AStarSearch</a>
+	</m>
 	</td> 
 	<td>
-	See <a href="../src/mindwithplanner.qak" target="code">mindwithplanner.qak</a><br/><br/>
-	<m>
-	See <a href="../src/mindexplore.qak" target="code">mindexplore.qak</a>
-   	</m>
+ 	Java implementation of algorithms from: <br/>
+	<h4 id="AIBook">AIBook</h4>
+	Russell and Norvig: Artificial Intelligence - A Modern Approach 3rd Edition.
+	<center><img src="AIBookRusselNorvig.png" alt="AIBookRusselNorvig" width="45%" height="45%"/></center><br/>  
  	</td>
+	</tr>
+ 	</table>
+	</center> 	 
+	
+ <h2>The application supports for planning</h2>
+In the project <bc>it.unibo.eclipse.qak.planning19</bc>, we introduce two main supports for planning the actions of a robot
+working in logical space (a <kc>map</kc>) composed of a set of square cells, each large as the robot:<br/><br/>	
+	
+  	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+ 	<td style="width:25%">
+	<h3>The logical move-space</h3>
+	<m>The robot is supposed to be a square device, large as a cell.</m>
+ 	</td> 
+	
+	<td>
+    <center><img src="./plant0.png" alt="plant0" width="25%" height="32%"/></center>
+	<m>
+    </m>
+ 	</td>
+	</tr>
+	<tr>
+ 	<td>
+    <a href="../resources/itunibo/planner/plannerUtil.kt" target="code">plannerUtil.kt</a><br/>
+	<m>Example:<a href="../src/mindwithplanner.qak" target="code">mindwithplanner.qak</a><br/>
+	
+	<center><img src="./spiralmove0.png" alt="spiralmove0" width="45%" height="32%"/></center>
+	<pre>setGoal 2,2
+plannerUtil doPlan actions=[a, w, w, a, w, w]
+MAP AFTER EXPLORE STEP
+| 1, 1, 
+| 1, 1, 
+| 1, 1, r, </pre>
+	</m>
+	</td> 
+	<td>
+ 	<h3>plannerUtil</h3>
+	<m>The singleton object named <k>plannerUtil</k> provides a set of static methods, including:
+	<ul>
+	<li><ks>initAI( )</ks>: initializes the planner with a <i>BreadthFirstSearch</i> algorithm, assuming a robot in position
+	<k>cell(0,0,1)</k>, <kc>direction=sud</kc> (see the picture above). 
+	The possible robot directions are: <kc>sud | east | north | west</kc>. <br/><br/>
+	</li>
+	<li><ks>setGoal( x: String, y: String )</ks>: sets <k>cell(x,y,_)</k> as the goal to reach.<br/><br/></li>
+	<li><ks>doPlan(): List<Action>?</ks>: returns the list of actions to reach the goal-cell. 
+	The possible robot directions are: <kc>w | a | s | d</kc> (however, <kc>s</kc> is never selected by the planner).
+	<br/><br/></li>
+	<li><ks>doMove( move : String)</ks>: modifies the state of the <kc>map</kc> according to the given move.<br/><br/></li>
+	<li><ks>showMap(( )</ks>: prints the current state of the <kc>map</kc><br/><br/></li>
+	</ul>
+    </m>
+ 	</td>
+	</tr>
+	<tr>
+ 	<td>
+    <a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a>.
+	<br/>
+	<m>Example:<a href="../src/mindexplore.qak" target="code">mindexplore.qak</a> (the same strategy of the example above)<br/><br/>
+	 Example:<a href="../src/mindbutler.qak" target="code">mindbutler.qak</a><br/>
+	<center><img src="./butlermove0.png" alt="butlermove0.png" width="45%" height="32%"/></center><br/>
+	The robot attempts to delimit its working area bay finding the (position of the) walls.
+	</m>
+	</td> 
+	<td>
+ 	<h3>moveUtils</h3>
+	<m>The singleton object named <k>moveUtils</k> acts as an adapter for a ActorBasic actor, by providing a set of static methods, including:
+  	<ul>
+	<li><ks>doPlan(actor : ActorBasic )</ks>:  calls <kc>plannerUtil.doPlan()</kc> and stores the resulting moves in the kb of the
+	given actor in the form <k>move( M )</k> with <kc>M = a | w | d</kc>. <br/><br/>
+	</li>
+	
+	<li><ks>setPosition(actor : ActorBasic)</ks>:   
+	sets in the kb of the given actor its current position in the form <k>curPos(X,Y )</k>.<br/><br/>
+	</li>
+ 
+	<li><ks>setDirection(actor : ActorBasic)</ks>:   
+	sets in the kb of the given actor its current directiuon in the form <k>direction( D )</k><br/><br/>
+	</li>
+	
+	<li><ks>doPlannedMove(actor : ActorBasic, move: String)</ks>:  calls <kc>plannerUtil.doMove( move )</kc> and 
+	sets in the kb of the given actor its current direction in the form <k>direction( D )</k>.<br/><br/>
+	</li>
+
+  </m>
+ 	</td>
+	</tr>
 	 </table>
 	</center> 	
 
-	<br/><br/>	
+<h3>An example</h3>
+The application designer usually works by exploiting the utility 
+<a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a>. For example:
+
+
+   	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+ 	<td style="width:70%">	 
+	<center><img src="./explan0_1.png" alt="explan0_1" width="100%" height="32%"/></center>
+ 	</td> 
+	<td>
+	</td>
+	</tr> 
+	<tr> 
+	<td>
+	<center><img src="./explan0_2.png" alt="explan0_2" width="100%" height="32%"/></center>
+	</td>
+ 	<td>
+	</td>
+	</tr>
+	</table>
+	</center> 	
 	
- 	
+ 
+<br/>  	<br/>  	
+	
+	
+	
+	<!-- planBookLaValle.png -->
+	
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
 By AN Unibo-DISI    

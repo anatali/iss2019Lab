@@ -30,7 +30,7 @@ object plannerUtil {
     fun initAI() {
         println("plannerUtil initAI")
         initialState = RobotState(0, 0, RobotState.Direction.DOWN)
-        search = BreadthFirstSearch(GraphSearch())
+        search       = BreadthFirstSearch(GraphSearch())
     }
 
     fun getActions() : List<Action>{

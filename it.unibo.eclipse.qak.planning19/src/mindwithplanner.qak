@@ -11,7 +11,7 @@ QActor plantester context ctxMindWithPlan{
 		println("INITIAL MAP") 
  		run itunibo.planner.plannerUtil.showMap() 
 		println("------------------------------------")
-		run itunibo.planner.plannerUtil.startTimer()
+		run itunibo.planner.plannerUtil.startTimer()  
  	}
 	Goto  exploreStep   
 	 
