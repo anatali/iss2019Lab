@@ -1,0 +1,50 @@
+System sonardatastream
+
+//mqttBroker "192.168.43.5" : 1883
+
+Event sonarData      : sonarData( V )
+//Event sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Event  obstacle       : obstacle( DISTANCE )
+
+Context ctxSonarData ip [host="localhost" port=8035]     // -mqtt
+
+QActor qakstream context ctxSonarData{
+	State s0 initial {		
+		println("qakstream STARTS")	
+		run itunibo.streams.sonarStreamPipe.create( myself ) //A stream pipe emits sonarData
+		println("qakstream DONE")	
+	}
+	Goto doWork
+	
+	State doWork{		
+	}
+	Transition t0 whenEvent obstacle -> handleObstacle
+	
+	State handleObstacle{
+		printCurrentMessage
+	}
+	Goto doWork
+}
+  
+QActor qaksonardatahandler context ctxSonarData{
+["
+var Obstacle = false
+var Distance = 100
+"]
+	State s0 initial {		
+		//println("qaksonardatahandler STARTS")		
+	}
+    Transition t0 whenEvent sonarData -> handleSonarData
+    
+	State handleSonarData{
+		printCurrentMessage
+		onMsg (sonarData : sonarData(D) ){
+			["Distance = Integer.parseInt( payloadArg(0) )
+			  Obstacle = ( Distance < 10 )  
+			"]
+		}
+		if "Obstacle" emit obstacle : obstacle($Distance)
+	}
+	Goto s0
+}
+ 

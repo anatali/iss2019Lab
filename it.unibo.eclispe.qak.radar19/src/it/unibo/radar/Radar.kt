@@ -47,10 +47,14 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 						if( checkMsgContent( Term.createTerm("p(Distance,Angle)"), Term.createTerm("p(D,A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								
-								println(  "${payloadArg(0)}" )
-								CurData  = Integer.parseInt( payloadArg(0)  )
-								val D : Int   = CurData/5
-								ShowData = Math.abs( CurData - LastData ) > 5  
+								CurData       = Integer.parseInt( payloadArg(0)  )
+								//println(  "${CurData}" ) 
+								val D : Int   = CurData/3
+								ShowData      = Math.abs( CurData - LastData ) > 5  
+								if(ShowData){
+									 println(  "-------------------- ${D}" )
+									 LastData = CurData
+								}
 								if(ShowData)resources.radarSupport.spot( "$D", payloadArg(1)  )
 						}
 					}

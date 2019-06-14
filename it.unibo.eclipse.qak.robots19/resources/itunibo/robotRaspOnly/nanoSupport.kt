@@ -23,9 +23,9 @@ object nanoSupport {
 	val robot         = basicRobot.getBaseRobot()
  	
 	fun create(actor: ActorBasic, withSonar : Boolean = true){
-		println("nanoSupport CREATING $robot")
-		if(withSonar)
-			sonarHCSR04Support.create( actor, " ")
+		println("nanoSupport CREATING $robot withSonar=$withSonar")
+		if(withSonar) sonarHCSR04Support.create( actor, " ")
+		else println("nanoSupport CREATING $robot with no Sonar ")
 	} 
 	
 	fun move( cmd : String ){

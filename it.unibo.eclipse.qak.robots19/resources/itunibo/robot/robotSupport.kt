@@ -10,7 +10,7 @@ object robotSupport{
 		when( robotKind ){
 			"virtual"    ->  { itunibo.robotVirtual.clientWenvObjTcp.initClientConn( actor, "localhost" ) }
 			"realmbot"   ->  { itunibo.robotMbot.mbotSupport.create( actor, port ) }  //port="/dev/ttyUSB0"   "COM6"
-			"realnano" ->    { it.unibo.robotRaspOnly.nanoSupport.create(actor, true ) }
+			"realnano" ->    { it.unibo.robotRaspOnly.nanoSupport.create(actor, true ) } //false=NO SONAR SUPPORT!!!
 			else -> println( "robot unknown" )
 		}
 	}

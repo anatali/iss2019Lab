@@ -183,7 +183,7 @@ Messaging
     fun unsubscribe( a : ActorBasic) {
         subscribers.remove(a)
     }
-    protected suspend fun emitLocalStreamEvent(v: ApplMessage ){
+    suspend fun emitLocalStreamEvent(v: ApplMessage ){
         subscribers.forEach { it.actor.send(v) }
     }
 

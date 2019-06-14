@@ -1293,3 +1293,13 @@
 ::1 - GET /favicon.ico HTTP/1.1 304 - - 8.494 ms
 ::1 - POST /h HTTP/1.1 200 2111 - 4.323 ms
 ::1 - GET /favicon.ico HTTP/1.1 304 - - 20.173 ms
+::1 - GET / HTTP/1.1 304 - - 16.066 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 8.839 ms
+::1 - POST /w HTTP/1.1 200 2192 - 39.502 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 1.821 ms
+::1 - POST /h HTTP/1.1 200 2192 - 2.329 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 5.250 ms
+::1 - POST /s HTTP/1.1 200 2192 - 17.133 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 13.023 ms
+::1 - POST /h HTTP/1.1 200 2192 - 15.311 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 4.710 ms

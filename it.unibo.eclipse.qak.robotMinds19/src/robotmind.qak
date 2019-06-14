@@ -182,7 +182,5 @@ QActor sonarhandler context ctxRobotMind{
 	Goto waitCmd 
 } 
 
-/*
- * pi 2b - 
- */
+ 
   

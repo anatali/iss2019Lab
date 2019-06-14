@@ -30,13 +30,17 @@ var ShowData = false
 				  whenEvent polar -> showPoint
 	
 	State showPoint{
-		//printCurrentMessage
+		//printCurrentMessage  
 		onMsg ( polar : p( D,A )){
 ["
-println(  \"${payloadArg(0)}\" )
-CurData  = Integer.parseInt( payloadArg(0)  )
-val D : Int   = CurData/5
-ShowData = Math.abs( CurData - LastData ) > 5  
+CurData       = Integer.parseInt( payloadArg(0)  )
+//println(  \"${CurData}\" ) 
+val D : Int   = CurData/3
+ShowData      = Math.abs( CurData - LastData ) > 5  
+if(ShowData){
+	 println(  \"-------------------- ${D}\" )
+	 LastData = CurData
+}
 "]
 			 if "ShowData" run resources.radarSupport.spot( "$D", payloadArg(1)  )			 
 		}
