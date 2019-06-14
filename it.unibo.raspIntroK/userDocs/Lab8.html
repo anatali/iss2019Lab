@@ -185,7 +185,15 @@ network={
         psk="123456789"
 }    
     </pre>
-    
+ Add any other network you plan to use.  For example:
+<pre>
+network={
+        ssid="almawifi"
+        scan_ssid=1
+        key_mgmt=WPA-PSK
+        psk="..."
+}    
+</pre>
     </li>
     <li>Insert the <tt>SD</tt> card into the RaspberryPi and <em>extend the file system</em> by running:
     <pre>
@@ -206,14 +214,17 @@ SMB Network Share       \\192.168.137.2\home_pi\
 </pre>
 </li>
 
-<li>Access to the RaspberryPi via Windows (connnetti unita di rete):
-<pre>\\192.168.137.2\home_pi\</pre>
+<li>Access to the RaspberryPi via Windows :
+<pre>\\192.168.137.2\home_pi\  (connnetti unita di rete)
+\\192.168.43.xxx   (on Explorer path box)
+</pre>
 </li>
 
 <li>
-<h4>Connect the RaspberryPi to a PC  with Wifi (future applications).</h4>    
+<h4>Connect the RaspberryPi to a PC  with Wifi.</h4>    
 <ol>
-<li>Insert a <tt>WIFI</tt> adapter (e.g. <tt>EDUP</tt> - Adattatore Wifi Mini <tt>USB</tt>,150MBps) in a <tt>USB</tt> slot.</li>    
+<li>
+For Pi before <bc>Pi3</bc>, insert a <tt>WIFI</tt> adapter (e.g. <tt>EDUP</tt> - Adattatore Wifi Mini <tt>USB</tt>,150MBps) in a <tt>USB</tt> slot.</li>    
 <li>Activate an hot spot (e.g by using a smart device) with name <b>natspot</b> and password <b>123456789</b></li>
 <li>Turn on the RaspberryPi. It will acquire an address (<tt>192.168.43.xxx</tt>) as shown by the command <b>ifconfig</b> </li>  
 <li>Open <bc>PuTTY</bc> and connect to <tt>192.168.43.xxx</tt> on port <tt>22</tt></li>
@@ -222,9 +233,27 @@ PiB Wi-Fi/Bluetooth</a></li>
 <li>
 Useful commands:
 <pre>
+cat /boot/mywifi.conf
+sudo iw dev wlan0 scan | grep SSID	(list of networks visible to the Pi)
+cat /etc/network/interfaces		()
 sudo iwlist wlan0 scan
 sudo cat /etc/wpa_supplicant/wpa_supplicant.conf
+ 
+
+Deprecated command		Replacement command(s)
+arp					ip n (ip neighbor)		//finding IP
+ifconfig			ip a (ip addr), ip link, ip -s (ip -stats)
+iptunnel			ip tunnel
+iwconfig			iw
+nameif				ip link, ifrename
+netstat				ss, 
+	netstat -r		ip route  
+	netstat -i		ip -s link  
+	netstat- g		ip maddr  
+
+
 </pre>
+
 </li>
 </ol>    
 </li>
@@ -232,10 +261,32 @@ sudo cat /etc/wpa_supplicant/wpa_supplicant.conf
  
 </ol>
 
+<h3>Useful for network.</h3> 
+Since the release of Raspbian Jessie a few things have changed regarding configuration of the network stack from the <tt>CLI</tt>. 
+Previous to Raspbian Jessie, network parameters could be adjusted by editing <tt>/etc/network/interfaces</tt>. 
+This functionality has now been moved to <bc>/etc/dhcpcd.conf</bc>; for example:
+<pre>
+nohook lookup-hostname
+interface eth0
+static ip_address=192.168.0.1/24
+static routers=192.168.0.254
+static domain_name_servers=8.8.8.8
+</pre>
 
+Otherwise:
+<pre>
+route				ip r (ip route)		//Displays the host’s routing tables.
+sudo route add default gw 192.168.1.1 wlan0		//Add a specific default routing
+</pre>
 
-
+<h3>Updating Raspberry</h3> 
+<pre>
+sudo apt-get update			///etc/apt/sources.list
+sudo apt-get dist-upgrade
+</pre>
     
+Si veda anche: <a href="https://www.raspberryitaly.com/raspberrypi-tutti-i-comandi-utili-a-colpo-docchio/" target="web">
+RaspberryPi: Tutti i comandi utili a colpo d’occhio</a>
 <h2>The hardware</h2>
 <!--
 <center><table style="width:98%">
@@ -477,7 +528,7 @@ sudo python
  
 <h2 id="usefulnotes">Useful notes</h2>
 <a href="./devsDdr.html" target="code">Devices for a ddr robot</a><br/><br/>
- 
+	
 Remember:
 
 <pre>

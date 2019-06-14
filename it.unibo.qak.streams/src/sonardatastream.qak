@@ -38,12 +38,12 @@ var Distance = 100
     
 	State handleSonarData{
 		printCurrentMessage
-		onMsg (sonarData : sonarData(D) ){
-			["Distance = Integer.parseInt( payloadArg(0) )
-			  Obstacle = ( Distance < 10 )  
-			"]
-		}
-		if "Obstacle" emit obstacle : obstacle($Distance)
+//		onMsg (sonarData : sonarData(D) ){
+//			["Distance = Integer.parseInt( payloadArg(0) )
+//			  Obstacle = ( Distance < 10 )  
+//			"]
+//		}
+//		if "Obstacle" emit obstacle : obstacle($Distance)
 	}
 	Goto s0
 }

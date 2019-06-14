@@ -14,7 +14,8 @@ object sonarHCSR04SupportAsStream {
 	//g++  SonarAlone.c -l wiringPi -o  SonarAlone
 	fun create( actor : ActorBasic, consumer:  ActorBasic ){
 		println("sonarHCSR04SupportAsStream CREATING")
-		actor.subscribe( consumer  )		//first part of the pipe
+		actor.subscribe( consumer  )								//first part of the pipe
+		actor.subscribe( logDevice("sonarDataLog", actor)  )		//add a logger
 		val p = Runtime.getRuntime().exec("sudo ./SonarAlone")
 		reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
 		startRead( actor )

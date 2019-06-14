@@ -22,7 +22,6 @@ class sonardatafilter( name : String, val producerActor : ActorBasic) : ActorBas
 			LastDistance = Distance
 			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($vStr)")
 			//println("   ${producerActor.name} |  emit m1= $m1")
-			producerActor.emitLocalStreamEvent( m1 )  //propagate to the pipe
 			scope.launch{ producerActor.emit( m1 ) }
 		}else{
 			//println("   $name |  DISCARDS $Distance ")

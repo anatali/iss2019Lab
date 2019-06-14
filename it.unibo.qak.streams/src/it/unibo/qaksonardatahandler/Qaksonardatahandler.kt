@@ -27,12 +27,6 @@ class Qaksonardatahandler ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				state("handleSonarData") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("sonarData(V)"), Term.createTerm("sonarData(D)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								Distance = Integer.parseInt( payloadArg(0) )
-											  Obstacle = ( Distance < 10 )  
-						}
-						if(Obstacle)emit("obstacle", "obstacle($Distance)" ) 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 

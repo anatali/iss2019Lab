@@ -21,7 +21,7 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 						resources.radarSupport.activate(  )
 						solve("consult('radarData.pl')","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="radarTest", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )
 				}	 
 				state("radarTest") { //this:State
 					action { //it:State
@@ -35,7 +35,8 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 				state("waitMsg") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t07",targetState="showPoint",cond=whenDispatch("polar"))
+					 transition(edgeName="t00",targetState="showPoint",cond=whenDispatch("polar"))
+					transition(edgeName="t01",targetState="showPoint",cond=whenEvent("polar"))
 				}	 
 				state("showPoint") { //this:State
 					action { //it:State
