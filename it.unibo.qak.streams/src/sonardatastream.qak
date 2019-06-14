@@ -1,13 +1,25 @@
 System sonardatastream
 
-//mqttBroker "192.168.43.5" : 1883
+mqttBroker "192.168.43.5" : 1883
 
 Event sonarData      : sonarData( V )
 //Event sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  obstacle       : obstacle( DISTANCE )
 
-Context ctxSonarData ip [host="localhost" port=8035]     // -mqtt
+Context ctxSonarData ip [host="localhost" port=8035]     -mqtt
 
+/*
+ * Activates a pipe that filters the data and emit the event obstacle
+ * when the distance detected by the sonar on the robot is less then a Limit  (10).
+ * 
+ * No detail about the pipe is visible in the model: only its observable effects (events) are.
+ * 
+ * The pipe is composed as follows:
+ * 
+ * SonarAlone 
+ * qakstream  --(sonarRobot)--> sonardatafilter --(sonarData)-->  obstacleDetector --> obstacle
+ * 		      --(sonarRobot)--> logDevice
+ */
 QActor qakstream context ctxSonarData{
 	State s0 initial {		
 		println("qakstream STARTS")	
@@ -25,7 +37,8 @@ QActor qakstream context ctxSonarData{
 	}
 	Goto doWork
 }
-  
+
+/* 
 QActor qaksonardatahandler context ctxSonarData{
 ["
 var Obstacle = false
@@ -47,4 +60,4 @@ var Distance = 100
 	}
 	Goto s0
 }
- 
+*/ 

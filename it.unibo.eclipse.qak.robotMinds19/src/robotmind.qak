@@ -94,15 +94,7 @@ QActor robotmind context ctxRobotMind{
 		}
 	}
 	Goto waitCmd
-/*   
- 	State handleSonarRobot{
- 		printCurrentMessage
- 		onMsg ( sonarRobot : sonar( DISTANCE ) ){
-			["obstacle = Integer.parseInt( payloadArg(0) ) < 10 "]
- 		}//onMsg 	 
- 	} 
-	Goto handeObstacle if "obstacle" else waitCmd 
-*/ 
+
 	
 	State handeObstacle{		
 //		println("handeObstacle: first react, the update the model")  
@@ -129,21 +121,21 @@ QActor sonarhandler context ctxRobotMind{
 	Goto waitForEvents 
 	   
 	State waitForEvents{  }      
-   	Transition t0 whenEvent sonar      ->  handleSonar
+   	Transition t0 //whenEvent sonar      ->  handleSonar
    	              whenEvent sonarRobot ->  handleSonar
    	               
  	State handleSonar{                      
  		//printCurrentMessage                                        
- 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
-[" val D = Integer.parseInt( payloadArg(1) ) * amplify"] //AMPLIFY
-			emit polar : p( $D, 90  )  
- 		}
+// 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
+//[" val D = Integer.parseInt( payloadArg(1) ) * amplify"] //AMPLIFY
+//			emit polar : p( $D, 90  )  
+// 		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-[" val D = Integer.parseInt( payloadArg(0) ) * amplify"] //AMPLIFY
-			emit polar : p( $D, 180  ) 
-			if "LastSonarDistance  != D"  
+//[" val D = Integer.parseInt( payloadArg(0) ) * amplify"] //AMPLIFY
+//			emit polar : p( $D, 180  ) 	//done by the pipe in basicrobot
+//			if "LastSonarDistance  != D"  
 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
-			if "LastSonarDistance  != D" ["LastSonarDistance=D"] 
+//			if "LastSonarDistance  != D" ["LastSonarDistance=D"] 
  		}
  	} 
  	Goto waitForEvents
@@ -157,6 +149,7 @@ QActor sonarhandler context ctxRobotMind{
   */
   QActor basicrobot context ctxRobotMind {	
 	State s0 initial {  
+ 		run itunibo.streams.sonarStreamPipe.create( myself ) //A stream pipe  
   		solve( consult("basicRobotConfig.pl") )   
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )

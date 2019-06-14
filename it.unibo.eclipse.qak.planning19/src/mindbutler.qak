@@ -104,18 +104,7 @@ QActor butlerstep context ctxMindButler {
 		forward butler -m stepOk : stepOk(ok)  //answer
 	}
 	Goto s0
-	
-//	//Substitute with an ad-hoc actor for a real robot
-//	State handleObstacle{  //before than the step time
-//		run itunibo.planner.moveUtils.setDuration(myself)
-//		printCurrentMessage
-// 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-//			["val distance = Integer.parseInt( payloadArg(0) ) 
-//              foundObstacle = (distance<14) "]  
-//   		}
-//	}
-//	Goto stepFail if "foundObstacle" else s0
-	
+		
 	State stepFail{
 		run itunibo.planner.moveUtils.setDuration(myself)
 		println("&&& butlerstep stepfail ")
@@ -123,8 +112,6 @@ QActor butlerstep context ctxMindButler {
 		forward butler -m stepFail : stepFail(obstacle,#TIME)  	
 	}
 	Goto s0
-
-
 
 }    
 
