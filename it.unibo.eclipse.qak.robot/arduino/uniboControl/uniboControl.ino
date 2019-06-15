@@ -31,7 +31,7 @@ void sonarDetect()
 {
     sonarVal = ultrasonic_3.distanceCm();
     Serial.println(sonarVal);
-    if((sonarVal) < (10)){
+    if((sonarVal) < (5)){
         move(1,0);
         stopFollow = true;
         //Serial.println("stopFollow line follow");

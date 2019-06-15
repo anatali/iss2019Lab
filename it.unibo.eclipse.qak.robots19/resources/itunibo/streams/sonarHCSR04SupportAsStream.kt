@@ -16,7 +16,7 @@ object sonarHCSR04SupportAsStream {
 	fun create( actor : ActorBasicFsm, consumer:  ActorBasic ){
 		println("sonarHCSR04SupportAsStream CREATING")
 		actor.subscribe( consumer  )								//first part of the pipe
-		actor.subscribe( logDevice("sonarDataLog", actor.scope)  )		//add a logger
+		//actor.subscribe( logDevice("sonarDataLog", actor.scope)  )		//add a logger
 		val p = Runtime.getRuntime().exec("sudo ./SonarAlone")
 		reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
 		startRead( actor )

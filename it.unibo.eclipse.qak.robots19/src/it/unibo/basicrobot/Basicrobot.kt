@@ -18,6 +18,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						itunibo.streams.sonarStreamPipe.create(myself)
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")

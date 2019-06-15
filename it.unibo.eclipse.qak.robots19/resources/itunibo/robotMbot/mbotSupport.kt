@@ -2,6 +2,7 @@ package itunibo.robotMbot
 import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import it.unibo.kactor.MsgUtil
 
 object mbotSupport{
 	lateinit var actor   : ActorBasic
@@ -59,7 +60,10 @@ object mbotSupport{
 								dataSonar = v;
 								println("mbotSupport sonar: $dataSonar"   );								
 								actor.emit("sonarRobot", "sonar( ${dataSonar.toInt()} )");
- 							}
+								//TO EXPLOIT A STREAM PIPE
+// 								val event = MsgUtil.buildEvent(actor.name,"sonarRobot", "sonar( $dataSonar )")
+//								actor.emitLocalStreamEvent(event)		//AT STREAM LEVEL
+							}
 						} catch ( e : Exception) {
  							println("getDataFromArduino | ERROR $e   ")
  							//System.exit(1)

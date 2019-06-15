@@ -7,6 +7,8 @@ Event  envCond        : envCond( CONDTYPE )        //from the environment
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
+Event  sonarData      : sonarData( D )			 //filtered by the PIPE
+Event  obstacle       : obstacle( DISTANCE )
 Event  polar          : p( Distance, Angle )  
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
@@ -67,15 +69,15 @@ QActor resourcemodel context ctxRobotMind{
  * reacts to changes in the model
  */
 QActor robotmind context ctxRobotMind{   
-["var obstacle = false"] 
+["var goingForward = false"] 
 	State s0 initial {	  
 		println("ROBOT MIND STARTED")	
 	}
 	Goto waitCmd
 	 
 	State waitCmd {		} 
-	Transition t0 whenEvent envCond      -> handleEnvCond
-		          //whenEvent sonarRobot   -> handleSonarRobot
+	Transition t0 whenEvent envCond    -> handleEnvCond
+				  whenEvent obstacle   -> handeObstacle		//emitted by the sonar PIPE
 		          whenEvent local_modelChanged -> handleModelChanged
 
 	State handleEnvCond{   
@@ -91,26 +93,63 @@ QActor robotmind context ctxRobotMind{
 		printCurrentMessage
 		onMsg ( local_modelChanged : modelChanged(robot,CMD) ){ 
 			forward basicrobot -m robotCmd : robotCmd( $payloadArg(1) )
-		}
+		    ["goingForward= (payloadArg(1)==\"w\")"]
+ 		}
 	}
-	Goto waitCmd
-
+	Goto waitCmd 
 	
-	State handeObstacle{		
-//		println("handeObstacle: first react, the update the model")  
+ 	State handeObstacle{		
 //		forward basicrobot -m robotCmd : robotCmd( s )	//First do ...
 //		forward resourcemodel -m modelUpdate : modelUpdate(robot,s) //... then update the model
 //		delay 200 
-		forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
-		forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
+
+//if the robot is moving forward ...
+		println("handeObstacle goingForward=$goingForward")
+		if "goingForward" forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
+		if "goingForward" forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
+		if "goingForward" forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
+		println("handeObstacle: first react, then update the model")  
 	}
 	Goto waitCmd
- 
+	
  }
 
 /*
  * Works in ctxRobotMind since it is a policy
  */
+ QActor sonarhandler context ctxRobotMind{  
+  	State init initial{
+		println("sonarhandler STARTS ... ")
+	}         
+	Goto waitForEvents 
+ 	State waitForEvents{  }      
+   	Transition t0 whenEvent sonarData  -> handleSonar
+ 		          //whenEvent obstacle   -> handeObstacle		//emitted by the sonar PIPE
+  	
+ 	State handleSonar{
+ 		onMsg ( sonarData : sonarData( DISTANCE ) ){
+ 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
+ 		}
+ 	}
+ 	Goto waitForEvents
+ 	
+// 	State handeObstacle{		
+////		forward basicrobot -m robotCmd : robotCmd( s )	//First do ...
+////		forward resourcemodel -m modelUpdate : modelUpdate(robot,s) //... then update the model
+////		delay 200 
+//
+////if the robot is moving forward ...
+//		forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
+//		forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
+//		println("handeObstacle: first react, then update the model")  
+//	}
+//	Goto waitForEvents
+ 
+ }
+ /* 
+// REMOVED: its job is done by the sonardatafilter
+   Arduino  --(sonarRobot)--> sonardatafilter ----> sonarData , obstacle 
+ 
 QActor sonarhandler context ctxRobotMind{  
 ["var LastSonarDistance = 0
   val amplify=5
@@ -121,26 +160,26 @@ QActor sonarhandler context ctxRobotMind{
 	Goto waitForEvents 
 	   
 	State waitForEvents{  }      
-   	Transition t0 //whenEvent sonar      ->  handleSonar
+   	Transition t0 whenEvent sonar      ->  handleSonar
    	              whenEvent sonarRobot ->  handleSonar
    	               
  	State handleSonar{                      
  		//printCurrentMessage                                        
-// 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
-//[" val D = Integer.parseInt( payloadArg(1) ) * amplify"] //AMPLIFY
-//			emit polar : p( $D, 90  )  
-// 		}
+ 		onMsg ( sonar  : sonar( SONAR, DISTANCE ) ){    			
+[" val D = Integer.parseInt( payloadArg(1) ) * amplify"] //AMPLIFY
+			emit polar : p( $D, 90  )  
+ 		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-//[" val D = Integer.parseInt( payloadArg(0) ) * amplify"] //AMPLIFY
-//			emit polar : p( $D, 180  ) 	//done by the pipe in basicrobot
-//			if "LastSonarDistance  != D"  
+[" val D = Integer.parseInt( payloadArg(0) ) * amplify"] //AMPLIFY
+			emit polar : p( $D, 180  ) 	//done by the pipe in basicrobot
+			if "LastSonarDistance  != D"  
 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
-//			if "LastSonarDistance  != D" ["LastSonarDistance=D"] 
+			if "LastSonarDistance  != D" ["LastSonarDistance=D"] 
  		}
  	} 
  	Goto waitForEvents
 }
- 
+*/ 
  
  /*
   * --------------------------------------------------------
@@ -149,12 +188,11 @@ QActor sonarhandler context ctxRobotMind{
   */
   QActor basicrobot context ctxRobotMind {	
 	State s0 initial {  
- 		run itunibo.streams.sonarStreamPipe.create( myself ) //A stream pipe  
   		solve( consult("basicRobotConfig.pl") )   
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
-  		 else println("no robot")
-   		ifSolved run itunibo.robot.robotSupport.create(myself, @R, @PORT )
+  		else println("no robot")
+   		ifSolved run itunibo.robot.robotSupport.create(myself, @R, @PORT ) 
    		run itunibo.robot.robotSupport.move( "msg(a)" )
    		delay 700
    		run itunibo.robot.robotSupport.move( "msg(d)" )

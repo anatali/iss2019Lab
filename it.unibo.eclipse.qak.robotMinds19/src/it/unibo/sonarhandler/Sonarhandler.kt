@@ -15,8 +15,6 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		var LastSonarDistance = 0
-		  val amplify=5
 		return { //this:ActionBasciFsm
 				state("init") { //this:State
 					action { //it:State
@@ -27,11 +25,11 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("waitForEvents") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t04",targetState="handleSonar",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t05",targetState="handleSonar",cond=whenEvent("sonarData"))
 				}	 
 				state("handleSonar") { //this:State
 					action { //it:State
-						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
+						if( checkMsgContent( Term.createTerm("sonarData(D)"), Term.createTerm("sonarData(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("modelChange", "modelChange(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
 						}

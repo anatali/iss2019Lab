@@ -1,11 +1,12 @@
 package itunibo.robot
 import it.unibo.kactor.ActorBasic
+import it.unibo.kactor.ActorBasicFsm
  
 
 object robotSupport{
 	lateinit var robotKind : String
 	
-	fun create( actor: ActorBasic, robot : String, port: String ){
+	fun create( actor: ActorBasicFsm, robot : String, port: String ){
 		robotKind = robot
 		when( robotKind ){
 			"virtual"    ->  { itunibo.robotVirtual.clientWenvObjTcp.initClientConn( actor, "localhost" ) }

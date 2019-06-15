@@ -15,7 +15,7 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		var obstacle = false
+		var goingForward = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -27,7 +27,8 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					action { //it:State
 					}
 					 transition(edgeName="t02",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t03",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
+					transition(edgeName="t03",targetState="handeObstacle",cond=whenEvent("obstacle"))
+					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State
@@ -46,14 +47,18 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 						if( checkMsgContent( Term.createTerm("modelChanged(TARGET,VALUE)"), Term.createTerm("modelChanged(robot,CMD)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								forward("robotCmd", "robotCmd(${payloadArg(1)})" ,"basicrobot" ) 
+								goingForward= (payloadArg(1)=="w")
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
-						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
-						forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
+						println("handeObstacle goingForward=$goingForward")
+						if(goingForward)forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						if(goingForward)forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						if(goingForward)forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
+						println("handeObstacle: first react, then update the model")
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 

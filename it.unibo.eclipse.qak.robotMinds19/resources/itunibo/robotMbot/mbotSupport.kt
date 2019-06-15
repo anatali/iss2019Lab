@@ -2,15 +2,23 @@ package itunibo.robotMbot
 import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import it.unibo.kactor.ActorBasicFsm
+import it.unibo.kactor.MsgUtil
 
 object mbotSupport{
-	lateinit var actor   : ActorBasic
+	lateinit var actor   : ActorBasicFsm
  	lateinit var conn    : SerialPortConnSupport
 	var dataSonar        : Int = 0 ; //Double = 0.0
 	
-	fun create( myactor: ActorBasic, port : String ){
+	fun create( myactor: ActorBasicFsm, port : String ){
 		actor = myactor
+		configureSonarPipe()
 		initConn( port )
+	}
+	
+	fun configureSonarPipe(){
+		val filter =  sonardatafilter("filter", actor )
+		actor.subscribe(filter)
 	}
 	
 	fun move( cmd : String ){
@@ -31,7 +39,7 @@ object mbotSupport{
 			val serialConn = JSSCSerialComm()
 			conn = serialConn.connect(port)	//returns a SerialPortConnSupport
 			println("mbotSupport initConn conn= $conn")
-			if( conn === null ) return;
+//			if( conn === null ) return;
 			while(true){ 
 				val curDataFromArduino = conn.receiveALine()  //consume "start" sent by Arduino
 				val istart = curDataFromArduino.contains("start")
@@ -51,13 +59,13 @@ object mbotSupport{
 							var curDataFromArduino = conn.receiveALine();
  	 						//println("getDataFromArduino received: $curDataFromArduino"    );
  							var v = curDataFromArduino.toDouble() ;
-							//handle too fast change
-// 							var delta =  Math.abs( v - dataSonar);
-// 							if( delta < 7 && delta > 0.5 ) {
- 								dataSonar = v.toInt();
+							//handle too fast change ?? NOT HERE
+  								dataSonar = v.toInt();
 								//println("mbotSupport sonar: ${ dataSonar }"   );								
-								actor.emit("sonarRobot", "sonar( ${ dataSonar } )");
-// 							}
+								//actor.emit("sonarRobot", "sonar( ${ dataSonar } )");
+								//TO EXPLOIT THE STREAM PIPE
+ 								val event = MsgUtil.buildEvent(actor.name,"sonarRobot","sonar( $dataSonar )")
+								actor.emitLocalStreamEvent(event)		//AT STREAM LEVEL
 						} catch ( e : Exception) {
  							println("getDataFromArduino | ERROR $e   ")
  							//System.exit(1)

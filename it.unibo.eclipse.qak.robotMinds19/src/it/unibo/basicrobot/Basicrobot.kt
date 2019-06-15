@@ -18,7 +18,6 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						itunibo.streams.sonarStreamPipe.create(myself)
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")
@@ -37,7 +36,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t05",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
+					 transition(edgeName="t06",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State

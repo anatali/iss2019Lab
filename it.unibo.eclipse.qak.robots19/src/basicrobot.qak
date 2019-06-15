@@ -13,6 +13,7 @@ Context ctxBasicRobot ip [host="localhost" port=8005]   -mqtt
    
 QActor basicrobot context ctxBasicRobot {	
 	State s0 initial {  
+ 		run itunibo.streams.sonarStreamPipe.create( myself ) //A stream pipe  
   		solve( consult("basicRobotConfig.pl") )   
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
