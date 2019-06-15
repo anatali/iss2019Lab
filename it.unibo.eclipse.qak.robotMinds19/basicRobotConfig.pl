@@ -11,4 +11,8 @@ minDistance( 2 ).
 maxDistance( 50 ).
 maxDelta( 1 ).
 amplif( 6	).   %%radar does D/3
- 
+
+
+%% modeReact( oop ).
+modeReact( pipe ).
+%% modeReact( model ).

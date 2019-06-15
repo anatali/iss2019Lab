@@ -50,7 +50,7 @@ QActor resourcemodel context ctxRobotMind{
     Goto  waitModelChange
     
 	State changeModel{  
-		printCurrentMessage 
+		//printCurrentMessage 
 		//ROBOT MOVE
 		onMsg( modelChange : modelChange( robot,V ) ) { // V= w | ...
 			run itunibo.robot.resourceModelSupport.updateRobotModel( myself, payloadArg(1) )
@@ -104,13 +104,16 @@ QActor robotmind context ctxRobotMind{
 //		delay 200 
 
 //if the robot is moving forward ...
-		println("handeObstacle goingForward=$goingForward")
-		if "goingForward" forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
-		if "goingForward" forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
-		if "goingForward" forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
-		println("handeObstacle: first react, then update the model")  
+		if "goingForward" forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
+		run itunibo.robotMbot.globalTimer.stopTimer()
+  		if "goingForward" forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
+		//println("handeObstacle: first react, then update the model")  
 	}
-	Goto waitCmd
+	Goto waitCmdAtObstacle
+
+	State waitCmdAtObstacle {		} 
+	Transition t0 whenEvent envCond    -> handleEnvCond
+		          whenEvent local_modelChanged -> handleModelChanged
 	
  }
 

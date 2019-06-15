@@ -54,13 +54,17 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
-						println("handeObstacle goingForward=$goingForward")
 						if(goingForward)forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
-						if(goingForward)forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						itunibo.robotMbot.globalTimer.stopTimer(  )
 						if(goingForward)forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
-						println("handeObstacle: first react, then update the model")
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmdAtObstacle", cond=doswitch() )
+				}	 
+				state("waitCmdAtObstacle") { //this:State
+					action { //it:State
+					}
+					 transition(edgeName="t05",targetState="handleEnvCond",cond=whenEvent("envCond"))
+					transition(edgeName="t06",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 			}
 		}

@@ -33,6 +33,8 @@ abstract class  ActorBasic(val name:         String,
     protected lateinit var currentSolution : SolveInfo
     protected lateinit var currentProcess  : Process
 
+    private var timeAtStart: Long = 0
+
      protected val dispatcher =
         if( confined ) sysUtil.singleThreadContext
         else  if( ioBound ) sysUtil.ioBoundThreadContext
@@ -230,7 +232,7 @@ For direct usage without qak
     }
 
 
-        /*
+/*
 --------------------------------------------
 machineExec
 --------------------------------------------
@@ -242,6 +244,16 @@ machineExec
             println("       ActorBasic $name | machineExec ERROR $e ")
             throw e
         }
+    }
+
+    fun startTimer() {
+        timeAtStart = System.currentTimeMillis()
+    }
+
+    fun getDuration() : Int{
+        val duration = (System.currentTimeMillis() - timeAtStart).toInt()
+        //println("DURATION = $duration")
+        return duration
     }
 
 /*

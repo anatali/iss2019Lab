@@ -67,16 +67,18 @@ void lookAtSonar()
     sonar = ultrasonic_3.distanceCm();
     //emit sonar data but with a reduced frequency
     if( count++ > 50 ){ Serial.println(sonar);  count = 0; }
-    if((sonar) < (10)){ //very near
+    if((sonar) < (5)){ //very near
         if(((input)==(119))){
             move(1,0);
             rgbled_7.setColor(0,60,0,0);
             rgbled_7.show();
             //Serial.println("OBSTACLE FROM ARDUINO");
+            /*
             _delay(0.3);
             move(2,100);
             _delay(1);
             move(2,0);
+            */
         }
     }
 }

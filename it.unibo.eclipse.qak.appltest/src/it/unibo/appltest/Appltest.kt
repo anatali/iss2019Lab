@@ -16,10 +16,10 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var stepCounter = 0 
+		var stepCounter = 0
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime   = 2700L	//long		//330L	//for virtual
+		var StepTime   = 700L	//long		//330L	//for virtual
 		var RotateTime = 610L	//long		//300L	//for virtual
 		var PauseTime  = 500L 
 		var foundObstacle = false 
@@ -45,9 +45,7 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								val distance = Integer.parseInt( payloadArg(0) ) 
-								              println( "distance= $distance"  )
-								              foundObstacle = (distance < 15 ) 
-								              println( "foundObstacle= $foundObstacle"  )
+								              foundObstacle = (distance<20) 
 						}
 					}
 					 transition( edgeName="goto",targetState="stepFail", cond=doswitchGuarded({foundObstacle}) )
@@ -55,7 +53,6 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				}	 
 				state("stepFail") { //this:State
 					action { //it:State
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						println("&&& onecellforward stepfail ")
 					}
 				}	 
