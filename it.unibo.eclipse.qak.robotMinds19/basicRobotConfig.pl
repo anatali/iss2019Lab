@@ -12,7 +12,7 @@ maxDistance( 50 ).
 maxDelta( 1 ).
 amplif( 6	).   %%radar does D/3
 
-
+%% USED IN mbotSupport via sonardatafilter
 %% modeReact( oop ).
 modeReact( pipe ).
 %% modeReact( model ).

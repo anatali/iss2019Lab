@@ -77,7 +77,7 @@ QActor robotmind context ctxRobotMind{
 	 
 	State waitCmd {		} 
 	Transition t0 whenEvent envCond    -> handleEnvCond
-				  whenEvent obstacle   -> handeObstacle		//emitted by the sonar PIPE
+				  whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
 		          whenEvent local_modelChanged -> handleModelChanged
 
 	State handleEnvCond{   
@@ -99,23 +99,19 @@ QActor robotmind context ctxRobotMind{
 	Goto waitCmd 
 	
  	State handeObstacle{		
-//		forward basicrobot -m robotCmd : robotCmd( s )	//First do ...
-//		forward resourcemodel -m modelUpdate : modelUpdate(robot,s) //... then update the model
-//		delay 200 
-
-//if the robot is moving forward ...
-		if "goingForward" forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
-		run itunibo.robotMbot.globalTimer.stopTimer()
+//if the robot is moving forward ... first react, then update the model
+		if "goingForward" run itunibo.robotMbot.globalTimer.stopTimer("mind")		//globalTimer started in mbotSupport getDataFromArduino
+ 		if "goingForward" forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
   		if "goingForward" forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
-		//println("handeObstacle: first react, then update the model")  
-	}
+  		if "goingForward" println("HANDLE OBSTACLE !!!")
+ 	}
 	Goto waitCmdAtObstacle
 
-	State waitCmdAtObstacle {		} 
-	Transition t0 whenEvent envCond    -> handleEnvCond
-		          whenEvent local_modelChanged -> handleModelChanged
-	
- }
+	State waitCmdAtObstacle {		}  //no more consider obstacle
+	Transition t0 whenEvent envCond            -> handleEnvCond
+		          whenEvent local_modelChanged -> handleModelChanged	
+ 
+ }//robotmind
 
 /*
  * Works in ctxRobotMind since it is a policy
@@ -125,28 +121,22 @@ QActor robotmind context ctxRobotMind{
 		println("sonarhandler STARTS ... ")
 	}         
 	Goto waitForEvents 
+	
  	State waitForEvents{  }      
    	Transition t0 whenEvent sonarData  -> handleSonar
- 		          //whenEvent obstacle   -> handeObstacle		//emitted by the sonar PIPE
-  	
+   				  whenEvent sonarRobot -> handleSonar //to test modeReact(model). See mbotSupport
  	State handleSonar{
+ 		//printCurrentMessage
  		onMsg ( sonarData : sonarData( DISTANCE ) ){
+ 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
+ 		}
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){
+ 			run itunibo.robotMbot.globalTimer.stopTimer("sonarhandler") //globalTimer started in mbotSupport getDataFromArduino
  			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
  		}
  	}
  	Goto waitForEvents
  	
-// 	State handeObstacle{		
-////		forward basicrobot -m robotCmd : robotCmd( s )	//First do ...
-////		forward resourcemodel -m modelUpdate : modelUpdate(robot,s) //... then update the model
-////		delay 200 
-//
-////if the robot is moving forward ...
-//		forward basicrobot -m robotCmd       : robotCmd( h )	//First do ...
-//		forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
-//		println("handeObstacle: first react, then update the model")  
-//	}
-//	Goto waitForEvents
  
  }
  /* 
@@ -195,7 +185,9 @@ QActor sonarhandler context ctxRobotMind{
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
   		ifSolved println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
   		else println("no robot")
+   		
    		ifSolved run itunibo.robot.robotSupport.create(myself, @R, @PORT ) 
+   		
    		run itunibo.robot.robotSupport.move( "msg(a)" )
    		delay 700
    		run itunibo.robot.robotSupport.move( "msg(d)" )

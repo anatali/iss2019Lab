@@ -9,7 +9,7 @@ object mbotSupport{
 	lateinit var actor   : ActorBasicFsm
  	lateinit var conn    : SerialPortConnSupport
 	var dataSonar        : Int = 0 ; //Double = 0.0
-	lateinit var filter  : ActorBasic
+	lateinit var filter  : sonardatafilter
 			
 	fun create( myactor: ActorBasicFsm, port : String ){
 		actor = myactor
@@ -19,7 +19,9 @@ object mbotSupport{
 	
 	fun configureSonarPipe(){
 		filter =  sonardatafilter("filter", actor )
-		actor.subscribe(filter)
+		if( filter.modeReact =="pipe"){
+			actor.subscribe(filter)
+		}
 	}
 	
 	private fun initConn( port : String ){
@@ -53,7 +55,6 @@ object mbotSupport{
 		}
 	}
 	
-	
 	private fun emitDataAtModelLevel(dataSonar : Int ){
 		actor.scope.launch{ actor.emit("sonarRobot", "sonar( ${ dataSonar } )")  }//MODEL LEVEL
 	}
@@ -62,7 +63,7 @@ object mbotSupport{
 		actor.scope.launch{ actor.emitLocalStreamEvent(event)		} //STREAM LEVEL
 	}
 	private fun emitDataAtOopLevel(dataSonar : Int ){
-		(filter as sonardatafilter).elabSonarData("$dataSonar") 	 //OOP LEVEL
+		filter.elabSonarData("$dataSonar") 	 //OOP LEVEL
 	}
 	
 	private fun getDataFromArduino(   ) {
@@ -74,20 +75,11 @@ object mbotSupport{
  	 						//println("getDataFromArduino received: $curDataFromArduino"    )
  							var v = curDataFromArduino.toDouble() 
 							//handle too fast change ?? NOT HERE
-  								dataSonar = v.toInt();
-								//println("mbotSupport sonar: ${ dataSonar }"   );								
-								//actor.emit("sonarRobot", "sonar( ${ dataSonar } )") //MODEL LEVEL
-							
-								//TO EXPLOIT THE STREAM PIPE
- 								//val event = MsgUtil.buildEvent(actor.name,"sonarRobot","sonar( $dataSonar )")
-								//actor.emitLocalStreamEvent(event)		//STREAM LEVEL
-							
-//							    emitDataAtModelLevel(dataSonar)
-//							    emitDataAtStreamLevel(dataSonar)
-							//if( (filter as sonardatafilter).modeReact =="oop") emitDataAtOopLevel(dataSonar)		 
-							if( (filter as sonardatafilter).modeReact =="pipe") emitDataAtStreamLevel(dataSonar)	 
-							else if( (filter as sonardatafilter).modeReact =="model") emitDataAtModelLevel(dataSonar)
-							else  emitDataAtOopLevel(dataSonar)
+  							dataSonar = v.toInt();
+							//println("mbotSupport sonar: ${ dataSonar }"   );								
+ 							if( filter.modeReact =="pipe") emitDataAtStreamLevel(dataSonar)	 
+							else if( filter.modeReact =="model") emitDataAtModelLevel(dataSonar)
+							else  emitDataAtOopLevel(dataSonar)  //default
 						} catch ( e : Exception) {
  							println("getDataFromArduino | ERROR $e   ")
  							//System.exit(1)

@@ -41,33 +41,6 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 //Event sonarRobot : sonar( DISTANCE ) FROM PLANT (sonarHCSR04SupportAsStream)
 		val vStr     = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0)
 		elabSonarData( vStr.toString() )
-		/*
-		val Distance = Integer.parseInt( vStr.toString() )
-		val delta    = Math.abs( Distance - LastDistance )
-		//println("   $name |  delta= $delta")
-		if( Distance > minDistance && Distance < maxDistance && delta >= maxDelta ){
-			detectObstacle( Distance )
-			LastDistance = Distance
-			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($vStr)")
-			//println("   ${name} |  using ${producerActor.name}  emit m1= $m1")
-			//emitLocalStreamEvent( m1 )  //propagate to the pipe (when using obsDetector)
-			scope.launch{ producerActor.emit( m1 ) }	//data for the mindx1)
-			val m2 = MsgUtil.buildEvent(name, "polar", "p(${Distance*amplif}, 90)")
-			scope.launch{ producerActor.emit( m2 ) }	//data for a radar
- 		}else{
-			//println("   $name |  DISCARDS $Distance ")
-		}
-		 */
-	}
-	//This operation can be delegated to the actor obstacleDetector
-	fun detectObstacle( Distance : Int ){
-		if( Distance < LimitDistance ){
- 			val m1 = MsgUtil.buildEvent(name, "obstacle", "obstacle($Distance)")
-			println("   ${producerActor.name} |  emit m1= $m1 ")
-			scope.launch{ producerActor.emit( m1 ) }
-		}else{
-			//println("   $name |  DISCARDS $Distance ")
-		}		
 	}
 	
 	/*
@@ -83,10 +56,21 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($vStr)")
 			//println("   ${name} |  using ${producerActor.name}  emit m1= $m1")
 			//emitLocalStreamEvent( m1 )  //propagate to the pipe (when using obsDetector)
-			scope.launch{ producerActor.emit( m1 ) }	//data for the mindx1)
+			scope.launch{ producerActor.emit( m1 ) }	//data for the mind
 			val m2 = MsgUtil.buildEvent(name, "polar", "p(${Distance*amplif}, 90)")
 			scope.launch{ producerActor.emit( m2 ) }	//data for a radar
  		}else{
+			//println("   $name |  DISCARDS $Distance ")
+		}		
+	}
+	
+	//This operation can be delegated to the actor obstacleDetector in a PIPE
+	fun detectObstacle( Distance : Int ){
+		if( Distance < LimitDistance ){
+ 			val m1 = MsgUtil.buildEvent(name, "obstacle", "obstacle($Distance)")
+			println("   ${producerActor.name} |  sonardatafilter detectObstacle emit m1= $m1 ")
+			scope.launch{ producerActor.emit( m1 ) }
+		}else{
 			//println("   $name |  DISCARDS $Distance ")
 		}		
 	}

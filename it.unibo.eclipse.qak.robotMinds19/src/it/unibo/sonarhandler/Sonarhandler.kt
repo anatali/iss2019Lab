@@ -26,11 +26,17 @@ class Sonarhandler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 					}
 					 transition(edgeName="t07",targetState="handleSonar",cond=whenEvent("sonarData"))
+					transition(edgeName="t08",targetState="handleSonar",cond=whenEvent("sonarRobot"))
 				}	 
 				state("handleSonar") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("sonarData(D)"), Term.createTerm("sonarData(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
+								forward("modelChange", "modelChange(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
+						}
+						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								itunibo.robotMbot.globalTimer.stopTimer( "sonarhandler"  )
 								forward("modelChange", "modelChange(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
 						}
 					}

@@ -149,7 +149,7 @@ void move(int direction, int speed)
  */
 void setup(){
     Serial.begin(115200);
-    //Serial.println("start");
+    Serial.println("uniboControl start");
 }
 
 void loop(){

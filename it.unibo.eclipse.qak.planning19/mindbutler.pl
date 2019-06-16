@@ -7,4 +7,3 @@ context(ctxdummyformind, "otherresourcelocalhost",  "MQTT", "0" ).
  qactor( resourcemodel, ctxdummyformind, "external").
   qactor( butler, ctxmindbutler, "it.unibo.butler.Butler").
   qactor( butlerstep, ctxmindbutler, "it.unibo.butlerstep.Butlerstep").
-  qactor( sonarhandlerbutler, ctxmindbutler, "it.unibo.sonarhandlerbutler.Sonarhandlerbutler").

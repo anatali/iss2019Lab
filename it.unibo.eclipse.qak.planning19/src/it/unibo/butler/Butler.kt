@@ -20,8 +20,8 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		var MaxDimX = "8"
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime   = 300L	//long		//330L	//for virtual
-		var RotateTime = 610L	//long		//300L	//for virtual
+		var StepTime   = 700L	//long		//for real
+		var RotateTime = 650L	//long		//for real 
 		var PauseTime  = 500L 
 		
 		//var StepTime   = 330L	//for virtual

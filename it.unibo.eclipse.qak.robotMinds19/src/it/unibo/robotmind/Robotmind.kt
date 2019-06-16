@@ -54,9 +54,10 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
+						if(goingForward)itunibo.robotMbot.globalTimer.stopTimer( "mind"  )
 						if(goingForward)forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
-						itunibo.robotMbot.globalTimer.stopTimer(  )
 						if(goingForward)forward("modelUpdate", "modelUpdate(robot,h)" ,"resourcemodel" ) 
+						if(goingForward)println("HANDLE OBSTACLE !!!")
 					}
 					 transition( edgeName="goto",targetState="waitCmdAtObstacle", cond=doswitch() )
 				}	 

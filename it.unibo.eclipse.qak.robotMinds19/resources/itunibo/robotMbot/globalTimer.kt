@@ -7,9 +7,9 @@ object globalTimer{
         timeAtStart = System.currentTimeMillis()
     }
 
-    fun stopTimer() : Int{
+    fun stopTimer(source: String) : Int{
         val duration = (System.currentTimeMillis() - timeAtStart).toInt()
-        println("REACTION TIME FOR OBSTACLE = $duration")
+        println("TIME STOPPED in $source = $duration")
         return duration
     }
 }

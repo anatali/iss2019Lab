@@ -21,8 +21,8 @@ var MaxDimY = \"6\"
 var MaxDimX = \"8\"
 var Curmove = \"\"
 var curmoveIsForward = false
-var StepTime   = 300L	//long		//330L	//for virtual
-var RotateTime = 610L	//long		//300L	//for virtual
+var StepTime   = 700L	//long		//for real
+var RotateTime = 650L	//long		//for real 
 var PauseTime  = 500L 
 
 //var StepTime   = 330L	//for virtual
@@ -96,8 +96,8 @@ QActor butlerstep context ctxMindButler {
 			run itunibo.planner.plannerUtil.startTimer()
 		}
 	} 
-	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
- 		          whenEvent obstacle  -> stepFail
+	Transition t0 whenTimeVar  StepTime   -> endDoMoveForward		
+ 		          whenEvent     obstacle  -> stepFail
 		  
 	State endDoMoveForward{
 		forward resourcemodel -m modelChange : modelChange(robot,h)
@@ -114,7 +114,8 @@ QActor butlerstep context ctxMindButler {
 	Goto s0
 
 }    
-
+/* 
+//The mind already emits obstacle when the robot is going forward
 QActor sonarhandlerbutler context ctxMindButler{  
 ["
 var LastDistance = 0
@@ -140,7 +141,7 @@ var LastDistance = 0
   	} 
  	Goto waitForEvents
 }
-
+*/
 
 /*
 
