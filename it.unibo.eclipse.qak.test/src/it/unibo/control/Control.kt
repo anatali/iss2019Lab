@@ -27,9 +27,10 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						emit("ledCmd", "ledCmd(on)" ) 
-						TimerActor("timer", scope, context!!, "local_tout_sOn", 200.toLong())
+						stateTimer = TimerActor("timer_sOn", 
+							scope, context!!, "local_tout_control_sOn", 200.toLong() )
 					}
-					 transition(edgeName="t14",targetState="sOff",cond=whenTimeout("local_tout_sOn"))   
+					 transition(edgeName="t14",targetState="sOff",cond=whenTimeout("local_tout_control_sOn"))   
 					transition(edgeName="t15",targetState="s0",cond=whenDispatch("buttonCmd"))
 					transition(edgeName="t16",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 
@@ -37,9 +38,10 @@ class Control ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						emit("ledCmd", "ledCmd(off)" ) 
-						TimerActor("timer", scope, context!!, "local_tout_sOff", 200.toLong())
+						stateTimer = TimerActor("timer_sOff", 
+							scope, context!!, "local_tout_control_sOff", 200.toLong() )
 					}
-					 transition(edgeName="t27",targetState="sOn",cond=whenTimeout("local_tout_sOff"))   
+					 transition(edgeName="t27",targetState="sOn",cond=whenTimeout("local_tout_control_sOff"))   
 					transition(edgeName="t28",targetState="s0",cond=whenDispatch("buttonCmd"))
 					transition(edgeName="t29",targetState="s0",cond=whenEvent("local_buttonCmd"))
 				}	 

@@ -59,7 +59,7 @@ QActor control context ctxButton {
  */
 CodedQActor clienttcp context ctxButton className "resources.clientWenvTcp"
 
-QActor robotControl context ctxButton{ 
+QActor robotcontrol context ctxButton{ 
 	State s0 initial {		 
 		printCurrentMessage	
  	}   
@@ -107,7 +107,7 @@ QActor robotControl context ctxButton{
  	State sendToRadar{                      
  		printCurrentMessage                                        
  		onMsg ( sonar : sonar(SONAR,TARGET,DISTANCE ) ){     
-			emit polar : p( meta_msgArg(2), 90  )  //90 is the angle
+			emit polar : p( payloadArg(2), 90  )  //90 is the angle
  		}
  	}
  	Goto waitForEvents
@@ -141,7 +141,7 @@ QActor led1 context ctxLeds1 {
  * RADAR
  */
    
- QActor radarControl context ctxButton{
+ QActor radarcontrol context ctxButton{
 	State s0 initial {  
 		 println("radarControl init the GUI ... ") 
 		 run resources.radarSupport.create()
@@ -157,7 +157,7 @@ QActor led1 context ctxLeds1 {
 	State handleData{   
 		printCurrentMessage
 		onMsg( polar : p(D,A) ) { 
-			run resources.radarSupport.sendData(   meta_msgArg(0),  meta_msgArg(1) )
+			run resources.radarSupport.sendData( payloadArg(0),  payloadArg(1) )
 		}
 	} 
 	Goto waitDataToShow

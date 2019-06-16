@@ -3,8 +3,8 @@ System sonardatastream
 mqttBroker "192.168.43.5" : 1883
 
 Event sonarData      : sonarData( V )
-//Event sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
-Event  obstacle       : obstacle( DISTANCE )
+//Event sonarRobot   : sonar( DISTANCE )	     //from  sonar on robot 
+Event  obstacle      : obstacle( DISTANCE )
 
 Context ctxSonarData ip [host="localhost" port=8035]     -mqtt
 
@@ -16,8 +16,8 @@ Context ctxSonarData ip [host="localhost" port=8035]     -mqtt
  * 
  * The pipe is composed as follows:
  * 
- * SonarAlone 
- * qakstream  --(sonarRobot)--> sonardatafilter --(sonarData)-->  obstacleDetector --> obstacle
+ * robotSupport 
+ * qakstream  --(sonarRobot)--> sonardatafilter --(sonarData)  | OPTIONAç -->  obstacleDetector --> obstacle |
  * 		      --(sonarRobot)--> logDevice
  */
 QActor qakstream context ctxSonarData{
@@ -33,7 +33,11 @@ QActor qakstream context ctxSonarData{
 	Transition t0 whenEvent obstacle -> handleObstacle
 	
 	State handleObstacle{
-		printCurrentMessage
+		["
+			val duration = getDuration() //globalTimer started in sonarHCSR04SupportAsStream
+			println(\"duration = $duration\")
+		"]
+ 		printCurrentMessage
 	}
 	Goto doWork
 }

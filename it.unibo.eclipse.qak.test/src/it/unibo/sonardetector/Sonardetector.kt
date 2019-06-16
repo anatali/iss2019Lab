@@ -24,9 +24,10 @@ class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 				}	 
 				state("waitForEvents") { //this:State
 					action { //it:State
-						TimerActor("timer", scope, context!!, "local_tout_waitForEvents", 60000.toLong())
+						stateTimer = TimerActor("timer_waitForEvents", 
+							scope, context!!, "local_tout_sonardetector_waitForEvents", 60000.toLong() )
 					}
-					 transition(edgeName="t117",targetState="endOfJob",cond=whenTimeout("local_tout_waitForEvents"))   
+					 transition(edgeName="t117",targetState="endOfJob",cond=whenTimeout("local_tout_sonardetector_waitForEvents"))   
 					transition(edgeName="t118",targetState="sendToRadar",cond=whenEvent("sonar"))
 					transition(edgeName="t119",targetState="showObstacle",cond=whenEvent("sonarDetect"))
 				}	 
@@ -35,7 +36,7 @@ class Sonardetector ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), Term.createTerm("sonar(SONAR,TARGET,DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								emit("polar", "p(${meta_msgArg(2)},90)" ) 
+								emit("polar", "p(payloadArg(2),90)" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitForEvents", cond=doswitch() )

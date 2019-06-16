@@ -28,6 +28,7 @@ object sonarHCSR04SupportAsStream {
 				var data = reader.readLine()
 				//println("sonarHCSR04SupportAsStream data = $data"   )
 				if( data != null ){
+					actor.startTimer()
 	 				val m1 = "sonar( $data )"
 					//println("sonarHCSR04Support m1 = $m1"   )
 					//actor.emit("sonarRobot",m1 )			//AT MODEL LEVEL
