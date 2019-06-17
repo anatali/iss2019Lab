@@ -74,10 +74,13 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 								println(" ..................................  BACK TIME= $Tback")
 						}
 						if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 
-						if(Tback>0)forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
-						if(Tback>0)delay(Tback)
-						if(Tback>0)forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						if(Tback == 0L)solve("updateMapAfterStep","") //set resVar	
+						if(Tback>0){ forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
+						delay(Tback)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						 }
+						else
+						 			 { solve("updateMapAfterStep","") //set resVar	
+						 			  }
 						solve("showMap","") //set resVar	
 						delay(PauseTime)
 						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 

@@ -16,7 +16,7 @@ ExternalQActor resourcemodel context ctxDummyForMind
 
 QActor explorer context ctxMindExplore{     
 ["
-var stepCounter = 0
+var stepCounter = 0 
 var Curmove = \"\"
 var curmoveIsForward = false
 //var StepTime   = 700L	//long		//330L	//for virtual
@@ -44,7 +44,7 @@ var Direction = \"\"
 	State doExploreStep{
 	["stepCounter = stepCounter + 1"]
  		println("MAP BEFORE EXPLORE STEP $stepCounter")
- 		solve( direction(D) )
+ 		solve( direction(D) )   
    		println("direction at start: ${getCurSol(\"D\").toString()}")
 		run itunibo.planner.plannerUtil.showMap()		
 		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")		
@@ -61,8 +61,8 @@ var Direction = \"\"
 	State executePlannedActions{ 
 		//solve( showMoves ) 
 		solve( retract( move(M) ) ) 
-		ifSolved  ["{Curmove = getCurSol(\"M\").toString(); curmoveIsForward=(Curmove == \"w\")}"]  
-		else ["Curmove = \"\"; curmoveIsForward=false"]
+		ifSolved { ["{Curmove = getCurSol(\"M\").toString(); curmoveIsForward=(Curmove == \"w\")}"]  }
+		else { ["Curmove = \"\"; curmoveIsForward=false"]  }  
  	}
 	Goto checkAndDoAction  if "(Curmove.length>0) " else backToHome 
  	
@@ -143,13 +143,14 @@ var Direction = \"\"
 	State doGoHomeActions{
  		solve( retract( move(M) ) )
  		//println("&&&  doGoHomeActions ") 
-		ifSolved  ["Curmove = getCurSol(\"M\").toString() "] else ["Curmove = \"\" "]
+		ifSolved {  ["Curmove = getCurSol(\"M\").toString() "] 
+			forward resourcemodel -m modelChange : modelChange(robot,#M)
+			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
+			if "Curmove == \"w\" " {  delayVar StepTime } else { delayVar RotateTime }
+			forward resourcemodel -m modelChange : modelChange(robot,h)
+		} else { ["Curmove = \"\" "] }
 		//ifSolved  ["println(Curmove)"] 
-		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,#M) 
-		ifSolved  run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
-		if "Curmove == \"w\" "  delayVar StepTime  else  delayVar RotateTime 
-		ifSolved  forward resourcemodel -m modelChange : modelChange(robot,h)  
- 		//if "Curmove !== \"w\" " solve( dialog(F) )	//to CALIBRATE rotation time
+  		//if "Curmove !== \"w\" " solve( dialog(F) )	//to CALIBRATE rotation time
   		delayVar PauseTime		 
   	}
 	Goto doGoHomeActions  if "(Curmove.length>0)" else atHome
@@ -161,15 +162,15 @@ var Direction = \"\"
  		["Direction = getCurSol(\"D\").toString() "]
 		println( @D ) 
    		println("direction at home: ${getCurSol(\"D\").toString()}")
-   		if "Direction == \"leftDir\" || Direction == \"upDir\" " 
-   			forward resourcemodel -m modelChange : modelChange(robot,w)   		
+   		if "Direction == \"leftDir\" || Direction == \"upDir\" " {
+   			forward resourcemodel -m modelChange : modelChange(robot,w)   	}	
 	}
 	Transition t0 whenEvent sonarRobot -> tuning
 	
 	State tuning{	
 		println(" ---- AT HOME END TUNING --- ")
-		if "Direction == \"leftDir\"  " ["Curmove=\"d\""]
-		if "Direction == \"upDir\"    " ["Curmove=\"a\""]
+		if "Direction == \"leftDir\"  " { ["Curmove=\"d\""] }
+		if "Direction == \"upDir\"    " { ["Curmove=\"a\""] }
    		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) //
    		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)	
    		delayVar RotateTime

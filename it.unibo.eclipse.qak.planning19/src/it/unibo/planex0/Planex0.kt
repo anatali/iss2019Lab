@@ -15,7 +15,7 @@ class Planex0 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		
+		  
 		var Curmove     = ""  
 		var IterCounter = 0
 		return { //this:ActionBasciFsm
@@ -33,11 +33,9 @@ class Planex0 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				state("executePlannedActions") { //this:State
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
-						if(currentSolution.isSuccess()) {Curmove = getCurSol("M").toString()}
-						 		else{
-						 			 Curmove="nomove" 
-						 		}
-						if(currentSolution.isSuccess()) itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						if(currentSolution.isSuccess()) { {Curmove = getCurSol("M").toString()}
+						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						 }
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitchGuarded({(Curmove != "nomove")}) )
 					transition( edgeName="goto",targetState="nextStep", cond=doswitchGuarded({! (Curmove != "nomove")}) )

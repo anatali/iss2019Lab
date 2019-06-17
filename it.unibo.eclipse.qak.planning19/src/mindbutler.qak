@@ -88,11 +88,14 @@ var BackTime   = 500L
 		//solve( dialog(F) )
 		["if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 "]			  
 		
-		if "Tback>0" forward resourcemodel -m modelChange : modelChange(robot,s)  
- 		if "Tback>0" delayVar Tback 
-  		if "Tback>0" forward resourcemodel -m modelChange : modelChange(robot,h) 
-  		
-  		if "Tback == 0L" solve( updateMapAfterStep )  //almost completed ...
+		if "Tback>0" { 
+		  forward resourcemodel -m modelChange : modelChange(robot,s)  
+ 		  delayVar Tback 
+  		  forward resourcemodel -m modelChange : modelChange(robot,h)     
+  		}
+  		else{  
+  			solve( updateMapAfterStep )  //almost completed ...
+  		}
 		solve( showMap	 )
 		delayVar PauseTime
 		

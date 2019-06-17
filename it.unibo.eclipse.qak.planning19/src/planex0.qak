@@ -3,11 +3,11 @@ System planex0
 Context ctxPanex0    ip [host="localhost" port=8038]  
 
 QActor planex0 context ctxPanex0{     
-["
+["  
 var Curmove     = \"\"  
 var IterCounter = 0
 "]	
-	State s0 initial {	
+	State s0 initial {	 
 		println("&&&  planex0 STARTED")
 		run itunibo.planner.plannerUtil.initAI()
 		println("INITIAL MAP") 
@@ -19,9 +19,12 @@ var IterCounter = 0
     
     State executePlannedActions{ 
  		solve( retract( move(M) ) ) 	//consume a move
-		ifSolved  ["{Curmove = getCurSol(\"M\").toString()}"]  else ["Curmove=\"nomove\" "]
- 		ifSolved run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
-  	}
+		ifSolved {  
+			["{Curmove = getCurSol(\"M\").toString()}"]  
+			run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
+		}else { ["Curmove=\"nomove\" "] } 
+ 
+  	}  
 	Goto executePlannedActions  if "(Curmove != \"nomove\")" else nextStep
  
  	State nextStep{

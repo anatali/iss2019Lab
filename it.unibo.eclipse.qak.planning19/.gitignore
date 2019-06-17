@@ -22,3 +22,5 @@ gradle
 docker/
 /.metadata/
 /src-gen/
+/planex0.pl
+/mindbutler.pl

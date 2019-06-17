@@ -16,7 +16,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var stepCounter = 0
+		var stepCounter = 0 
 		var Curmove = ""
 		var curmoveIsForward = false
 		//var StepTime   = 700L	//long		//330L	//for virtual
@@ -55,10 +55,8 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("executePlannedActions") { //this:State
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
-						if(currentSolution.isSuccess()) {Curmove = getCurSol("M").toString(); curmoveIsForward=(Curmove == "w")}
-						 		else{
-						 			 Curmove = ""; curmoveIsForward=false
-						 		}
+						if(currentSolution.isSuccess()) { {Curmove = getCurSol("M").toString(); curmoveIsForward=(Curmove == "w")}
+						 }
 					}
 					 transition( edgeName="goto",targetState="checkAndDoAction", cond=doswitchGuarded({(Curmove.length>0) }) )
 					transition( edgeName="goto",targetState="backToHome", cond=doswitchGuarded({! (Curmove.length>0) }) )
@@ -131,17 +129,16 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("doGoHomeActions") { //this:State
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
-						if(currentSolution.isSuccess()) Curmove = getCurSol("M").toString() 
-						 		else{
-						 			 Curmove = "" 
-						 		}
-						if(currentSolution.isSuccess()) forward("modelChange", "modelChange(robot,${getCurSol("M").toString()})" ,"resourcemodel" ) 
-						if(currentSolution.isSuccess()) itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("M").toString() )
-						if(Curmove == "w" )delay(StepTime)
-						 		else{
-						 			 delay(RotateTime)
-						 		}
-						if(currentSolution.isSuccess()) forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						if(currentSolution.isSuccess()) { Curmove = getCurSol("M").toString() 
+						forward("modelChange", "modelChange(robot,${getCurSol("M").toString()})" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("M").toString() )
+						if(Curmove == "w" ){ delay(StepTime)
+						 }
+						else
+						 			 { delay(RotateTime)
+						 			  }
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						 }
 						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitchGuarded({(Curmove.length>0)}) )
@@ -154,15 +151,18 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						Direction = getCurSol("D").toString() 
 						println(getCurSol("D").toString())
 						println("direction at home: ${getCurSol("D").toString()}")
-						if(Direction == "leftDir" || Direction == "upDir" )forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
+						if(Direction == "leftDir" || Direction == "upDir" ){ forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
+						 }
 					}
 					 transition(edgeName="t02",targetState="tuning",cond=whenEvent("sonarRobot"))
 				}	 
 				state("tuning") { //this:State
 					action { //it:State
 						println(" ---- AT HOME END TUNING --- ")
-						if(Direction == "leftDir"  )Curmove="d"
-						if(Direction == "upDir"    )Curmove="a"
+						if(Direction == "leftDir"  ){ Curmove="d"
+						 }
+						if(Direction == "upDir"    ){ Curmove="a"
+						 }
 						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
 						delay(RotateTime)
