@@ -569,7 +569,7 @@ Dispatch info  : "info"
 
 
 <h2 id="qaklang">The qak (metamodel) language</h2> 
-This section reports the language specification related to the qak metamodel, version 1.1.3.
+This section reports the language specification related to the qak metamodel, version 1.1.4 (June 2019).
 
 
 <h3>Structure</h3>
@@ -724,17 +724,13 @@ QActor :
 	<pre>
 State :
 	"State" name=ID  ( normal ?= "initial" )?
-	"{" ( actions += GuardedStateAction )*  "}"
+	"{" ( actions += <k>ActionInState</k> )*  "}"
 	( transition = Transition )?
 ;
-
-GuardedStateAction : ("if" guard = STRING   | ( solveGuard ?= "ifSolved") )? 
-	action=StateAction 
-	("else" elseaction=StateAction )?
-;
+<k>ActionInState :  StateAction | GuardedStateAction | IfSolvedAction ;</k>
  	</td>
 	<td>
- 	<m>.
+ 	<m>From version <kc>1.1.4</kc>.
 	
  	</m>
   	</td>
@@ -742,8 +738,15 @@ GuardedStateAction : ("if" guard = STRING   | ( solveGuard ?= "ifSolved") )?
 	
 	<tr>
 	<td>
-	<h4>Action</h4>
+	<h4>Actions</h4>
 	<pre>
+IfSolvedAction     : "ifSolved" action=ActionSequence 
+	("else" elseaction=ActionSequence )? ;
+GuardedStateAction : "if" guard = STRING action=ActionSequence  
+	("else" elseaction=ActionSequence )? ;
+
+ActionSequence     : {ActionSequence} "{" (actions += ActionInState)* "}" ;
+
 StateAction    : 
 	Print | PrintCurMsg | SolveGoal |			//general
 	Forward | Emit | Delay | MsgCond |	    	//qak kotlin

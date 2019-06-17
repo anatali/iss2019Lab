@@ -33,8 +33,11 @@ class Planex0 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 				state("executePlannedActions") { //this:State
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
-						if(currentSolution.isSuccess()) { {Curmove = getCurSol("M").toString()}
+						if(currentSolution.isSuccess()) { Curmove = getCurSol("M").toString()
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						 }
+						else
+						{ Curmove="nomove" 
 						 }
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitchGuarded({(Curmove != "nomove")}) )
