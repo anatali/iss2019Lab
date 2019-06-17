@@ -12,10 +12,15 @@ initMap(DIRECTION) :-
 	addRule( cell(0,0,1) ).		
  
 changeDirection:- robotdirection( D ), output( changeDirection( D ) ), changeDirection( D ).
-changeDirection( sud   ):- replaceRule( robotdirection( sud ), robotdirection( east ) ).
-changeDirection( east  ):- replaceRule( robotdirection( east ), robotdirection( north ) ).
-changeDirection( north ):- replaceRule( robotdirection( north ), robotdirection( west ) ).
+changeDirection( sud   ):- foundPantry,     replaceRule( robotdirection( sud ), robotdirection( east ) ).
+changeDirection( east  ):- foundDishwasher, replaceRule( robotdirection( east ), robotdirection( north ) ).
+changeDirection( north ):- foundFridge,     replaceRule( robotdirection( north ), robotdirection( west ) ).
 changeDirection( west  ):- replaceRule( robotdirection( west ), robotdirection( sud ) ).
+
+foundPantry.
+foundDishwasher.
+foundFridge.
+
 	
 updateMapAfterStep :-
 	robotdirection( D ),

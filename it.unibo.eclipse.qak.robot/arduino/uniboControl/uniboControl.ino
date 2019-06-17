@@ -66,10 +66,10 @@ void lookAtSonar()
 {
     sonar = ultrasonic_3.distanceCm();
     //emit sonar data but with a reduced frequency
-    if( count++ > 50 ){ Serial.println(sonar);  count = 0; }
-    if((sonar) < (5)){ //very near
+    if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
+    if((sonar) < (3.5)){ //very near
         if(((input)==(119))){
-            move(1,0);
+            move(1,0);  //Stop
             rgbled_7.setColor(0,60,0,0);
             rgbled_7.show();
             //Serial.println("OBSTACLE FROM ARDUINO");
@@ -111,11 +111,27 @@ void remoteCmdExecutor()
           case 97  : move(3,150); break;  //a
           case 100 : move(4,150); break;  //d
           case 104 : move(1,0); stopFollow = true;  break;  //h
+          case 114 : rotateRight90();  break;  //r
+          case 108 : rotateLeft90(); break;    //l
           case 102 : move(1,0); stopFollow = false; break;  //f
           default  : move(1,0); stopFollow = true;
         }
     }
-}     
+}
+
+void rotateLeft90()
+{
+  move(3,150);
+  _delay( 0.555 );
+  move(1,0);
+}
+void rotateRight90()
+{Serial.println("rotateRight90");
+  move(4,150);
+  _delay( 0.555 );
+  move(1,0);
+}
+
 /*
  * -----------------------------------
  * Moving
@@ -123,7 +139,7 @@ void remoteCmdExecutor()
  */
 void move(int direction, int speed)
 {
-      int leftSpeed = 0;
+      int leftSpeed  = 0;
       int rightSpeed = 0;
       if(direction == 1){ //forward
         	leftSpeed = speed;
@@ -149,7 +165,7 @@ void move(int direction, int speed)
  */
 void setup(){
     Serial.begin(115200);
-    Serial.println("uniboControl start");
+    //Serial.println("uniboControl start");
 }
 
 void loop(){

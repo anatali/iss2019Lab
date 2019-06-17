@@ -16,22 +16,35 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var stepCounter = 0
+		var stepCounter = 0 
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime   = 700L	//long		//330L	//for virtual
-		var RotateTime = 610L	//long		//300L	//for virtual
+		var StepTime   = 2700L	//long		//330L	//for virtual
+		var RotateTime = 560L	//long		//300L	//for virtual
 		var PauseTime  = 500L 
 		var foundObstacle = false 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						println("&&&  appltest STARTED")
-						forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
-						stateTimer = TimerActor("timer_s0", 
-							scope, context!!, "local_tout_appltest_s0", StepTime )
+						solve("consult('sysRules.pl')","") //set resVar	
+						solve("consult('floorMap.pl')","") //set resVar	
 					}
-					 transition(edgeName="t00",targetState="endDoMoveForward",cond=whenTimeout("local_tout_appltest_s0"))   
+					 transition( edgeName="goto",targetState="moveLeft", cond=doswitch() )
+				}	 
+				state("moveLeft") { //this:State
+					action { //it:State
+						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
+						solve("dialog(F)","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="moveLeft", cond=doswitch() )
+				}	 
+				state("moveForward") { //this:State
+					action { //it:State
+						stateTimer = TimerActor("timer_moveForward", 
+							scope, context!!, "local_tout_appltest_moveForward", StepTime )
+					}
+					 transition(edgeName="t00",targetState="endDoMoveForward",cond=whenTimeout("local_tout_appltest_moveForward"))   
 					transition(edgeName="t01",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
@@ -45,7 +58,9 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								val distance = Integer.parseInt( payloadArg(0) ) 
-								              foundObstacle = (distance<20) 
+								              println( "distance= $distance"  )
+								              foundObstacle = (distance < 15 ) 
+								              println( "foundObstacle= $foundObstacle"  )
 						}
 					}
 					 transition( edgeName="goto",targetState="stepFail", cond=doswitchGuarded({foundObstacle}) )
@@ -53,6 +68,7 @@ class Appltest ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				}	 
 				state("stepFail") { //this:State
 					action { //it:State
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						println("&&& onecellforward stepfail ")
 					}
 				}	 

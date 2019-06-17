@@ -12,6 +12,8 @@ action(robot, move(s)) :- changeModel( actuator, robot, movingBackward ).
 action(robot, move(a)) :- changeModel( actuator, robot, rotateLeft     ).
 action(robot, move(d)) :- changeModel( actuator, robot, rotateRight    ).
 action(robot, move(h)) :- changeModel( actuator, robot, stopped        ).
+action(robot, move(l)) :- changeModel( actuator, robot, rotateLeft90   ).
+action(robot, move(r)) :- changeModel( actuator, robot, rotateRight90  ).
 
 action(sonarRobot, V)  :- changeModel( sensor, sonarRobot, V  ).
  

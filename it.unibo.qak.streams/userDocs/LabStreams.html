@@ -224,6 +224,14 @@ However, at that point it will not emit any more events, unless it is subscribed
 
 
 </pre>
+In the qak world:
+<ol>
+<li>an event activates all the actors;</li>
+<li>an actor handles the event if the event is in current state-transiont set of the actor. Otherwise, the actor ignores the event;</li>
+<li>thus, the event-reaction time of an actor could depend on the number of active actors;</li>
+<li>each actor can use the operations <bc>startTimer</bc> and <bc> getDuration</bc>  to have an estimation of its reaction time to an event.</li>
+</ol>
+
 <br/><br/> 
 </div>
 <div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">

@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/arduino/uniboControl/uniboControl.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robot/arduino/uniboControl/uniboControl.ino" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/basicRobotConfig.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/globalTimer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/globalTimer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/mbotSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/mbotSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/sonardatafilter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/sonardatafilter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/robotmind/Robotmind.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/robotmind/Robotmind.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/sonarhandler/Sonarhandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/sonarhandler/Sonarhandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.bls19d/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -49,8 +42,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="282" column="26" selection-start-line="282" selection-start-column="21" selection-end-line="282" selection-end-column="26" />
+            <state relative-caret-position="-284">
+              <caret line="165" column="8" selection-start-line="165" selection-start-column="8" selection-end-line="165" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -106,8 +99,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-469">
-              <caret line="122" column="20" selection-start-line="122" selection-start-column="16" selection-end-line="122" selection-end-column="20" />
+            <state relative-caret-position="70">
+              <caret line="248" column="18" selection-start-line="248" selection-start-column="8" selection-end-line="248" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -153,12 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>subscribe</find>
-      <find>PROPAGATE</find>
-      <find>hanldeCurrentMessage</find>
-      <find>SIZE</find>
-      <find>solve</find>
-      <find>dosw</find>
       <find>getCu</find>
       <find>meta_msgArg</find>
       <find>publish</find>
@@ -178,11 +165,17 @@
       <find>forward</find>
       <find>getQa</find>
       <find>emitLocalStreamEvent</find>
-      <find>emit</find>
       <find>ActorBasicFsm</find>
       <find>time</find>
       <find>currenttime</find>
+      <find>emit</find>
       <find>timer</find>
+      <find>enterTransition</find>
+      <find>edgeEventHandler</find>
+      <find>canHandleMessage</find>
+      <find>getTransitionForMessage</find>
+      <find>checkTransition</find>
+      <find>lookAtMsgQueueStore</find>
     </findStrings>
     <replaceStrings>
       <replace>kactor.test.chain.</replace>
@@ -302,7 +295,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560615391298" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560674015885" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19" />
   </component>
   <component name="RecentsManager">
@@ -441,7 +434,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.38219896" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.2181501" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Build" order="10" weight="0.39883268" />
@@ -545,13 +538,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="282" column="26" selection-start-line="282" selection-start-column="21" selection-end-line="282" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/TimerActor.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -586,10 +572,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-284">
+          <caret line="165" column="8" selection-start-line="165" selection-start-column="8" selection-end-line="165" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-469">
-          <caret line="122" column="20" selection-start-line="122" selection-start-column="16" selection-end-line="122" selection-end-column="20" />
+        <state relative-caret-position="70">
+          <caret line="248" column="18" selection-start-line="248" selection-start-column="8" selection-end-line="248" selection-end-column="18" />
         </state>
       </provider>
     </entry>

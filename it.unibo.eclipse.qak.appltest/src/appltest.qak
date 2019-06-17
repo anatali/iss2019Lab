@@ -15,14 +15,29 @@ var stepCounter = 0
 var Curmove = \"\"
 var curmoveIsForward = false
 var StepTime   = 2700L	//long		//330L	//for virtual
-var RotateTime = 610L	//long		//300L	//for virtual
+var RotateTime = 560L	//long		//300L	//for virtual
 var PauseTime  = 500L 
 var foundObstacle = false 
 "]
 	State s0 initial {	
 		println("&&&  appltest STARTED")
-		forward resourcemodel -m modelChange : modelChange(robot,w)
+		solve( consult("sysRules.pl")	 )  
+		solve( consult("floorMap.pl")	 )
+		//forward resourcemodel -m modelChange : modelChange(robot,w)
 	}
+	Goto  moveLeft
+	
+    State moveLeft{
+		forward resourcemodel -m modelChange : modelChange(robot,l)  //rotate left 90
+//		delayVar RotateTime
+//		forward resourcemodel -m modelChange : modelChange(robot,h)
+		solve( dialog(F) )	//to tune at hand  	
+    }
+    Goto  moveLeft
+
+    State moveForward{
+    	
+    }
 	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
  		          whenEvent sonarRobot  -> handleSonarRobot
 

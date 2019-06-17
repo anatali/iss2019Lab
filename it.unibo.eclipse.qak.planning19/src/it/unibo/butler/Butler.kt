@@ -16,19 +16,23 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var MaxDimY = "6"
-		var MaxDimX = "8"
-		var Curmove = ""
-		var curmoveIsForward = false
-		var StepTime   = 700L	//long		//for real
-		var RotateTime = 650L	//long		//for real 
-		var PauseTime  = 500L 
+		//var MaxDimY = "6"
+		//var MaxDimX = "8"
+		//var Curmove = ""
+		//var curmoveIsForward = false
+		//var Direction = "" 
+		
+		var StepTime   = 1000L	//long		//for real
+		var RotateTime = 560L	//long		//for real 
+		var PauseTime  = 1000L 
+		var RotateStep = 255L	//long		//for real 
+		var BackTime   = 500L
 		
 		//var StepTime   = 330L	//for virtual
 		//var RotateTime = 300L	//for virtual
 		//var PauseTime  = 100L 
 		
-		var Direction = "" 
+		
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -36,6 +40,11 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('floorMap.pl')","") //set resVar	
 						solve("showMap","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="exploreTheRoom", cond=doswitch() )
+				}	 
+				state("exploreTheRoom") { //this:State
+					action { //it:State
 					}
 					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
 				}	 
@@ -48,7 +57,6 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("hadleStepOk") { //this:State
 					action { //it:State
-						println("&&& moveAhead ok")
 						solve("updateMapAfterStep","") //set resVar	
 						solve("showMap","") //set resVar	
 						delay(PauseTime)
@@ -57,29 +65,48 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("hadleStepKo") { //this:State
 					action { //it:State
+						var Tback = 0L
 						println("$name in ${currentState.stateName} | $currentMsg")
 						println("&&& moveAhead failed")
+						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(R,D)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								Tback=payloadArg(1).toString().toLong() 
+								println(" ..................................  BACK TIME= $Tback")
+						}
+						if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 
+						if(Tback>0)forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
+						if(Tback>0)delay(Tback)
+						if(Tback>0)forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						if(Tback == 0L)solve("updateMapAfterStep","") //set resVar	
 						solve("showMap","") //set resVar	
-						forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
-						delay(RotateTime)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						delay(PauseTime)
+						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
 						solve("changeDirection","") //set resVar	
 						solve("robotdirection(D)","") //set resVar	
 						delay(PauseTime)
+						forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
+						delay(BackTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						delay(PauseTime)
 					}
-					 transition( edgeName="goto",targetState="endOfJob", cond=doswitchGuarded({(getCurSol("D").toString() == "sud")}) )
+					 transition( edgeName="goto",targetState="endOfExploration", cond=doswitchGuarded({(getCurSol("D").toString() == "sud")}) )
 					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (getCurSol("D").toString() == "sud")}) )
 				}	 
 				state("tuning") { //this:State
 					action { //it:State
 						println(" ---- TUNING --- ")
-						solve("dialog(F)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
 				}	 
-				state("endOfJob") { //this:State
+				state("endOfExploration") { //this:State
 					action { //it:State
-						println("EXPLRATION ENDS")
+						println("EXPLORATION ENDS")
+					}
+					 transition( edgeName="goto",targetState="findTheTable", cond=doswitch() )
+				}	 
+				state("findTheTable") { //this:State
+					action { //it:State
+						println("findTheTable STARTS")
 					}
 				}	 
 			}

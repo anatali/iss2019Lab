@@ -4,7 +4,7 @@
 %%cell( X,Y, STATE )		%%CELL= 1 => done
 
 initMap(DIRECTION) :-
-	output("initMap  "),
+	output("floorMap initMap  "),
 	assign(x,1),
 	assign(y,1),
 	assert( direction(DIRECTION) ),

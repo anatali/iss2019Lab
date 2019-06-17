@@ -294,6 +294,14 @@ The application designer usually works by exploiting the utility
 	<center><img src="./explan0_1.png" alt="explan0_1" width="100%" height="32%"/></center>
  	</td> 
 	<td>
+	Model: <a href="../src/mindwithplanner.qak" target="code">planex0.qak</a><br/><br/>
+	<m>This model can be executed without any robot</m>
+	
+	<pre>
+setGoal 2,2
+plannerUtil doPlan actions=[w, w, a, w, w]
+	</pre
+	
 	</td>
 	</tr> 
 	<tr> 
@@ -301,6 +309,27 @@ The application designer usually works by exploiting the utility
 	<center><img src="./explan0_2.png" alt="explan0_2" width="100%" height="32%"/></center>
 	</td>
  	<td>
+	<pre>
+MAP after step 0
+|1, 
+|1, 
+|1, 1, r, 
+	</pre>	
+<h3>Going to (1,1) from (2,2)</h3>
+	<pre>
+setGoal 1,1
+plannerUtil doPlan actions=[a, w, a, w]
+MAP after step 1
+|1, 
+|1, r, 1, 
+|1, 1, 1, 
+
+FINAL MAP
+|1, 
+|1, r, 1, 
+|1, 1, 1, 
+	
+	</pre>
 	</td>
 	</tr>
 	</table>
