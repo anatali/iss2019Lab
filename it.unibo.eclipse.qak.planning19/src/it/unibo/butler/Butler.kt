@@ -73,14 +73,15 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 								Tback=payloadArg(1).toString().toLong() 
 								println(" ..................................  BACK TIME= $Tback")
 						}
+						solve("dialog(F)","") //set resVar	
 						if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 
 						if(Tback>0){ forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
 						delay(Tback)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						 }
 						else
-						 			 { solve("updateMapAfterStep","") //set resVar	
-						 			  }
+						 { solve("updateMapAfterStep","") //set resVar	
+						  }
 						solve("showMap","") //set resVar	
 						delay(PauseTime)
 						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
@@ -110,6 +111,9 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				state("findTheTable") { //this:State
 					action { //it:State
 						println("findTheTable STARTS")
+						
+						val map = itunibo.planner.plannerUtil.getMap() 
+						println(map)
 					}
 				}	 
 			}

@@ -24,8 +24,8 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString() )
 						 }
 						else
-						 			 { println("no robot")
-						 			  }
+						{ println("no robot")
+						 }
 						itunibo.robot.robotSupport.move( "msg(a)"  )
 						delay(700) 
 						itunibo.robot.robotSupport.move( "msg(d)"  )

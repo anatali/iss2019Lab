@@ -126,10 +126,14 @@ object plannerUtil {
         //println("plannerUtil: doMove move=$move newdir=$newdir x1=$x1 y1=$y1")
     }
 
-    @Throws(Exception::class)
+     
     fun showMap() {
         println(RoomMap.getRoomMap().toString())
     }
+	
+	fun getMap() : String{
+		return RoomMap.getRoomMap().toString()
+	}
 /*
  * ---------------------------------------------------------
  */

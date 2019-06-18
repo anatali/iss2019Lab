@@ -2,7 +2,7 @@ System planex0
 
 Context ctxPanex0    ip [host="localhost" port=8038]  
 
-QActor planex0 context ctxPanex0{     
+QActor planex0 context ctxPanex0{      
 ["  
 var Curmove     = \"\"  
 var IterCounter = 0

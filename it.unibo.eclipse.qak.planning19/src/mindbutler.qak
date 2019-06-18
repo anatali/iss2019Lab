@@ -5,7 +5,7 @@
  * 2) Activate it.unibo.ctxRobotMind.MainCtxRobotMindKt on the real robot
  * 3) Launch ctxMindButler on the PC to make application-debugging easier
  * 
- * These actors can be viewed as an EXTENSIONI od the 'mind' 
+ * These actors can be viewed as an EXTENSION of the 'mind' 
  * that implements the application logic
  */
 
@@ -85,10 +85,11 @@ var BackTime   = 500L
 			"]
 			println(" ..................................  BACK TIME= $Tback")
 		}
-		//solve( dialog(F) )
+		
+		solve( dialog(F) )
 		["if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 "]			  
 		
-		if "Tback>0" { 
+		if "Tback>0" {  
 		  forward resourcemodel -m modelChange : modelChange(robot,s)  
  		  delayVar Tback 
   		  forward resourcemodel -m modelChange : modelChange(robot,h)     
@@ -125,8 +126,15 @@ var BackTime   = 500L
 	
 	State findTheTable{
 		println("findTheTable STARTS")
+		["
+val map = itunibo.planner.plannerUtil.getMap() 
+println(map)
+		"] 
 	}
+	
+	  
 }	
+
 
  
 /*
