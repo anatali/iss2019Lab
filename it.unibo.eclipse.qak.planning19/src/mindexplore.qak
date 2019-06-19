@@ -19,13 +19,13 @@ QActor explorer context ctxMindExplore{
 var stepCounter = 0 
 var Curmove = \"\"
 var curmoveIsForward = false
-var StepTime   = 1000L	//long		/ 
-//var RotateTime = 610L	//long		//300L	//for virtual
-var PauseTime  = 500L 
+//var StepTime   = 1000L	//long		/ 
+////var RotateTime = 610L	//long		//300L	//for virtual
+//var PauseTime  = 500L 
 
-//var StepTime   = 330L	//for virtual
-//var RotateTime = 300L	//for virtual
-//var PauseTime  = 250L 
+var StepTime   = 330L	//for virtual
+var RotateTime = 300L	//for virtual
+var PauseTime  = 250L 
 
 var Direction = \"\" 
 "]	
@@ -208,7 +208,7 @@ println(map)
  		solve( direction(D) )
  		["Direction = getCurSol(\"D\").toString() "]
 		println( @D ) 
-   		solve( dialog(F) )			//to facilitate testing
+   		//solve( dialog(F) )			//to facilitate testing
 	}           
 	Goto doExploreStep
 

@@ -19,13 +19,13 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		var stepCounter = 0 
 		var Curmove = ""
 		var curmoveIsForward = false
-		var StepTime   = 1000L	//long		/ 
-		//var RotateTime = 610L	//long		//300L	//for virtual
-		var PauseTime  = 500L 
+		//var StepTime   = 1000L	//long		/ 
+		////var RotateTime = 610L	//long		//300L	//for virtual
+		//var PauseTime  = 500L 
 		
-		//var StepTime   = 330L	//for virtual
-		//var RotateTime = 300L	//for virtual
-		//var PauseTime  = 250L 
+		var StepTime   = 330L	//for virtual
+		var RotateTime = 300L	//for virtual
+		var PauseTime  = 250L 
 		
 		var Direction = "" 
 		return { //this:ActionBasciFsm
@@ -190,7 +190,6 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						solve("direction(D)","") //set resVar	
 						Direction = getCurSol("D").toString() 
 						println(getCurSol("D").toString())
-						solve("dialog(F)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="doExploreStep", cond=doswitch() )
 				}	 

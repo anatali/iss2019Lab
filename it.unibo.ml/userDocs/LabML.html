@@ -4,6 +4,8 @@
 <link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
 <script type="text/javascript" src="../css/issStyle.js"></script>
 -->
+<SCRIPT SRC='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></SCRIPT>
+<SCRIPT>MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}})</SCRIPT>
 <style type="text/css">
 <!--
 
@@ -156,7 +158,65 @@ table, th, td {
 LabISS-lectures site</a></font> 
  
  <h2>Overview</h2>
-<h2>Install</h2> 
+ <h2>Install on Pc</h2> 
+ <ol>
+ <li>Install python on Widnows10 (<tt>python-3.7.3-amd64.exe</tt>)</li>
+<li>Update pip3 (<tt>pip3 install --upgrade pip</tt>) </li>
+<li>Check pip3 version: 
+<pre>
+pip3 --version
+pip 19.1.1 from c:\users\anatali\appdata\local\programs\python\python37\lib\site-packages\pip (python 3.7)
+</pre> </li>
+<li>Install ml modules(<tt>pip install  --upgrade jupyter matplotlib numpy pandas scipy scikit-learn</tt>)</li>
+<li>Launch jupyter 
+<pre>
+cd C:\Didattica2018Work\ml2019
+jupyter notebook
+http://localhost:8888
+</pre>
+<li>Install TensorFlow (<tt>pip3 install --upgrade tensorflow</tt>) </li>
+<li>Check the version
+<pre>
+python -c "import tensorflow; print(tensorflow.__version__)" 
+</pre>
+</li>
+ </ol>
+
+ <h3>Using TensorFlow</h3> 
+ <p>
+$$ f(x,y) = {x^2y+y+2}.$$
+ </p>
+ <pre>
+python
+>>>
+import tensorflow as tf
+print(tf.__version__)
+
+x = tf.Variable(3, name="x")
+y = tf.Variable(5, name="x")
+f= x*x*y + y + 2
+
+with tf.Session() as sess:
+	x.initializer.run()
+	y.initializer.run()
+	result = f.eval()
+	print(result)
+	
+Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 
+52
+------------------------------------------------------------------------------------------------------------------------
+AVX" (Advanced Vector Extensions)
+tensorflow default distribution is built without CPU extensions
+you should build tensorflow from the source optimized for your CPU with AVX, AVX2, 
+and FMA enabled if your CPU supports them.
+------------------------------------------------------------------------------------------------------------------------
+	
+import sys
+sys.exit()
+
+ </pre>
+ 
+<h2>Install on RaspberryPi</h2> 
 
 <pre>
 Python 3 - pip 9.0.1
