@@ -1,3 +1,6 @@
+/*
+ * ASSUMPTION: the room is empty
+ */
 System mindexplore
 mqttBroker "localhost" : 1883  
 
@@ -48,6 +51,7 @@ var Direction = \"\"
    		println("direction at start: ${getCurSol(\"D\").toString()}")
 		run itunibo.planner.plannerUtil.showMap()		
 		run itunibo.planner.plannerUtil.setGoal("$stepCounter","$stepCounter")		
+		//solve( dialog(F) )
 		run itunibo.planner.moveUtils.doPlan( myself )
  	}
 	Goto executePlannedActions if "itunibo.planner.moveUtils.existPlan()"  
@@ -75,13 +79,13 @@ var Direction = \"\"
 	Goto doForwardMove if "curmoveIsForward" else doTheMove
 	
 	State doTheMove{
-		if "Curmove==\"a\"" { forward resourcemodel -m modelChange : modelChange(robot,l) }
-		if "Curmove==\"d\"" { forward resourcemodel -m modelChange : modelChange(robot,r) }
-		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
-// 		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) 
+//		if "Curmove==\"a\"" { forward resourcemodel -m modelChange : modelChange(robot,l) }
+//		if "Curmove==\"d\"" { forward resourcemodel -m modelChange : modelChange(robot,r) }
 //		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
-//		delayVar RotateTime //rotate 
-//		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
+ 		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) 
+		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
+		delayVar RotateTime //rotate 
+		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
  		delayVar PauseTime		
 //		solve( dialog(F) )	//to CALIBRATE rotation time
 	}
@@ -131,6 +135,8 @@ var Direction = \"\"
 	 
 /*
  * Exploration step done: go back to home
+ * If we use the planner - setGoal(0,0) - then the robot could 
+ * find an obstacle in the return path
  */	 
 	 
 	State backToHome{
@@ -142,6 +148,7 @@ var Direction = \"\"
 		solve( retractall( move(_) ))		//clean the actor kb
  		run itunibo.planner.plannerUtil.setGoal(0,0)
  		run itunibo.planner.moveUtils.doPlan( myself )
+ 		solve( dialog(F) )
  		//solve( showMoves ) 
  		//run itunibo.planner.moveUtils.storeMoves( myself, "" )
  	} 
@@ -152,18 +159,20 @@ var Direction = \"\"
  		//println("&&&  doGoHomeActions ")  //better to setGoal(0,0) and execute the plan
 		ifSolved {  
 			["Curmove = getCurSol(\"M\").toString() "] 
-			if "Curmove==\"a\"" { forward resourcemodel -m modelChange : modelChange(robot,l) }
-			if "Curmove==\"d\"" { forward resourcemodel -m modelChange : modelChange(robot,r) }
-			if "Curmove==\"w\"" { 
-				forward resourcemodel -m modelChange : modelChange(robot,w)
-				delayVar StepTime
-				forward resourcemodel -m modelChange : modelChange(robot,h)
-			}
-			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
-//			forward resourcemodel -m modelChange : modelChange(robot,#M)
+//			if "Curmove==\"a\"" { forward resourcemodel -m modelChange : modelChange(robot,l) }
+//			if "Curmove==\"d\"" { forward resourcemodel -m modelChange : modelChange(robot,r) }
+//			if "Curmove==\"w\"" { 
+//				forward resourcemodel -m modelChange : modelChange(robot,w)
+//				delayVar StepTime
+//				forward resourcemodel -m modelChange : modelChange(robot,h)
+//			}
+ 			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
+ 			forward resourcemodel -m modelChange : modelChange(robot,$Curmove)
+//			println("2")
 //			run itunibo.planner.moveUtils.doPlannedMove(myself, @M)
-//			if "Curmove == \"w\" " {  delayVar StepTime } else { delayVar RotateTime }
-//			forward resourcemodel -m modelChange : modelChange(robot,h)
+ 			if "Curmove == \"w\" " {  delayVar StepTime } else { delayVar RotateTime }
+			forward resourcemodel -m modelChange : modelChange(robot,h)
+  			
 		} else { ["Curmove = \"\" "] }
 		//ifSolved  ["println(Curmove)"] 
   		//if "Curmove !== \"w\" " solve( dialog(F) )	//to CALIBRATE rotation time

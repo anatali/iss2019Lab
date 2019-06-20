@@ -95,11 +95,11 @@ object plannerUtil {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.BACKWARD)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
-                "a" -> {
+                "a","l" -> {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNLEFT)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
-                "d" -> {
+                "d","r" -> {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNRIGHT)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }

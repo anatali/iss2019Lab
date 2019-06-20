@@ -73,11 +73,10 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				}	 
 				state("doTheMove") { //this:State
 					action { //it:State
-						if(Curmove=="a"){ forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
-						 }
-						if(Curmove=="d"){ forward("modelChange", "modelChange(robot,r)" ,"resourcemodel" ) 
-						 }
+						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
@@ -128,6 +127,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						solve("retractall(move(_))","") //set resVar	
 						itunibo.planner.plannerUtil.setGoal( 0, 0  )
 						itunibo.planner.moveUtils.doPlan(myself)
+						solve("dialog(F)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitch() )
 				}	 
@@ -135,15 +135,14 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
 						if(currentSolution.isSuccess()) { Curmove = getCurSol("M").toString() 
-						if(Curmove=="a"){ forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
-						 }
-						if(Curmove=="d"){ forward("modelChange", "modelChange(robot,r)" ,"resourcemodel" ) 
-						 }
-						if(Curmove=="w"){ forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" ) 
-						delay(StepTime)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						 }
 						itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("M").toString() )
+						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
+						if(Curmove == "w" ){ delay(StepTime)
+						 }
+						else
+						 { delay(RotateTime)
+						  }
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						 }
 						else
 						{ Curmove = "" 
