@@ -7,7 +7,7 @@ object moveUtils{
     private val actions : List<Action>? = null
     private var existPlan = false
 	
-    private fun storeeMovesInActor( actor : ActorBasic, actions : List<Action>?  ) {
+    private fun storeMovesInActor( actor : ActorBasic, actions : List<Action>?  ) {
         if( actions == null ) return
         val iter = actions!!.iterator()
         while (iter.hasNext()) {
@@ -17,6 +17,12 @@ object moveUtils{
 		//actor.solve("assert( move(h) )")
     }
 	
+	fun loadRoomMap( actor : ActorBasic ){
+		val dims = plannerUtil.loadRoomMap()
+		actor.solve("retract( mapdims(_,_) )")		//remove old data
+		actor.solve("assert(  mapdims( ${dims.first},${dims.second} ) )")
+		
+	}
 	fun setDuration( actor : ActorBasic ){
 		val time = plannerUtil.getDuration()
 		actor.solve("retract( wduration(_) )")		//remove old data
@@ -32,7 +38,7 @@ object moveUtils{
 	fun doPlan(actor : ActorBasic ){
 		val plan = plannerUtil.doPlan(  )
 		existPlan = plan != null
-		if( existPlan ) storeeMovesInActor(actor,plan) 
+		if( existPlan ) storeMovesInActor(actor,plan) 
 	}
 	
 	fun existPlan() : Boolean{

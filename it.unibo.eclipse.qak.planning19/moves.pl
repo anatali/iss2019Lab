@@ -4,17 +4,17 @@
 
 %% move(M)  M=w|..
 
+mapdims(0,0).
+wduration(0).
+direction(downDir).
 
 showMoves :- move( M ), output( move( M ) ), fail.
 showMoves.			
 
 output( M ) :- stdout <- println( M ).
 
-wduration(0).
-direction(downDir).
-
 %-------------------------------------------------
-%  TuProlo FEATURES of the QActor mind
+%  TuProlog FEATURES 
 %-------------------------------------------------
 dialog( FileName ) :-  
 	java_object('javax.swing.JFileChooser', [], Dialog),

@@ -7,6 +7,10 @@
  * 
  * These actors can be viewed as an EXTENSION of the 'mind' 
  * that implements the application logic
+ * 
+ * =====================================================================
+ * This version does not use the planner
+ * =====================================================================
  */
 
 System mindbutler

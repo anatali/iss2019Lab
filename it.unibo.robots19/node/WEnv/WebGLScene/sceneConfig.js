@@ -58,13 +58,13 @@ const config = {
             centerPosition: { x: 0.18, y: 0.0},
             size: { x: 0.2, y: 0.045        }
 		},
-		/*
+		 
         {
             name: "table",
             centerPosition: { x: 0.52, y: 0.40},
             size: { x: 0.13, y: 0.10      }
 		},
-		*/
+		 
         {
         name: "wallUp",
 			centerPosition: { x: 0.48, y: 0.97},

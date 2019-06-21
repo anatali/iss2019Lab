@@ -7,12 +7,18 @@ import aima.core.search.framework.problem.GoalTest
 import aima.core.search.framework.problem.Problem
 import aima.core.search.framework.qsearch.GraphSearch
 import aima.core.search.uninformed.BreadthFirstSearch
-import it.unibo.exploremap.stella.model.Box
+//import it.unibo.exploremap.stella.model.Box
 import it.unibo.exploremap.stella.model.Functions
 import it.unibo.exploremap.stella.model.RobotAction
 import it.unibo.exploremap.stella.model.RobotState
-import it.unibo.exploremap.stella.model.RoomMap
+//import it.unibo.exploremap.stella.model.RoomMap
 import it.unibo.exploremap.stella.model.RobotState.Direction
+import java.io.PrintWriter
+import java.io.FileWriter
+import java.io.ObjectOutputStream
+import java.io.FileOutputStream
+import java.io.ObjectInputStream
+import java.io.FileInputStream
 
 object plannerUtil {
     private var initialState: RobotState? = null
@@ -23,7 +29,7 @@ object plannerUtil {
  * ------------------------------------------------
  */
     private var search: BreadthFirstSearch? = null
-    var goalTest: GoalTest? = null
+    var goalTest: GoalTest = Functions()		//init
     private var timeStart: Long = 0
 
     @Throws(Exception::class)
@@ -119,9 +125,9 @@ object plannerUtil {
             println("plannerUtil doMove: ERROR:" + e.message)
         }
 
-        val newdir = initialState!!.direction.toString().toLowerCase() + "Dir"
-        val x1     = initialState!!.x
-        val y1     = initialState!!.y
+//        val newdir = initialState!!.direction.toString().toLowerCase() + "Dir"
+//        val x1     = initialState!!.x
+//        val y1     = initialState!!.y
         //update the kb
         //println("plannerUtil: doMove move=$move newdir=$newdir x1=$x1 y1=$y1")
     }
@@ -131,6 +137,34 @@ object plannerUtil {
         println(RoomMap.getRoomMap().toString())
     }
 	
+    fun saveMap(  fname : String) {		
+        println("saveMap in $fname")
+		val pw = PrintWriter( FileWriter(fname) )
+		pw.print( RoomMap.getRoomMap().toString() )
+		pw.close()
+		
+		val os = ObjectOutputStream( FileOutputStream("roomMap.bin") )
+		os.writeObject(RoomMap.getRoomMap())
+		os.flush()
+		os.close()
+    }
+	
+	fun loadRoomMap(   ) : Pair<Int,Int> {
+	    var dimMapx = 0
+	    var dimMapy = 0
+		try{
+			val inps = ObjectInputStream(FileInputStream("roomMap.bin"))
+			val map  = inps.readObject() as RoomMap;
+			println(map.toString())
+	        dimMapx = map.getDimX()
+	        dimMapy = map.getDimY()
+			println("dimMapx = $dimMapx, dimMapy=$dimMapy")
+		}catch(e:Exception){
+			
+		}
+		return Pair(dimMapx,dimMapy)
+	}
+			
 	fun getMap() : String{
 		return RoomMap.getRoomMap().toString()
 	}
@@ -148,8 +182,23 @@ object plannerUtil {
 	//Box(boolean isObstacle, boolean isDirty, boolean isRobot)
     fun setGoal( x: Int, y: Int) {
         try {
-            println("setGoal $x,$y")
+            println("setGoal $x,$y while robot in cell: ${getPosX()},  ${getPosY()}")
             RoomMap.getRoomMap().put(x, y, Box(false, true, false))
+            goalTest = GoalTest { state  : Any ->
+                val robotState = state as RobotState
+				(robotState.x == x && robotState.y == y)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+	fun resetGoal( x: String, y: String) {
+		resetGoal( Integer.parseInt(x), Integer.parseInt(y))
+	}	
+    fun resetGoal( x: Int, y: Int) {
+        try {
+            println("resetGoal $x,$y while robot in cell: ${getPosX()},  ${getPosY()}")
+            RoomMap.getRoomMap().put(x, y, Box(false, false, false))
             goalTest = GoalTest { state  : Any ->
                 val robotState = state as RobotState
 				(robotState.x == x && robotState.y == y)

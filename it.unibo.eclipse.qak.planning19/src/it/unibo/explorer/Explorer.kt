@@ -16,6 +16,10 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
+		var goingHome  = false 
+		 
+		var Tback      = 0L
+		
 		var stepCounter = 0 
 		var Curmove = ""
 		var curmoveIsForward = false
@@ -47,6 +51,7 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						println("direction at start: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.showMap(  )
 						itunibo.planner.plannerUtil.setGoal( "$stepCounter", "$stepCounter"  )
+						goingHome=false
 						itunibo.planner.moveUtils.doPlan(myself)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitchGuarded({itunibo.planner.moveUtils.existPlan()}) )
@@ -63,7 +68,14 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						 }
 					}
 					 transition( edgeName="goto",targetState="checkAndDoAction", cond=doswitchGuarded({(Curmove.length>0) }) )
-					transition( edgeName="goto",targetState="backToHome", cond=doswitchGuarded({! (Curmove.length>0) }) )
+					transition( edgeName="goto",targetState="goalOk", cond=doswitchGuarded({! (Curmove.length>0) }) )
+				}	 
+				state("goalOk") { //this:State
+					action { //it:State
+						println("ON THE TARGET CELL !!!")
+					}
+					 transition( edgeName="goto",targetState="atHome", cond=doswitchGuarded({goingHome}) )
+					transition( edgeName="goto",targetState="backToHome", cond=doswitchGuarded({! goingHome}) )
 				}	 
 				state("checkAndDoAction") { //this:State
 					action { //it:State
@@ -74,9 +86,9 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				state("doTheMove") { //this:State
 					action { //it:State
 						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
-						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
 						delay(RotateTime)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
 						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
@@ -98,24 +110,36 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 				}	 
 				state("hadleStepFail") { //this:State
 					action { //it:State
-						var Tback = 0L
-						println("MAP when hadleStepFail")
-						itunibo.planner.plannerUtil.showMap(  )
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(R,D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								Tback=payloadArg(1).toString().toLong() 
-								println(" ..................................  BACK TIME= $Tback")
+								Tback=payloadArg(1).toString().toLong()  
+								 if( Tback > StepTime * 2 / 3 ) Tback = 0 else Tback=Tback/2
+								println(" ..................................  BACK TIME= $Tback over $StepTime")
 						}
 						println("$name in ${currentState.stateName} | $currentMsg")
-						forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
+						if(Tback > 0 ){ forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
 						delay(Tback)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						solve("direction(D)","") //set resVar	
 						println("direction at fail: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.doMove( getCurSol("D").toString()  )
+						println("MAP when hadleStepFail")
+						itunibo.planner.plannerUtil.showMap(  )
+						 }
 						delay(PauseTime)
 					}
-					 transition( edgeName="goto",targetState="backToHome", cond=doswitch() )
+					 transition( edgeName="goto",targetState="replan", cond=doswitchGuarded({(Tback > 0)}) )
+					transition( edgeName="goto",targetState="executePlannedActions", cond=doswitchGuarded({! (Tback > 0)}) )
+				}	 
+				state("replan") { //this:State
+					action { //it:State
+						if(goingHome){ solve("retractall(move(_))","") //set resVar	
+						itunibo.planner.plannerUtil.setGoal( 0, 0  )
+						itunibo.planner.moveUtils.doPlan(myself)
+						 }
+						solve("dialog(F)","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
 				state("backToHome") { //this:State
 					action { //it:State
@@ -126,10 +150,10 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 						itunibo.planner.plannerUtil.showMap(  )
 						solve("retractall(move(_))","") //set resVar	
 						itunibo.planner.plannerUtil.setGoal( 0, 0  )
+						goingHome=true
 						itunibo.planner.moveUtils.doPlan(myself)
-						solve("dialog(F)","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="doGoHomeActions", cond=doswitch() )
+					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
 				state("doGoHomeActions") { //this:State
 					action { //it:State
