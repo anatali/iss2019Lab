@@ -118,7 +118,7 @@ QActor robotmind context ctxRobotMind{
 /*
  * Works in ctxRobotMind since it is a policy
  */
- QActor sonarhandler context ctxRobotMind{  
+ QActor sonarhandler context ctxRobotMind{    
   	State init initial{
 		println("sonarhandler STARTS ... ")
 	}         
@@ -181,7 +181,7 @@ QActor sonarhandler context ctxRobotMind{
   * Basic robot: just an actuator of move commands
   * --------------------------------------------------------
   */
-  QActor basicrobot context ctxRobotMind {	
+  QActor basicrobot context ctxRobotMind {	 
 	State s0 initial {  
   		solve( consult("basicRobotConfig.pl") )   
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
