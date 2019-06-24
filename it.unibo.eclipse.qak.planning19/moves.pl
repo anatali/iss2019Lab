@@ -8,6 +8,7 @@ mapdims(0,0).
 wduration(0).
 direction(downDir).
 curPos(0,0).
+curPos(0,0,downDir).  %%changed by moveUtils.setPosition
 
 showMoves :- move( M ), output( move( M ) ), fail.
 showMoves.			

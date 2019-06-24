@@ -17,8 +17,8 @@ object moveUtils{
 		//actor.solve("assert( move(h) )")
     }
 	
-	fun loadRoomMap( actor : ActorBasic ){
-		val dims = plannerUtil.loadRoomMap()
+	fun loadRoomMap( actor : ActorBasic,  fname : String ){
+		val dims = plannerUtil.loadRoomMap( fname )
 		actor.solve("retract( mapdims(_,_) )")		//remove old data
 		actor.solve("assert(  mapdims( ${dims.first},${dims.second} ) )")
 		
@@ -52,8 +52,11 @@ object moveUtils{
 	fun setPosition(actor : ActorBasic){
 		val posx = plannerUtil.getPosX()
 		val posy = plannerUtil.getPosY()
-		println("robot position=($posx,$posy)")
+		val direction = plannerUtil.getDirection()
+		println("robot curPos=($posx,$posy,$direction)")
 		actor.solve("retract( curPos(_,_) )")		//remove old data
 		actor.solve("assert( curPos($posx,$posy) )")			
+		actor.solve("retract( curPos(_,_,_) )")		//remove old data
+		actor.solve("assert( curPos($posx,$posy,$direction) )")			
 	}
 }

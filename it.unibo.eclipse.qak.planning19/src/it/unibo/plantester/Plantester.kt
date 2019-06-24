@@ -19,6 +19,9 @@ class Plantester ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("s0") { //this:State
 					action { //it:State
 						println("&&&  plantester STARTED")
+						planner.plannerSupport.demo(  )
+						delay(1000) 
+						println("&&&  plantester ENDS")
 					}
 				}	 
 			}

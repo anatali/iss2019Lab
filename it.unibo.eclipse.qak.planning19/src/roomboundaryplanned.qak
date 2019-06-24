@@ -109,7 +109,7 @@ var PauseTime  = 500L
  	State boundaryFond{
 		println("FINAL MAP")   
  		run itunibo.planner.plannerUtil.showMap() 
- 		run itunibo.planner.plannerUtil.saveMap("roomBoudary")
+ 		run itunibo.planner.plannerUtil.saveMap("roomBoundary")
   	}
  	      
 }	

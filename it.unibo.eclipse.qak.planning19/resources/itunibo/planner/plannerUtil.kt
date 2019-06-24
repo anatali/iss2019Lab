@@ -224,11 +224,11 @@ object plannerUtil {
 		os.close()
     }
 	
-	fun loadRoomMap(   ) : Pair<Int,Int> {
+	fun loadRoomMap( fname: String  ) : Pair<Int,Int> {
 	    var dimMapx = 0
 	    var dimMapy = 0
 		try{
-			val inps = ObjectInputStream(FileInputStream("roomMap.bin"))
+			val inps = ObjectInputStream(FileInputStream("${fname}.bin"))
 			val map  = inps.readObject() as RoomMap;
 			println(map.toString())
 	        dimMapx = map.getDimX()
@@ -238,8 +238,7 @@ object plannerUtil {
 			println("loadRoomMap isobstacle 3,3 ${RoomMap.getRoomMap().isObstacle(3,3) }")
 			println("loadRoomMap isobstacle 2,2 ${RoomMap.getRoomMap().isObstacle(2,2) }")
 			//RoomMap.getRoomMap().setObstacles()	
-		}catch(e:Exception){
-			
+		}catch(e:Exception){			
 		}
 		return Pair(dimMapx,dimMapy)
 	}
@@ -310,7 +309,7 @@ object plannerUtil {
     }
 	
  	
-	fun setObstacle(  dir: Direction, x:Int, y:Int){
+	fun setObstacleWall(  dir: Direction, x:Int, y:Int){
 		when( dir ){
 			Direction.DOWN  -> RoomMap.getRoomMap().put(x, y + 1, Box(true, false, false))
 			//Direction.UP    -> RoomMap.getRoomMap().put(x, y - 1, Box(true, false, false)) 
@@ -325,7 +324,7 @@ object plannerUtil {
 		 val dir = initialState!!.getDirection()
 		 val x   = initialState!!.getX()
 		 val y   = initialState!!.getY()
-		 setObstacle( dir,x,y )
+		 setObstacleWall( dir,x,y )
  		 println("wallFound dir=$dir  x=$x  y=$y dimMapX=$dimMapx dimMapY=$dimMapy");
 		 doMove( dir.toString() )  //set cell
  		 if( dir == Direction.UP)    setWallRight(dimMapx,dimMapy,x,y)

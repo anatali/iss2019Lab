@@ -105,7 +105,7 @@ class Planex1 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 					action { //it:State
 						println("FINAL MAP")
 						itunibo.planner.plannerUtil.showMap(  )
-						itunibo.planner.plannerUtil.saveMap( "roomBoudary"  )
+						itunibo.planner.plannerUtil.saveMap( "roomBoundary"  )
 					}
 				}	 
 			}
