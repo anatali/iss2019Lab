@@ -52,7 +52,8 @@ object moveUtils{
 	fun setPosition(actor : ActorBasic){
 		val posx = plannerUtil.getPosX()
 		val posy = plannerUtil.getPosY()
-		actor.solve("retract( curPos(_._) )")		//remove old data
+		println("robot position=($posx,$posy)")
+		actor.solve("retract( curPos(_,_) )")		//remove old data
 		actor.solve("assert( curPos($posx,$posy) )")			
 	}
 }

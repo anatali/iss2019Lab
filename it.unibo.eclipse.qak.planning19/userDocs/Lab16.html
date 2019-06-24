@@ -217,7 +217,7 @@ working in logical space (a <kc>map</kc>) composed of a set of square cells, eac
 	<tr>
  	<td>
     <a href="../resources/itunibo/planner/plannerUtil.kt" target="code">plannerUtil.kt</a><br/>
-	<m>Example:<a href="../src/mindwithplanner.qak" target="code">mindwithplanner.qak</a><br/>
+	<m>Example:<a href="../src/mindwithplan.qak" target="code">mindwithplan.qak</a><br/>
 	
 	<center><img src="./spiralmove0.png" alt="spiralmove0" width="45%" height="32%"/></center>
 	<pre>setGoal 2,2
@@ -225,40 +225,55 @@ plannerUtil doPlan actions=[a, w, w, a, w, w]
 MAP AFTER EXPLORE STEP
 | 1, 1, 
 | 1, 1, 
-| 1, 1, r, </pre>
+| 1, 1, r, 
+</pre>
+
+Example:<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a><br/> 
+<center><img src="./butlermove0.png" alt="butlermove0.png" width="45%" height="32%"/></center><br/>
+
 	</m>
 	</td> 
-	<td>
- 	<h3>plannerUtil</h3>
-	<m>The singleton object named <k>plannerUtil</k> provides a set of static methods, including:
+	<td><m>
+	The example:<a href="../src/mindwithplan.qak" target="code">mindwithplan.qak</a> works without any robot.
+	</m>
+ 	<h3>plannerUtil (<a href="../resources/itunibo/planner/plannerUtil.kt" target="code">plannerUtil.kt</a>)</h3>
+	<m>
+	The singleton object named <k>plannerUtil</k> provides a set of static methods, including:
 	<ul>
 	<li><ks>initAI( )</ks>: initializes the planner with a <i>BreadthFirstSearch</i> algorithm, assuming a robot in position
 	<k>cell(0,0,1)</k>, <kc>direction=sud</kc> (see the picture above). 
 	The possible robot directions are: <kc>sud | east | north | west</kc>. <br/><br/>
 	</li>
+	<li><ks>doMove( move : String)</ks>: modifies the state of the <kc>map</kc> according to the given move.<br/><br/></li>
+	<li><ks>showMap(( )</ks>: prints the current state of the <kc>map</kc><br/><br/></li>
+	<li>...<br/><br/></li>
 	<li><ks>setGoal( x: String, y: String )</ks>: sets <k>cell(x,y,_)</k> as the goal to reach.<br/><br/></li>
 	<li><ks>doPlan(): List<Action>?</ks>: returns the list of actions to reach the goal-cell. 
 	The possible robot directions are: <kc>w | a | s | d</kc> (however, <kc>s</kc> is never selected by the planner).
 	<br/><br/></li>
-	<li><ks>doMove( move : String)</ks>: modifies the state of the <kc>map</kc> according to the given move.<br/><br/></li>
-	<li><ks>showMap(( )</ks>: prints the current state of the <kc>map</kc><br/><br/></li>
 	</ul>
+		The example:<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a> works with a robot:
+		the robot attempts to delimit its working area bay finding the (position of the) walls.
+
     </m>
  	</td>
 	</tr>
 	<tr>
  	<td>
     <a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a>.
-	<br/>
-	<m>Example:<a href="../src/mindexplore.qak" target="code">mindexplore.qak</a> (the same strategy of the example above)<br/><br/>
-	 Example:<a href="../src/mindbutler.qak" target="code">mindbutler.qak</a><br/>
+	<br/><m>
+	<!--
+	Example:<a href="../src/mindexplore.qak" target="code">mindexplore.qak</a> (the same strategy of the example above)<br/><br/>
+	Example:<a href="../src/mindbutler.qak" target="code">mindbutler.qak</a><br/> 
 	<center><img src="./butlermove0.png" alt="butlermove0.png" width="45%" height="32%"/></center><br/>
 	The robot attempts to delimit its working area bay finding the (position of the) walls.
+	--> 
 	</m>
 	</td> 
 	<td>
- 	<h3>moveUtils</h3>
-	<m>The singleton object named <k>moveUtils</k> acts as an adapter for a ActorBasic actor, by providing a set of static methods, including:
+ 	<h3>moveUtils (<a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a>)</h3>
+	<m>
+	The singleton object named <k>moveUtils</k> acts as an adapter for a ActorBasic actor, by providing a set of static methods, including:
   	<ul>
 	<li><ks>doPlan(actor : ActorBasic )</ks>:  calls <kc>plannerUtil.doPlan()</kc> and stores the resulting moves in the kb of the
 	given actor in the form <k>move( M )</k> with <kc>M = a | w | d</kc>. <br/><br/>

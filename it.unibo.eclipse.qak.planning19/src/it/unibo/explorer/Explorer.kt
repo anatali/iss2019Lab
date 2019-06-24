@@ -24,7 +24,6 @@ class Explorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 		var Curmove = ""
 		var curmoveIsForward = false
 		//var StepTime   = 1000L	//long		/ 
-		////var RotateTime = 610L	//long		//300L	//for virtual
 		//var PauseTime  = 500L 
 		
 		var StepTime   = 330L	//for virtual

@@ -16,21 +16,18 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		//var MaxDimY = "6"
-		//var MaxDimX = "8"
-		//var Curmove = ""
-		//var curmoveIsForward = false
-		//var Direction = "" 
-		
-		var StepTime   = 1000L	//long		//for real
-		var RotateTime = 560L	//long		//for real 
 		var PauseTime  = 1000L 
-		var RotateStep = 255L	//long		//for real 
+		
+		//var StepTime   = 1000L	
+		//var RotateTime = 560L	 
+		  
 		var BackTime   = 500L
 		
-		//var StepTime   = 330L	//for virtual
-		//var RotateTime = 300L	//for virtual
-		//var PauseTime  = 100L 
+		var StepTime   = 330L	//for virtual
+		var RotateTime = 300L	//for virtual
+		
+		
+		var RobotDirection = ""
 		
 		
 		return { //this:ActionBasciFsm
@@ -40,11 +37,6 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('floorMap.pl')","") //set resVar	
 						solve("showMap","") //set resVar	
-					}
-					 transition( edgeName="goto",targetState="exploreTheRoom", cond=doswitch() )
-				}	 
-				state("exploreTheRoom") { //this:State
-					action { //it:State
 					}
 					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
 				}	 
@@ -70,11 +62,11 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						println("&&& moveAhead failed")
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(R,D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
+								
 								Tback=payloadArg(1).toString().toLong() 
+								if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
 								println(" ..................................  BACK TIME= $Tback")
 						}
-						solve("dialog(F)","") //set resVar	
-						if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 
 						if(Tback>0){ forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
 						delay(Tback)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
@@ -87,14 +79,12 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
 						solve("changeDirection","") //set resVar	
 						solve("robotdirection(D)","") //set resVar	
-						delay(PauseTime)
-						forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
-						delay(BackTime)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						delay(PauseTime)
+						RobotDirection = getCurSol("D").toString()
+						println("RobotDirection= ${RobotDirection}")
+						solve("dialog(F)","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="endOfExploration", cond=doswitchGuarded({(getCurSol("D").toString() == "sud")}) )
-					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (getCurSol("D").toString() == "sud")}) )
+					 transition( edgeName="goto",targetState="endOfExploration", cond=doswitchGuarded({(RobotDirection == "sud")}) )
+					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (RobotDirection == "sud")}) )
 				}	 
 				state("tuning") { //this:State
 					action { //it:State
@@ -105,15 +95,6 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				state("endOfExploration") { //this:State
 					action { //it:State
 						println("EXPLORATION ENDS")
-					}
-					 transition( edgeName="goto",targetState="findTheTable", cond=doswitch() )
-				}	 
-				state("findTheTable") { //this:State
-					action { //it:State
-						println("findTheTable STARTS")
-						
-						val map = itunibo.planner.plannerUtil.getMap() 
-						println(map)
 					}
 				}	 
 			}

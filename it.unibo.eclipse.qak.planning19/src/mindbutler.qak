@@ -20,10 +20,10 @@ Dispatch modelChange  : modelChange( TARGET, VALUE )
 
 Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
-Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
+Dispatch stepFail      : stepFail(R,T) //R=obstacle, T = time
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
-Event  obstacle       : obstacle( DISTANCE )	     //from  sonar handler
+//Event  obstacle       : obstacle( DISTANCE )	     //from  sonar handler
 
 Context ctxMindButler    ip [host="localhost" port=8038]    -mqtt 
 Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
@@ -35,21 +35,18 @@ ExternalQActor resourcemodel context ctxDummyForMind
  */ 
 QActor butler context ctxMindButler{     
 ["
-//var MaxDimY = \"6\"
-//var MaxDimX = \"8\"
-//var Curmove = \"\"
-//var curmoveIsForward = false
-//var Direction = \"\" 
-
-var StepTime   = 1000L	//long		//for real
-var RotateTime = 560L	//long		//for real 
 var PauseTime  = 1000L 
-var RotateStep = 255L	//long		//for real 
+
+//var StepTime   = 1000L	
+//var RotateTime = 560L	 
+  
 var BackTime   = 500L
 
-//var StepTime   = 330L	//for virtual
-//var RotateTime = 300L	//for virtual
-//var PauseTime  = 100L 
+var StepTime   = 330L	//for virtual
+var RotateTime = 300L	//for virtual
+
+
+var RobotDirection = \"\"
 
 
 "]	
@@ -59,13 +56,8 @@ var BackTime   = 500L
 		solve( consult("floorMap.pl")	 )
 		solve( showMap	 )
  	}
-	Goto exploreTheRoom
-	
-	State exploreTheRoom{
-		
-	}
 	Goto moveAhead
-	
+		
  	State moveAhead{ 
 		forward butlerstep -m onestep : onestep( $StepTime )
  	}
@@ -85,36 +77,34 @@ var BackTime   = 500L
 		printCurrentMessage		
 		println("&&& moveAhead failed")
 		onMsg( stepFail:stepFail(R,D) ) {
-			["Tback=payloadArg(1).toString().toLong() 
-			"]
+["
+Tback=payloadArg(1).toString().toLong() 
+if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
+"]
 			println(" ..................................  BACK TIME= $Tback")
 		}
-		
-		solve( dialog(F) )
-		["if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3 "]			  
-		
-		if "Tback>0" {  
+				
+		if "Tback>0" {   
 		  forward resourcemodel -m modelChange : modelChange(robot,s)  
  		  delayVar Tback 
   		  forward resourcemodel -m modelChange : modelChange(robot,h)     
   		}
   		else{  
-  			solve( updateMapAfterStep )  //almost completed ...
+  			solve( updateMapAfterStep )  //move almost completed ...
   		}
 		solve( showMap	 )
 		delayVar PauseTime
 		
 		forward resourcemodel -m modelChange : modelChange(robot,l)
 		solve( changeDirection )  //updates robotdirection/1
-		solve( robotdirection(D) )
 		
-		delayVar PauseTime 	//TUNING: a little back	
-		forward resourcemodel -m modelChange : modelChange(robot,s)  
- 		delayVar BackTime
-  		forward resourcemodel -m modelChange : modelChange(robot,h) 
-		delayVar PauseTime 	
+		solve( robotdirection(D) )
+		["RobotDirection = getCurSol(\"D\").toString()"]
+		println("RobotDirection= ${RobotDirection}")
+		
+		solve( dialog(F) ) 
 	}
-    Goto endOfExploration  if "(getCurSol(\"D\").toString() == \"sud\")" else tuning   
+    Goto endOfExploration  if "(RobotDirection == \"sud\")" else tuning   
 
    	State tuning{	
 		println(" ---- TUNING --- ")
@@ -124,19 +114,8 @@ var BackTime   = 500L
 	
 	State endOfExploration{
 		println("EXPLORATION ENDS")
-		//run itunibo.planner.plannerUtil.getDuration()
 	}
-	Goto findTheTable
-	
-	State findTheTable{
-		println("findTheTable STARTS")
-		["
-val map = itunibo.planner.plannerUtil.getMap() 
-println(map)
-		"] 
-	}
-	
-	  
+	   
 }	
 
 
@@ -162,8 +141,8 @@ QActor butlerstep context ctxMindButler {
 			run itunibo.planner.plannerUtil.startTimer()
 		}
 	} 
-	Transition t0 whenTimeVar  StepTime   -> endDoMoveForward		
- 		          whenEvent     obstacle  -> stepFail
+	Transition t0 whenTimeVar  StepTime    -> endDoMoveForward		
+ 		          whenEvent    sonarRobot  -> stepFail
 		  
 	State endDoMoveForward{
 		forward resourcemodel -m modelChange : modelChange(robot,h)
@@ -173,7 +152,7 @@ QActor butlerstep context ctxMindButler {
 		
 	State stepFail{
 		run itunibo.planner.moveUtils.setDuration(myself)  //assert wduration/1
-		println("&&& butlerstep stepfail ")
+		//println("&&& butlerstep stepfail ")
 		solve( wduration( TIME ) )
 		forward butler -m stepFail : stepFail(obstacle,#TIME)  	
 	}
@@ -209,6 +188,3 @@ var LastDistance = 0
 }
 */
 
-/*
-
- */

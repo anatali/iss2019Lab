@@ -24,7 +24,8 @@ foundFridge.
 	
 updateMapAfterStep :-
 	robotdirection( D ),
-	updateMap(D,X,Y),output( updateMap(D,X,Y) ),
+	updateMap(D,X,Y),
+	output( updateMap(D,X,Y) ),
 	addRule( cell(X,Y,1) ).
 	
 updateMap(sud,X,Y):-

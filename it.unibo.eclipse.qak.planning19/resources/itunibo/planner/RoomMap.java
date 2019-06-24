@@ -3,21 +3,30 @@ package itunibo.planner;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import it.unibo.exploremap.stella.model.RobotState;
 
 public class RoomMap implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static RoomMap singletonRoomMap;
+	
 	public static RoomMap getRoomMap() {
 		if (singletonRoomMap == null)
 			singletonRoomMap = new RoomMap();
 		return singletonRoomMap;
 	}
+	
+	static void setRoomMap( RoomMap map ) {//internal
+		singletonRoomMap = map;
+	}
  	
 	private List<ArrayList<Box>> roomMap = new ArrayList<ArrayList<Box>>();
 	
 	private RoomMap() {
-		super();
+		//super();
 		for (int i=0; i<1; i++) {
 			roomMap.add(new ArrayList<Box>());
 			for (int j=0; j<1; j++) {
@@ -83,11 +92,11 @@ public class RoomMap implements Serializable{
 	
 	public boolean canMove(int x, int y, RobotState.Direction direction) {
 		switch (direction) {
-		case UP: return canMoveUp(x, y);
-		case RIGHT: return canMoveRight(x, y);
-		case DOWN: return canMoveDown(x, y);
-		case LEFT: return canMoveLeft(x, y);
-		default: throw new IllegalArgumentException("Not a valid direction");
+			case UP: return canMoveUp(x, y);
+			case RIGHT: return canMoveRight(x, y);
+			case DOWN: return canMoveDown(x, y);
+			case LEFT: return canMoveLeft(x, y);
+			default: throw new IllegalArgumentException("Not a valid direction");
 		}
 	}
 	

@@ -1,4 +1,4 @@
-System mindwithplanner
+System mindwithplan
 
 Context ctxMindWithPlan  ip [host="localhost" port=8038]   //-mqtt 
 
@@ -6,7 +6,6 @@ QActor plantester context ctxMindWithPlan{
 ["var stepCounter = 0"]	
 	State s0 initial {	    
 		println("&&&  plantester STARTED")
-		//run  itunibo.planner.mainPlanDemo.demo()  
 		run itunibo.planner.plannerUtil.initAI()
 		println("INITIAL MAP") 
  		run itunibo.planner.plannerUtil.showMap() 

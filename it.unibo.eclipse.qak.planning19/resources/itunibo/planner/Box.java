@@ -3,6 +3,10 @@ package itunibo.planner;
 import java.io.Serializable;
 
 public class Box implements Serializable{
+	/**
+	 * 
+	 */
+//	private static final long serialVersionUID = 1L;
 	private boolean isObstacle;
 	private boolean isDirty;
 	private boolean isRobot;

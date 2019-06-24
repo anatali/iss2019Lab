@@ -35,7 +35,7 @@ class Butlerstep ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 							scope, context!!, "local_tout_butlerstep_doMoveForward", StepTime )
 					}
 					 transition(edgeName="t03",targetState="endDoMoveForward",cond=whenTimeout("local_tout_butlerstep_doMoveForward"))   
-					transition(edgeName="t04",targetState="stepFail",cond=whenEvent("obstacle"))
+					transition(edgeName="t04",targetState="stepFail",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
 					action { //it:State
@@ -47,7 +47,6 @@ class Butlerstep ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("stepFail") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.setDuration(myself)
-						println("&&& butlerstep stepfail ")
 						solve("wduration(TIME)","") //set resVar	
 						forward("stepFail", "stepFail(obstacle,${getCurSol("TIME").toString()})" ,"butler" ) 
 					}
