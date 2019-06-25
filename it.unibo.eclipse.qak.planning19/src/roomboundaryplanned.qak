@@ -13,7 +13,7 @@ Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt
 
 ExternalQActor resourcemodel context ctxDummyForMind
 
-QActor planex1 context ctxBoundaryPlanned{      
+QActor roomboudaryexplorer context ctxBoundaryPlanned{      
 ["
 var mapEmpty    = false
 var Tback       = 0L
@@ -49,25 +49,27 @@ var PauseTime  = 500L
 		println("INITIAL MAP") 
  		//run itunibo.planner.plannerUtil.showMap() 
  	}
-    Goto detectBoundary //reachCorner
+    Goto detectBoundary  
     
     State detectBoundary{ 
     	["NumStep++"]
       	//NO GOAL : JUST ONE STEP ahead
   		run itunibo.planner.plannerUtil.showMap()  
      }
-    Goto doAheadMove if "(NumStep<5)" else boundaryFond
+    Goto doAheadMove if "(NumStep<5)" else boundaryFound
 
  	State doAheadMove{
-		run itunibo.planner.plannerUtil.startTimer()
-		forward onecellforward -m onestep : onestep($StepTime)	
+ 		println("&&&  doAheadMove")
+		//run itunibo.planner.plannerUtil.startTimer()
+		forward onecellstep -m onestep : onestep($StepTime)	
 	}
 	Transition t0   whenMsg stepOk   -> stepDone   
 					whenMsg stepFail -> stepFailed 
 	 
-	//onecellforward has completed 
+	//onecellstep has completed 
 	State stepDone{  
 		run itunibo.planner.plannerUtil.doMove( "w" )	
+		run itunibo.planner.plannerUtil.showMap()  
 		delayVar PauseTime
  	}
 	Goto doAheadMove
@@ -77,7 +79,7 @@ var PauseTime  = 500L
      }
     Goto doAheadMove  
 	
-	//onecellforward has found an obstacle
+	//onecellstep has found an obstacle
 	State stepFailed{  
 		println("&&&  FOUND WALL")
 		printCurrentMessage
@@ -106,7 +108,7 @@ var PauseTime  = 500L
 	}   
     Goto detectBoundary
  
- 	State boundaryFond{
+ 	State boundaryFound{
 		println("FINAL MAP")   
  		run itunibo.planner.plannerUtil.showMap() 
  		run itunibo.planner.plannerUtil.saveMap("roomBoundary")
@@ -116,7 +118,7 @@ var PauseTime  = 500L
 
 
 //==============================================================================
-QActor onecellforward context ctxBoundaryPlanned {
+QActor onecellstep context ctxBoundaryPlanned {
 [" var foundObstacle = false; var StepTime = 0L"]  
 	State s0 initial {	   
 		["foundObstacle = false "]
@@ -135,7 +137,7 @@ QActor onecellforward context ctxBoundaryPlanned {
 		  
 	State endDoMoveForward{
 		forward resourcemodel -m modelChange : modelChange(robot,h)
-		forward planex1 -m stepOk : stepOk(ok)  //answer
+		forward roomboudaryexplorer -m stepOk : stepOk(ok)  //answer
 	}
 	Goto s0
 	
@@ -150,10 +152,10 @@ QActor onecellforward context ctxBoundaryPlanned {
 	}
 	Goto stepFail if "foundObstacle" else s0
 	
-	State stepFail{
-		println("&&& onecellforward stepfail ")
+	State stepFail{ 
+		println("&&& onecellstep stepfail ")
 		solve( wduration( TIME ) )
-		forward planex1 -m stepFail : stepFail(obstacle,#TIME)  	
+		forward roomboudaryexplorer -m stepFail : stepFail(obstacle,#TIME)  	
 	}
 	Goto s0
  

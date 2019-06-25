@@ -66,7 +66,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t00",targetState="moveAhead",cond=whenDispatch("stepOk"))
@@ -113,7 +113,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"a" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t02",targetState="stepDown",cond=whenDispatch("stepOk"))
@@ -127,7 +127,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"d" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t04",targetState="updateMapAfterStepDown",cond=whenDispatch("stepOk"))
@@ -187,7 +187,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"a" )
 						delay(PauseTime)
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t06",targetState="endOfEdge",cond=whenDispatch("stepOk"))
 					transition(edgeName="t07",targetState="tableFound",cond=whenDispatch("stepFail"))
@@ -267,7 +267,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("doForwardMove") { //this:State
 					action { //it:State
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t08",targetState="handleStepOk",cond=whenDispatch("stepOk"))
 					transition(edgeName="t09",targetState="hadleStepFail",cond=whenDispatch("stepFail"))

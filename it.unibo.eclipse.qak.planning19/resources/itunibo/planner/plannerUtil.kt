@@ -7,18 +7,20 @@ import aima.core.search.framework.problem.GoalTest
 import aima.core.search.framework.problem.Problem
 import aima.core.search.framework.qsearch.GraphSearch
 import aima.core.search.uninformed.BreadthFirstSearch
-import it.unibo.exploremap.stella.model.Functions
-import it.unibo.exploremap.stella.model.RobotAction
-import it.unibo.exploremap.stella.model.RobotState
-import it.unibo.exploremap.stella.model.RobotState.Direction
 import java.io.PrintWriter
 import java.io.FileWriter
 import java.io.ObjectOutputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.FileInputStream
+import itunibo.planner.model.RobotState
+import itunibo.planner.model.Functions
+import itunibo.planner.model.RobotState.Direction
+import itunibo.planner.model.RobotAction
+import itunibo.planner.model.RoomMap
+import itunibo.planner.model.Box
 
-object plannerUtil {
+object plannerUtil { 
     private var initialState: RobotState? = null
 	private var actions: List<Action>?    = null
 /*
@@ -62,15 +64,17 @@ object plannerUtil {
 	
     fun resetGoal( x: Int, y: Int) {
         try {
-			var canMove = RoomMap.getRoomMap().canMove( x,y-1, initialState!!.direction  );
-            println("resetGoal $x,$y while robot in cell: ${getPosX()},${getPosY()} direction=${getDirection()} canMove=$canMove")
+//			var canMove = RoomMap.getRoomMap().canMove( x,y-1, initialState!!.direction  );
+//            println("resetGoal $x,$y while robot in cell: ${getPosX()},${getPosY()} direction=${getDirection()} canMove=$canMove")
             
 			if( RoomMap.getRoomMap().isObstacle(x,y) ) {
 				println("ATTEMPT TO GO INTO AN OBSTACLE ")
 				currentGoalApplicable = false
 			}else currentGoalApplicable = true
-            //RoomMap.getRoomMap().put(x, y, Box(false, true, false))
-            goalTest = GoalTest { state  : Any ->
+            
+			RoomMap.getRoomMap().put(x, y, Box(false, true, false))  //set dirty
+
+			goalTest = GoalTest { state  : Any ->
                 val robotState = state as RobotState
 				(robotState.x == x && robotState.y == y)
             }
@@ -112,8 +116,10 @@ object plannerUtil {
 		} 
 		
         val searchAgent: SearchAgent
-        //println("plannerUtil doPlan newProblem (A) " );
-        val problem = Problem(initialState, Functions(), Functions(), goalTest, Functions())
+        //println("plannerUtil doPlan newProblem (A) $goalTest" );
+		val problem = Problem(initialState, Functions(), Functions(), goalTest, Functions())
+		
+		
         //println("plannerUtil doPlan newProblem (A) search " );
         searchAgent = SearchAgent(problem, search!!)
         actions     = searchAgent.actions
@@ -129,8 +135,6 @@ object plannerUtil {
             println("plannerUtil doPlan NoOp")
             return null
         }
-//		
-       // initialState = RobotState(x,y, dir)
 		
         //println("plannerUtil doPlan actions=$actions")
         return actions
@@ -228,6 +232,7 @@ object plannerUtil {
 	    var dimMapx = 0
 	    var dimMapy = 0
 		try{
+			println("loadRoomMap = $fname")
 			val inps = ObjectInputStream(FileInputStream("${fname}.bin"))
 			val map  = inps.readObject() as RoomMap;
 			println(map.toString())
@@ -235,9 +240,6 @@ object plannerUtil {
 	        dimMapy = map.getDimY()
 			println("dimMapx = $dimMapx, dimMapy=$dimMapy")
 			RoomMap.setRoomMap( map )
-			println("loadRoomMap isobstacle 3,3 ${RoomMap.getRoomMap().isObstacle(3,3) }")
-			println("loadRoomMap isobstacle 2,2 ${RoomMap.getRoomMap().isObstacle(2,2) }")
-			//RoomMap.getRoomMap().setObstacles()	
 		}catch(e:Exception){			
 		}
 		return Pair(dimMapx,dimMapy)
@@ -308,7 +310,11 @@ object plannerUtil {
         val newdir = initialState!!.direction.toString().toLowerCase() + "Dir"
     }
 	
- 	
+ 
+    fun setObstacles(   ){
+		RoomMap.getRoomMap().setObstacles()
+ 	}
+	
 	fun setObstacleWall(  dir: Direction, x:Int, y:Int){
 		when( dir ){
 			Direction.DOWN  -> RoomMap.getRoomMap().put(x, y + 1, Box(true, false, false))

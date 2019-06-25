@@ -1,9 +1,9 @@
 %====================================================================================
-% roomboundaryplanned description   
+% workinroom description   
 %====================================================================================
 mqttBroker("localhost", "1883").
-context(ctxboundaryplanned, "localhost",  "MQTT", "0" ).
+context(ctxworkinroom, "localhost",  "MQTT", "0" ).
 context(ctxdummyformind, "otherresourcelocalhost",  "MQTT", "0" ).
  qactor( resourcemodel, ctxdummyformind, "external").
-  qactor( roomboudaryexplorer, ctxboundaryplanned, "it.unibo.roomboudaryexplorer.Roomboudaryexplorer").
-  qactor( onecellstep, ctxboundaryplanned, "it.unibo.onecellstep.Onecellstep").
+  qactor( workerinroom, ctxworkinroom, "it.unibo.workerinroom.Workerinroom").
+  qactor( onecellforward, ctxworkinroom, "it.unibo.onecellforward.Onecellforward").
