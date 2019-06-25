@@ -44,7 +44,7 @@ var NunOfTurn       = 0
 
 var StepTime   = 330L	//for virtual
 var RotateTime = 300L	//for virtual
-var PauseTime  = 500L 
+var PauseTime  = 250L 
 
 
 "]	
@@ -96,15 +96,12 @@ var PauseTime  = 500L
 	}
 	Goto findTable if "(Direction==\"downDir\")" else moveAhead 
 	
-	State endOfExploreBoundary{
-		println("EXPLORATION ENDS")
- 	}
 
 /*
  * ===================================================================0
  */
 
- 	//Explore along diagonal
+ 	 
  	State findTable{
  		solve( mapdims(MaxX,MaxY ) )
 ["
@@ -122,7 +119,7 @@ CurY = Integer.parseInt( getCurSol(\"Y\").toString() )
  	Goto stepRight 	
  	
  	 		
- 	State stepRight{
+ 	State stepRight{ 
    		forward resourcemodel -m modelChange : modelChange(robot,a) 
 		delayVar RotateTime //rotate 
 		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
@@ -161,91 +158,144 @@ CurY = Integer.parseInt( getCurSol(\"Y\").toString() )
  		printCurrentMessage
  		onMsg( stepFail : stepFail(Obs,Time) ) { 
  			["Tback=payloadArg(1).toString().toLong() / 2 "]
- 			println("tableFound ${payloadArg(1).toString()}")
+ 			println("TABLE FOUND ${payloadArg(1).toString()}")
  		}
  		//Return in cell
   		forward resourcemodel -m modelChange : modelChange(robot,s) 
 		delayVar Tback  
 		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
  		 		
+		//run itunibo.planner.moveUtils.setPosition(myself) 
  		solve( direction(D) )
   		run itunibo.planner.moveUtils.doPlannedMove(myself, @D )	    //update map with obstacle
  	}
- 	Goto exploreTableBoundary
+ 	Goto  prepareExploreEdge //exploreTableBoundary
  	
- 	State exploreTableBoundary{	
- 		run itunibo.planner.plannerUtil.showMap()
- 		["NunOfTurn = 0 "]
- 		run itunibo.planner.moveUtils.setPosition(myself) 
+ 	
+ 	State prepareExploreEdge{
+ 		run itunibo.planner.moveUtils.setPosition(myself)
  		solve( curPos(X,Y,D) )
 ["
 CurX      = Integer.parseInt( getCurSol(\"X\").toString()  )  
 CurY      = Integer.parseInt( getCurSol(\"Y\").toString()  )
 Direction = getCurSol(\"D\").toString()
-if( Direction == \"rightDir\" ){ GX =   CurX + 1; GY =   CurY + 1}
-if( Direction == \"downDir\"  ){ GX =   CurX; GY =   CurY + 1}
 "]   		
- 		println("exploreTableBoundary ... CurX=$CurX, CurY=$CurY, Dir=$Direction, GX=$GX, GY=$GY") 	
- 	}
- 	Goto reachTableCenter 
-  	   
- 	State reachTableCenter{
-//?????????????		
-  		forward resourcemodel -m modelChange : modelChange(robot,d) 
+
+		println("prepareExploreEdge CurX=$CurX, CurY=$CurY, dir=$Direction")
+		run itunibo.planner.plannerUtil.showMap()	
+		//solve( dialog(F) )
+		
+//		if " (Direction == \"rightDir\" || Direction == \"upDir\") "{
+	  		forward resourcemodel -m modelChange : modelChange(robot,d) 
+			delayVar RotateTime //rotate 
+			forward resourcemodel -m modelChange : modelChange(robot,h) //stop	
+			run itunibo.planner.moveUtils.doPlannedMove(myself, "d" )	    //update map
+			delayVar PauseTime 		
+//		}
+// 		if " Direction == \"downDir\""{
+//		  	forward resourcemodel -m modelChange : modelChange(robot,a) 
+//			delayVar RotateTime //rotate 
+//			forward resourcemodel -m modelChange : modelChange(robot,h) //stop	
+//			run itunibo.planner.moveUtils.doPlannedMove(myself, "a" )	    //update map
+//			delayVar PauseTime 		
+// 		}
+		
+	}
+ 	Goto exploreEdge
+ 	
+ 	State exploreEdge{ //waw
+		println("exploreEdge (waw) ")
+   		forward resourcemodel -m modelChange : modelChange(robot,w) 
+		delayVar StepTime 
+		forward resourcemodel -m modelChange : modelChange(robot,h) //stop	
+		run itunibo.planner.moveUtils.doPlannedMove(myself, "w" )	    //update map
+		delayVar PauseTime 		
+ 
+   		forward resourcemodel -m modelChange : modelChange(robot,a) 
 		delayVar RotateTime //rotate 
 		forward resourcemodel -m modelChange : modelChange(robot,h) //stop	
-		run itunibo.planner.moveUtils.doPlannedMove(myself, "d" )	    //update map
-		delayVar PauseTime
-  		
-  		forward resourcemodel -m modelChange : modelChange(robot,d) 
-		delayVar RotateTime //rotate 
-		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
-		run itunibo.planner.moveUtils.doPlannedMove(myself, "d" )	    //update map
-		delayVar PauseTime
+		run itunibo.planner.moveUtils.doPlannedMove(myself, "a" )	    //update map
+		delayVar PauseTime 		
 		
-  		solve( direction(D) )     
-  		["Direction = getCurSol(\"D\").toString() "]   
-   		println("AVOID-OBSTACLE-DIRECTION: ${getCurSol(\"D\").toString()}")
- 		
- 		run itunibo.planner.plannerUtil.saveMap("roomMap")
- 		
-		solve( retractall( move(_) ))		//clean the actor kb
- 		run itunibo.planner.plannerUtil.resetGoal(GX,GY)			 
-		run itunibo.planner.moveUtils.doPlan( myself )
-		solve( dialog(F) )		
- 	}
- 	Goto executePlannedActions 
+		//solve( dialog(F) )
+		
+//last w could fail
+		run itunibo.planner.plannerUtil.startTimer()
+		forward onecellforward -m onestep : onestep($StepTime)	
+	}
+	Transition t0   whenMsg stepOk   -> endOfEdge   
+					whenMsg stepFail -> tableFound //exploreEdge 
  	
-     State executePlannedActions{
- 		solve( retract( move(M) ) ) 
+ 	State endOfEdge{
+ 		println("endOfEdge ")
+ 		run itunibo.planner.moveUtils.doPlannedMove(myself, "w" )	    //update map
+ 		run itunibo.planner.moveUtils.setPosition(myself)
+ 		solve( curPos(X,Y,D) )
+["
+CurX      = Integer.parseInt( getCurSol(\"X\").toString()  )  
+CurY      = Integer.parseInt( getCurSol(\"Y\").toString()  )
+Direction = getCurSol(\"D\").toString()
+"]   		
+		run itunibo.planner.plannerUtil.showMap()	
+ 		//solve( dialog(F) )
+ 	}
+ 	//Goto  endOfExploreBoundary if "(Direction == \"downDir\")" else exploreEdge
+ 	Goto  backToHome if "(Direction == \"downDir\")" else exploreEdge
+ 	
+ 	
+	State endOfExploreBoundary{
+		println("endOfExploreBoundary : EXPLORATION ENDS")
+		run itunibo.planner.plannerUtil.saveMap("roomMapWithTable")
+ 	}
+ 	
+	State backToHome{
+		println("&&&  backToHome")
+ 		solve( retractall( move(_) ))		//clean the actor kb
+ 		run itunibo.planner.plannerUtil.setGoal(0,0)
+  		run itunibo.planner.moveUtils.doPlan( myself )
+ 		//solve( dialog(F) )
+   	} 
+	Goto executePlannedActions //doGoHomeActions 
+
+
+	State executePlannedActions{ 
+		//solve( showMoves ) 
+		solve( retract( move(M) ) ) 
 		ifSolved {  
 			["Curmove = getCurSol(\"M\").toString() 
               curmoveIsForward=(Curmove == \"w\")
 	        "]
 		} else { ["Curmove = \"\"; curmoveIsForward=false"]  }  
 		//println("executePlannedActions doing $Curmove")
- 	} 
-	Goto checkAndDoAction  if "(Curmove.length>0) " else exploreTableBoundary 
+ 	}
+	Goto checkAndDoAction  if "(Curmove.length>0) " else goalOk 
 
-
-  	//Execute the move if it is a rotation or halt
+ 	State goalOk{		  
+ 		println("ON THE TARGET CELL !!!")
+		run itunibo.planner.plannerUtil.saveMap("roomMapWithTable")
+ 		run itunibo.planner.moveUtils.setPosition(myself)
+ 		solve( curPos(X,Y,D) )
+["
+CurX      = Integer.parseInt( getCurSol(\"X\").toString()  )  
+CurY      = Integer.parseInt( getCurSol(\"Y\").toString()  )
+Direction = getCurSol(\"D\").toString()
+"]   		
+		println("AT HOME: CurX=$CurX, CurY=$CurY, dir=$Direction")
+		
+ 	}
+  	
+ 	//Execute the move if it is a rotation or halt
 	State checkAndDoAction{	 }
 	Goto doForwardMove if "curmoveIsForward" else doTheMove
-
-	State doTheMove{ 
+	
+	State doTheMove{
 //		if "Curmove==\"a\"" { forward resourcemodel -m modelChange : modelChange(robot,l) }
 //		if "Curmove==\"d\"" { forward resourcemodel -m modelChange : modelChange(robot,r) }
 //		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
   		forward resourcemodel -m modelChange : modelChange(robot,$Curmove) 
 		delayVar RotateTime //rotate 
-		forward resourcemodel -m modelChange : modelChange(robot,h) //stop		
-		
-		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove) //update map
-
- 		run itunibo.planner.moveUtils.setPosition(myself) 
- 		solve( curPos(X,Y,D) )
-		println("doTheMove-DIRECTION: ${getCurSol(\"D\").toString()}")
-		
+		forward resourcemodel -m modelChange : modelChange(robot,h) //stop
+		run itunibo.planner.moveUtils.doPlannedMove(myself, Curmove)
  		delayVar PauseTime		
 		//println("doTheMove DONE $Curmove")
  		//solve( dialog(F) )	//to CALIBRATE rotation time
@@ -259,22 +309,17 @@ if( Direction == \"downDir\"  ){ GX =   CurX; GY =   CurY + 1}
 	}
 	Transition t0   whenMsg stepOk   -> handleStepOk   
 					whenMsg stepFail -> hadleStepFail 
-	 
-	//onecellforward has completed 
+ 	
+    	
 	State handleStepOk{
 		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")	
- 	}
+		delayVar PauseTime	
+	}
 	Goto executePlannedActions
 	
-	//onecellforward has found an obstacle
-	State hadleStepFail{    
-		println("&&&  FOUND OBSTACLE")
- 		solve( direction(D) )
-  		run itunibo.planner.moveUtils.doPlannedMove(myself, @D )	    //update map with obstacle
-
+ 	State hadleStepFail{ 
+		println("NEVER HERE!!!")
 	}
- 	Goto exploreTableBoundary
- 	
 	
 }	
 

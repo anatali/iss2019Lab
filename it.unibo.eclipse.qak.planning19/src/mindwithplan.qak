@@ -3,7 +3,7 @@ System mindwithplan
 Context ctxMindWithPlan  ip [host="localhost" port=8038]   //-mqtt 
 
 QActor plantester context ctxMindWithPlan{     
-["var stepCounter = 0"]	
+["var stepCounter = 0"]	 
 	State s0 initial {	    
 		println("&&&  plantester STARTED")
 		run itunibo.planner.plannerUtil.initAI()
