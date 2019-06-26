@@ -25,6 +25,7 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("doMoveForward") { //this:State
 					action { //it:State
+						storeCurrentMessageForReply()
 						if( checkMsgContent( Term.createTerm("onestep(DURATION)"), Term.createTerm("onestep(TIME)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								StepTime = payloadArg(0).toLong()
@@ -40,7 +41,7 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("endDoMoveForward") { //this:State
 					action { //it:State
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						forward("stepOk", "stepOk(ok)" ,"roomexplorer" ) 
+						replyToCaller("stepOk", "stepOk(ok)")
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
@@ -60,8 +61,8 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("stepFail") { //this:State
 					action { //it:State
 						println("&&& onestepahead stepfail ")
-						solve("wduration(TIME)","") //set resVar	
-						forward("stepFail", "stepFail(obstacle,${getCurSol("TIME").toString()})" ,"roomexplorer" ) 
+						solve("wduration(TIME)","TIME") //set resVar	
+						replyToCaller("stepFail", "stepFail(obstacle,$resVar)")
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 

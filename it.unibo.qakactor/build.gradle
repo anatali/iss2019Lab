@@ -44,6 +44,6 @@ sourceSets {
 }
 
 jar {
-    println("executing jar")
+    println("building jar")
     from sourceSets.main.allSource
 }

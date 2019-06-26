@@ -22,7 +22,7 @@ QActor plantester context ctxMindWithPlan{
 		println("MAP AFTER EXPLORE STEP")
 		run itunibo.planner.plannerUtil.showMap()		
 		println("------------------------------------")
-	}
+	} 
 	Goto backToHome 
 	
 	State backToHome{

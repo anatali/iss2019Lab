@@ -92,7 +92,8 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     private var isStarted = false
     protected var myself : ActorBasicFsm
     protected lateinit var currentState: State
-    protected var currentMsg = NoMsg
+    protected var currentMsg       = NoMsg
+    protected var msgToReply = NoMsg
     lateinit protected var mybody: ActorBasicFsm.() -> Unit
     var stateTimer : TimerActor? = null
 
@@ -288,7 +289,40 @@ abstract class ActorBasicFsm(  qafsmname:  String,
                     } //it.isEvent() && it.msgId() == timerEventName }
                 }
     }
+
 /*
+    fun ignoreCurrentCaller() {
+        currentMsg = NoMsg
+    }
+*/
+
+    fun storeCurrentMessageForReply() {
+        msgToReply = currentMsg
+        //println(getName() + " 			msgToReply:" +msgToReply );
+    }
+ 
+    suspend fun replyToCaller(msgId: String, msg: String) {
+        //println( " replyToCaller msgToReply=" + msgToReply);
+        val caller = msgToReply.msgSender()
+        //println( " replyToCaller  $msgId : $msg  to $caller" );
+        forward(msgId, msg, caller)
+    }
+ /*
+    suspend fun replyToCaller(msgId: String, msg: String) {
+        if (currentMsg != null) {
+            val caller = currentMsg.msgSender()
+            println( " replyToCaller  $msgId : $msg  to $caller" );
+            forward(msgId, caller, msg)
+        }
+        else if (msgToReply != NoMsg) { //Aug4
+            println( " replyToCaller msgToReply=" + msgToReply);
+            currentMsg = msgToReply
+            replyToCaller(msgId, msg)
+            currentMsg = NoMsg
+        }
+    }
+*/
+    /*
 UTILITIES TO HANDLE MES CONTENT
  */
     private var msgArgList = mutableListOf<String>()

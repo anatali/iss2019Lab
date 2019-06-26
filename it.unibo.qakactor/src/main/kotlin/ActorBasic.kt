@@ -96,7 +96,9 @@ Messaging
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
              if( ctx == null ) {
-                 println("       ActorBasic $name | context of $destName UNKNOWN ")
+                 println(" ActorBasic $name | context of $destName UNKNOWN - sendind via mqtt=$mqtt")
+                 val m = MsgUtil.buildDispatch(name, msgId, msg, destName)       //JUNE2019
+                 mqtt.sendMsg(m, "unibo/qak/$destName")
                  return
              }
              //println("       ActorBasic $name | forward ctx= ${ctx}")
@@ -173,7 +175,10 @@ Messaging
         emit( event )
     }
 
-/*
+
+
+
+    /*
  --------------------------------------------
  OBSERVABLE
  --------------------------------------------
@@ -253,6 +258,8 @@ machineExec
     fun getDuration() : Int{
         val duration = (System.currentTimeMillis() - timeAtStart).toInt()
         //println("DURATION = $duration")
+         solve("retract( wduration(_) )")		//remove old data
+         solve("assert( wduration($duration) )")
         return duration
     }
 
