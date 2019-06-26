@@ -24,6 +24,8 @@ ExternalQActor onestepahead context ctxDummyForMind
 QActor roomexplorer context ctxRoomExplore{     
 ["
 var mapEmpty    = false
+val inmapname   =\"roomBoundary\"		 
+val outmapname  =\"roomMapWithTable\"		 
 var Tback       = 0L
 var stepCounter = 0 
 var Curmove     = \"\"
@@ -49,10 +51,10 @@ var PauseTime  = 250L
 
 
 "]	
-	State s0 initial {	
+	State s0 initial {	  
 	    solve( consult("moves.pl")	 )
  		run itunibo.planner.plannerUtil.initAI()
- 		run itunibo.planner.moveUtils.loadRoomMap( myself, "roomBoundary" )	//assert mapdims/2   
+ 		run itunibo.planner.moveUtils.loadRoomMap( myself,inmapname )	//assert mapdims/2   
  		solve( mapdims(X,Y) )
  		["mapEmpty = ( getCurSol(\"X\").toString() == \"0\")"]
  	}
@@ -92,7 +94,7 @@ var PauseTime  = 250L
   		["Direction = getCurSol(\"D\").toString() "] 
    		println("DIRECTION: ${getCurSol(\"D\").toString()}")
 		run itunibo.planner.plannerUtil.showMap()
-		run itunibo.planner.plannerUtil.saveMap("roomMap")
+		//run itunibo.planner.plannerUtil.saveMap(outmapname)
    		delayVar PauseTime						
   		solve( dialog(F) )
 	}
@@ -250,7 +252,7 @@ Direction = getCurSol(\"D\").toString()
  	
 	State endOfExploreBoundary{
 		println("endOfExploreBoundary : EXPLORATION ENDS")
-		run itunibo.planner.plannerUtil.saveMap("roomMapWithTable")
+		run itunibo.planner.plannerUtil.saveMap(outmapname)
  	}
  	
 	State backToHome{
@@ -277,7 +279,7 @@ Direction = getCurSol(\"D\").toString()
 
  	State goalOk{		  
  		println("ON THE TARGET CELL !!!")
-		run itunibo.planner.plannerUtil.saveMap("roomMapWithTable")
+		run itunibo.planner.plannerUtil.saveMap(outmapname)
  		run itunibo.planner.moveUtils.setPosition(myself)
  		solve( curPos(X,Y,D) )
 ["

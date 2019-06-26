@@ -38,5 +38,5 @@ QActor plantester context ctxMindWithPlan{
 	State endOfJob{
 		run itunibo.planner.plannerUtil.getDuration()
 	}
-
+ 
 }    

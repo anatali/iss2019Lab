@@ -42,7 +42,7 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("moveAhead") { //this:State
 					action { //it:State
-						forward("onestep", "onestep($StepTime)" ,"butlerstep" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t00",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
 					transition(edgeName="t01",targetState="hadleStepKo",cond=whenDispatch("stepFail"))

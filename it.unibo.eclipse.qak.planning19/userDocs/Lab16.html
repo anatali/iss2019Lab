@@ -175,7 +175,7 @@ library:
 <br/><br/>
 
   	<center><table style="width:98%">
-	<tbody>	
+ 
 	<tr>
 	<td style="width:40%">
 	<h3>AIMA library</h3>
@@ -183,7 +183,9 @@ library:
 	<m>
 	In particular, the Best-first search algorithm (sez. <tt>3.5.2</tt> of the book) as a support for search-based problem-solving agents:<br/>
 	<a href="https://github.com/aimacode/aima-java/blob/AIMA3e/aima-core/src/main/java/aima/core/search/informed/AStarSearch.java" 
-	target="web">AStarSearch</a>
+	target="web">AStarSearch</a><br/><br/>
+	The proposal for using a planner has been done by the student Federico Stella; see
+	<a href="./NotesStellaR-Map.pdf" target="code">NotesStellaR-Map.pdf</a>.
 	</m>
 	</td> 
 	<td>
@@ -303,7 +305,7 @@ The application designer usually works by exploiting the utility
 
 
    	<center><table style="width:98%">
-	<tbody>	
+	 
 	<tr>
  	<td style="width:70%">	 
 	<center><img src="./explan0_1.png" alt="explan0_1" width="100%" height="32%"/></center>
@@ -349,7 +351,64 @@ FINAL MAP
 	</tr>
 	</table>
 	</center> 	
+
+ <h2>An approach for the butler project</h2>	
+ 
+<center><table style="width:98%">
+	 	
+	<tr>
+ 	<td style="width:30%">	 
+	<h3>1</h3>
+	<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a><br/><br/>
+	<m>
+	Builds a map of the <k>empty room</k> by using the planner.
+	</m>
+ 	</td> 
+	<td>
+	<center><img src="./roomEmpty.png" alt="roomEmpty" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
 	
+	<tr>
+ 	<td style="width:30%">	 
+	<h3>2</h3>
+	<a href="../src/roomexplore.qak" target="code">roomexplore.qak</a><br/><br/>
+	<m>
+  If no map exists, explore the room boundary by using the planner; <br/>
+  afterwards, finds the position of the table
+	</m>
+	
+ 	</td> 
+	<td>
+	<center><img src="./roomWithTable.png" alt="roomWithTable" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
+
+	<tr>
+ 	<td style="width:30%">	 
+	<h3>3</h3>
+	<a href="../src/workinroom.qak" target="code">workinroom.qak</a><br/><br/>
+	<m>
+The robot plans a trip from home to the east part of the table and executes it.
+
+	</m>
+ 	</td> 
+	<td>
+	<center><img src="./tripTableEast.png" alt="tripTableEast" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
+	
+</table>
+</center> 	
+
+ <ol>
+ <ul></ul>
+ <ul></ul>
+ </ol>
+ 
  
 <br/>  	<br/>  	
 	

@@ -17,6 +17,8 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
+		val inmapname   ="roomBoundary"		 
+		val outmapname  ="roomMapWithTable"		 
 		var Tback       = 0L
 		var stepCounter = 0 
 		var Curmove     = ""
@@ -46,7 +48,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
-						itunibo.planner.moveUtils.loadRoomMap(myself ,"roomBoundary" )
+						itunibo.planner.moveUtils.loadRoomMap(myself ,inmapname )
 						solve("mapdims(X,Y)","") //set resVar	
 						mapEmpty = ( getCurSol("X").toString() == "0")
 					}
@@ -84,7 +86,6 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						Direction = getCurSol("D").toString() 
 						println("DIRECTION: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.showMap(  )
-						itunibo.planner.plannerUtil.saveMap( "roomMap"  )
 						delay(PauseTime)
 						solve("dialog(F)","") //set resVar	
 					}
@@ -210,7 +211,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("endOfExploreBoundary") { //this:State
 					action { //it:State
 						println("endOfExploreBoundary : EXPLORATION ENDS")
-						itunibo.planner.plannerUtil.saveMap( "roomMapWithTable"  )
+						itunibo.planner.plannerUtil.saveMap( outmapname  )
 					}
 				}	 
 				state("backToHome") { //this:State
@@ -238,7 +239,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("goalOk") { //this:State
 					action { //it:State
 						println("ON THE TARGET CELL !!!")
-						itunibo.planner.plannerUtil.saveMap( "roomMapWithTable"  )
+						itunibo.planner.plannerUtil.saveMap( outmapname  )
 						itunibo.planner.moveUtils.setPosition(myself)
 						solve("curPos(X,Y,D)","") //set resVar	
 						

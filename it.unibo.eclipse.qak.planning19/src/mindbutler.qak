@@ -29,7 +29,7 @@ Context ctxMindButler    ip [host="localhost" port=8038]    -mqtt
 Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
 
 ExternalQActor resourcemodel context ctxDummyForMind
-
+ExternalQActor onestepahead  context ctxDummyForMind
 /*
  * 
  */ 
@@ -59,7 +59,7 @@ var RobotDirection = \"\"
 	Goto moveAhead
 		
  	State moveAhead{ 
-		forward butlerstep -m onestep : onestep( $StepTime )
+		forward onestepahead -m onestep : onestep( $StepTime )
  	}
 	Transition t0   whenMsg stepOk   -> hadleStepOk
 					whenMsg stepFail -> hadleStepKo 
@@ -126,7 +126,7 @@ if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
  * 3) If all ok, sends the 'answer'  stepOk
  * 4) If finds an obstacle, sends the 'answer' stepFail(T) with T=time elapsed before obstacle
  */
- 
+/* 
 QActor butlerstep context ctxMindButler {
 [" var foundObstacle = false; var StepTime = 0L"]  
 	State s0 initial {	   
@@ -159,6 +159,8 @@ QActor butlerstep context ctxMindButler {
 	Goto s0
 
 }    
+
+*/
 /* 
 //The mind already emits obstacle when the robot is going forward
 QActor sonarhandlerbutler context ctxMindButler{  

@@ -17,6 +17,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
+		val mapname     ="roomBoundary"		//
 		var Tback       = 0L
 		var stepCounter = 0 
 		var Curmove     = ""
@@ -63,7 +64,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				state("doAheadMove") { //this:State
 					action { //it:State
 						println("&&&  doAheadMove")
-						forward("onestep", "onestep($StepTime)" ,"onecellstep" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t00",targetState="stepDone",cond=whenDispatch("stepOk"))
 					transition(edgeName="t01",targetState="stepFailed",cond=whenDispatch("stepFail"))
@@ -106,7 +107,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 					action { //it:State
 						println("FINAL MAP")
 						itunibo.planner.plannerUtil.showMap(  )
-						itunibo.planner.plannerUtil.saveMap( "roomBoundary"  )
+						itunibo.planner.plannerUtil.saveMap( mapname  )
 					}
 				}	 
 			}

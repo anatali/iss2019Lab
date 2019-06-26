@@ -62,7 +62,7 @@ const config = {
         {
             name: "table",
             centerPosition: { x: 0.60, y: 0.40},
-            size: { x: 0.24, y: 0.24      }
+            size: { x: 0.16, y: 0.24      }
 		},
 
         {

@@ -1,5 +1,7 @@
 /*
-  */
+* The robot plans a trip from home to the east part of the table
+* and executes it.
+*/
 System workinroom  
 mqttBroker "localhost" : 1883  
 
@@ -19,6 +21,7 @@ ExternalQActor resourcemodel context ctxDummyForMind
 QActor workerinroom context ctxWorkInRoom{     
 ["
 var mapEmpty    = false
+val mapname     =\"roomMapWithTable\"
 var Tback       = 0L
 var stepCounter = 0 
 var Curmove     = \"\"
@@ -47,15 +50,15 @@ var PauseTime  = 250L
 	State s0 initial {	    
 	    solve( consult("moves.pl")	 )
  		run itunibo.planner.plannerUtil.initAI()
-  		run itunibo.planner.moveUtils.loadRoomMap( myself, "roomMapWithTable" )	//assert mapdims/2   
+  		run itunibo.planner.moveUtils.loadRoomMap( myself, mapname )	//assert mapdims/2   
 // 		solve( mapdims(X,Y) )
 // 		["mapEmpty = ( getCurSol(\"X\").toString() == \"0\")"]
  		//run itunibo.planner.plannerUtil.setObstacles()
- 		run itunibo.planner.plannerUtil.showMap()
+// 		run itunibo.planner.plannerUtil.showMap()
  	} 
-	Goto  test1
+	Goto  tableEast
 	 
-	State test1{
+	State tableEast{
  		run itunibo.planner.plannerUtil.setGoal(5,3)
   		run itunibo.planner.moveUtils.doPlan( myself )
  		solve( dialog(F) )
@@ -84,6 +87,7 @@ CurY      = Integer.parseInt( getCurSol(\"Y\").toString()  )
 Direction = getCurSol(\"D\").toString()
 "]   		
 		println("ON THE TARGET CELL: CurX=$CurX, CurY=$CurY, dir=$Direction")
+		run itunibo.planner.plannerUtil.showMap()
 		
  	}
   	

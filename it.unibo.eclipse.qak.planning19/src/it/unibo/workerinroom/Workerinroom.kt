@@ -17,6 +17,7 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
+		val mapname     ="roomMapWithTable"
 		var Tback       = 0L
 		var stepCounter = 0 
 		var Curmove     = ""
@@ -46,12 +47,11 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
-						itunibo.planner.moveUtils.loadRoomMap(myself ,"roomMapWithTable" )
-						itunibo.planner.plannerUtil.showMap(  )
+						itunibo.planner.moveUtils.loadRoomMap(myself ,mapname )
 					}
-					 transition( edgeName="goto",targetState="test1", cond=doswitch() )
+					 transition( edgeName="goto",targetState="tableEast", cond=doswitch() )
 				}	 
-				state("test1") { //this:State
+				state("tableEast") { //this:State
 					action { //it:State
 						itunibo.planner.plannerUtil.setGoal( 5, 3  )
 						itunibo.planner.moveUtils.doPlan(myself)
@@ -81,6 +81,7 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						CurY      = Integer.parseInt( getCurSol("Y").toString()  )
 						Direction = getCurSol("D").toString()
 						println("ON THE TARGET CELL: CurX=$CurX, CurY=$CurY, dir=$Direction")
+						itunibo.planner.plannerUtil.showMap(  )
 					}
 				}	 
 				state("checkAndDoAction") { //this:State
