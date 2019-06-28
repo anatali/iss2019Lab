@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomMap implements Serializable{
-	
-	
-	
 	/**
 	 * 
 	 */
@@ -21,8 +18,7 @@ public class RoomMap implements Serializable{
 	}
 	public static void setRoomMap( RoomMap map ) { 
 		singletonRoomMap = map;
-		System.out.println("setRoomMap = $map  $singletonRoomMap");
-	}
+ 	}
 	
 	private List<ArrayList<Box>> roomMap = new ArrayList<ArrayList<Box>>();
 	

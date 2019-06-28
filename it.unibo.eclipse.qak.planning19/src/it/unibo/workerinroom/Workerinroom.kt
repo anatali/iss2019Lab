@@ -18,36 +18,26 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		
 		var mapEmpty    = false
 		val mapname     ="roomMapWithTable"
-		var Tback       = 0L
-		var stepCounter = 0 
-		var Curmove     = ""
-		var Direction   = "" 
-		var MaxX        = 0
-		var MaxY        = 0
-		var CurX        = 0
-		var CurY        = 0
-		var GX          = 0
-		var GY          = 0
-		var TableFound  = false
-		var curmoveIsForward = false
-		var endTableEdge = false
-		var NunOfTurn       = 0
 		
-		//var StepTime   = 1000L	//long		/ 
-		////var RotateTime = 610L	//long		//300L	//for virtual
-		//var PauseTime  = 500L 
+		var Curmove     = "" 
+		var curmoveIsForward = false 
 		
-		var StepTime   = 330L	//for virtual
-		var RotateTime = 300L	//for virtual
-		var PauseTime  = 250L 
+		//REAL ROBOT
+		//var StepTime   = 1000 	 
+		//var PauseTime  = 500 
 		
+		//VIRTUAL ROBOT
+		var StepTime   = 330	//for virtual
+		var PauseTime  = 500
 		
+		var PauseTimeL  = PauseTime.toLong()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.loadRoomMap(myself ,mapname )
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
 					 transition( edgeName="goto",targetState="tableEast", cond=doswitch() )
 				}	 
@@ -55,7 +45,6 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						itunibo.planner.plannerUtil.setGoal( 5, 3  )
 						itunibo.planner.moveUtils.doPlan(myself)
-						solve("dialog(F)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
@@ -74,14 +63,7 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("goalOk") { //this:State
 					action { //it:State
-						itunibo.planner.moveUtils.setPosition(myself)
-						solve("curPos(X,Y,D)","") //set resVar	
-						
-						CurX      = Integer.parseInt( getCurSol("X").toString()  )  
-						CurY      = Integer.parseInt( getCurSol("Y").toString()  )
-						Direction = getCurSol("D").toString()
-						println("ON THE TARGET CELL: CurX=$CurX, CurY=$CurY, dir=$Direction")
-						itunibo.planner.plannerUtil.showMap(  )
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
 				}	 
 				state("checkAndDoAction") { //this:State
@@ -92,26 +74,21 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("doTheMove") { //this:State
 					action { //it:State
-						forward("modelChange", "modelChange(robot,$Curmove)" ,"resourcemodel" ) 
-						delay(RotateTime)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
-						delay(PauseTime)
+						itunibo.planner.moveUtils.rotate(myself ,Curmove, PauseTime )
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
 				state("doForwardMove") { //this:State
 					action { //it:State
-						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
+						delay(PauseTimeL)
+						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime )
 					}
 					 transition(edgeName="t00",targetState="handleStepOk",cond=whenDispatch("stepOk"))
 					transition(edgeName="t01",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
 				}	 
 				state("handleStepOk") { //this:State
 					action { //it:State
-						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
-						delay(PauseTime)
+						itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 

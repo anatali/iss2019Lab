@@ -19,24 +19,7 @@ class Qakstream ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("s0") { //this:State
 					action { //it:State
 						println("qakstream STARTS")
-						itunibo.streams.sonarStreamPipe.create(myself)
-						println("qakstream DONE")
 					}
-					 transition( edgeName="goto",targetState="doWork", cond=doswitch() )
-				}	 
-				state("doWork") { //this:State
-					action { //it:State
-					}
-					 transition(edgeName="t00",targetState="handleObstacle",cond=whenEvent("obstacle"))
-				}	 
-				state("handleObstacle") { //this:State
-					action { //it:State
-						
-									val duration = getDuration() //globalTimer started in sonarHCSR04SupportAsStream
-									println("duration = $duration")
-						println("$name in ${currentState.stateName} | $currentMsg")
-					}
-					 transition( edgeName="goto",targetState="doWork", cond=doswitch() )
 				}	 
 			}
 		}

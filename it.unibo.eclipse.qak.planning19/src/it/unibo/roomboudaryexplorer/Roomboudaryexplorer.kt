@@ -17,39 +17,24 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     ="roomBoundary"		//
-		var Tback       = 0L
-		var stepCounter = 0 
-		var Curmove     = ""
-		var Direction   = "" 
-		var MaxX        = 0
-		var MaxY        = 0
-		var CurX        = 0
-		var CurY        = 0
-		var GX          = 0
-		var GY          = 0
-		var TableFound  = false
-		var curmoveIsForward = false
-		var endTableEdge = false
-		var NunOfTurn       = 0
-		var NumStep      = 0
+		val mapname     = "xxx"  //"roomBoundary"		//
+		var Tback       = 0
+		var NumStep     = 0
 		
-		//var StepTime   = 1000L	//long		/ 
-		////var RotateTime = 610L	//long		//300L	//for virtual
+		//REAL ROBOT
+		//var StepTime   = 1000	 
 		//var PauseTime  = 500L 
 		
-		var StepTime   = 330L	//for virtual
-		var RotateTime = 300L	//for virtual
-		var PauseTime  = 500L 
+		//VIRTUAL ROBOT
+		var StepTime   = 330	 
+		var PauseTime  = 250
 		
-		
+		var PauseTimeL  = PauseTime.toLong()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("&&&  planex0 STARTED")
-						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
-						println("INITIAL MAP")
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
 					 transition( edgeName="goto",targetState="detectBoundary", cond=doswitch() )
 				}	 
@@ -63,51 +48,37 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				}	 
 				state("doAheadMove") { //this:State
 					action { //it:State
-						println("&&&  doAheadMove")
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime )
 					}
 					 transition(edgeName="t00",targetState="stepDone",cond=whenDispatch("stepOk"))
 					transition(edgeName="t01",targetState="stepFailed",cond=whenDispatch("stepFail"))
 				}	 
 				state("stepDone") { //this:State
 					action { //it:State
-						itunibo.planner.plannerUtil.doMove( "w"  )
-						itunibo.planner.plannerUtil.showMap(  )
-						delay(PauseTime)
-					}
-					 transition( edgeName="goto",targetState="doAheadMove", cond=doswitch() )
-				}	 
-				state("reachWallRight") { //this:State
-					action { //it:State
-						itunibo.planner.plannerUtil.showMap(  )
+						itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
+						delay(PauseTimeL)
 					}
 					 transition( edgeName="goto",targetState="doAheadMove", cond=doswitch() )
 				}	 
 				state("stepFailed") { //this:State
 					action { //it:State
 						println("&&&  FOUND WALL")
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(Obs,Time)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								Tback=payloadArg(1).toString().toLong() / 3 
+								Tback=payloadArg(1).toString().toInt() / 2
 								println("stepFailed ${payloadArg(1).toString()}")
 						}
-						forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
-						delay(Tback)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, PauseTime )
 						itunibo.planner.plannerUtil.wallFound(  )
-						forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						itunibo.planner.plannerUtil.doMove( "a"  )
-						delay(PauseTime)
+						itunibo.planner.moveUtils.rotateLeft(myself ,PauseTime )
 					}
 					 transition( edgeName="goto",targetState="detectBoundary", cond=doswitch() )
 				}	 
 				state("boundaryFound") { //this:State
 					action { //it:State
-						println("FINAL MAP")
-						itunibo.planner.plannerUtil.showMap(  )
 						itunibo.planner.plannerUtil.saveMap( mapname  )
+						println("FINAL MAP")
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
 				}	 
 			}

@@ -17,8 +17,6 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val inmapname   ="roomBoundary"		 
-		val outmapname  ="roomMapWithTable"		 
 		var Tback       = 0L
 		var stepCounter = 0 
 		var Curmove     = ""
@@ -40,7 +38,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		
 		var StepTime   = 330L	//for virtual
 		var RotateTime = 300L	//for virtual
-		var PauseTime  = 250L 
+		var PauseTime  = 500L 
 		
 		
 		return { //this:ActionBasciFsm
@@ -48,7 +46,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
-						itunibo.planner.moveUtils.loadRoomMap(myself ,inmapname )
+						itunibo.planner.moveUtils.loadRoomMap(myself ,"roomBoundary" )
 						solve("mapdims(X,Y)","") //set resVar	
 						mapEmpty = ( getCurSol("X").toString() == "0")
 					}
@@ -68,7 +66,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t00",targetState="moveAhead",cond=whenDispatch("stepOk"))
@@ -86,6 +84,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						Direction = getCurSol("D").toString() 
 						println("DIRECTION: ${getCurSol("D").toString()}")
 						itunibo.planner.plannerUtil.showMap(  )
+						itunibo.planner.plannerUtil.saveMap( "roomMap"  )
 						delay(PauseTime)
 						solve("dialog(F)","") //set resVar	
 					}
@@ -114,7 +113,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"a" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t02",targetState="stepDown",cond=whenDispatch("stepOk"))
@@ -128,7 +127,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"d" )
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
 						delay(PauseTime)
 					}
 					 transition(edgeName="t04",targetState="updateMapAfterStepDown",cond=whenDispatch("stepOk"))
@@ -151,6 +150,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
 						delay(Tback)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.setPosition(myself)
 						solve("direction(D)","") //set resVar	
 						itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("D").toString() )
 					}
@@ -166,11 +166,19 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						Direction = getCurSol("D").toString()
 						println("prepareExploreEdge CurX=$CurX, CurY=$CurY, dir=$Direction")
 						itunibo.planner.plannerUtil.showMap(  )
-						forward("modelChange", "modelChange(robot,d)" ,"resourcemodel" ) 
+						solve("dialog(F)","") //set resVar	
+						if( Direction == "rightDir"){ forward("modelChange", "modelChange(robot,d)" ,"resourcemodel" ) 
 						delay(RotateTime)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"d" )
 						delay(PauseTime)
+						 }
+						if( Direction == "downDir"){ forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,"a" )
+						delay(PauseTime)
+						 }
 					}
 					 transition( edgeName="goto",targetState="exploreEdge", cond=doswitch() )
 				}	 
@@ -187,8 +195,9 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"a" )
 						delay(PauseTime)
+						solve("dialog(F)","") //set resVar	
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
 					}
 					 transition(edgeName="t06",targetState="endOfEdge",cond=whenDispatch("stepOk"))
 					transition(edgeName="t07",targetState="tableFound",cond=whenDispatch("stepFail"))
@@ -196,34 +205,62 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("endOfEdge") { //this:State
 					action { //it:State
 						println("endOfEdge ")
-						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
-						itunibo.planner.moveUtils.setPosition(myself)
 						solve("curPos(X,Y,D)","") //set resVar	
 						
 						CurX      = Integer.parseInt( getCurSol("X").toString()  )  
 						CurY      = Integer.parseInt( getCurSol("Y").toString()  )
 						Direction = getCurSol("D").toString()
 						itunibo.planner.plannerUtil.showMap(  )
+						solve("dialog(F)","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="backToHome", cond=doswitchGuarded({(Direction == "downDir")}) )
+					 transition( edgeName="goto",targetState="endOfExploreBoundary", cond=doswitchGuarded({(Direction == "downDir")}) )
 					transition( edgeName="goto",targetState="exploreEdge", cond=doswitchGuarded({! (Direction == "downDir")}) )
 				}	 
 				state("endOfExploreBoundary") { //this:State
 					action { //it:State
 						println("endOfExploreBoundary : EXPLORATION ENDS")
-						itunibo.planner.plannerUtil.saveMap( outmapname  )
 					}
 				}	 
-				state("backToHome") { //this:State
+				state("exploreTableBoundary") { //this:State
 					action { //it:State
-						println("&&&  backToHome")
-						solve("retractall(move(_))","") //set resVar	
-						itunibo.planner.plannerUtil.setGoal( 0, 0  )
-						itunibo.planner.moveUtils.doPlan(myself)
+						itunibo.planner.plannerUtil.showMap(  )
+						NunOfTurn = 0 
+						itunibo.planner.moveUtils.setPosition(myself)
+						solve("curPos(X,Y,D)","") //set resVar	
+						
+						CurX      = Integer.parseInt( getCurSol("X").toString()  )  
+						CurY      = Integer.parseInt( getCurSol("Y").toString()  )
+						Direction = getCurSol("D").toString()
+						if( Direction == "rightDir" ){ GX =   CurX + 1; GY =   CurY + 1}
+						if( Direction == "downDir"  ){ GX =   CurX + 1; GY =   CurY - 1}
+						println("exploreTableBoundary ... CurX=$CurX, CurY=$CurY, Dir=$Direction, GX=$GX, GY=$GY")
 					}
-					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
+					 transition( edgeName="goto",targetState="exploreTableEdge", cond=doswitch() )
 				}	 
-				state("executePlannedActions") { //this:State
+				state("exploreTableEdge") { //this:State
+					action { //it:State
+						forward("modelChange", "modelChange(robot,d)" ,"resourcemodel" ) 
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,"d" )
+						delay(PauseTime)
+						forward("modelChange", "modelChange(robot,d)" ,"resourcemodel" ) 
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,"d" )
+						delay(PauseTime)
+						solve("direction(D)","") //set resVar	
+						Direction = getCurSol("D").toString() 
+						println("AVOID-OBSTACLE-DIRECTION: ${getCurSol("D").toString()}")
+						itunibo.planner.plannerUtil.saveMap( "roomMap"  )
+						solve("retractall(move(_))","") //set resVar	
+						itunibo.planner.plannerUtil.resetGoal( GX, GY  )
+						itunibo.planner.moveUtils.doPlan(myself)
+						solve("dialog(F)","") //set resVar	
+					}
+					 transition( edgeName="goto",targetState="doExploreEdge", cond=doswitch() )
+				}	 
+				state("doExploreEdge") { //this:State
 					action { //it:State
 						solve("retract(move(M))","") //set resVar	
 						if(currentSolution.isSuccess()) { Curmove = getCurSol("M").toString() 
@@ -234,20 +271,21 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						 }
 					}
 					 transition( edgeName="goto",targetState="checkAndDoAction", cond=doswitchGuarded({(Curmove.length>0) }) )
-					transition( edgeName="goto",targetState="goalOk", cond=doswitchGuarded({! (Curmove.length>0) }) )
+					transition( edgeName="goto",targetState="edgeReached", cond=doswitchGuarded({! (Curmove.length>0) }) )
 				}	 
-				state("goalOk") { //this:State
+				state("edgeReached") { //this:State
 					action { //it:State
-						println("ON THE TARGET CELL !!!")
-						itunibo.planner.plannerUtil.saveMap( outmapname  )
-						itunibo.planner.moveUtils.setPosition(myself)
-						solve("curPos(X,Y,D)","") //set resVar	
+						solve("direction(D)","") //set resVar	
 						
-						CurX      = Integer.parseInt( getCurSol("X").toString()  )  
-						CurY      = Integer.parseInt( getCurSol("Y").toString()  )
 						Direction = getCurSol("D").toString()
-						println("AT HOME: CurX=$CurX, CurY=$CurY, dir=$Direction")
+						println("edgeReached-DIRECTION: ${getCurSol("D").toString()}")
+						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
+						delay(RotateTime)
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						itunibo.planner.moveUtils.doPlannedMove(myself ,"l" )
+						delay(PauseTime)
 					}
+					 transition( edgeName="goto",targetState="doForwardMove", cond=doswitch() )
 				}	 
 				state("checkAndDoAction") { //this:State
 					action { //it:State
@@ -261,14 +299,17 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						delay(RotateTime)
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						itunibo.planner.moveUtils.doPlannedMove(myself ,Curmove )
+						itunibo.planner.moveUtils.setPosition(myself)
+						solve("curPos(X,Y,D)","") //set resVar	
+						println("doTheMove-DIRECTION: ${getCurSol("D").toString()}")
 						delay(PauseTime)
 					}
-					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
+					 transition( edgeName="goto",targetState="doExploreEdge", cond=doswitch() )
 				}	 
 				state("doForwardMove") { //this:State
 					action { //it:State
 						itunibo.planner.plannerUtil.startTimer(  )
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						forward("onestep", "onestep($StepTime)" ,"onecellforward" ) 
 					}
 					 transition(edgeName="t08",targetState="handleStepOk",cond=whenDispatch("stepOk"))
 					transition(edgeName="t09",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
@@ -276,14 +317,16 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("handleStepOk") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.doPlannedMove(myself ,"w" )
-						delay(PauseTime)
 					}
-					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
+					 transition( edgeName="goto",targetState="doExploreEdge", cond=doswitch() )
 				}	 
 				state("hadleStepFail") { //this:State
 					action { //it:State
-						println("NEVER HERE!!!")
+						println("&&&  FOUND OBSTACLE")
+						solve("direction(D)","") //set resVar	
+						itunibo.planner.moveUtils.doPlannedMove(myself ,getCurSol("D").toString() )
 					}
+					 transition( edgeName="goto",targetState="exploreTableBoundary", cond=doswitch() )
 				}	 
 			}
 		}

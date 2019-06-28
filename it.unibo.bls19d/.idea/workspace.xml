@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90fa315d-c387-4785-976c-20609f3c1c3a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.frontend19/nodeCode/frontend/morganLog.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/model/RoomMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/model/RoomMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/moveUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/moveUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/plannerUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/resources/itunibo/planner/plannerUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomboundaryplanned.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomboundaryplanned.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomexplore.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomexplore.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/src/it/unibo/ctxRobotMindNoMv/MainCtxRobotMindNoMv.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qak.streams/sonardatastream.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qak.streams/sonardatastream.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qak.streams/src/it/unibo/qakstream/Qakstream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qak.streams/src/it/unibo/qakstream/Qakstream.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -38,7 +45,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/Producer.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="476">
               <caret line="31" column="28" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="28" />
             </state>
           </provider>
@@ -47,7 +54,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/MainProducer.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
+            <state relative-caret-position="391">
               <caret line="23" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="e#31#174#0" expanded="true" />
@@ -181,7 +188,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="122" />
     <option name="y" value="12" />
     <option name="width" value="2454" />
@@ -195,8 +202,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -273,6 +278,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -419,10 +426,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1293" height="703" extended-state="7" />
+    <frame x="-6" y="-6" width="1293" height="703" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23967612" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23076923" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -667,7 +674,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/Producer.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="476">
           <caret line="31" column="28" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="28" />
         </state>
       </provider>
@@ -681,7 +688,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/it/unibo/qak/producer/MainProducer.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
+        <state relative-caret-position="391">
           <caret line="23" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#31#174#0" expanded="true" />

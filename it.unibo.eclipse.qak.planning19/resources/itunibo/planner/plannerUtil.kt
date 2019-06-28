@@ -164,7 +164,7 @@ object plannerUtil {
         val dimMapy = RoomMap.getRoomMap().dimY
         val x = initialState!!.x 
         val y = initialState!!.y
-        //println("plannerUtil: doMove move=$move  dir=$dir x=$x y=$y dimMapX=$dimMapx dimMapY=$dimMapy")
+       // println("plannerUtil: doMove move=$move  dir=$dir x=$x y=$y dimMapX=$dimMapx dimMapY=$dimMapy")
        try {
             when (move) {
                 "w" -> {
@@ -176,11 +176,19 @@ object plannerUtil {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.BACKWARD)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
-                "a","l" -> {
+                "a"  -> {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNLEFT)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
-                "d","r" -> {
+                "l" -> {
+                    initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNLEFT)) as RobotState
+                    RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
+                }
+                "d" -> {
+                    initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNRIGHT)) as RobotState
+                    RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
+                }
+                "r" -> {
                     initialState = Functions().result(initialState!!, RobotAction(RobotAction.TURNRIGHT)) as RobotState
                     RoomMap.getRoomMap().put(initialState!!.x, initialState!!.y, Box(false, false, true))
                 }
@@ -208,15 +216,12 @@ object plannerUtil {
         //update the kb
         //println("plannerUtil: doMove move=$move newdir=$newdir x1=$x1 y1=$y1")
     }
-
-	
-	
      
     fun showMap() {
         println(RoomMap.getRoomMap().toString())
     }
 	
-    fun saveMap(  fname : String) {		
+    fun saveMap(  fname : String) : Pair<Int,Int> {		
         println("saveMap in $fname")
 		val pw = PrintWriter( FileWriter(fname+".txt") )
 		pw.print( RoomMap.getRoomMap().toString() )
@@ -226,23 +231,35 @@ object plannerUtil {
 		os.writeObject(RoomMap.getRoomMap())
 		os.flush()
 		os.close()
+		return getMapDims()
     }
 	
 	fun loadRoomMap( fname: String  ) : Pair<Int,Int> {
-	    var dimMapx = 0
-	    var dimMapy = 0
+//	    var dimMapx = 0
+//	    var dimMapy = 0
 		try{
-			println("loadRoomMap = $fname")
-			val inps = ObjectInputStream(FileInputStream("${fname}.bin"))
+ 			val inps = ObjectInputStream(FileInputStream("${fname}.bin"))
 			val map  = inps.readObject() as RoomMap;
-			println(map.toString())
-	        dimMapx = map.getDimX()
-	        dimMapy = map.getDimY()
-			println("dimMapx = $dimMapx, dimMapy=$dimMapy")
+//			println(map.toString())
+//	        dimMapx = map.getDimX()
+//	        dimMapy = map.getDimY()
+//			println("dimMapx = $dimMapx, dimMapy=$dimMapy")
+			println("loadRoomMap = $fname DONE")
 			RoomMap.setRoomMap( map )
 		}catch(e:Exception){			
+			println("loadRoomMap = $fname FAILURE")
 		}
-		return Pair(dimMapx,dimMapy)
+		return getMapDims()//Pair(dimMapx,dimMapy)
+	}
+	
+	fun getMapDims() : Pair<Int,Int> {
+		if( RoomMap.getRoomMap() == null ){
+			return Pair(0,0)
+		}
+	    val dimMapx = RoomMap.getRoomMap().getDimX()
+	    val dimMapy = RoomMap.getRoomMap().getDimY()
+	    //println("getMapDims dimMapx = $dimMapx, dimMapy=$dimMapy")
+		return Pair(dimMapx,dimMapy)	
 	}
 			
 	fun getMap() : String{

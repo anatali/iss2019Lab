@@ -213,7 +213,6 @@ MQTT
         //println("        MQTT ActorBasic $name |  messageArrived on "+ topic + ": "+msg.toString());
         val m = ApplMessage( msg.toString() )
         this.scope.launch{ actor.send( m ) }
-
     }
     override fun connectionLost(cause: Throwable?) {
         println("       ActorBasic $name | connectionLost $cause " )
