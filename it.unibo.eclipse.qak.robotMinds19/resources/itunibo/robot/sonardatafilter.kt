@@ -14,8 +14,7 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 	private var amplif       = 6	//radar does D/3
 	
 	public var modeReact   = "oop"
-//TODO: configure mindistance and maxdistcme on a sonarDataTHeory.pl
-	init{
+ 	init{
 		//subscribe( obstacleDetector("obsDetector", producerActor )  )
 		//println("   $name |  subscribed the obsDetector")
     	producerActor.solve("limitDistance(D)")
@@ -36,9 +35,10 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 	
 	
 	}
+	
     override suspend fun actorBody(msg: ApplMessage) {
         //println("   $name |  receives msg= $msg from ${producerActor.name}")
-//Event sonarRobot : sonar( DISTANCE ) FROM PLANT (sonarHCSR04SupportAsStream)
+//Event sonarRobot : sonar( DISTANCE ) FROM PLANT (sonarHCSR04SupportAsStream or virtual robot)
 		val vStr     = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0)
 		elabSonarData( vStr.toString() )
 	}
@@ -49,9 +49,10 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 	fun elabSonarData( vStr: String ){
 		val Distance = Integer.parseInt( vStr )
 		val delta    = Math.abs( Distance - LastDistance )
-		//println("   $name |  elabSonarData = $vStr")
+		println("   $name |  elabSonarData = $vStr LastDistance=$LastDistance, LimitDistance=$LimitDistance")
+		detectObstacle( Distance )		//TODO
 		if( Distance > minDistance && Distance < maxDistance && delta >= maxDelta ){
-			detectObstacle( Distance )
+			//detectObstacle( Distance )
 			LastDistance = Distance
 			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($vStr)")
 			//println("   ${name} |  using ${producerActor.name}  emit m1= $m1")

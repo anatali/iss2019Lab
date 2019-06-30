@@ -355,7 +355,110 @@ FINAL MAP
  <h2>An approach for the butler project</h2>	
  
 <center><table style="width:98%">
+
+	<tr>
+ 	<td style="width:30%">	 
+	<h3>Architecture</h3>
+	<m>
+	We start from <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html" 
+	target="code">LAB14 | Resource(domain) model</a>. 
+	
+	
+	 
+	</m>
+ 	</td> 
+	<td>
+	<m>
+	The starting system can be composed of the following actors:
+	<ol>
+	<li>a <k>basic robot</k> that actuates move comands</li>
+	<li>a <k>resourcemodel</k> that represents the (CoAP accessible) core of the system</li>
+	<li>a <k>robot mind </k> that reacts to changes in the <tt>resourcemodel</tt> and to events of the world </li>
+	<li>a <k>sonarhandler</k> that looks at the sonar on the robot </li>
+	<li>a <k>onestepahead</k> that reacts to <ks>onestep</ks> requests by moving the robot ahead for the time given in the request message.
+	It sends to the caller the answer (dispatch) <ks>stepOk</ks> if the move is completed with success or <ks>stepFail</ks>
+	if the move has found an obstacle.
+	</li>
+	</ol>
+	
+	 and a robot mind
+	 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" 
+	target="code">robotmind.qak</a><br/><br/>
+
+	</m>	
+
+	</td>
+	</tr>
+
 	 	
+	<tr>
+ 	<td style="width:30%">	 
+	<h3>Macro-moves</h3>
+	<a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a><br/><br/>
+	<m>
+	Defines a set of macro-moves for a robot that include the usage of the planner.<br/><br/>
+	On the right we reports examples of these macro-moves. For the full set, please look at the code.
+	</m>
+ 	</td> 
+	<td>
+	<m>
+	<h4>Planning</h4>
+		  <ul>
+	  <li><k>setGoal</k><tt>(actor:ActorBasic, x: String, y: String)</tt><br/>
+	  Sets the planning goal to the cell <tt>(x,y)</tt>.
+		<br/><br/>
+	  </li>	  
+
+	  <li><k>doPlannedMove</k><tt>(actor:ActorBasic, move:String)</tt><br/>
+	  Updates the room map with the given <tt>move</tt>.
+		<br/><br/>
+	  </li>	  
+
+	  <li><k>doPlan</k><tt>(actor:ActorBasic)</tt><br/>
+	  Builds a plan for the current goal and stores the moves in the <tt>actor</tt> kb as a sequence of <ks>move/1</ks> facts.
+		<br/><br/>
+	  </li>	  
+	</ul>
+	
+	<h4>Moving</h4>
+	  <ul>
+	  <li><k>moveAhead</k><tt>(actor:ActorBasic,stepTime:Int,pauseTime:Int=PauseTime,dest:String="resourcemodel")</tt><br/>
+	  Moves the robtot along the current direction  for the given <tt>stepTime</tt> and updates the room map.
+	  Afterwards, it waits for the given <tt>pauseTime</tt>.
+	  <br/><br/>
+	  </li>
+	  
+	  <li><k>rotate</k><tt>(actor:ActorBasic,move:String,pauseTime:Int=PauseTime)</tt><br/>
+	  Rotates the robtot and updates the room map.
+	  Afterwards, it waits for the given <tt>pauseTime</tt>.
+	  <br/><br/>
+	  </li>
+	  
+	  <li><k>attemptTomoveAhead</k><tt>(actor:ActorBasic,stepTime:Int,dest:String="resourcemodel")</tt><br/>
+	  Moves the robot ahead (<ks>w</ks>) by sending to <tt>dest</tt> the 'request' <ks>oneStep</ks> with the given <tt>stepTime</tt>.
+	  The requested actor will answer with the dispatch <ks>stepOk</ks> or <ks>stepFail</ks>.
+		<br/><br/>
+	  </li>	  
+	
+	  <li><k>updateMapAfterAheadOk</k><tt>(actor:ActorBasic)</tt><br/>
+	  Updates the room map (after receiving a <ks>stepOk</ks>) with the move <ks>w</ks> .
+		<br/><br/>
+	  </li>	  
+ 	  
+	  </ul>
+	  
+	  <h4>Utilities</h4>
+	  <ul>
+	  <li><k>showCurrentRobotState</k><tt>( )</tt><br/>
+	  Prints the current position of the robot, its direction and the size of the room.
+		<br/><br/>
+	  </li>	  
+	  </ul>
+	  
+	</m>
+	</td>
+	</tr>
+
 	<tr>
  	<td style="width:30%">	 
 	<h3>1</h3>

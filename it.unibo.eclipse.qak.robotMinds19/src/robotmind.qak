@@ -26,8 +26,7 @@ Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
 Dispatch stopAppl      : stopAppl( CMD )
 Dispatch startAppl     : startAppl( CMD )
 
-  
-Context ctxRobotMind     ip [host="localhost" port=8035]      -mqtt
+Context ctxRobotMind     ip [host="localhost" port=8035]  -mqtt
 
 QActor resourcemodel context ctxRobotMind{
 ["var dobackstep = false"]
@@ -81,7 +80,7 @@ QActor robotmind context ctxRobotMind{
 	 
 	State waitCmd {		} 
 	Transition t0 whenEvent envCond    -> handleEnvCond
-				  whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
+				  //whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
 		          whenEvent local_modelChanged -> handleModelChanged
 
 	State handleEnvCond{   
@@ -105,7 +104,8 @@ QActor robotmind context ctxRobotMind{
  	State handeObstacle{		
 //if the robot is moving forward ... first react, then update the model
 		if "goingForward" { 
-			run itunibo.robotMbot.globalTimer.stopTimer("mind")		//globalTimer started in mbotSupport getDataFromArduino
+			//globalTimer started in mbotSupport getDataFromArduino
+			run itunibo.robotMbot.globalTimer.stopTimer("mind")		
 			forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
 			forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
 			println("HANDLE OBSTACLE !!!")
@@ -121,7 +121,10 @@ QActor robotmind context ctxRobotMind{
 
 /*
  * Works in ctxRobotMind since it is a policy
- */
+// REMOVED: its job is done by the sonardatafilter
+   WEnv sonarRobot --> sonardatafilter ----> sonarData , obstacle 
+ 
+ 
  QActor sonarhandler context ctxRobotMind{    
   	State init initial{
 		println("sonarhandler STARTS ... ")
@@ -132,20 +135,19 @@ QActor robotmind context ctxRobotMind{
    	Transition t0 whenEvent sonarData  -> handleSonar
    				  whenEvent sonarRobot -> handleSonar //to test modeReact(model). See mbotSupport
  	State handleSonar{
- 		//printCurrentMessage
+ 		printCurrentMessage
  		onMsg ( sonarData : sonarData( DISTANCE ) ){
  			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
  		}
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){
- 			run itunibo.robotMbot.globalTimer.stopTimer("sonarhandler") //globalTimer started in mbotSupport getDataFromArduino
+ 			//globalTimer started in mbotSupport getDataFromArduino
+ 			run itunibo.robotMbot.globalTimer.stopTimer("sonarhandler") 
  			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
  		}
  	}
  	Goto waitForEvents
- 	
- 
  }
- 
+ */
  
  /*
  * ====================================================================
@@ -153,34 +155,41 @@ QActor robotmind context ctxRobotMind{
  * ====================================================================
  */
 QActor onestepahead context ctxRobotMind {
-[" var foundObstacle = false; var StepTime = 0L; var Duration=0 "]  
+[" 
+var foundObstacle = false; 
+var StepTime = 0L; 
+var Duration=0 
+"]  
 	State s0 initial {	   
 		["foundObstacle = false "]
 	} 
 	Transition t0 whenMsg onestep -> doMoveForward
-	 
+ 
 	State doMoveForward{		
 		["storeCurrentMessageForReply()"]  
 		onMsg( onestep : onestep( TIME ) ) {
 			["StepTime = payloadArg(0).toLong()"]   
+			//println("onestepahead doMoveForwardddd  StepTime=$StepTime") 
  			forward resourcemodel -m modelChange : modelChange(robot,w)
-			["startTimer()"]
-		}
-	}  
-	Transition t0 whenTimeVar  StepTime -> endDoMoveForward		
- 		          whenEvent sonarRobot  -> handleSonarRobot
-		  
+	 		["startTimer()"] //startTimer is built-in in the actor
+		}      
+	}         
+	Transition t0 whenTimeVar StepTime  -> endDoMoveForward		
+ 		          whenEvent obstacle    -> stepFail	//before sonarRobot
+				  whenMsg stopAppl      -> s0	//without any answer
+ 		          whenEvent sonarRobot  -> stepFail //handleSonarRobot
+ 		    
 	State endDoMoveForward{
+		//println("onestepahead endDoMoveForward  ")
 		forward resourcemodel -m modelChange : modelChange(robot,h)
 		["replyToCaller(\"stepOk\", \"stepOk(ok)\")"] 
-		//forward roomexplorer -m stepOk : stepOk(ok)  //answer
 	}
 	Goto s0
 	  
 	//Substitute with an ad-hoc actor for a real robot
 	State handleSonarRobot{  //before than the step time
-		//run itunibo.planner.moveUtils.setDuration(myself)
-		["Duration=getDuration()"]
+		println("onestepahead handleSonarRobot  ")
+ 		["Duration=getDuration()"] //getDuration is built-in in the actor
 		printCurrentMessage
  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
 			["val distance = Integer.parseInt( payloadArg(0) ) 
@@ -190,13 +199,11 @@ QActor onestepahead context ctxRobotMind {
 	Goto stepFail if "foundObstacle" else s0
 	
 	State stepFail{
-		println("&&& onestepahead stepfail ")
-		["Duration=getDuration()"]
-		//solve( wduration( TIME ), TIME )
-		["replyToCaller(\"stepFail\", \"stepFail(obstacle,$Duration)\")"]
-		//forward roomexplorer -m stepFail : stepFail(obstacle,#TIME)  	
+		["Duration=getDuration()"]  //getDuration is built-in in the actor
+		println("onestepahead stepFail Duration=$Duration ")
+ 		["replyToCaller(\"stepFail\", \"stepFail(obstacle,$Duration)\")"]
 	}
-	Goto s0
+	Goto s0  
 }    
  
  /* 

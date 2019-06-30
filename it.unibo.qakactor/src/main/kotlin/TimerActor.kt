@@ -13,7 +13,7 @@ var terminated = false;
         scope.launch{ autoMsg("start", "start") }
     }
     override suspend fun actorBody(msg : ApplMessage){
-        //println("TimerActor RECEIVES  ${msg} ")
+        //println("TimerActor RECEIVES  ${msg} tout=$tout")
         if( msg.msgId() == "start") {
             delay(tout)
             if( ! terminated ){

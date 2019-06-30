@@ -16,19 +16,18 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-		var PauseTime  = 1000L 
+		var Tback       = 0
+		var Direction   = "" 
 		
-		//var StepTime   = 1000L	
-		//var RotateTime = 560L	 
-		  
-		var BackTime   = 500L
+		//REAL ROBOT
+		//var StepTime   = 1000 	 
+		//var PauseTime  = 500 
 		
-		var StepTime   = 330L	//for virtual
-		var RotateTime = 300L	//for virtual
+		//VIRTUAL ROBOT
+		var StepTime   = 330	//for virtual
+		var PauseTime  = 250
 		
-		
-		var RobotDirection = ""
-		
+		var PauseTimeL  = PauseTime.toLong()
 		
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
@@ -42,7 +41,8 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("moveAhead") { //this:State
 					action { //it:State
-						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
+						delay(PauseTimeL)
+						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime, "onestepahead" )
 					}
 					 transition(edgeName="t00",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
 					transition(edgeName="t01",targetState="hadleStepKo",cond=whenDispatch("stepFail"))
@@ -50,41 +50,26 @@ class Butler ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				state("hadleStepOk") { //this:State
 					action { //it:State
 						solve("updateMapAfterStep","") //set resVar	
-						solve("showMap","") //set resVar	
-						delay(PauseTime)
 					}
 					 transition( edgeName="goto",targetState="moveAhead", cond=doswitch() )
 				}	 
 				state("hadleStepKo") { //this:State
 					action { //it:State
-						var Tback = 0L
-						println("$name in ${currentState.stateName} | $currentMsg")
-						println("&&& moveAhead failed")
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(R,D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								
-								Tback=payloadArg(1).toString().toLong() 
-								if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
-								println(" ..................................  BACK TIME= $Tback")
+								Tback=payloadArg(1).toString().toInt() / 2   
+								println(" ................... BACK TIME= $Tback")
 						}
-						if(Tback>0){ forward("modelChange", "modelChange(robot,s)" ,"resourcemodel" ) 
-						delay(Tback)
-						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						 }
-						else
-						 { solve("updateMapAfterStep","") //set resVar	
-						  }
-						solve("showMap","") //set resVar	
-						delay(PauseTime)
+						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, PauseTime )
+						solve("updateMapAfterStep","") //set resVar	
 						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
 						solve("changeDirection","") //set resVar	
 						solve("robotdirection(D)","") //set resVar	
-						RobotDirection = getCurSol("D").toString()
-						println("RobotDirection= ${RobotDirection}")
-						solve("dialog(F)","") //set resVar	
+						Direction = getCurSol("D").toString()
+						solve("showMap","") //set resVar	
 					}
-					 transition( edgeName="goto",targetState="endOfExploration", cond=doswitchGuarded({(RobotDirection == "sud")}) )
-					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (RobotDirection == "sud")}) )
+					 transition( edgeName="goto",targetState="endOfExploration", cond=doswitchGuarded({(Direction == "sud")}) )
+					transition( edgeName="goto",targetState="tuning", cond=doswitchGuarded({! (Direction == "sud")}) )
 				}	 
 				state("tuning") { //this:State
 					action { //it:State

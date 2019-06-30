@@ -12,26 +12,41 @@ Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 Dispatch stopAppl      : stopAppl( CMD )
 Dispatch startAppl     : startAppl( CMD )
 
-Dispatch onestep       : onetstep
+Dispatch onestep       : onetstep( T )
 Dispatch stepOk        : stepOk  
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  
-Context ctxRobotAppl      ip [host="localhost" port=8038]    	     -mqtt 
+Context ctxRobotAppl      ip [host="localhost" port=8038]    	         -mqtt 
 Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
 
-ExternalQActor basicrobot    context ctxDummyForMind 
-ExternalQActor resourcemodel context ctxDummyForMind
- 
+ExternalQActor basicrobot     context ctxDummyForMind 
+ExternalQActor resourcemodel  context ctxDummyForMind
+ExternalQActor onestepahead   context ctxDummyForMind 
 /* 
  * APPLICATION
  */
 QActor robotmindapplication context ctxRobotAppl{
+["
+//REAL ROBOT
+//var StepTime   = 1000	 
+//var PauseTime  = 500L 
+
+//VIRTUAL ROBOT
+var StepTime   = 330	//330	 
+var PauseTime  = 250  
+
+var StepTimeL  = StepTime.toLong()
+var PauseTimeL = PauseTime.toLong()
+
+var newDir = \"\"
+"]
 	State s0 initial {	  
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("floorMap.pl")	 )
 		println("&&&  robotmindapplication STARTED")	
 	}
-	Goto waitCmd
+	//Goto waitCmd
+	Goto startApplication 
 	 
 	State waitCmd {		} 
 	Transition t0 whenMsg stopAppl  -> stopApplication 
@@ -39,47 +54,47 @@ QActor robotmindapplication context ctxRobotAppl{
 	
 	State stopApplication{
 		println("&&& robotmindapplication stopApplication ... ")			
-// 		forward basicrobot -m robotCmd : robotCmd( h )	//First do ...
-// 		forward resourcemodel -m modelUpdate : modelUpdate(robot,h) //... then update the model
 		forward resourcemodel  -m modelChange : modelChange(robot,h)
- 		forward onecellforward -m stopAppl : stopAppl(user)
+ 		forward onestepahead -m stopAppl : stopAppl(user)
 	} 
 	Goto waitCmd
-//	Transition t0  // whenMsg stepOk   -> hadleStepOk
-//					whenMsg stepFail -> hadleStepFail
 	
 	State startApplication{
-		printCurrentMessage
 		solve( initMap(sud) )
 	} 
 	Goto doApplication
 	
-	State doApplication{
-		forward onecellforward -m onestep : onestep		
-	}//wait the answer
+	State doApplication{ 
+		forward onestepahead -m onestep : onestep($StepTime)		
+	}//wait for the answer
 	Transition t0   whenMsg stopAppl -> stopApplication 
 					whenMsg stepOk   -> hadleStepOk
 					whenMsg stepFail -> hadleStepFail 
 						
 	State hadleStepOk{
-		println("&&& robotmindapplication step ok")	
+		//println("&&& robotmindapplication step ok")	  
 		solve( updateMapAfterStep )
-		delay 500 
+		delayVar PauseTimeL 	 
 	}
-	Goto doApplication
-	 
+	Goto doApplication  
+	  
 	State hadleStepFail{
-		printCurrentMessage		
-		println("&&& robotmindapplication step failed")
+		printCurrentMessage		//stepFail(obstacle,T)
+		//println("&&& robotmindapplication step failed")
 		forward resourcemodel -m modelChange : modelChange(robot,a)
-		solve( changeDirection )
-		solve( direction(D) )
-		delay 500
+		delayVar PauseTimeL
+		solve( changeDirection(NEWD) )
+		["newDir = getCurSol(\"NEWD\").toString()"]
+		println("New direction=${newDir}")
+		solve( showMap ) 
+ 		delayVar PauseTimeL 
+		//solve( dialog(F) )
 	}
-	Goto waitCmd  if "getCurSol(\"D\").toString().equals(\"sud\")" else doApplication
+	Goto waitCmd  if "(newDir.equals( \"sud\" ) )" else doApplication
 }
 
 //Application move step
+/* 
 QActor onecellforward context ctxRobotAppl {
 [" var foundObstacle = false"]  
 	State s0 initial {	   
@@ -122,3 +137,4 @@ QActor onecellforward context ctxRobotAppl {
 	}
 	Goto s0
 }
+*/

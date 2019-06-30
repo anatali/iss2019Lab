@@ -4,24 +4,24 @@
 %%cell( X,Y, STATE )		%%CELL= 1 => done
 
 initMap(DIRECTION) :-
-	output("floorMap initMap  "),
-	assign(x,1),
-	assign(y,1),
+	assign(x,0),
+	assign(y,0),
 	assert( direction(DIRECTION) ),
 	retractall( cell(X,Y,STATE) ), 
-	addRule( cell(1,1,1) ).		
-
-changeDirection:- direction( D ), changeDirection( D ).
-changeDirection( sud   ):- replaceRule( direction( sud ), direction( east ) ).
-changeDirection( east  ):- replaceRule( direction( east ), direction( north ) ).
-changeDirection( north ):- replaceRule( direction( north ), direction( west ) ).
-changeDirection( west  ):- replaceRule( direction( west ), direction( sud ) ).
+	addRule( cell(0,0,1) ),
+	output("floorMap initMap DONE ").		
+ 
+changeDirection(NEWD)   :- direction( D ), changeTheDirection( D, NEWD ).
+changeTheDirection( sud, east   ):- replaceRule( direction( sud ), direction( east )   ).
+changeTheDirection( east,north  ):- replaceRule( direction( east ), direction( north ) ).
+changeTheDirection( north,west  ):- replaceRule( direction( north ), direction( west ) ).
+changeTheDirection( west,sud    ):- replaceRule( direction( west ), direction( sud )   ).
 	
-updateMapAfterStep :-
+updateMapAfterStep :- 
 	direction( D ),
 	updateMap(D,X,Y),
-	addRule( cell(X,Y,1) ),
-	showMap.
+	%%output( updateMap(D,X,Y) ),
+	addRule( cell(X,Y,1) ).
 	
 updateMap(sud,X,Y):-
 	getVal(x,X),
@@ -58,6 +58,14 @@ showCells.
 
 output( M ) :- stdout <- println( M ).
 
+%-------------------------------------------------
+%  TuProlog FEATURES 
+%-------------------------------------------------
+dialog( FileName ) :-  
+	java_object('javax.swing.JFileChooser', [], Dialog),
+	Dialog <- showOpenDialog(_),
+	Dialog <- getSelectedFile returns File,
+	File <- getName returns FileName. 		 
 
  
 :- initialization(initMap).

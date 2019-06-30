@@ -15,6 +15,19 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		
+		//REAL ROBOT
+		//var StepTime   = 1000	 
+		//var PauseTime  = 500L 
+		
+		//VIRTUAL ROBOT
+		var StepTime   = 330	//330	 
+		var PauseTime  = 250  
+		
+		var StepTimeL  = StepTime.toLong()
+		var PauseTimeL = PauseTime.toLong()
+		
+		var newDir = ""
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -22,7 +35,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 						solve("consult('floorMap.pl')","") //set resVar	
 						println("&&&  robotmindapplication STARTED")
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="startApplication", cond=doswitch() )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
@@ -34,20 +47,19 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						println("&&& robotmindapplication stopApplication ... ")
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
-						forward("stopAppl", "stopAppl(user)" ,"onecellforward" ) 
+						forward("stopAppl", "stopAppl(user)" ,"onestepahead" ) 
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("startApplication") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						solve("initMap(sud)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
 				}	 
 				state("doApplication") { //this:State
 					action { //it:State
-						forward("onestep", "onestep" ,"onecellforward" ) 
+						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t02",targetState="stopApplication",cond=whenDispatch("stopAppl"))
 					transition(edgeName="t03",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
@@ -55,23 +67,24 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				}	 
 				state("hadleStepOk") { //this:State
 					action { //it:State
-						println("&&& robotmindapplication step ok")
 						solve("updateMapAfterStep","") //set resVar	
-						delay(500) 
+						delay(PauseTimeL)
 					}
 					 transition( edgeName="goto",targetState="doApplication", cond=doswitch() )
 				}	 
 				state("hadleStepFail") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
-						println("&&& robotmindapplication step failed")
 						forward("modelChange", "modelChange(robot,a)" ,"resourcemodel" ) 
-						solve("changeDirection","") //set resVar	
-						solve("direction(D)","") //set resVar	
-						delay(500) 
+						delay(PauseTimeL)
+						solve("changeDirection(NEWD)","") //set resVar	
+						newDir = getCurSol("NEWD").toString()
+						println("New direction=${newDir}")
+						solve("showMap","") //set resVar	
+						delay(PauseTimeL)
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({getCurSol("D").toString().equals("sud")}) )
-					transition( edgeName="goto",targetState="doApplication", cond=doswitchGuarded({! getCurSol("D").toString().equals("sud")}) )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitchGuarded({(newDir.equals( "sud" ) )}) )
+					transition( edgeName="goto",targetState="doApplication", cond=doswitchGuarded({! (newDir.equals( "sud" ) )}) )
 				}	 
 			}
 		}

@@ -11,6 +11,7 @@ object moveUtils{
 
 	private var mapDims   : Pair<Int,Int> = Pair(0,0)
 	private var curPos    : Pair<Int,Int> = Pair(0,0)
+	private var curGoal   : Pair<Int,Int> = Pair(0,0)
 	private var direction = "downDir"
 	private val PauseTime = 250
 	
@@ -61,6 +62,7 @@ object moveUtils{
  	fun setObstacleOnCurrentDirection( actor : ActorBasic ){
 		doPlannedMove(actor, direction )
 	}
+	
 	fun setDuration( actor : ActorBasic ){
 		val time = plannerUtil.getDuration()
 		actor.solve("retract( wduration(_) )")		//remove old data
@@ -73,6 +75,16 @@ object moveUtils{
 		actor.solve("retract( direction(_) )")		//remove old data
 		actor.solve("assert( direction($direction) )")
  	}
+	
+	fun setGoal( actor : ActorBasic, x: String, y: String) {
+		val xv = Integer.parseInt(x)
+		val yv = Integer.parseInt(y)
+		plannerUtil.setGoal( xv,yv )
+		curGoal=Pair(xv,yv)
+		actor.solve("retract( curGoal(_,_) )")		//remove old data
+		actor.solve("assert( curGoal($x,$y) )")
+	}	
+
 	
 	fun doPlan(actor : ActorBasic ){
 		val plan = plannerUtil.doPlan(  )
@@ -101,7 +113,7 @@ object moveUtils{
 		actor.solve("assert( curPos($posx,$posy,$direction) )")			
 	}
 	
-	suspend fun rotate(actor : ActorBasic, move: String, pauseTime : Int = PauseTime){
+	suspend fun rotate(actor:ActorBasic,move:String,pauseTime:Int=PauseTime){
 		when( move ){
 			"a" -> rotateLeft(actor, pauseTime)
 			"d" -> rotateRight(actor, pauseTime)
@@ -118,17 +130,17 @@ object moveUtils{
  		doPlannedMove(actor, "a" )	    //update map	
 		delay( pauseTime.toLong() )
 	}
- 	suspend fun moveAhead(actor : ActorBasic, stepTime : Int, pauseTime : Int = PauseTime){
+ 	suspend fun moveAhead(actor:ActorBasic, stepTime:Int, pauseTime:Int = PauseTime, dest:String ="resourcemodel"){
 		println("moveUtils moveAhead stepTime=$stepTime")
-		actor.forward("modelChange", "modelChange(robot,w)", "resourcemodel")
+		actor.forward("modelChange", "modelChange(robot,w)", dest)
 		delay( stepTime.toLong() )
-		actor.forward("modelChange", "modelChange(robot,h)", "resourcemodel")
+		actor.forward("modelChange", "modelChange(robot,h)", dest)
 		doPlannedMove(actor, "w" )	//update map	
 		delay( pauseTime.toLong() )
 	} 
-	suspend fun attemptTomoveAhead(actor : ActorBasic, stepTime : Int){
+	suspend fun attemptTomoveAhead(actor:ActorBasic,stepTime:Int, dest:String ="onestepahead"){
  		//println("moveUtils attemptTomoveAhead stepTime=$stepTime")
-		actor.forward("onestep", "onestep(${stepTime})", "onestepahead")
+		actor.forward("onestep", "onestep(${stepTime})", dest)
    	}
 	fun updateMapAfterAheadOk(actor : ActorBasic ){
 		doPlannedMove(actor  , "w")

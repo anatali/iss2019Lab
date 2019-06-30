@@ -9,8 +9,10 @@
  * that implements the application logic
  * 
  * =====================================================================
- * This version does not use the planner
+ * This version does not use the planner, but the floorMap.pl
  * =====================================================================
+ * 
+ * Better to use roomboundaryplanned, roomexplore and workinroom
  */
 
 System mindbutler
@@ -18,13 +20,12 @@ mqttBroker "localhost" : 1883
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 
-Dispatch onestep       : onestep(DURATION)
-Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
-Dispatch stepFail      : stepFail(R,T) //R=obstacle, T = time
+Dispatch onestep       : onestep(DURATION)	//Used by onestepahead
+Dispatch stepOk        : stepOk(V)			//TODO eliminate  V
+Dispatch stepFail      : stepFail(R,T) 		//R=obstacle, T = time
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
-//Event  obstacle       : obstacle( DISTANCE )	     //from  sonar handler
-
+ 
 Context ctxMindButler    ip [host="localhost" port=8038]    -mqtt 
 Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
 
@@ -35,19 +36,18 @@ ExternalQActor onestepahead  context ctxDummyForMind
  */ 
 QActor butler context ctxMindButler{     
 ["
-var PauseTime  = 1000L 
+var Tback       = 0
+var Direction   = \"\" 
 
-//var StepTime   = 1000L	
-//var RotateTime = 560L	 
-  
-var BackTime   = 500L
+//REAL ROBOT
+//var StepTime   = 1000 	 
+//var PauseTime  = 500 
 
-var StepTime   = 330L	//for virtual
-var RotateTime = 300L	//for virtual
+//VIRTUAL ROBOT
+var StepTime   = 330	//for virtual
+var PauseTime  = 250
 
-
-var RobotDirection = \"\"
-
+var PauseTimeL  = PauseTime.toLong()
 
 "]	
 	State s0 initial {	
@@ -56,62 +56,50 @@ var RobotDirection = \"\"
 		solve( consult("floorMap.pl")	 )
 		solve( showMap	 )
  	}
-	Goto moveAhead
+	Goto moveAhead  
 		
  	State moveAhead{ 
-		forward onestepahead -m onestep : onestep( $StepTime )
+		delayVar PauseTimeL 
+		//forward onestepahead -m onestep : onestep( $StepTime )
+		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime,"onestepahead")
  	}
 	Transition t0   whenMsg stepOk   -> hadleStepOk
 					whenMsg stepFail -> hadleStepKo 
 
 	State hadleStepOk{
-		//println("&&& moveAhead ok")	
-		solve( updateMapAfterStep )
-		solve( showMap	 )
-		delayVar PauseTime 
+		//println("&&& moveAhead done")
+ 		solve( updateMapAfterStep )
+		//solve( showMap	 )
 	}
 	Goto moveAhead 
 	
 	State hadleStepKo{
-		["var Tback = 0L"]
-		printCurrentMessage		
-		println("&&& moveAhead failed")
+ 		//printCurrentMessage		
+		//println("&&& moveAhead failed")
 		onMsg( stepFail:stepFail(R,D) ) {
-["
-Tback=payloadArg(1).toString().toLong() 
-if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
-"]
-			println(" ..................................  BACK TIME= $Tback")
+["Tback=payloadArg(1).toString().toInt() / 2   "]
+		println(" ................... BACK TIME= $Tback")
 		}
-				
-		if "Tback>0" {   
-		  forward resourcemodel -m modelChange : modelChange(robot,s)  
- 		  delayVar Tback 
-  		  forward resourcemodel -m modelChange : modelChange(robot,h)     
-  		}
-  		else{  
-  			solve( updateMapAfterStep )  //move almost completed ...
-  		}
-		solve( showMap	 )
-		delayVar PauseTime
-		
-		forward resourcemodel -m modelChange : modelChange(robot,l)
+  	 	//IMPORTANT: the virtual robot could not work without a back step 		  
+  		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime) 
+     	solve( updateMapAfterStep )  
+  //ROTATE left
+ 		forward resourcemodel -m modelChange : modelChange(robot,l)
 		solve( changeDirection )  //updates robotdirection/1
 		
 		solve( robotdirection(D) )
-		["RobotDirection = getCurSol(\"D\").toString()"]
-		println("RobotDirection= ${RobotDirection}")
-		
-		solve( dialog(F) ) 
+		["Direction = getCurSol(\"D\").toString()"]		
+		solve( showMap	 )   
+		//solve( dialog(F) ) 
 	}
-    Goto endOfExploration  if "(RobotDirection == \"sud\")" else tuning   
+    Goto endOfExploration  if "(Direction == \"sud\")" else tuning   
 
-   	State tuning{	
+   	State tuning{	//to tune at hand a real robot
 		println(" ---- TUNING --- ")
 		//solve( dialog(F) )	//to tune at hand
 	} 
 	Goto moveAhead
-	
+	 
 	State endOfExploration{
 		println("EXPLORATION ENDS")
 	}
@@ -120,73 +108,4 @@ if( Tback > StepTime * 2 /3 ) Tback = 0 else Tback = Tback / 3
 
 
  
-/*
- * 1) Waits for the message 'onestep' from the application layer
- * 2) Performs a single-step-ahead with the given time
- * 3) If all ok, sends the 'answer'  stepOk
- * 4) If finds an obstacle, sends the 'answer' stepFail(T) with T=time elapsed before obstacle
- */
-/* 
-QActor butlerstep context ctxMindButler {
-[" var foundObstacle = false; var StepTime = 0L"]  
-	State s0 initial {	   
-		["foundObstacle = false "]
-	} 
-	Transition t0 whenMsg onestep -> doMoveForward
-	
-	State doMoveForward{		  
-		onMsg( onestep : onestep( TIME ) ) { 
-			["StepTime = payloadArg(0).toLong(); println(StepTime)"]
-			forward resourcemodel -m modelChange : modelChange(robot,w)
-			run itunibo.planner.plannerUtil.startTimer()
-		}
-	} 
-	Transition t0 whenTimeVar  StepTime    -> endDoMoveForward		
- 		          whenEvent    sonarRobot  -> stepFail
-		  
-	State endDoMoveForward{
-		forward resourcemodel -m modelChange : modelChange(robot,h)
-		forward butler -m stepOk : stepOk(ok)  //answer
-	}
-	Goto s0
-		
-	State stepFail{
-		run itunibo.planner.moveUtils.setDuration(myself)  //assert wduration/1
-		//println("&&& butlerstep stepfail ")
-		solve( wduration( TIME ) )
-		forward butler -m stepFail : stepFail(obstacle,#TIME)  	
-	}
-	Goto s0
-
-}    
-
-*/
-/* 
-//The mind already emits obstacle when the robot is going forward
-QActor sonarhandlerbutler context ctxMindButler{  
-["
-var LastDistance = 0
-"]
- 	State init initial{
-		println("sonarhandlerbutler STARTS ... ")
-	}         
-	Goto waitForEvents 
-	   
-	State waitForEvents{  }      
-   	Transition t0  whenEvent sonarRobot ->  handleSonar
-   	               
- 	State handleSonar{                      
-		//println("==================================")
- 		//printCurrentMessage                                        
-  		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-			["val Distance = Integer.parseInt( payloadArg(0) ); 
-			  if( Math.abs( Distance - LastDistance ) > 1 ){println(Distance) ; LastDistance = Distance}
-              val foundObstacle = (Distance<13) "]  
-            if "foundObstacle" emit obstacle :  obstacle(10)  
-   		}
- 		//println("==================================")
-  	} 
- 	Goto waitForEvents
-}
-*/
-
+ 

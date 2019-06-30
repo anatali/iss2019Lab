@@ -15,13 +15,16 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		 var foundObstacle = false; var StepTime = 0L; var Duration=0 
+		 
+		var foundObstacle = false; 
+		var StepTime = 0L; 
+		var Duration=0 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						foundObstacle = false 
 					}
-					 transition(edgeName="t09",targetState="doMoveForward",cond=whenDispatch("onestep"))
+					 transition(edgeName="t06",targetState="doMoveForward",cond=whenDispatch("onestep"))
 				}	 
 				state("doMoveForward") { //this:State
 					action { //it:State
@@ -35,8 +38,10 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						stateTimer = TimerActor("timer_doMoveForward", 
 							scope, context!!, "local_tout_onestepahead_doMoveForward", StepTime )
 					}
-					 transition(edgeName="t010",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onestepahead_doMoveForward"))   
-					transition(edgeName="t011",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					 transition(edgeName="t07",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onestepahead_doMoveForward"))   
+					transition(edgeName="t08",targetState="stepFail",cond=whenEvent("obstacle"))
+					transition(edgeName="t09",targetState="s0",cond=whenDispatch("stopAppl"))
+					transition(edgeName="t010",targetState="stepFail",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
 					action { //it:State
@@ -47,6 +52,7 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("handleSonarRobot") { //this:State
 					action { //it:State
+						println("onestepahead handleSonarRobot  ")
 						Duration=getDuration()
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
@@ -60,8 +66,8 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("stepFail") { //this:State
 					action { //it:State
-						println("&&& onestepahead stepfail ")
 						Duration=getDuration()
+						println("onestepahead stepFail Duration=$Duration ")
 						replyToCaller("stepFail", "stepFail(obstacle,$Duration)")
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )

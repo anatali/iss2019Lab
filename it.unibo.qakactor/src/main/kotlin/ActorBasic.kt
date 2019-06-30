@@ -96,7 +96,7 @@ Messaging
         }else{ //remote
              val ctx   = sysUtil.getActorContext(destName)
              if( ctx == null ) {
-                 println(" ActorBasic $name | context of $destName UNKNOWN - sendind via mqtt=$mqtt")
+                 //println(" ActorBasic $name | context of $destName UNKNOWN - sendind via mqtt=$mqtt") //FOR reply
                  val m = MsgUtil.buildDispatch(name, msgId, msg, destName)       //JUNE2019
                  mqtt.sendMsg(m, "unibo/qak/$destName")
                  return
@@ -122,6 +122,8 @@ Messaging
           }
     }//forward
 
+    //var mqttPropagated = false;
+
     suspend fun emit( event : ApplMessage ) {
         //println("       ActorBasic $name | emit ${event.msgId()}  STARTS")
         if( context == null ){
@@ -142,7 +144,7 @@ Messaging
         //PROPAGATE TO REMOTE ACTORS
         if( event.msgId().startsWith("local")) return       //local_ => no propagation
         //println("       ActorBasic $name | ctxsMap SIZE = ${sysUtil.ctxsMap.size}")
-        var mqttPropagated = false;
+        //mqttPropagated = false;
         sysUtil.ctxsMap.forEach{
             val ctxName  = it.key
             val ctx      = it.value
@@ -158,12 +160,12 @@ Messaging
                     mqttConnected = true
                 }
                 //if( ctxName != context!!.name && ! mqttPropagated) { //avoid to send to itself again
-                if( ! mqttPropagated ) { //avoid to send more times
+                //if( ! mqttPropagated ) { //avoid to send more times
                     //println("       ActorBasic $name | emit MQTT ${event} while looking at $ctxName " )
                     mqtt.sendMsg(event, "unibo/qak/events")
-                    mqttPropagated = true
+                    //mqttPropagated = true
                     //return  //NO, since we must look at the other contexts BUT JUST ONE
-                }
+                //}
             }
             //else{ println("       ActorBasic $name | emit in ${context.name} : proxy  of $ctxName is null ") }
         }

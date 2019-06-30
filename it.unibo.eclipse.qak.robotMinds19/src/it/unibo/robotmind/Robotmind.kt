@@ -27,8 +27,7 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					action { //it:State
 					}
 					 transition(edgeName="t02",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t03",targetState="handeObstacle",cond=whenEvent("obstacle"))
-					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
+					transition(edgeName="t03",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State
@@ -65,8 +64,8 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("waitCmdAtObstacle") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t05",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t06",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
+					 transition(edgeName="t04",targetState="handleEnvCond",cond=whenEvent("envCond"))
+					transition(edgeName="t05",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 			}
 		}
