@@ -16,7 +16,7 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
 	public var modeReact   = "oop"
  	init{
 		//subscribe( obstacleDetector("obsDetector", producerActor )  )
-		//println("   $name |  subscribed the obsDetector")
+		println("   $name | producerActor= ${producerActor.name}")
     	producerActor.solve("limitDistance(D)")
 	    LimitDistance = Integer.parseInt( producerActor.getCurSol("D").toString() )
     	producerActor.solve("minDistance(D)")
@@ -32,8 +32,6 @@ class sonardatafilter( name : String, val producerActor : ActorBasicFsm) : Actor
     	producerActor.solve("modeReact(M)")
 	    modeReact =  producerActor.getCurSol("M").toString() 
 	    println("modeReact = $modeReact  ")
-	
-	
 	}
 	
     override suspend fun actorBody(msg: ApplMessage) {

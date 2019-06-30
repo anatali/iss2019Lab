@@ -1,4 +1,10 @@
-System robotappl 
+/*
+ * Moves the robot along the boundary of an empty room
+ * and builds a map of the room.
+ * The map is a grid of square cells of size D, 
+ * where D is the diameter of a circle including the robot.
+ */
+ System robotappl 
  
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
@@ -16,8 +22,8 @@ Dispatch onestep       : onetstep( T )
 Dispatch stepOk        : stepOk  
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  
-Context ctxRobotAppl      ip [host="localhost" port=8038]    	         -mqtt 
-Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+Context ctxRobotAppl      ip [host="localhost"    port=8038]   -mqtt 
+Context ctxDummyForMind   ip [host="dontcarehost" port=8035]   -mqtt 
 
 ExternalQActor basicrobot     context ctxDummyForMind 
 ExternalQActor resourcemodel  context ctxDummyForMind
@@ -43,11 +49,9 @@ var newDir = \"\"
 	State s0 initial {	  
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("floorMap.pl")	 )
-		println("&&&  robotmindapplication STARTED")	
-	}
-	//Goto waitCmd
+ 	}
 	Goto startApplication 
-	 
+/*  	 
 	State waitCmd {		} 
 	Transition t0 whenMsg stopAppl  -> stopApplication 
 		          whenMsg startAppl -> startApplication 
@@ -58,17 +62,17 @@ var newDir = \"\"
  		forward onestepahead -m stopAppl : stopAppl(user)
 	} 
 	Goto waitCmd
-	
+*/	
 	State startApplication{
 		solve( initMap(sud) )
 	} 
 	Goto doApplication
 	
 	State doApplication{ 
+		println("&&& robotmindapplication doApplication")
 		forward onestepahead -m onestep : onestep($StepTime)		
 	}//wait for the answer
-	Transition t0   whenMsg stopAppl -> stopApplication 
-					whenMsg stepOk   -> hadleStepOk
+	Transition t0   whenMsg stepOk   -> hadleStepOk
 					whenMsg stepFail -> hadleStepFail 
 						
 	State hadleStepOk{
@@ -90,7 +94,13 @@ var newDir = \"\"
  		delayVar PauseTimeL 
 		//solve( dialog(F) )
 	}
-	Goto waitCmd  if "(newDir.equals( \"sud\" ) )" else doApplication
+	Goto endOfJob  if "(newDir.equals( \"sud\" ) )" else doApplication
+ 	
+	State endOfJob{
+		println("Exploration done")
+	}
+	
+	
 }
 
 //Application move step
