@@ -19,9 +19,13 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("s0") { //this:State
 					action { //it:State
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
+						 
+						val filter = itunibo.robot.sonaractorfilter( "filter$name", myself  )
+						val logger = itunibo.robot.Logger("logFiltered")
+						filter.subscribe(logger) 
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) { println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")
-						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString() )
+						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString(), filter )
 						 }
 						else
 						{ println("no robot")

@@ -245,14 +245,19 @@ QActor sonarhandler context ctxRobotMind{
   * --------------------------------------------------------
   * Basic robot: just an actuator of move commands
   * --------------------------------------------------------
-  */
+  */ 
   QActor basicrobot context ctxRobotMind {	 
 	State s0 initial {  
-  		solve( consult("basicRobotConfig.pl") )   
+   		solve( consult("basicRobotConfig.pl") )   
+[" 
+val filter = itunibo.robot.sonaractorfilter( \"filter$name\", myself  )
+val logger = itunibo.robot.Logger(\"logFiltered\")
+filter.subscribe(logger) 
+"] 			
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
   		ifSolved { 
-  			println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
-  			run itunibo.robot.robotSupport.create(myself, @R, @PORT )
+     		println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
+  			run itunibo.robot.robotSupport.create( myself, @R, @PORT, filter )
   		} 
   		else{ println("no robot") }
     		

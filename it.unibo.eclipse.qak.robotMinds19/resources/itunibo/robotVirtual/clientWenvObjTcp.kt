@@ -9,7 +9,7 @@ import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
 import alice.tuprolog.*
-import itunibo.robotMbot.sonardatafilter
+ 
 
     object clientWenvObjTcp {
         private var hostName = "localhost"
@@ -18,48 +18,27 @@ import itunibo.robotMbot.sonardatafilter
         private var outToServer: PrintWriter?     = null
         private var inFromServer: BufferedReader? = null
 
-		lateinit var filter  : sonardatafilter   //JUNE2019
-		lateinit var myactor : ActorBasicFsm	 //JUNE2019
+ 		lateinit var owner   : ActorBasicFsm	 //JUNE2019
 		
-        fun initClientConn(actor:ActorBasicFsm, hostName: String = "localhost", portStr: String = "8999"  ) {
-            port    = Integer.parseInt(portStr)
-			myactor = actor //JUNE2019
+        fun initClientConn(actor:ActorBasicFsm, filter : ActorBasic?,
+						   hostName: String = "localhost", portStr: String = "8999" ) {
+            port  = Integer.parseInt(portStr)
+			owner = actor //JUNE2019
+  			println( "clientWenvObjTcp | owner)$owner" )
             try {
                 val clientSocket = Socket(hostName, port)
                 println("clientWenvObjTcp |  CONNECTION DONE")
                 inFromServer = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
                 outToServer  = PrintWriter(clientSocket.getOutputStream())
 				
-				configureSonarPipe( )	//JUNE2019
+ 				if( filter != null ) owner.subscribe(filter)
 				
                 startTheReader(   )
             }catch( e:Exception ){
                 println("clientWenvObjTcp | ERROR $e")
             }
         }
-
-	fun configureSonarPipe( ){
-		filter =  sonardatafilter("filter", myactor )
-		if( filter.modeReact =="pipe"){
-			myactor.subscribe(filter)
-		}
-	}
-	private fun emitDataAtModelLevel(dataSonar : Int ){
-		println("emitDataAtModelLevel $dataSonar")
-//		actor.scope.launch{ actor.emit("sonarRobot", "sonar( ${ dataSonar } )")  }//MODEL LEVEL
-		myactor.scope.launch{
-			myactor.forward("modelChange", " modelChange(sonarRobot,$dataSonar)", "resourcemodel")
-		}
-	}
-	private fun emitDataAtStreamLevel(dataSonar : Int ){
- 		val event = MsgUtil.buildEvent(myactor.name,"sonarRobot","sonar( $dataSonar )")
-		myactor.scope.launch{ myactor.emitLocalStreamEvent(event)		} //STREAM LEVEL
-	}
-	private fun emitDataAtOopLevel(dataSonar : Int ){
-		println("emitDataAtOopLevel $dataSonar")
-		filter.elabSonarData("$dataSonar") 	 //OOP LEVEL => emits obstacle
-	}
- 
+		
         fun sendMsg(v: String) {
 			//println("clientWenvObjTcp | sending Msg $v   ")
 			var outS = "{'type': 'alarm', 'arg': 0 }"
@@ -101,15 +80,20 @@ import itunibo.robotMbot.sonardatafilter
                                 val distance  = jsonArg.getInt("distance")
   								val m1 = "sonar($sonarName, $distance)"
 								//println( "clientWenvObjTcp EMIT $m1"   );
-							    myactor.emit("sonar",m1 );
+							    owner.emit("sonar",m1 );
 								
                            }
                             "collision" -> { 
                                 //val jsonArg = jsonObject.getJSONObject("arg")
                                 //val objectName = jsonArg.getString("objectName")
-                                //println("clientWenvObjTcp | collision objectName=$objectName  myactor=${myactor.name}" )
-   							     myactor.emit("sonarRobot","sonar(5)")
+                                //println("clientWenvObjTcp | collision objectName=$objectName  owner=${owner.name}" )
+   							     
+								//owner.emit("sonarRobot","sonar(5)")
 								
+								//JUNE 2019 (streaming)
+								 val event = MsgUtil.buildEvent(owner.name,"sonarRobot","sonar( 5 )")								
+								 owner.scope.launch{ owner.emitLocalStreamEvent(event) }
+									 
 								//JUNE 2019 (streaming)
 // 								val dataSonar = 5;  //The virtual robot is just sensible to physical CONTACT
 //	  							if( filter.modeReact =="pipe") emitDataAtStreamLevel(dataSonar)	 

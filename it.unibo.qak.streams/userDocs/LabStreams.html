@@ -202,7 +202,110 @@ However, at that point it will not emit any more events, unless it is subscribed
 </li>
 </ul>
  
+<h2 id="qakstream">QActors as stream-handlers</h2> 
+A QActor can work as a stream handler, since it implements the following operations:
 
+<ul>
+<li><em>fun subscribe( a : ActorBasic) : ActorBasic</em>: register the given actor <bc>a</bc> as a subscriber of the
+events emitted by the actor with the operation <bc>emitLocalStreamEvent</bc>. It returns <bc>a</bc> 
+to allow pipe-concatenation.</li>
+<li><em>fun unsubscribe( a : ActorBasic) </em>: eliminates the given actor <bc>a</bc> from the subscribers.</li>
+<li><em>fun emitLocalStreamEvent(m: ApplMessage ) </em> : sends the message <bc>m</bc> to all the subscribed actors.</li>
+</ul> 
+ 
+<!--
+can be called in three different ways:
+
+<ol>
+<li>as a conventional method of a classical object (POJO) modeReact="oop"</li>
+<li>by another stream component of a pipe emitLocalStreamEvent modeReact="pipe" </li>
+<li></li>
+
+</ol>
+-->
+
+<h3>Example</h3>
+	<center><table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:25%">
+		 <a href="../src/it/unibo/actors/stream/ActorStream.kt" target="code">ActorStream.kt</a
+	</td> 
+	<td>
+	<m>
+	An abstract class that delegates to subclasses the definition of the method  <br/>
+	<bc>suspend fun elabData(data : String )</bc> <br/>
+	</m> 
+ 	</td>
+	</tr>
+	
+	<tr>
+	<td style="width:25%">
+		 <a href="../src/it/unibo/actors/stream/Source.kt" target="code">Source.kt</a>
+	</td> 
+	<td>
+	<m>
+	An <bc>ActorStream</bc> that generates a sequence of integers and propagates each value through <br/>
+	<bc>emitLocalStreamEvent</bc> <br/>
+	</m> 
+ 	</td>
+	</tr>
+
+	<tr>
+	<td style="width:25%">
+		 <a href="../src/it/unibo/actors/stream/Filter.kt" target="code">Filter.kt</a>
+	</td> 
+	<td>
+	<m>
+	An <bc>ActorStream</bc> that propagates even numbers only  <br/>
+	</m> 
+ 	</td>
+	</tr>
+
+	<tr>
+	<td style="width:25%">
+		 <a href="../src/it/unibo/actors/stream/Logger.kt" target="code">Logger.kt</a>
+	</td> 
+	<td>
+	<m>
+	An <bc>ActorStream</bc> that appends the values that it receives in a text file named as the actor.<br/>
+	</m> 
+ 	</td>
+	</tr>
+	
+	<tr>
+	<td style="width:25%">
+		 <a href="../src/it/unibo/actors/stream/MainStreamTest.kt" target="code">MainStreamTest.kt</a>
+	</td> 
+	<td>
+	<m>
+	An main that creates a 'network' of  <bc>ActorStream</bc>
+	</m>
+	<pre>
+		val source          = Source("dataSource")
+		val filter          = Filter("dataFilter")
+		val loggerFiltered  = Logger("loggerFiltered")
+		val loggerAll       = Logger("loggerAll")
+	<kc>/*
+	 source 
+			--> filter --> loggerFiltered
+			--> loggerAll
+	*/</kc>	
+		<ks>source.subscribe(filter).subscribe(loggerFiltered)
+		source.subscribe(loggerAll)</ks>
+		
+		MsgUtil.sendMsg("start", "start(ok)", source)
+	
+	</pre>
+	
+ 
+ 
+ 	</td>
+	</tr>
+
+	
+	 </table>
+	</center> 
 
 <h2>Code</h2> 
 	<center><table style="width:98%">
@@ -218,6 +321,7 @@ However, at that point it will not emit any more events, unless it is subscribed
 	<br/><br/>
 	<a href="../resources/itunibo/streams/sonarHCSR04SupportAsStream.kt" target="code">sonarHCSR04SupportAsStream.kt</a>
 	</td>
+	</tr>
 	 </table>
 	</center> 
 <pre>

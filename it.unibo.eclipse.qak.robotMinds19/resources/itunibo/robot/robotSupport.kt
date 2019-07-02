@@ -2,15 +2,15 @@ package itunibo.robot
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.ActorBasicFsm
  
-
 object robotSupport{
 	lateinit var robotKind : String
 	
-	fun create( actor: ActorBasicFsm, robot : String, port: String ){
+	fun create( actor: ActorBasicFsm, robot : String, port: String, filter:ActorDataStream?  ){
 		robotKind = robot
+		println( "CREATE ROBOT SUPPORT for $robotKind" )
 		when( robotKind ){
-			"virtual"    ->  { itunibo.robotVirtual.clientWenvObjTcp.initClientConn( actor, "localhost" ) }
-			"realmbot"   ->  { itunibo.robotMbot.mbotSupport.create( actor, port ) }  //port="/dev/ttyUSB0"   "COM6"
+			"virtual"    ->  { itunibo.robotVirtual.clientWenvObjTcp.initClientConn( actor, filter, "localhost") }
+			"realmbot"   ->  { itunibo.robotMbot.mbotSupport.create( actor, port, filter ) }  //port="/dev/ttyUSB0"   "COM6"
 			"realnano" ->    { it.unibo.robotRaspOnly.nanoSupport.create(actor, true ) }
 			else -> println( "robot unknown" )
 		}

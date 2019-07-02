@@ -44,7 +44,6 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				}	 
 				state("doApplication") { //this:State
 					action { //it:State
-						println("&&& robotmindapplication doApplication")
 						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t00",targetState="hadleStepOk",cond=whenDispatch("stepOk"))

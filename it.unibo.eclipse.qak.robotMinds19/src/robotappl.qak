@@ -69,7 +69,7 @@ var newDir = \"\"
 	Goto doApplication
 	
 	State doApplication{ 
-		println("&&& robotmindapplication doApplication")
+		//println("&&& robotmindapplication doApplication")
 		forward onestepahead -m onestep : onestep($StepTime)		
 	}//wait for the answer
 	Transition t0   whenMsg stepOk   -> hadleStepOk
