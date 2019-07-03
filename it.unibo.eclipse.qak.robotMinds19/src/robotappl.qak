@@ -92,7 +92,7 @@ var newDir = \"\"
 		println("New direction=${newDir}")
 		solve( showMap ) 
  		delayVar PauseTimeL 
-		//solve( dialog(F) )
+//		solve( dialog(F) )
 	}
 	Goto endOfJob  if "(newDir.equals( \"sud\" ) )" else doApplication
  	

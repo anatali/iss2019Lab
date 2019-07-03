@@ -5,7 +5,7 @@ import it.unibo.kactor.ActorBasicFsm
 object robotSupport{
 	lateinit var robotKind : String
 	
-	fun create( actor: ActorBasicFsm, robot : String, port: String, filter:ActorDataStream?  ){
+	fun create( actor: ActorBasicFsm, robot : String, port: String, filter:ApplActorDataStream?  ){
 		robotKind = robot
 		println( "CREATE ROBOT SUPPORT for $robotKind" )
 		when( robotKind ){

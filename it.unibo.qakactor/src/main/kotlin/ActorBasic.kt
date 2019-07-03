@@ -86,7 +86,7 @@ Messaging
     suspend fun forward( msgId : String, msg: String, destName: String) {
         //println("       ActorBasic $name |  forward $msgId to $destName -  ${sysUtil.curThread()}")
         if( context == null ){
-            println("WARNING forward : there is no QakContext")
+            println("WARNING forward : there is no QakContext.  ")  //Juky 2019
             return
         }
         val actor = context!!.hasActor(destName)
@@ -127,9 +127,9 @@ Messaging
     suspend fun emit( event : ApplMessage ) {
         //println("       ActorBasic $name | emit ${event.msgId()}  STARTS")
         if( context == null ){
-            println("      ActorBasic $name | WARNING emit: there is no QakContext")
-            this.actor.send(event)  //AUTOMSG
-            return
+            println("      ActorBasic $name | WARNING emit: actor has no QakContext. ")
+             this.actor.send(event)  //AUTOMSG
+             return
         }
         //PROPAGATE TO LOCAL ACTORS
         if( context!!.mqttAddr.length == 0  //There is NO MQTT for this context

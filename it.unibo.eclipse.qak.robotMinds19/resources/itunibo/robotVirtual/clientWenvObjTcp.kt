@@ -31,14 +31,15 @@ import alice.tuprolog.*
                 inFromServer = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
                 outToServer  = PrintWriter(clientSocket.getOutputStream())
 				
- 				if( filter != null ) owner.subscribe(filter)
+ 				robotDataSource("robotDataSource", actor,  filter,  inFromServer)
 				
-                startTheReader(   )
+                //startTheReader(   )
             }catch( e:Exception ){
                 println("clientWenvObjTcp | ERROR $e")
             }
         }
 		
+		 
         fun sendMsg(v: String) {
 			//println("clientWenvObjTcp | sending Msg $v   ")
 			var outS = "{'type': 'alarm', 'arg': 0 }"
@@ -60,6 +61,7 @@ import alice.tuprolog.*
             outToServer?.flush()
          }
 
+/*		
         private fun startTheReader(    ) {
             GlobalScope.launch {
                 while (true) {
@@ -109,6 +111,7 @@ import alice.tuprolog.*
                 }
             }
          }//startTheReader
+ */
 }//clientWenvObjTcp
 
 

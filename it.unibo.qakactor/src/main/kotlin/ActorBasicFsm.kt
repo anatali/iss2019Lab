@@ -99,7 +99,6 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     private val stateList = mutableListOf<State>()
     private val msgQueueStore = mutableListOf<ApplMessage>()
-    //internal val msgQueue     = Channel<ApplMessage>(100) //LinkedListChannel
 
     //================================== STRUCTURAL =======================================
     fun state(stateName: String, build: State.() -> Unit) {
@@ -123,10 +122,7 @@ abstract class ActorBasicFsm(  qafsmname:  String,
     abstract fun getBody(): (ActorBasicFsm.() -> Unit)
     abstract fun getInitialState(): String
 
-    fun setBody(
-        buildbody: ActorBasicFsm.() -> Unit,
-        initialStateName: String
-    ) {
+    fun setBody( buildbody: ActorBasicFsm.() -> Unit, initialStateName: String ) {
         buildbody()            //Build the structural part
         currentState = getStateByName(initialStateName)
         //println("ActorBasicFsm $name |  initialize currentState=${currentState.stateName}")

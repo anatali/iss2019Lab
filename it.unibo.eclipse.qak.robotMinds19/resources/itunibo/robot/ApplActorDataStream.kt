@@ -8,8 +8,8 @@ import it.unibo.kactor.MsgUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.CoroutineScope
 
-abstract class ActorDataStream(name : String, scope : CoroutineScope = GlobalScope ) : ActorBasic(name, scope){
- 	init{	}
+abstract class ApplActorDataStream(name : String, scope : CoroutineScope = GlobalScope ) : ActorBasic(name, scope){
+ 	//init{	}
 	
     override suspend fun actorBody(msg: ApplMessage) {
  		val vStr  = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0).toString()

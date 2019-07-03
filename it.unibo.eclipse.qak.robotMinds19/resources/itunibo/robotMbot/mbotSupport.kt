@@ -11,8 +11,8 @@ object mbotSupport{
 	var dataSonar        : Int = 0 ; //Double = 0.0
 //	lateinit var filter  : sonardatafilter
 			
-	fun create( myactor: ActorBasicFsm, port : String, filter : ActorBasic? ){
-		owner = myactor
+	fun create( owner: ActorBasicFsm, port : String, filter : ActorBasic? ){
+		this.owner = owner
 		//configureSonarPipe()
 		initConn( port, filter )
 	}

@@ -54,7 +54,6 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					action { //it:State
 						println("onestepahead handleSonarRobot  ")
 						Duration=getDuration()
-						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								val distance = Integer.parseInt( payloadArg(0) ) 

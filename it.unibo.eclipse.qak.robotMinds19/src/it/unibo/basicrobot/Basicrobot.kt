@@ -18,11 +18,14 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						solve("consult('basicRobotConfig.pl')","") //set resVar	
-						 
-						val filter = itunibo.robot.sonaractorfilter( "filter$name", myself  )
+						  
+						//CREATE A PIPE for the sonar-data stream
+						val filter = itunibo.robot.sonaractorfilter( "sonaractorfilter" , myself  ) 
+						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" , myself   )
+						filter.subscribe(obstacleDetector) 
 						val logger = itunibo.robot.Logger("logFiltered")
-						filter.subscribe(logger) 
+						filter.subscribe(logger)  
+						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) { println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")
 						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString(), filter )

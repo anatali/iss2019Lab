@@ -2,20 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03da066b-8e84-46ba-bd01-5845ec6128b2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mindbutler.pl" beforeDir="false" afterPath="$PROJECT_DIR$/mindbutler.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mindwithplanner.pl" beforeDir="false" afterPath="$PROJECT_DIR$/mindwithplanner.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/roomMapWithTable.bin" beforeDir="false" afterPath="$PROJECT_DIR$/roomMapWithTable.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/roomMapWithTable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/roomMapWithTable.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/roomboundaryplanned.pl" beforeDir="false" afterPath="$PROJECT_DIR$/roomboundaryplanned.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/butler/Butler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/butler/Butler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxMindWithPlan/MainCtxMindWithPlan.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxMindWithPlan/MainCtxMindWithPlan.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/plantester/Plantester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/plantester/Plantester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/roomboudaryexplorer/Roomboudaryexplorer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/roomboudaryexplorer/Roomboudaryexplorer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mindbutler.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/mindbutler.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mindwithplan.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/mindwithplan.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roomboundaryplanned.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/roomboundaryplanned.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/roomexplore.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/roomexplore.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userDocs/Lab16.html" beforeDir="false" afterPath="$PROJECT_DIR$/userDocs/Lab16.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/ActorDataStream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/ApplActorDataStream.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/Logger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/Logger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/robotSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/robotSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/sonaractorfilter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/sonaractorfilter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/mbotSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotMbot/mbotSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotVirtual/clientWenvObjTcp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robotVirtual/clientWenvObjTcp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qak.streams/sonardatastream.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qak.streams/sonardatastream.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qak.streams/src/it/unibo/qakstream/Qakstream.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qak.streams/src/it/unibo/qakstream/Qakstream.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakactor/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/default/" />
@@ -30,11 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/moveUtils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
-              <folding>
-                <element signature="e#25#88#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="442">
+              <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -42,7 +37,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2414">
+            <state relative-caret-position="2227">
               <caret line="149" selection-start-line="149" selection-end-line="149" />
             </state>
           </provider>
@@ -83,9 +78,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -151,7 +146,7 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.25414848" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.2585153" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
@@ -187,17 +182,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/moveUtils.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
-          <folding>
-            <element signature="e#25#88#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="442">
+          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/itunibo/planner/plannerUtil.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2414">
+        <state relative-caret-position="2227">
           <caret line="149" selection-start-line="149" selection-end-line="149" />
         </state>
       </provider>
