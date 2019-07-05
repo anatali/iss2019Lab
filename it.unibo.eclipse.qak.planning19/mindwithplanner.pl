@@ -1,5 +1,5 @@
 %====================================================================================
 % mindwithplanner description   
 %====================================================================================
-context(ctxmindwithplan, "localhost",  "TCP", "8038" ).
+context(ctxmindwithplan, "localhost",  "MQTT", "0" ).
  qactor( plantester, ctxmindwithplan, "it.unibo.plantester.Plantester").

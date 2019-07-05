@@ -189,6 +189,13 @@ Messaging
         subscribers.add(a)
         return a
     }
+    fun subscribeLocalActor( actorName : String) : ActorBasic? {
+        val a = sysUtil.getActor(actorName)
+        if( a != null  ){ subscribers.add(a); return a}
+        else{ println("WARNING: actor $actorName not found" );
+            throw Exception("actor $actorName not found in the current context")
+        }
+    }
     fun unsubscribe( a : ActorBasic) {
         subscribers.remove(a)
     }

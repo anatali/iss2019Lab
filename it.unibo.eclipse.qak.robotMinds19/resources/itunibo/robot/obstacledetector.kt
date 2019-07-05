@@ -14,7 +14,7 @@ class obstacledetector (name : String, val owner : ActorBasicFsm ,
 	
 	override protected suspend fun elabData(data : String ){
 		val Distance = Integer.parseInt( data )
-// 		println("   name |  obstacledetector Distance = $Distance ")
+ 		println("   $name |  obstacledetector Distance = $Distance ")
 		detectObstacle( Distance )
   	}
 	
@@ -23,7 +23,7 @@ class obstacledetector (name : String, val owner : ActorBasicFsm ,
  			val m1 = MsgUtil.buildEvent(name, "obstacle", "obstacle($Distance)")
 //			println("   name |  obstacledetector detectObstacle emit m1= $m1 ")
  			emitLocalStreamEvent( m1 )  //PROPAGATE to the pipe
-			owner.emit( m1 ) //PROPAGATE at application level MUST HAVE A CONTEXT!!!
+//			owner.emit( m1 ) //PROPAGATE at application level MUST HAVE A CONTEXT!!!
 		}
 	}
 	

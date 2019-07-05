@@ -23,6 +23,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						val filter = itunibo.robot.sonaractorfilter( "sonaractorfilter" , myself  ) 
 						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" , myself   )
 						filter.subscribe(obstacleDetector) 
+						obstacleDetector.subscribe(sysUtil.getActor("onestepahead")!!)
 						val logger = itunibo.robot.Logger("logFiltered")
 						filter.subscribe(logger)  
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
@@ -45,12 +46,22 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 					}
 					 transition(edgeName="t011",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
+					transition(edgeName="t012",targetState="emitEventForMind",cond=whenEvent("obstacle"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})"  )
+						}
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("emitEventForMind") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("obstacle(DISTANCE)"), Term.createTerm("obstacle(D)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								emit("obstacle", "obstacle(${payloadArg(0)})" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
