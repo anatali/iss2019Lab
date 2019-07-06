@@ -189,7 +189,7 @@ Messaging
         subscribers.add(a)
         return a
     }
-    fun subscribeLocalActor( actorName : String) : ActorBasic? {
+    fun subscribeLocalActor( actorName : String) : ActorBasic {
         val a = sysUtil.getActor(actorName)
         if( a != null  ){ subscribers.add(a); return a}
         else{ println("WARNING: actor $actorName not found" );
@@ -198,6 +198,9 @@ Messaging
     }
     fun unsubscribe( a : ActorBasic) {
         subscribers.remove(a)
+    }
+    suspend fun emitLocalStreamEvent(ev: String, evc: String ){
+        emitLocalStreamEvent( MsgUtil.buildEvent( name, ev, evc) )
     }
     suspend fun emitLocalStreamEvent(v: ApplMessage ){
         subscribers.forEach { it.actor.send(v) }

@@ -13,7 +13,7 @@ import itunibo.outgui.outguiSupport
 import java.awt.Color
  
 object Listener : CoapHandler {
-
+	val hostAddr = "coap://localhost:5683" // "coap://192.168.43.67:5683"
 	val outDev = outguiSupport.create("Resource Coap OBSERVER", Color.green)
 	
 	override fun onLoad(response: CoapResponse?) {
@@ -27,7 +27,7 @@ object Listener : CoapHandler {
 
 	fun main( ) {
 		//val client = CoapClient("coap://localhost:5683/resourcemodel")
-		val client = CoapClient("coap://192.168.43.67:5683/resourcemodel")
+		val client = CoapClient( "${Listener.hostAddr}/resourcemodel")
 // observe
 		println("CoapLedObserverClient.java: OBSERVE (press enter to exit)")
  

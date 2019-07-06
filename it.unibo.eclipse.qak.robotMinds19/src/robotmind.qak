@@ -119,35 +119,6 @@ QActor robotmind context ctxRobotMind{
  
  }//robotmind
 
-/*
- * Works in ctxRobotMind since it is a policy
-// REMOVED: its job is done by the sonardatafilter
-   WEnv sonarRobot --> sonardatafilter ----> sonarData , obstacle 
- 
- 
- QActor sonarhandler context ctxRobotMind{    
-  	State init initial{
-		println("sonarhandler STARTS ... ")
-	}         
-	Goto waitForEvents 
-	
- 	State waitForEvents{  }      
-   	Transition t0 whenEvent sonarData  -> handleSonar
-   				  whenEvent sonarRobot -> handleSonar //to test modeReact(model). See mbotSupport
- 	State handleSonar{
- 		printCurrentMessage
- 		onMsg ( sonarData : sonarData( DISTANCE ) ){
- 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
- 		}
- 		onMsg ( sonarRobot : sonar( DISTANCE ) ){
- 			//globalTimer started in mbotSupport getDataFromArduino
- 			run itunibo.robotMbot.globalTimer.stopTimer("sonarhandler") 
- 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
- 		}
- 	}
- 	Goto waitForEvents
- }
- */
  
  /*
  * ====================================================================
@@ -169,15 +140,15 @@ var Duration=0
 		["storeCurrentMessageForReply()"]  
 		onMsg( onestep : onestep( TIME ) ) {
 			["StepTime = payloadArg(0).toLong()"]   
-			//println("onestepahead doMoveForwardddd  StepTime=$StepTime") 
+			//println("onestepahead doMoveForward  StepTime=$StepTime") 
  			forward resourcemodel -m modelChange : modelChange(robot,w)
 	 		["startTimer()"] //startTimer is built-in in the actor
 		}      
 	}          
 	Transition t0 whenTimeVar StepTime  -> endDoMoveForward		
- 		          whenEvent obstacle    -> stepFail	//before sonarRobot
-				  whenMsg stopAppl      -> s0	//without any answer
- 		          whenEvent sonarRobot  -> stepFail //handleSonarRobot
+ 		          whenEvent obstacle    -> stepFail	 
+				  //whenMsg stopAppl      -> s0	//without any answer ???
+ 		          //whenEvent sonarRobot  -> stepFail  
  		    
 	State endDoMoveForward{
 		//println("onestepahead endDoMoveForward  ")
@@ -187,26 +158,87 @@ var Duration=0
 	Goto s0
 	  
 	//Substitute with an ad-hoc actor for a real robot
-	State handleSonarRobot{  //before than the step time
-		println("onestepahead handleSonarRobot  ")
- 		["Duration=getDuration()"] //getDuration is built-in in the actor
-//		printCurrentMessage
- 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
-			["val distance = Integer.parseInt( payloadArg(0) ) 
-              foundObstacle = (distance<20) "]  
-   		}
-	}
-	Goto stepFail if "foundObstacle" else s0
+//	State handleSonarRobot{  //before than the step time
+//		println("onestepahead handleSonarRobot  ")
+// 		["Duration=getDuration()"] //getDuration is built-in in the actor
+////		printCurrentMessage
+// 		onMsg ( sonarRobot : sonar( DISTANCE ) ){     
+//			["val distance = Integer.parseInt( payloadArg(0) ) 
+//              foundObstacle = (distance<20) "]  
+//   		}
+//	}
+//	Goto stepFail if "foundObstacle" else s0
 	
-	State stepFail{
+	State stepFail{ 
 		["Duration=getDuration()"]  //getDuration is built-in in the actor
 		println("onestepahead stepFail Duration=$Duration ")
- 		["replyToCaller(\"stepFail\", \"stepFail(obstacle,$Duration)\")"]
+["
+replyToCaller(\"stepFail\", \"stepFail(obstacle,$Duration)\")
+val m = MsgUtil.buildEvent(name, \"log\", \"log( obstacle($Duration) )\")
+//emitLocalStreamEvent( m )	//for logger
+emitLocalStreamEvent( \"log\", \"log( obstacle($Duration) )\" )	//for logger
+"]
 	}
 	Goto s0  
 }    
  
- /* 
+ 
+ /*
+  * --------------------------------------------------------
+  * Basic robot: just an actuator of move commands
+  * --------------------------------------------------------
+  */ 
+  QActor basicrobot context ctxRobotMind {	 
+	State s0 initial {  
+["  
+//CREATE A PIPE for the sonar-data stream
+
+val sonaractorfilter = itunibo.robot.sonaractorfilter( \"sonaractorfilter\" , myself  ) 
+val obstacleDetector =  itunibo.robot.obstacledetector( \"obstacledetector\" , myself   )
+val logger           = itunibo.robot.Logger(\"logFiltered\")
+
+//sonaractorfilter.subscribe(obstacleDetector) 
+//obstacleDetector.subscribeLocalActor( \"onestepahead\" ) 
+////obstacleDetector.subscribe(sysUtil.getActor(\"onestepahead\")!!)
+//sonaractorfilter.subscribe(logger)  
+
+sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( \"onestepahead\" ).subscribe(logger) 
+"] 			 
+   		solve( consult("basicRobotConfig.pl") )          
+ 		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
+  		ifSolved { 
+     		println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
+  			run itunibo.robot.robotSupport.create( myself, @R, @PORT, sonaractorfilter )
+  		} 
+  		else{ println("no robot") }
+     		
+   		run itunibo.robot.robotSupport.move( "msg(a)" )
+   		delay 700
+   		run itunibo.robot.robotSupport.move( "msg(d)" )
+   		delay 700
+   		run itunibo.robot.robotSupport.move( "msg(h)" )
+ 	}  
+	Goto waitCmd   
+ 	 
+	State waitCmd{  } //robotCmd comes from OUTSIDE this (sub)system
+	Transition t0   whenMsg   robotCmd  -> handleRobotCmd
+					//whenEvent obstacle  -> emitEventForMind		//July 2019
+	State handleRobotCmd{ //does not handle alarms 
+		//printCurrentMessage 
+		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
+			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
+		}	
+ 	}  
+	Goto waitCmd 
+	
+//	State emitEventForMind{
+//		onMsg( obstacle : obstacle(D) ) { emit obstacle :  obstacle($payloadArg(0)) }
+//	}
+//	Goto waitCmd 
+} 
+
+ 
+/* 
 // REMOVED: its job is done by the sonardatafilter
    Arduino  --(sonarRobot)--> sonardatafilter ----> sonarData , obstacle 
  
@@ -240,56 +272,32 @@ QActor sonarhandler context ctxRobotMind{
  	Goto waitForEvents
 }
 */ 
+/*
+ * Works in ctxRobotMind since it is a policy
+// REMOVED: its job is done by the sonardatafilter
+   WEnv sonarRobot --> sonardatafilter ----> sonarData , obstacle 
  
- /*
-  * --------------------------------------------------------
-  * Basic robot: just an actuator of move commands
-  * --------------------------------------------------------
-  */ 
-  QActor basicrobot context ctxRobotMind {	 
-	State s0 initial {  
-["  
-//CREATE A PIPE for the sonar-data stream
-val filter = itunibo.robot.sonaractorfilter( \"sonaractorfilter\" , myself  ) 
-val obstacleDetector =  itunibo.robot.obstacledetector( \"obstacledetector\" , myself   )
-filter.subscribe(obstacleDetector) 
-obstacleDetector.subscribeLocalActor( \"onestepahead\" ) )
-//obstacleDetector.subscribe(sysUtil.getActor(\"onestepahead\")!!)
-val logger = itunibo.robot.Logger(\"logFiltered\")
-filter.subscribe(logger)  
-"] 			 
-   		solve( consult("basicRobotConfig.pl") )   
- 		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano
-  		ifSolved { 
-     		println( "USING ROBOT : ${getCurSol(\"R\")},  port= ${getCurSol(\"PORT\")} " )
-  			run itunibo.robot.robotSupport.create( myself, @R, @PORT, filter )
-  		} 
-  		else{ println("no robot") }
-     		
-   		run itunibo.robot.robotSupport.move( "msg(a)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(d)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(h)" )
- 	}  
-	Goto waitCmd   
- 	 
-	State waitCmd{  } //robotCmd comes from a console OUTSIDE this (sub)system
-	Transition t0   whenMsg   robotCmd  -> handleRobotCmd
-					//whenEvent obstacle  -> emitEventForMind		//July 2019
-	State handleRobotCmd{ //does not handle alarms 
-		//printCurrentMessage 
-		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
-			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
-		}	
- 	}  
-	Goto waitCmd 
+ 
+ QActor sonarhandler context ctxRobotMind{    
+  	State init initial{
+		println("sonarhandler STARTS ... ")
+	}         
+	Goto waitForEvents 
 	
-//	State emitEventForMind{
-//		onMsg( obstacle : obstacle(D) ) { emit obstacle :  obstacle($payloadArg(0)) }
-//	}
-//	Goto waitCmd 
-} 
-
- 
-  
+ 	State waitForEvents{  }      
+   	Transition t0 whenEvent sonarData  -> handleSonar
+   				  whenEvent sonarRobot -> handleSonar //to test modeReact(model). See mbotSupport
+ 	State handleSonar{
+ 		printCurrentMessage
+ 		onMsg ( sonarData : sonarData( DISTANCE ) ){
+ 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
+ 		}
+ 		onMsg ( sonarRobot : sonar( DISTANCE ) ){
+ 			//globalTimer started in mbotSupport getDataFromArduino
+ 			run itunibo.robotMbot.globalTimer.stopTimer("sonarhandler") 
+ 			forward resourcemodel -m modelChange : modelChange(sonarRobot,$payloadArg(0))
+ 		}
+ 	}
+ 	Goto waitForEvents
+ }
+ */

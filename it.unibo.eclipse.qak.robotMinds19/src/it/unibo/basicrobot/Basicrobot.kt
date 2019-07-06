@@ -20,16 +20,21 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 						  
 						//CREATE A PIPE for the sonar-data stream
-						val filter = itunibo.robot.sonaractorfilter( "sonaractorfilter" , myself  ) 
+						
+						val sonaractorfilter = itunibo.robot.sonaractorfilter( "sonaractorfilter" , myself  ) 
 						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" , myself   )
-						filter.subscribe(obstacleDetector) 
-						obstacleDetector.subscribe(sysUtil.getActor("onestepahead")!!)
-						val logger = itunibo.robot.Logger("logFiltered")
-						filter.subscribe(logger)  
+						val logger           = itunibo.robot.Logger("logFiltered")
+						
+						//sonaractorfilter.subscribe(obstacleDetector) 
+						//obstacleDetector.subscribeLocalActor( "onestepahead" ) 
+						////obstacleDetector.subscribe(sysUtil.getActor("onestepahead")!!)
+						//sonaractorfilter.subscribe(logger)  
+						
+						sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( "onestepahead" ).subscribe(logger) 
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) { println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")
-						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString(), filter )
+						itunibo.robot.robotSupport.create(myself ,getCurSol("R").toString(), getCurSol("PORT").toString(), sonaractorfilter )
 						 }
 						else
 						{ println("no robot")
@@ -45,23 +50,13 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t011",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
-					transition(edgeName="t012",targetState="emitEventForMind",cond=whenEvent("obstacle"))
+					 transition(edgeName="t09",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})"  )
-						}
-					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
-				}	 
-				state("emitEventForMind") { //this:State
-					action { //it:State
-						if( checkMsgContent( Term.createTerm("obstacle(DISTANCE)"), Term.createTerm("obstacle(D)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								emit("obstacle", "obstacle(${payloadArg(0)})" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )

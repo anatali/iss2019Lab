@@ -210,7 +210,16 @@ A QActor can work as a stream handler, since it implements the following operati
 events emitted by the actor with the operation <bc>emitLocalStreamEvent</bc>. It returns <bc>a</bc> 
 to allow pipe-concatenation.</li>
 <li><em>fun unsubscribe( a : ActorBasic) </em>: eliminates the given actor <bc>a</bc> from the subscribers.</li>
-<li><em>fun emitLocalStreamEvent(m: ApplMessage ) </em> : sends the message <bc>m</bc> to all the subscribed actors.</li>
+<li><em>fun emitLocalStreamEvent(m: ApplMessage ) </em> : sends the message <bc>m</bc> to all the subscribed actors.
+<pre>
+    suspend fun emitLocalStreamEvent(ev: String, evc: String ){
+        emitLocalStreamEvent( MsgUtil.buildEvent( name, ev, evc) )
+    }
+    suspend fun emitLocalStreamEvent(m: ApplMessage ){
+        subscribers.forEach { it.actor.send(m) }
+    }
+</pre>
+</li>
 </ul> 
  
 <!--

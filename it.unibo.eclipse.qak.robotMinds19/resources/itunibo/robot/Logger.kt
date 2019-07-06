@@ -20,7 +20,7 @@ class Logger(name : String) : ApplActorDataStream(name){
 	}
 	
 	fun saveData(   data : String )   {		
-  		pw.append( "$data " )
+  		pw.append( "$data\n " )
 		pw.flush()
     }
 

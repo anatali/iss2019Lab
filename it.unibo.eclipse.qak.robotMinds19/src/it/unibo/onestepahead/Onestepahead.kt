@@ -40,8 +40,6 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					}
 					 transition(edgeName="t07",targetState="endDoMoveForward",cond=whenTimeout("local_tout_onestepahead_doMoveForward"))   
 					transition(edgeName="t08",targetState="stepFail",cond=whenEvent("obstacle"))
-					transition(edgeName="t09",targetState="s0",cond=whenDispatch("stopAppl"))
-					transition(edgeName="t010",targetState="stepFail",cond=whenEvent("sonarRobot"))
 				}	 
 				state("endDoMoveForward") { //this:State
 					action { //it:State
@@ -50,24 +48,15 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
-				state("handleSonarRobot") { //this:State
-					action { //it:State
-						println("onestepahead handleSonarRobot  ")
-						Duration=getDuration()
-						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(DISTANCE)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								val distance = Integer.parseInt( payloadArg(0) ) 
-								              foundObstacle = (distance<20) 
-						}
-					}
-					 transition( edgeName="goto",targetState="stepFail", cond=doswitchGuarded({foundObstacle}) )
-					transition( edgeName="goto",targetState="s0", cond=doswitchGuarded({! foundObstacle}) )
-				}	 
 				state("stepFail") { //this:State
 					action { //it:State
 						Duration=getDuration()
 						println("onestepahead stepFail Duration=$Duration ")
+						
 						replyToCaller("stepFail", "stepFail(obstacle,$Duration)")
+						val m = MsgUtil.buildEvent(name, "log", "log( obstacle($Duration) )")
+						//emitLocalStreamEvent( m )	//for logger
+						emitLocalStreamEvent( "log", "log( obstacle($Duration) )" )	//for logger
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
