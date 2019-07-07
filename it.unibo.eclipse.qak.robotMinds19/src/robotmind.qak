@@ -23,8 +23,8 @@ Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  
-Dispatch stopAppl      : stopAppl( CMD )
-Dispatch startAppl     : startAppl( CMD )
+Dispatch stopAppl      : stopAppl( CMD )  
+Dispatch startAppl     : startAppl( CMD )  
 
 Context ctxRobotMind     ip [host="localhost" port=8035]  -mqtt
 

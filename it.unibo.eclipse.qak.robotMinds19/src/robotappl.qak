@@ -49,11 +49,7 @@ var newDir = \"\"
 	State s0 initial {	  
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("floorMap.pl")	 )
-["
-val hostAddr = \"coap://localhost:5683\" 	// 192.168.43.67:5683
-val coapclient   = org.eclipse.californium.core.CoapClient( \"${hostAddr}/resourcemodel\")
-val relation = coapclient.observe(  itunibo.coap.observer.Listener )  //CoapHandler
-"]		
+		run itunibo.coap.observer.resourceObserverCoapClient.create()
  	}
 	Goto startApplication 
 /*  	 

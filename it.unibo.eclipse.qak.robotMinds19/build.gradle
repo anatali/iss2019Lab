@@ -71,7 +71,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.pushingpixels/trident
 	compile group: 'org.pushingpixels', name: 'trident', version: '1.3'
 	//ROBOT nano (SAM)
-    //compile name: 'labbaseRobotSam'
+    compile name: 'labbaseRobotSam'
 	//compile mame: 'pi4j-core' //2-12 SNAPSHOT non in gradle
  	//PLANNER
     //compile name: 'it.unibo.planner'
@@ -87,9 +87,11 @@ compileTestKotlin {
 }
 
 sourceSets {
-    main.java.srcDirs += 'src'
-    //main.java.srcDirs += 'resources'
+    main.java.srcDirs += 'src' 
+    main.java.srcDirs += 'resources'
 }
+
+ 
 /*
 mainClassName = 'it.unibo.TODOKt'
 

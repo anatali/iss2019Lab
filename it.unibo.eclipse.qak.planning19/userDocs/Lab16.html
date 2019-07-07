@@ -459,7 +459,45 @@ FINAL MAP
 	</m>
 	</td>
 	</tr>
+</table>
+</center> 	
+	
+	
+<h4>Towards the application</h4>	
+The steps to prepare and run the application are summarized in <a href="../RunTheAppl.txt" target="code">RunTheAppl.txt</a>:<br/><br/>
+<pre>
+------------------------------------------------------------------
+PREPARE
+------------------------------------------------------------------
+1) ACTIVATE THE VIRTUAL ROBOT SERVER  
 
+2) ACTIVATE THE MQTT BROKER (mosquitto)
+
+------------------------------------------------------------------
+ACTIVATE THE ROBOT BASIC-MIND
+------------------------------------------------------------------
+3) RUN MainCtxRobotMain  IN it.unibo.eclipse.qak.robotMinds19
+
+4) RUN MainCtxRobotAppl  FROM it.unibo.eclipse.qak.robotMinds19
+	4a) LOOK AT logFiltered.txt (the walls found as obstacles)
+	
+------------------------------------------------------------------
+BUSINESS LOGIC
+------------------------------------------------------------------
+5) RUN MainCtxBoundaryPlanned  FROM it.unibo.eclipse.qak.planning19
+	5a) LOOK AT roomMap.txt  (the map of the room)
+	
+6) RUN MainCtxRoomExplore  FROM it.unibo.eclipse.qak.planning19
+	6a) LOOK AT roomMapWithTable.txt   (the map of the room with the table)
+	
+7) RUN MainCtxWorkInRoom  FROM it.unibo.eclipse.qak.planning19
+	The robt gea from (0,0) to (5,3)
+</pre>	
+	
+	
+<center><table style="width:98%">
+ 	
+	
 	<tr>
  	<td style="width:30%">	 
 	<h3>1</h3>

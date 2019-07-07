@@ -1,0 +1,35 @@
+RunTheAppl.txt
+
+------------------------------------------------------------------
+PREPARE
+------------------------------------------------------------------
+1) ACTIVATE THE VIRTUAL ROBOT SERVER  
+
+2) ACTIVATE THE MQTT BROKER (mosquitto)
+
+------------------------------------------------------------------
+ACTIVATE THE ROBOT BASIC-MIND
+------------------------------------------------------------------
+3) RUN MainCtxRobotMain  IN it.unibo.eclipse.qak.robotMinds19
+
+
+4) RUN MainCtxRobotAppl  IN it.unibo.eclipse.qak.robotMinds19
+	4a) LOOK AT logFiltered.txt (the walls found as obstacles)
+	
+------------------------------------------------------------------
+BUSINESS LOGIC
+------------------------------------------------------------------
+5) RUN MainCtxBoundaryPlanned  IN it.unibo.eclipse.qak.planning19
+	5a) LOOK AT roomMap.txt  (the map of the room)
+	
+6) RUN MainCtxRoomExplore  IN it.unibo.eclipse.qak.planning19
+	6a) LOOK AT roomMapWithTable.txt   (the map of the room with the table)
+	
+7) RUN MainCtxWorkInRoom  IN it.unibo.eclipse.qak.planning19
+	The robt goes FROM (0,0) to (5,3)
+	
+	
+	
+	
+For Java see
+https://docs.oracle.com/en/java/javase/12/	

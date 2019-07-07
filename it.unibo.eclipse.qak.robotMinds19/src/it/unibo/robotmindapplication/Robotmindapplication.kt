@@ -33,10 +33,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('floorMap.pl')","") //set resVar	
-						
-						val hostAddr = "coap://localhost:5683" 	// 192.168.43.67:5683
-						val coapclient   = org.eclipse.californium.core.CoapClient( "${hostAddr}/resourcemodel")
-						val relation = coapclient.observe(  itunibo.coap.observer.Listener )  //CoapHandler
+						itunibo.coap.observer.resourceObserverCoapClient.create(  )
 					}
 					 transition( edgeName="goto",targetState="startApplication", cond=doswitch() )
 				}	 
