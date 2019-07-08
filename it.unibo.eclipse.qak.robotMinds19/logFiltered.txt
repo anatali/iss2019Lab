@@ -1,0 +1,5 @@
+obstacle(152)
+ obstacle(253)
+ obstacle(136)
+ obstacle(272)
+ 
