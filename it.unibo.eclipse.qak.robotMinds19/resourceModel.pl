@@ -35,8 +35,6 @@ showResources.
 
 output( M ) :- stdout <- println( M ).
 
-
-
 initResourceTheory :- output("resourceModel loaded").
 :- initialization(initResourceTheory).
 		

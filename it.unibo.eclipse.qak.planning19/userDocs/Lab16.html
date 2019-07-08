@@ -551,7 +551,34 @@ The steps to prepare and run the application can be summarized as follows:<br/><
  
 <li><ks>ACTIVATE THE ROBOT BASIC-MIND</ks>
 	 <ol>
-	 <li>RUN <bc>MainCtxRobotMain</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> </li>
+	 <li>RUN <bc>MainCtxRobotMain</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> =>
+	 Resource needed: 
+	 <ul>
+	 <li><kc>sysRules.pl</kc> and <kc>robotmind.pl</kc></li
+	 <li><kc>resourceModel.pl</kc>: the model of the application resource written in Prolog:
+	 <pre>
+model( actuator, robot,      state(stopped) ).   %% initial state
+model( sensor,   sonarRobot, state(unknown) ).   %% initial state
+...</pre>
+ 	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#mqtt" 
+	target="code">TODO</a>)
+	 </li>
+	 <li><kc>basicRobotConfig.pl</kc>: the declaration of the robot to use:
+	 <pre>
+robot( virtual, "8999" ).
+%% robot( realmbot, "COM6" ).</pre>
+	 </li>
+	 <li><kc>sonarDataConfig.pl.pl</kc>: configuration parameters fot the sonar data pipe:
+	 <pre>
+limitDistance(12).
+minDistance( 2 ).
+maxDistance( 50 ).
+maxDelta( 1 ).
+amplif( 6	).   %%%sonar data amplification for the radar, that does D/3</pre>
+	 </li>
+	 </ul>
+	 
+	 </li>
 	 <li>RUN <bc>MainCtxRobotAppl</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> (just a test) => <br/>
 	 LOOK AT <em>logFiltered.txt</em> (the walls found as obstacles) </li>
 	 </ol>	
@@ -559,9 +586,37 @@ The steps to prepare and run the application can be summarized as follows:<br/><
  
  <li><ks>BUSINESS LOGIC</ks>
 	 <ol>	 
-	 <li>RUN <bc>MainCtxBoundaryPlanned</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> LOOK AT <em>roomMap.txt</em>  (the map of the room)</li>
-	 <li>RUN <bc> MainCtxRoomExplore</bc>   IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/>LOOK AT <em>roomMapWithTable.txt</em>   (the map of the room with the table)</li>
- 	 <li>RUN <bc>MainCtxWorkInRoom</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> The robot goes <tt>FROM (0,0) to (5,3)</tt> </li>
+	 <li>RUN <bc>MainCtxBoundaryPlanned</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> 
+	 Builds the map of the <i>empty room</i> and stores it in the file<em>roomMap.txt</em>:
+	 <pre>
+|1, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, r, 0, 1, X, 
+|1, 0, 0, X, 0, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, 	 </pre>
+	 </li>
+	 <li>RUN <bc> MainCtxRoomExplore</bc>   IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/>
+	 Builds the map of the <i>room with the table</i> and stores it in the file <em>roomMapWithTable.txt</em>:
+	 <pre>
+|r, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, 1, 1, 1, X, 
+|1, 1, 1, <k>X, X</k>, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, </pre>
+<br/></li>
+
+ 	 <li>RUN <bc>MainCtxWorkInRoom</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> 
+	 Using the <em>roomMapWithTable.txt</em>, moves the robot <tt>FROM (0,0) to (5,3)</tt> 
+<pre>
+|1, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, 1, 1, 1, X, 
+|1, 1, 1, X, X, <k>r</k>, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, </pre>	 
+	 </li>
 	 <li>RUN the TestPlan</li>
 	 </ol>	
 <br/></li>
@@ -572,7 +627,7 @@ The steps to prepare and run the application can be summarized as follows:<br/><
 	 <li>RUN <bc>resourceObserverCoapClient</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt><br/>
 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#m2mcoap" 
 	target="code">LAB14 | Resource(domain) model - Machine-to-machine interaction</a>)	 => <br/>
-	 Works as a resource-observer.
+	 Since this works as a resource-observer, launch also some business logic.
 	 </li>
 	 <li>RUN <bc>MainCoapClientModelRobot</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt>	 => <br/>
 	 Moves the robot.

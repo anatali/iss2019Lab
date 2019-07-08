@@ -17,7 +17,7 @@ Event  modelContent   : content( VALUE )
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )  //force a resource-model change
-Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind TARGET=robot|sonar|roomMap
 
 Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
@@ -48,6 +48,10 @@ QActor resourcemodel context ctxRobotMind{
 		}
 		onMsg( modelUpdate : modelUpdate(sonarRobot,V ) ) {
 			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )
+		}
+		onMsg( modelUpdate : modelUpdate(roomMap,V ) ) {  //JULY19
+			println("modelUpdate roomMap  ")
+			run itunibo.robot.resourceModelSupport.updateRoomMapModel( myself, payloadArg(1) )
 		}
 	} 
     Goto  waitModelChange

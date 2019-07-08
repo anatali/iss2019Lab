@@ -5,6 +5,7 @@ System roomboundaryplanned
 mqttBroker "localhost" : 1883 
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
@@ -61,6 +62,13 @@ var PauseTimeL  = PauseTime.toLong()
 	//onestepahead has found an obstacle
 	State stepFailed{  
 		println("&&&  FOUND WALL")
+["
+val mapStr = \"mapToDo\" //itunibo.planner.plannerUtil.getMap()
+println(\"++++++++++++++++++++++++++++++++++++++++  \")
+println( mapStr )
+println(\"++++++++++++++++++++++++++++++++++++++++ \")  
+"]		
+		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,"$mapStr")    
 		//printCurrentMessage		        
  		onMsg( stepFail : stepFail(Obs,Time) ) { 
  			["Tback=payloadArg(1).toString().toInt() / 2"]

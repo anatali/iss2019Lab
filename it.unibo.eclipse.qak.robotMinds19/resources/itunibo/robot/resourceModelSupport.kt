@@ -31,7 +31,14 @@ lateinit var resourcecoap : modelResourceCoap
  				actor.emit( "modelContent" , "content( sonarRobot( $SonarState ) )" )
 				resourcecoap.updateState( "sonarRobot( $SonarState )" )
  			}	
-	}	
- 	
+	}
+	
+	fun updateRoomMapModel( actor: ActorBasic, content: String ){
+		println("			resourceModelSupport updateRoomMapModel content=$content")
+			actor.scope.launch{
+ 				actor.emit( "modelContent" , "content( sonarRobot( $content ) )" )
+				resourcecoap.updateState( "sonarRobot( $content )" )
+ 			}	
+	}
 }
 

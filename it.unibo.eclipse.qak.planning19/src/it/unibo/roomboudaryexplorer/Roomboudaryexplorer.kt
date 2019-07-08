@@ -63,6 +63,12 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				state("stepFailed") { //this:State
 					action { //it:State
 						println("&&&  FOUND WALL")
+						
+						val mapStr = "mapToDo" //itunibo.planner.plannerUtil.getMap()
+						println("++++++++++++++++++++++++++++++++++++++++  ")
+						println( mapStr )
+						println("++++++++++++++++++++++++++++++++++++++++ ")  
+						forward("modelUpdate", "modelUpdate(roomMap,\"$mapStr\")" ,"resourcemodel" ) 
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(Obs,Time)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								Tback=payloadArg(1).toString().toInt() / 2

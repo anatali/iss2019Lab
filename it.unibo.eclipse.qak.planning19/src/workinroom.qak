@@ -3,7 +3,7 @@
 * and executes it.
 */
 System workinroom  
-mqttBroker "localhost" : 1883  
+mqttBroker "localhost" : 1883   
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 

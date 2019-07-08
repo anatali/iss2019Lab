@@ -1,5 +1,0 @@
-obstacle(240)
- obstacle(48)
- obstacle(224)
- obstacle(70)
- 

@@ -2,24 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c1912a21-cd2b-4346-921c-03b6db202a0a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.project" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.project" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/build_ctxMindExplore.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/build_ctxMindExplore.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/roomexplore.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/roomexplore.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/build_ctxBoundaryPlanned.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/build_ctxBoundaryPlanned.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxDummyForMind/MainCtxDummyForMind.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxMindWithPlan/MainCtxMindWithPlan.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/ctxMindWithPlan/MainCtxMindWithPlan.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/onecellforward/Onecellforward.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/onecellforward/Onecellforward.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/plantester/Plantester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/plantester/Plantester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/roomexplorer/Roomexplorer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/roomexplorer/Roomexplorer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/roomboudaryexplorer/Roomboudaryexplorer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/it/unibo/roomboudaryexplorer/Roomboudaryexplorer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomboundaryplanned.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/roomboundaryplanned.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/workinroom.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/src/workinroom.qak" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/userDocs/Lab16.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/userDocs/Lab16.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/userDocs/robotResourceBasedCoap.png" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/userDocs/robotResourceBasedCoap.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onestepahead/Onestepahead.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/onestepahead/Onestepahead.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/xxx.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/xxx.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/xxx.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.planning19/xxx.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/build_ctxRobotMind.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/build_ctxRobotMind.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/logFiltered.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/logFiltered.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resourceModel.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resourceModel.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/resourceModelSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/resources/itunibo/robot/resourceModelSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/resourcemodel/Resourcemodel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/it/unibo/resourcemodel/Resourcemodel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/robotDataSource.png" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19/userDocs/robotDataSource.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../libs/it.unibo.qakactor-1.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -67,8 +67,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51">
-              <caret line="30" column="37" lean-forward="true" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
+            <state relative-caret-position="408">
+              <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -91,11 +91,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="207" lean-forward="true" selection-start-line="201" selection-end-line="207" />
+            <state relative-caret-position="52">
+              <caret line="194" column="4" selection-start-line="194" selection-start-column="4" selection-end-line="194" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
             </state>
           </provider>
         </entry>
@@ -115,7 +124,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/MsgUtil.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
+            <state relative-caret-position="306">
               <caret line="23" column="18" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="18" />
               <folding>
                 <element signature="e#43#269#0" expanded="true" />
@@ -222,10 +231,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="y" value="21" />
-    <option name="width" value="1205" />
-    <option name="height" value="647" />
+    <option name="x" value="-8" />
+    <option name="y" value="20" />
+    <option name="width" value="1206" />
+    <option name="height" value="648" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -235,6 +244,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -253,33 +264,17 @@
               <item name="build" type="462c0819:PsiDirectoryNode" />
               <item name="libs" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="it.unibo.qakactor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.qakactor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="it.unibo.qakactor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="it.unibo.qakactor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562399323874" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../it.unibo.eclipse.qak.robotMinds19" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562579769581" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
-    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="" />
       <recent name="it.unibo.kactor.test.chain" />
@@ -290,6 +285,9 @@
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor" />
       <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test\chain" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Didattica2018Work\iss2019Lab\it.unibo.qakactor\src\main\kotlin\it\unibo\kactor\test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -394,10 +392,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
+    <frame x="-6" y="-6" width="1293" height="703" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16868381" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17165992" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -411,7 +408,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.28663447" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.28621292" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Build" order="10" weight="0.39883268" />
@@ -496,17 +493,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasicFsm.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5355">
           <caret line="317" column="9" selection-start-line="317" selection-start-column="9" selection-end-line="317" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -534,16 +531,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/sysUtil.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="30" column="37" lean-forward="true" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/MsgUtil.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
+        <state relative-caret-position="306">
           <caret line="23" column="18" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="18" />
           <folding>
             <element signature="e#43#269#0" expanded="true" />
@@ -553,8 +543,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/ActorBasic.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="207" lean-forward="true" selection-start-line="201" selection-end-line="207" />
+        <state relative-caret-position="52">
+          <caret line="194" column="4" selection-start-line="194" selection-start-column="4" selection-end-line="194" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
