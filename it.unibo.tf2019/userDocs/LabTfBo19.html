@@ -177,60 +177,49 @@ LabISS-lectures site</a></font>
 
 
  <ol>
- <li><k>PREPARE</k>
+ <li><ks>PREPARE</ks>
 	 <ol>
-	 <li>ACTIVATE THE <ks>VIRTUAL ROBOT SERVER</ks></li>
-	 <li>ACTIVATE THE <ks>MQTT BROKER</ks> (mosquitto)</li>
+	 <li>ACTIVATE THE <bc>VIRTUAL ROBOT SERVER</bc></li>
+	 <li>ACTIVATE THE <bc>MQTT BROKER</bc> (mosquitto)</li>
 	 </ol>
 <br/></li>
  
-<li><k>ACTIVATE THE ROBOT BASIC-MIND</k>
+<li><ks>ACTIVATE THE ROBOT BASIC-MIND</ks>
 	 <ol>
-	 <li>RUN <ks>MainCtxRobotMain</ks>  IN it.unibo.eclipse.qak.robotMinds19 </li>
-	 <li>RUN <ks>MainCtxRobotAppl</ks>  IN it.unibo.eclipse.qak.robotMinds19 (just a test) <br/>
-	 LOOK AT logFiltered.txt (the walls found as obstacles) </li>
+	 <li>RUN <bc>MainCtxRobotMain</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> </li>
+	 <li>RUN <bc>MainCtxRobotAppl</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> (just a test) => <br/>
+	 LOOK AT <em>logFiltered.txt</em> (the walls found as obstacles) </li>
 	 </ol>	
 <br/></li>
  
- <li><k>BUSINESS LOGIC</k>
+ <li><ks>BUSINESS LOGIC</ks>
 	 <ol>
-	 <li>RUN <ks>MainCtxBoundaryPlanned</ks>  IN it.unibo.eclipse.qak.planning19 => LOOK AT roomMap.txt  (the map of the room)</li>
-	 <li>RUN <ks> MainCtxRoomExplore</ks>   IN it.unibo.eclipse.qak.planning19 => LOOK AT roomMapWithTable.txt   (the map of the room with the table)</li>
- 	 <li>RUN <ks>MainCtxWorkInRoom</ks>  IN it.unibo.eclipse.qak.planning19 => The robot goes FROM (0,0) to (5,3) </li>
+	 <li>RUN <bc>MainCtxBoundaryPlanned</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> LOOK AT <em>roomMap.txt</em>  (the map of the room)</li>
+	 <li>RUN <bc> MainCtxRoomExplore</bc>   IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/>LOOK AT <em>roomMapWithTable.txt</em>   (the map of the room with the table)</li>
+ 	 <li>RUN <bc>MainCtxWorkInRoom</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> The robot goes <tt>FROM (0,0) to (5,3)</tt> </li>
 	 </ol>	
 <br/></li>
 
-<li><k>M2M INTERACTION</k>
+<li><ks>M2M INTERACTION</ks>
 	 <ol>
-	 <li>RUN <ks>MainCoapClientModelRobot</ks> IN it.unibo.eclipse.qak.robotMinds19	 </li>
-	 <li>RUN <ks>resourceObserverCoapClient</ks> IN it.unibo.eclipse.qak.robotMinds19	 </li>
+	 <li>RUN <bc>resourceObserverCoapClient</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt>	=> <br/>
+	 Works as a resource-observer.
+	 </li>
+	 <li>RUN <bc>MainCoapClientModelRobot</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt>	 => <br/>
+	 Moves the robot.
+	 </li>
  	 </ol>	
 <br/></li>
 
  
-<li><k>HUMAN-MACHINE INTERACTION (front end)</k>
+<li><ks>HUMAN-MACHINE INTERACTION <tt>(front end)</tt></ks>
 	 <ol>
-	 <li>RUN <ks>node frontendServer</ks> IN it.unibo.frontend19/nodeCode/frontend	  </li>
-	 <li></li>
+	 <li>RUN <bc>node frontendServer</bc> IN <tt>it.unibo.frontend19/nodeCode/frontend</tt>	 => <br/>
+	 User console: sends commands to the butler.
+	 </li>
  	 </ol>	
 <br/></li>
  
- 
- 
-<li>
-	 <ol>
-	 <li> </li>
-	 <li></li>
- 	 </ol>	
-<br/></li>
- 
- 
-  <li>
-	 <ol>
-	 <li> </li>
-	 <li></li>
- 	 </ol>	
-<br/></li>
  
  </ol>
 
@@ -240,7 +229,7 @@ LabISS-lectures site</a></font>
  
  
  
- <h2>Scenarios (incremental design and development)</h2>	
+<h2>Scenarios (incremental design and development)</h2>	
 <center><table style="width:98%">
  	
 	
@@ -249,7 +238,7 @@ LabISS-lectures site</a></font>
 	<h3>1</h3>
 	<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a><br/><br/>
 	<m>
-	Builds a map of the <k>empty room</k> by using the planner.
+	Builds a map of the <ks>empty room</ks> by using the planner.
 	</m>
  	</td> 
 	<td>

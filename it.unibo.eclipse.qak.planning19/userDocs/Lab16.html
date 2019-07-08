@@ -358,7 +358,7 @@ FINAL MAP
 
 	<tr>
  	<td style="width:30%">	 
-	<h3>Architecture</h3>
+	<em>Architecture</em><br/>
 	<m>
 	We start from  
 <a href="file:///C:/Didattica2018Work/iss2019Lab/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#core" 
@@ -394,7 +394,7 @@ FINAL MAP
 	 	
 	<tr>
  	<td style="width:30%">	 
-	<h3>Macro-moves</h3>
+	<em>Macro-moves</em><br/>
 	<a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a><br/><br/>
 	<m>
 	Defines a set of macro-moves for a robot that include the usage of the planner.<br/><br/>
@@ -463,44 +463,14 @@ FINAL MAP
 </center> 	
 	
 	
-<h4>Towards the application</h4>	
-The steps to prepare and run the application are summarized in <a href="../RunTheAppl.txt" target="code">RunTheAppl.txt</a>:<br/><br/>
-<pre>
-------------------------------------------------------------------
-PREPARE
-------------------------------------------------------------------
-1) ACTIVATE THE VIRTUAL ROBOT SERVER  
-
-2) ACTIVATE THE MQTT BROKER (mosquitto)
-
-------------------------------------------------------------------
-ACTIVATE THE ROBOT BASIC-MIND
-------------------------------------------------------------------
-3) RUN MainCtxRobotMain  IN it.unibo.eclipse.qak.robotMinds19
-
-4) RUN MainCtxRobotAppl  FROM it.unibo.eclipse.qak.robotMinds19
-	4a) LOOK AT logFiltered.txt (the walls found as obstacles)
-	
-------------------------------------------------------------------
-BUSINESS LOGIC
-------------------------------------------------------------------
-5) RUN MainCtxBoundaryPlanned  FROM it.unibo.eclipse.qak.planning19
-	5a) LOOK AT roomMap.txt  (the map of the room)
-	
-6) RUN MainCtxRoomExplore  FROM it.unibo.eclipse.qak.planning19
-	6a) LOOK AT roomMapWithTable.txt   (the map of the room with the table)
-	
-7) RUN MainCtxWorkInRoom  FROM it.unibo.eclipse.qak.planning19
-	The robt gea from (0,0) to (5,3)
-</pre>	
-	
+<h3>Scenarios (incremental design and development)</h3>		
 	
 <center><table style="width:98%">
  	
 	
 	<tr>
  	<td style="width:30%">	 
-	<h3>1</h3>
+	<em>Scenario 1</em><br/>
 	<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a><br/><br/>
 	<m>
 	Builds a map of the <k>empty room</k> by using the planner.
@@ -514,7 +484,7 @@ BUSINESS LOGIC
 	
 	<tr>
  	<td style="width:30%">	 
-	<h3>2</h3>
+	<em>Scenario 2</em><br/>
 	<a href="../src/roomexplore.qak" target="code">roomexplore.qak</a><br/><br/>
 	<m>
   If no map exists, explore the room boundary by using the planner; <br/>
@@ -530,7 +500,7 @@ BUSINESS LOGIC
 
 	<tr>
  	<td style="width:30%">	 
-	<h3>3</h3>
+	<em>Scenario 3</em><br/>
 	<a href="../src/workinroom.qak" target="code">workinroom.qak</a><br/><br/>
 	<m>
 The robot plans a trip from home to the east part of the table and executes it.
@@ -549,8 +519,96 @@ The robot plans a trip from home to the east part of the table and executes it.
  <ol>
  <ul></ul>
  <ul></ul>
- </ol>
+ </ol> 
+
+<h2>Towards the final application</h2>	
+<h3>Global architecture</h3>
+The global architecture can be summarized as follows:
+ <center><table style="width:98%">
+	<tr>
+ 	<td>
+	<center><img src="./tfb019arch.png" alt="tfb019arch.png" width="90%" height="32%"/></center>
+	<m>
+ 	</m>	
+	</td>
+	</tr>
+</table>
+</center> 	
+<br/><br/>
+The steps to prepare and run the application can be summarized as follows:<br/><br/>
+
+ <ol>
+ <li><ks>PREPARE</ks>
+	 <ol>
+	 <li>ACTIVATE THE <bc>VIRTUAL ROBOT SERVER</bc>  
+	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.robots19/userDocs/Lab9.html" 
+	target="code">LAB9 | Interacting with a virtual robot</a>)</li>
+	 <li>ACTIVATE THE <bc>MQTT BROKER</bc> (mosquitto)
+	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#mqtt" 
+	target="code">LAB7 | The QActor metamodel - Using MQTT</a>)</li>
+	 </ol>
+<br/></li> 
  
+<li><ks>ACTIVATE THE ROBOT BASIC-MIND</ks>
+	 <ol>
+	 <li>RUN <bc>MainCtxRobotMain</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> </li>
+	 <li>RUN <bc>MainCtxRobotAppl</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> (just a test) => <br/>
+	 LOOK AT <em>logFiltered.txt</em> (the walls found as obstacles) </li>
+	 </ol>	
+<br/></li>
+ 
+ <li><ks>BUSINESS LOGIC</ks>
+	 <ol>	 
+	 <li>RUN <bc>MainCtxBoundaryPlanned</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> LOOK AT <em>roomMap.txt</em>  (the map of the room)</li>
+	 <li>RUN <bc> MainCtxRoomExplore</bc>   IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/>LOOK AT <em>roomMapWithTable.txt</em>   (the map of the room with the table)</li>
+ 	 <li>RUN <bc>MainCtxWorkInRoom</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> The robot goes <tt>FROM (0,0) to (5,3)</tt> </li>
+	 <li>RUN the TestPlan</li>
+	 </ol>	
+<br/></li>
+
+
+<li><ks>M2M INTERACTION</ks>
+	 <ol>
+	 <li>RUN <bc>resourceObserverCoapClient</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt><br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#m2mcoap" 
+	target="code">LAB14 | Resource(domain) model - Machine-to-machine interaction</a>)	 => <br/>
+	 Works as a resource-observer.
+	 </li>
+	 <li>RUN <bc>MainCoapClientModelRobot</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt>	 => <br/>
+	 Moves the robot.
+	 </li>
+ 	 </ol>	
+<br/></li>
+
+ 
+<li><ks>HUMAN-MACHINE INTERACTION <tt>(front end)</tt></ks>
+	 <ol>
+	 <li>RUN <bc>node frontendServer</bc> IN <tt>it.unibo.frontend19/nodeCode/frontend</tt>	 <br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.frontend19/userDocs/Lab13.html" 
+	target="code">LAB13 | A frontend in Node.js)	 => <br/>
+	 User console: sends commands to the butler.
+	 </li>
+ 	 </ol>	
+<br/></li>
+ 
+
+<li><ks>USING A REAL ROBOT</ks>
+	 <ol>
+ 	 <li>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.raspIntroK/userDocs/Lab8.html" 
+	target="code">LAB8 | Using RaspberryPi)	 => <br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" 
+	target="code">LAB12 | Using real robot devices)	 => <br/>
+	 </li>
+ 	 </ol>	
+<br/></li>
+ 
+ </ol>
+
+<!-- 
+http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html#Prolog
+ -->
+
  
 <br/>  	<br/>  	
 	

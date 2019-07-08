@@ -2002,3 +2002,7 @@
 ::1 - GET /favicon.ico HTTP/1.1 304 - - 9.977 ms
 ::1 - GET / HTTP/1.1 304 - - 1.803 ms
 ::1 - GET /favicon.ico HTTP/1.1 200 2111 - 7.375 ms
+::1 - GET / HTTP/1.1 304 - - 21.967 ms
+::1 - GET /favicon.ico HTTP/1.1 200 2111 - 12.887 ms
+::1 - POST /w HTTP/1.1 200 2111 - 44.925 ms
+::1 - GET /favicon.ico HTTP/1.1 304 - - 7.251 ms
