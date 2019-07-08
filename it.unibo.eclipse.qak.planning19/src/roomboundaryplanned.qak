@@ -35,7 +35,9 @@ var PauseTimeL  = PauseTime.toLong()
 "]
 	State s0 initial {	 
  	    //solve( consult("moves.pl")	 ) 
-		run itunibo.planner.plannerUtil.initAI()
+ 	    //start CoAP observer 
+		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
+ 		run itunibo.planner.plannerUtil.initAI()
 		run itunibo.planner.moveUtils.showCurrentRobotState()
  	}
     Goto detectBoundary  
@@ -63,12 +65,11 @@ var PauseTimeL  = PauseTime.toLong()
 	State stepFailed{  
 		println("&&&  FOUND WALL")
 ["
-val mapStr = \"mapToDo\" //itunibo.planner.plannerUtil.getMap()
-println(\"++++++++++++++++++++++++++++++++++++++++  \")
-println( mapStr )
-println(\"++++++++++++++++++++++++++++++++++++++++ \")  
+val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+//println( MapStr ) 
 "]		
-		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,"$mapStr")    
+ 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
+		
 		//printCurrentMessage		        
  		onMsg( stepFail : stepFail(Obs,Time) ) { 
  			["Tback=payloadArg(1).toString().toInt() / 2"]

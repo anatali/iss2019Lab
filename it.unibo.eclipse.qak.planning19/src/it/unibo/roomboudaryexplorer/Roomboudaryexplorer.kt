@@ -33,6 +33,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel"  )
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
@@ -64,11 +65,9 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 					action { //it:State
 						println("&&&  FOUND WALL")
 						
-						val mapStr = "mapToDo" //itunibo.planner.plannerUtil.getMap()
-						println("++++++++++++++++++++++++++++++++++++++++  ")
-						println( mapStr )
-						println("++++++++++++++++++++++++++++++++++++++++ ")  
-						forward("modelUpdate", "modelUpdate(roomMap,\"$mapStr\")" ,"resourcemodel" ) 
+						val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+						//println( MapStr ) 
+						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(Obs,Time)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								Tback=payloadArg(1).toString().toInt() / 2

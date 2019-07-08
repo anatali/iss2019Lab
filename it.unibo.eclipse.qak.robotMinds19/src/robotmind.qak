@@ -43,6 +43,7 @@ QActor resourcemodel context ctxRobotMind{
 	              whenMsg modelUpdate -> updateModel
 
 	State updateModel{  
+		printCurrentMessage
 		onMsg( modelUpdate : modelUpdate(robot,V ) ) {
 			run itunibo.robot.resourceModelSupport.updateRobotModel( myself, payloadArg(1) )
 		}

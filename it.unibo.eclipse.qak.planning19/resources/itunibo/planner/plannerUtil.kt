@@ -263,8 +263,13 @@ object plannerUtil {
 	}
 			
 	fun getMap() : String{
-		return RoomMap.getRoomMap().toString()
+		return RoomMap.getRoomMap().toString() 
 	}
+	fun getMapOneLine() : String{ 
+		return  "'"+RoomMap.getRoomMap().toString().replace("\n","@").replace("|","").replace(",","") +"'" 
+	}
+	
+	
 /*
  * ---------------------------------------------------------
  */

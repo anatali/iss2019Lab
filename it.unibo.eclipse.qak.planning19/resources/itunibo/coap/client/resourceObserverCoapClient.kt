@@ -11,6 +11,8 @@ import org.eclipse.californium.core.CoapObserveRelation
 import org.eclipse.californium.core.CoapResponse
 import itunibo.outgui.outguiSupport
 import java.awt.Color
+import alice.tuprolog.Term
+import alice.tuprolog.Struct
  
 object resourceObserverCoapClient : CoapHandler {
 	val robotResourceAddr = "coap://localhost:5683/resourcemodel" // "coap://192.168.43.67:5683"
@@ -18,7 +20,16 @@ object resourceObserverCoapClient : CoapHandler {
 	
 	override fun onLoad(response: CoapResponse?) {
 		val content = response!!.getResponseText()
-		outguiSupport.output("$content"  )
+//		outguiSupport.output("$content"  )
+		try{
+			val rt = Term.createTerm(content) as Struct
+			val map = "${rt.getArg(0)}".replace("'","").replace("@","\n")
+			outguiSupport.output(  map  )
+		}catch( e: Exception){
+			outguiSupport.output( "ERROR = ${e}" )
+		}
+		
+		
 	}
 	override fun onError() {
 		outguiSupport.output("resourceObserverCoapClient Error")
