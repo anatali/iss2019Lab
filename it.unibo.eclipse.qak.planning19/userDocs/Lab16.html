@@ -534,7 +534,73 @@ The global architecture can be summarized as follows:
 	</tr>
 </table>
 </center> 	
+<br/>
+<ul>
+<li>The robot can be moved by sending a <tt> modelChange  : modelChange( TARGET, VALUE )</tt> dispatch to the <bc>resourceModel</bc>.
+For example:
+
+ <center><table style="width:95%">
+	<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at model level</m>	
+	</td>
+ 	<td >
+<pre>
+forward resourcemodel -m modelChange : modelChange(robot,w)
+</pre>	 
+	</td>
+	</tr>
+<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at Kotlin level</m>	
+	</td>
+ 	<td >
+<pre>
+forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" )
+</pre>	 
+	</td>
+</tr>
+
+<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at CoAP level</m>	
+	</td>
+ 	<td >
+<pre>
+coapClient = CoapClient("coap://$serverAddr:5683/resourcemodel)
+coapClient.put("w", MediaTypeRegistry.TEXT_PLAIN)
+</pre>	 
+	</td>
+</tr>
+</table>
+</center> 	
 <br/><br/>
+</li>
+
+
+<li>
+The 
+Sensor data handlers can change the model by sending a <tt> modelUpdate : modelUpdate(robot,V )</tt> dispatch to the <bc>resourceModel</bc>.
+For example:
+ <center><table style="width:95%">
+ 
+<tr>
+ 	<td style="width:40%">
+	<m>xxx</m>	
+	</td>
+ 	<td >
+<pre>
+ 
+</pre>	 
+	</td>
+</tr>
+</table>
+</center> 
+
+</li>
+</ul>
+
+<br/>
 The steps to prepare and run the application can be summarized as follows:<br/><br/>
 
  <ol>
