@@ -522,7 +522,7 @@ The robot plans a trip from home to the east part of the table and executes it.
  </ol> 
 
 <h2>Towards the final application</h2>	
-<h3>Global architecture</h3>
+<h3>Global architecture</h3> 
 The global architecture can be summarized as follows:
  <center><table style="width:98%">
 	<tr>
@@ -600,7 +600,31 @@ For example:
 </li>
 </ul>
 
+<h3>Essential architecture layers</h3> 
+ <center><table style="width:98%">
+	<tr>
+ 	<td style="width:70%">
+	<center><img src="./tfb019archLayers.png" alt="tfb019archLayers.png" width="90%" height="32%"/></center>
+	<m>
+ 	</m>	
+	</td>
+	<td>
+	<m>
+	<li>Low-level layers can execute commands sent by higher-level layers. <br/><br/></li>
+	<li>A command changes the <em>resource model</em>. This change is perceived by the <bc>robotmind</bc> that has the responsibility to
+	execute the command. <br/><br/></li>
+	<li>Low-level layers generate <em>events</em> that can be sensed and handled by the <bc>robotmind</bc> or by higher-level layers.<br/><br/></li>
+	
+	<li>Layers separated by a continuous line can be executed on <em>different contexts</em> (nodes of a dsitributed system).<br/><br/></li>
+ 	</m>	
+	
+	</td>
+	</tr>
+</table>
+</center> 	
 <br/>
+
+<h3>Handle on</h3> 
 The steps to prepare and run the application can be summarized as follows:<br/><br/>
 
  <ol>
