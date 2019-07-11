@@ -25,12 +25,12 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" , myself   )
 						val logger           = itunibo.robot.Logger("logFiltered")
 						
-						//sonaractorfilter.subscribe(obstacleDetector) 
-						//obstacleDetector.subscribeLocalActor( "onestepahead" ) 
-						////obstacleDetector.subscribe(sysUtil.getActor("onestepahead")!!)
+						 sonaractorfilter.subscribe(obstacleDetector) 
+						 obstacleDetector.subscribeLocalActor( "onestepahead" ) 
+						 obstacleDetector.subscribe(logger) 
 						//sonaractorfilter.subscribe(logger)  
 						
-						sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( "onestepahead" ).subscribe(logger) 
+						//sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( "onestepahead" ).subscribe(logger) 
 						solve("consult('basicRobotConfig.pl')","") //set resVar	
 						solve("robot(R,PORT)","") //set resVar	
 						if(currentSolution.isSuccess()) { println("USING ROBOT : ${getCurSol("R")},  port= ${getCurSol("PORT")} ")

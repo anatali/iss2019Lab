@@ -13,16 +13,8 @@ object mbotSupport{
 			
 	fun create( owner: ActorBasicFsm, port : String, filter : ActorBasic? ){
 		this.owner = owner
-		//configureSonarPipe()
 		initConn( port, filter )
 	}
-	
-//	fun configureSonarPipe(){
-//		filter =  sonardatafilter("filter", owner )
-//		if( filter.modeReact =="pipe"){
-//			owner.subscribe(filter)
-//		}
-//	}
 	
 	private fun initConn( port : String, filter : ActorBasic? ){
 		try {
@@ -30,9 +22,7 @@ object mbotSupport{
 			val serialConn = JSSCSerialComm()
 			conn = serialConn.connect(port)	//returns a SerialPortConnSupport
 			println("mbotSupport initConn conn= $conn")
-			
-			if( filter != null ) owner.subscribe(filter)
-			
+						
 //			if( conn === null ) return;
 //			while(true){ 
 //				val curDataFromArduino = conn.receiveALine()  //consume "start" sent by Arduino
@@ -40,7 +30,9 @@ object mbotSupport{
 //				println("mbotSupport initConn received: $curDataFromArduino istart=$istart "   )
 //				if( istart ) break
 //			}
-			getDataFromArduino();
+
+			//			getDataFromArduino();
+			robotDataSourceArduino("robotDataSourceArduino", owner, filter, conn)
 		}catch(  e : Exception) {
 			println("mbotSupport ERROR ${e }"   );
 		}		
@@ -60,17 +52,19 @@ object mbotSupport{
 		}
 	}
 	
-//	private fun emitDataAtModelLevel(dataSonar : Int ){
-//		owner.scope.launch{ owner.emit("sonarRobot", "sonar( ${ dataSonar } )")  }//MODEL LEVEL
-//	}
-//	private fun emitDataAtStreamLevel(dataSonar : Int ){
-// 		val event = MsgUtil.buildEvent(owner.name,"sonarRobot","sonar( $dataSonar )")
-//		owner.scope.launch{ owner.emitLocalStreamEvent(event)		} //STREAM LEVEL
-//	}
-//	private fun emitDataAtOopLevel(dataSonar : Int ){
-//		filter.elabSonarData("$dataSonar") 	 //OOP LEVEL
-//	}
 	
+	/* MOVED INTO robotDataSourceArduino	
+	private fun emitDataAtModelLevel(dataSonar : Int ){
+		owner.scope.launch{ owner.emit("sonarRobot", "sonar( ${ dataSonar } )")  }//MODEL LEVEL
+	}
+	private fun emitDataAtStreamLevel(dataSonar : Int ){
+ 		val event = MsgUtil.buildEvent(owner.name,"sonarRobot","sonar( $dataSonar )")
+		owner.scope.launch{ owner.emitLocalStreamEvent(event)		} //STREAM LEVEL
+	}
+	private fun emitDataAtOopLevel(dataSonar : Int ){
+		filter.elabSonarData("$dataSonar") 	 //OOP LEVEL
+	}
+
 	private fun getDataFromArduino(   ) {
            GlobalScope.launch {
                 while (true) {
@@ -98,4 +92,5 @@ object mbotSupport{
 				}
 			}
 	}
+ */
 }

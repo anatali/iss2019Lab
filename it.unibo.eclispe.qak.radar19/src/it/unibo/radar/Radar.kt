@@ -30,7 +30,8 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 				state("radarTest") { //this:State
 					action { //it:State
 						solve("getData(D,A)","") //set resVar	
-						if(currentSolution.isSuccess()) resources.radarSupport.spot( getCurSol("D").toString(), getCurSol("A").toString()  )
+						if(currentSolution.isSuccess()) { resources.radarSupport.spot( getCurSol("D").toString(), getCurSol("A").toString()  )
+						 }
 						delay(500) 
 					}
 					 transition( edgeName="goto",targetState="radarTest", cond=doswitchGuarded({currentSolution.isSuccess()}) )
@@ -47,15 +48,16 @@ class Radar ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 						if( checkMsgContent( Term.createTerm("p(Distance,Angle)"), Term.createTerm("p(D,A)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								
-								CurData       = Integer.parseInt( payloadArg(0)  )
-								//println(  "${CurData}" ) 
-								val D : Int   = CurData/3
-								ShowData      = Math.abs( CurData - LastData ) > 5  
-								if(ShowData){
-									 println(  "-------------------- ${D}" )
-									 LastData = CurData
-								}
-								if(ShowData)resources.radarSupport.spot( "$D", payloadArg(1)  )
+										CurData       = Integer.parseInt( payloadArg(0)  )
+										//println(  "${CurData}" ) 
+										val D : Int   = CurData/3
+										ShowData      = Math.abs( CurData - LastData ) > 5  
+										if(ShowData){
+											 println(  "-------------------- ${D}" )
+											 LastData = CurData
+										}
+								if(ShowData){ resources.radarSupport.spot( "$D", payloadArg(1)  )
+								 }
 						}
 					}
 					 transition( edgeName="goto",targetState="waitMsg", cond=doswitch() )

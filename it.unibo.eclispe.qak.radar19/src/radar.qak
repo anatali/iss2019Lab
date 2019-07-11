@@ -20,7 +20,7 @@ var ShowData = false
 	   
 	State radarTest{ 
 		solve( getData(D,A)	 ) 
- 		ifSolved run resources.radarSupport.spot( @D,@A  ) 
+ 		ifSolved{ run resources.radarSupport.spot( @D,@A  ) }
  		delay 500
 	}
 	Goto radarTest if "currentSolution.isSuccess()" else waitMsg
@@ -32,18 +32,18 @@ var ShowData = false
 	State showPoint{
 		//printCurrentMessage  
 		onMsg ( polar : p( D,A )){
-["
-CurData       = Integer.parseInt( payloadArg(0)  )
-//println(  \"${CurData}\" ) 
-val D : Int   = CurData/3
-ShowData      = Math.abs( CurData - LastData ) > 5  
-if(ShowData){
-	 println(  \"-------------------- ${D}\" )
-	 LastData = CurData
-}
-"]
-			 if "ShowData" run resources.radarSupport.spot( "$D", payloadArg(1)  )			 
+		["
+		CurData       = Integer.parseInt( payloadArg(0)  )
+		//println(  \"${CurData}\" ) 
+		val D : Int   = CurData/3
+		ShowData      = Math.abs( CurData - LastData ) > 5  
+		if(ShowData){
+			 println(  \"-------------------- ${D}\" )
+			 LastData = CurData
 		}
+		"]
+		 if "ShowData" {run resources.radarSupport.spot( "$D", payloadArg(1)  )	}		 
+		}//onMsg
 	}
 	Goto waitMsg
 	

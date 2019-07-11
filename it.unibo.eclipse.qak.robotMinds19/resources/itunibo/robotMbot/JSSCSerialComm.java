@@ -9,7 +9,7 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 
-public class JSSCSerialComm { //extends SituatedPlainObject 
+public class JSSCSerialComm {  
 
 	private List<String> list;
 	private Lock object;
@@ -18,7 +18,6 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 	private String[] portNames;
 
 	public JSSCSerialComm( ) {
-		//super(outView);
 		init();
 	}
 	
@@ -29,24 +28,24 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 		portNames     = SerialPortList.getPortNames();
         
 		if (portNames.length == 0) {
-		    System.out.println("There are no serial-ports");
+		    System.out.println("JSSCSerialComm: There are no serial-ports");
 		    return;
 		}else{
 			System.out.println("FOUND " + portNames.length + " serial-ports");
 			for( int i=0; i<portNames.length;i++){
-				System.out.println("FOUND " + portNames[i] + " PORT");
+				System.out.println("JSSCSerialComm: FOUND " + portNames[i] + " PORT");
 			}
 		}
 		
 	}
 
 	public SerialPortConnSupport connect(String commPortName) throws Exception{
-		System.out.println("CONNECT TO " + commPortName + " ports num=" + portNames.length);
+		System.out.println("JSSCSerialComm: CONNECT TO " + commPortName + " ports num=" + portNames.length);
 		commPortName = commPortName.replace("'", "");
 		serialPort = null;
 		for (int i = 0; i < portNames.length; i++){
 			if(portNames[i].equals(commPortName)){
-				System.out.println("CONNECTING TO " + portNames[i]  );
+				System.out.println("JSSCSerialComm: CONNECTING TO " + portNames[i]  );
 				serialPort = new SerialPort(commPortName);
 				serialPort.openPort();
 			    serialPort.setParams(SerialPort.BAUDRATE_115200,
@@ -68,7 +67,7 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 			serialPort.removeEventListener();
 			serialPort.closePort();
 		} catch (SerialPortException e) {
-			System.out.println("could not close the port");
+			System.out.println("JSSCSerialComm: could not close the port");
 		}
 		
 	}
@@ -82,7 +81,7 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 			result = list.remove(0);
 			object.unlock();
 		} catch (Exception e){
-			System.out.println("could not read from port");
+			System.out.println("JSSCSerialComm: could not read from port");
 		}
 		return result;		
 	}
@@ -92,7 +91,7 @@ public class JSSCSerialComm { //extends SituatedPlainObject
 		try {
 			serialPort.writeString(data);
 		} catch (SerialPortException e) {
-			System.out.println("could not write to port");
+			System.out.println("JSSCSerialComm: could not write to port");
 		}	
 	}
 

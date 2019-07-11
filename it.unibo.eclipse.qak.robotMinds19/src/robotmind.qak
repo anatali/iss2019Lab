@@ -202,12 +202,12 @@ val sonaractorfilter = itunibo.robot.sonaractorfilter( \"sonaractorfilter\" , my
 val obstacleDetector =  itunibo.robot.obstacledetector( \"obstacledetector\" , myself   )
 val logger           = itunibo.robot.Logger(\"logFiltered\")
 
-//sonaractorfilter.subscribe(obstacleDetector) 
-//obstacleDetector.subscribeLocalActor( \"onestepahead\" ) 
-////obstacleDetector.subscribe(sysUtil.getActor(\"onestepahead\")!!)
+ sonaractorfilter.subscribe(obstacleDetector) 
+ obstacleDetector.subscribeLocalActor( \"onestepahead\" ) 
+ obstacleDetector.subscribe(logger) 
 //sonaractorfilter.subscribe(logger)  
 
-sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( \"onestepahead\" ).subscribe(logger) 
+//sonaractorfilter.subscribe(obstacleDetector).subscribeLocalActor( \"onestepahead\" ).subscribe(logger) 
 "] 			 
    		solve( consult("basicRobotConfig.pl") )          
  		solve( robot(R, PORT) )  //R = virtual | realmbot | realnano

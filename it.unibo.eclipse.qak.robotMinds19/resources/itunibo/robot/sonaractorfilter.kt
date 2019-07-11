@@ -8,9 +8,10 @@ class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
 		var minDistance  : Int = 2, var maxDistance  : Int = 50,
 		var maxDelta   : Int   = 1, var amplif  : Int  = 6 //radar does D/3
 ) : ApplActorDataStream(name){
+// 	var previusVal = 0
 
-		//USING A CONFIGURATION FILE
-		init{ 
+	//USING A CONFIGURATION FILE
+	init{ 
 		this.solve( "consult(\"sonarDataConfig.pl\")" )		 
     	solve("minDistance(D)")
 	    minDistance = Integer.parseInt( getCurSol("D").toString() )
@@ -25,15 +26,17 @@ class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
 	
 	override protected suspend fun elabData(data : String ){
 		val Distance = Integer.parseInt( data )
-//		val delta    = Math.abs( Distance - LastDistance )
-		println("   $name |  elabSonarData Distance = $Distance ")
- 		if( Distance > minDistance && Distance < maxDistance ){ //&& delta >= maxDelta 
+ 		//val delta    = Math.abs( Distance - LastDistance )
+ 		if( Distance > minDistance && Distance < maxDistance    ){ //&& delta >= maxDelta  FOR REAL
+ 			//println("   $name |  elabSonarData Distance = $Distance ")
 			//virtual robot IMPACTS => Distance always = 5
 			LastDistance = Distance
-			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($data)")
-			//println("   ${name} |  using ${owner.name}  emit m1= $m1")
- 			 emitLocalStreamEvent( m1 )  //PROPAGATE to the pipe
-  		}else{
+ 			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($data)")
+				//println("   ${name} |  using ${owner.name}  emit m1= $m1")
+	 		emitLocalStreamEvent( m1 )  					//PROPAGATE to the pipe
+			//emit polar: a JOB TO BE DONE AT APPLICATION LEVEL ???
+			owner.emit("polar","p( ${Distance*amplif}, 90  )" )  	//FOR A RADAR
+   		}else{
 			//println("   $name |  DISCARDS $Distance ")
 		}				
 	}

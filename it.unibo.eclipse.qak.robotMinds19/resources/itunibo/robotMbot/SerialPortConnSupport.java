@@ -6,8 +6,6 @@ import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-//import it.unibo.is.interfaces.IOutputView;
-//import it.unibo.system.SituatedPlainObject;
 
 public class SerialPortConnSupport implements ISerialPortInteraction, SerialPortEventListener{
 final static int SPACE_ASCII = 32;
@@ -33,8 +31,10 @@ private String curString = "";
 	}
 	@Override
 	public void sendALine(String msg) throws Exception {
+		//msg = msg+"\n";
 		System.out.println("SerialPortConnSupport sendALine ... " + msg);
   		serialPort.writeBytes(msg.getBytes());
+  		 
  //		System.out.println("SerialPortConnSupport has sent   " + msg);
 	}
 	//EXTENSION for mBot
