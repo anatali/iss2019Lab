@@ -2,18 +2,23 @@
 frontend/uniboSupports/coapClientToResourceModel
 */
 const coap             = require("node-coap-client").CoapClient; 
-const coapAddr         = "coap://192.168.43.67:5683"	//RESOURCE ON RASPBERRY PI
-//const coapAddr         = "coap://localhost:5683"
+var coapAddr         = "coap://192.168.1.8:5683"	//RESOURCE ON RASPBERRY PI
+//const coapAddr        = "coap://localhost:5683"
 const coapResourceAddr = coapAddr + "/resourcemodel"
 
 /*
 coap
     .tryToConnect( coapAddr )
     .then((result ) => { //  true or error code or Error instance  
-        cosnile.log("coap connection done"); // do something with the result  
+        console.log("coap connection done"); // do something with the result  
     })
     ;
 */
+
+exports.setcoapAddr = function ( addr ){
+	console.log("coap setcoapAddr  " + addr);
+	coapAddr = "coap://"+ addr + ":5683";
+}
 
 exports.coapGet = function (  ){
 	coap

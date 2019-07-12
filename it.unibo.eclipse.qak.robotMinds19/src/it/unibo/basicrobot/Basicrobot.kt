@@ -21,11 +21,12 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						  
 						//CREATE A PIPE for the sonar-data stream
 						
-						val sonaractorfilter = itunibo.robot.sonaractorfilter( "sonaractorfilter" , myself  ) 
-						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" , myself   )
+						val sonaractorfilter = itunibo.robot.sonaractorfilter( "sonaractorfilter"  ) 
+						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" )
 						val logger           = itunibo.robot.Logger("logFiltered")
 						
 						 sonaractorfilter.subscribe(obstacleDetector) 
+						 sonaractorfilter.subscribe(myself)   //to allow handling of sonarData
 						 obstacleDetector.subscribeLocalActor( "onestepahead" ) 
 						 obstacleDetector.subscribe(logger) 
 						//sonaractorfilter.subscribe(logger)  
@@ -51,12 +52,22 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 					action { //it:State
 					}
 					 transition(edgeName="t09",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
+					transition(edgeName="t010",targetState="emitEventForAppl",cond=whenEvent("sonarData"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})"  )
+						}
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("emitEventForAppl") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("sonarData(D)"), Term.createTerm("sonarData(D)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								emit("polar", "p(${payloadArg(0)},90)" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )

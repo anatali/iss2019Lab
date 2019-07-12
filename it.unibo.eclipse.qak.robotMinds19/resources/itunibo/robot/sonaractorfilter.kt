@@ -3,7 +3,7 @@ package itunibo.robot
 import it.unibo.kactor.ActorBasicFsm
 import it.unibo.kactor.MsgUtil
  
-class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
+class sonaractorfilter (name : String, //val owner : ActorBasicFsm ,
 		var LimitDistance : Int = 12, var LastDistance : Int = 0,
 		var minDistance  : Int = 2, var maxDistance  : Int = 50,
 		var maxDelta   : Int   = 1, var amplif  : Int  = 6 //radar does D/3
@@ -17,7 +17,7 @@ class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
 	    minDistance = Integer.parseInt( getCurSol("D").toString() )
     	solve("maxDistance(D)")
 	    maxDistance = Integer.parseInt( getCurSol("D").toString() )
-    	solve("maxDelta(D)")
+    	solve("maxDelta(D)")  //maxDelta(0) for virtual
 	    maxDelta = Integer.parseInt( getCurSol("D").toString() )
     	solve("amplif(D)")
 	    amplif = Integer.parseInt(  getCurSol("D").toString() )
@@ -26,8 +26,8 @@ class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
 	
 	override protected suspend fun elabData(data : String ){
 		val Distance = Integer.parseInt( data )
- 		//val delta    = Math.abs( Distance - LastDistance )
- 		if( Distance > minDistance && Distance < maxDistance    ){ //&& delta >= maxDelta  FOR REAL
+ 		val delta    = Math.abs( Distance - LastDistance )
+ 		if( Distance > minDistance && Distance < maxDistance  && delta >= maxDelta  ){ //&& delta >= maxDelta  FOR REAL
  			//println("   $name |  elabSonarData Distance = $Distance ")
 			//virtual robot IMPACTS => Distance always = 5
 			LastDistance = Distance
@@ -35,7 +35,7 @@ class sonaractorfilter (name : String, val owner : ActorBasicFsm ,
 				//println("   ${name} |  using ${owner.name}  emit m1= $m1")
 	 		emitLocalStreamEvent( m1 )  					//PROPAGATE to the pipe
 			//emit polar: a JOB TO BE DONE AT APPLICATION LEVEL ???
-			owner.emit("polar","p( ${Distance*amplif}, 90  )" )  	//FOR A RADAR
+			//owner.emit("polar","p( ${Distance*amplif}, 90  )" )  	//FOR A RADAR. Better to do at APPLICATION LEVEL
    		}else{
 			//println("   $name |  DISCARDS $Distance ")
 		}				

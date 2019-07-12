@@ -1,14 +1,15 @@
 /*
  * frontend/frontendServer.js 
  */
+const coap = require('./uniboSupports/coapClientToResourceModel');  
 var appl   = require('./applCode');  //previously was app;
 var http   = require('http');
 var io              ; 	//Upgrade for socketIo;
 
 var port = 8080;
 
-var createServer = function ( port ) {
-  console.log("process.env.PORT=" + process.env.PORT + " port=" + port);
+var createServer = function (  port ) {
+  console.log(" process.env.PORT=" + process.env.PORT + " port=" + port);
   
   server = http.createServer(appl);   
   
@@ -37,7 +38,14 @@ function tick(){
 }
 
 
-createServer(8080);
+main();
+
+function main() {
+	//readHostAddrFromArguments
+    const coapAddr = String(process.argv[2])
+    coap.setcoapAddr( coapAddr )
+    createServer( 8080 );     
+}
 
 
 function onListening() {
@@ -68,6 +76,7 @@ function onError(error) {
 		      throw error;
 		  }
 }
+
 /*
 //Handle CRTL-C;
 process.on('SIGINT', function () {

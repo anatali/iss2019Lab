@@ -22,7 +22,7 @@ class  robotDataSourceArduino( name : String, val owner : ActorBasicFsm , val fi
  						try {
 							var curDataFromArduino = conn.receiveALine()
 							//globalTimer.startTimer()  //TIMER ....
- 	 						println("getDataFromArduino received: $curDataFromArduino"    )
+ 	 						//println("getDataFromArduino received: $curDataFromArduino"    )
  							var v = curDataFromArduino.toDouble() 
 							//handle too fast change ?? NOT HERE
   							var dataSonar = v.toInt();							

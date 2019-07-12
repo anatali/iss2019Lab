@@ -3,7 +3,7 @@ package itunibo.robot
 import it.unibo.kactor.ActorBasicFsm
 import it.unibo.kactor.MsgUtil
  
-class obstacledetector (name : String, val owner : ActorBasicFsm ,
+class obstacledetector (name : String, //val owner : ActorBasicFsm ,
 						var LimitDistance : Int = 12 ) : ApplActorDataStream(name){
  	var maxDelta   = 0
 	var previusVal = 0

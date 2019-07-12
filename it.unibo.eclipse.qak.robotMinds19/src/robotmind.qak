@@ -198,11 +198,12 @@ emitLocalStreamEvent( \"log\", \"log( obstacle($Duration) )\" )	//for logger
 ["  
 //CREATE A PIPE for the sonar-data stream
 
-val sonaractorfilter = itunibo.robot.sonaractorfilter( \"sonaractorfilter\" , myself  ) 
-val obstacleDetector =  itunibo.robot.obstacledetector( \"obstacledetector\" , myself   )
+val sonaractorfilter = itunibo.robot.sonaractorfilter( \"sonaractorfilter\"  ) 
+val obstacleDetector =  itunibo.robot.obstacledetector( \"obstacledetector\" )
 val logger           = itunibo.robot.Logger(\"logFiltered\")
 
  sonaractorfilter.subscribe(obstacleDetector) 
+ sonaractorfilter.subscribe(myself)   //to allow handling of sonarData
  obstacleDetector.subscribeLocalActor( \"onestepahead\" ) 
  obstacleDetector.subscribe(logger) 
 //sonaractorfilter.subscribe(logger)  
@@ -227,19 +228,22 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
  	 
 	State waitCmd{  } //robotCmd comes from OUTSIDE this (sub)system
 	Transition t0   whenMsg   robotCmd  -> handleRobotCmd
-					//whenEvent obstacle  -> emitEventForMind		//July 2019
+					whenEvent sonarData -> emitEventForAppl		//July 2019
 	State handleRobotCmd{ //does not handle alarms 
 		//printCurrentMessage 
 		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
 		}	
  	}  
+ 	
 	Goto waitCmd 
 	
-//	State emitEventForMind{
-//		onMsg( obstacle : obstacle(D) ) { emit obstacle :  obstacle($payloadArg(0)) }
-//	}
-//	Goto waitCmd 
+	//The low-level sonar-pipe is qak-independent. This state propagates events at application level
+	State emitEventForAppl{
+		//printCurrentMessage
+		onMsg( sonarData : sonarData(D) ) { emit polar :  p($payloadArg(0), 90) }
+	}
+	Goto waitCmd 
 } 
 
  
