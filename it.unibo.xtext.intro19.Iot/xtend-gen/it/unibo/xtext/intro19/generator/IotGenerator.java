@@ -3,10 +3,14 @@
  */
 package it.unibo.xtext.intro19.generator;
 
+import com.google.common.collect.Iterators;
+import it.unibo.xtext.intro19.iot.IotSystemSpec;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 /**
  * Generates code from your model files on save.
@@ -17,5 +21,12 @@ import org.eclipse.xtext.generator.IGeneratorContext;
 public class IotGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    System.out.println(("Hello generator " + resource));
+    final Function1<IotSystemSpec, String> _function = (IotSystemSpec it) -> {
+      return it.getName();
+    };
+    String _join = IteratorExtensions.join(IteratorExtensions.<IotSystemSpec, String>map(Iterators.<IotSystemSpec>filter(resource.getAllContents(), IotSystemSpec.class), _function), ", ");
+    String _plus = ("" + _join);
+    fsa.generateFile("outFile.txt", _plus);
   }
 }

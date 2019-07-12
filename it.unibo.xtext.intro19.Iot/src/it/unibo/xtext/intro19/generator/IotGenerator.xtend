@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import it.unibo.xtext.intro19.iot.IotSystem
+import it.unibo.xtext.intro19.iot.IotSystemSpec
 
 /**
  * Generates code from your model files on save.
@@ -21,5 +23,9 @@ class IotGenerator extends AbstractGenerator {
 //				.filter(Greeting)
 //				.map[name]
 //				.join(', '))
+
+		System.out.println("Hello generator " + resource);
+		fsa.generateFile('outFile.txt', ""+resource.allContents.filter(IotSystemSpec).map[name].join(', '));
 	}
+	
 }
