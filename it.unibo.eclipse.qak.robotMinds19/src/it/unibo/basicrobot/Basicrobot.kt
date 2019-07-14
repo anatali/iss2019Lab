@@ -51,8 +51,8 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("waitCmd") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t09",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
-					transition(edgeName="t010",targetState="emitEventForAppl",cond=whenEvent("sonarData"))
+					 transition(edgeName="t010",targetState="handleRobotCmd",cond=whenDispatch("robotCmd"))
+					transition(edgeName="t011",targetState="emitEventForAppl",cond=whenEvent("sonarData"))
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State
@@ -68,6 +68,10 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						if( checkMsgContent( Term.createTerm("sonarData(D)"), Term.createTerm("sonarData(D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								emit("polar", "p(${payloadArg(0)},90)" ) 
+						}
+						if( checkMsgContent( Term.createTerm("sonarData(D)"), Term.createTerm("sonarData(D)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								emit("sonarRobot", "sonar(${payloadArg(0)})" ) 
 						}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )

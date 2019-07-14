@@ -69,7 +69,9 @@ app.get('/appl', function(req, res) {
 	app.post("/w", function(req, res,next) { handlePostMove("w","moving forward", req,res,next); });	
 	app.post("/s", function(req, res,next) { handlePostMove("s","moving backward",req,res,next); });
 	app.post("/a", function(req, res,next) { handlePostMove("a","moving left",    req,res,next); });	
+	app.post("/l", function(req, res,next) { handlePostMove("l","moving left90",  req,res,next); });	
 	app.post("/d", function(req, res,next) { handlePostMove("d","moving right",   req,res,next); });
+	app.post("/r", function(req, res,next) { handlePostMove("r","moving right90", req,res,next); });
 	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",        req,res,next); });	
  
   	//APPLICATION
@@ -137,7 +139,7 @@ var publishEmitUserCmd = function( cmd ){
 }
 
 var publishMsgToRobotapplication = function (cmd){
-   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmind,"+ cmd +"(go),1)"  ;  
+   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmindapplication,"+ cmd +"(go),1)"  ;  
   	console.log("publishMsgToRobotapplication forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/robotmindapplication" );
 }
@@ -156,7 +158,7 @@ app.use( function(req,res){
 	       return res.render('index' );
 	   };
 	   */
-	   return res.render('index' );
+	   //return res.render('index' );  //NO: we loose the message sent via socket.io
 	}catch(e){console.info("SORRY ..." + e);}
 	} 
 );

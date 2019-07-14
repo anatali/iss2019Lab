@@ -33,9 +33,33 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('floorMap.pl')","") //set resVar	
-						itunibo.coap.observer.resourceObserverCoapClient.create(  )
+						solve("consult('basicRobotConfig.pl')","") //set resVar	
+						solve("robot(R,_)","R") //set resVar	
+						
+						val robotType  = currentSolution.getVarValue("R").toString()
+						val isVirtual  = robotType.equals("virtual")
+						println("robotType = $robotType,  isVirtual = $isVirtual")
+						if(isVirtual){ itunibo.coap.observer.resourceObserverCoapClient.create( "coap://localhost/resourcemodel"  )
+						 }
+						else
+						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.8:5683/resourcemodel"  )
+						  }
 					}
-					 transition( edgeName="goto",targetState="startApplication", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
+				state("waitCmd") { //this:State
+					action { //it:State
+					}
+					 transition(edgeName="t00",targetState="stopApplication",cond=whenDispatch("stopAppl"))
+					transition(edgeName="t01",targetState="startApplication",cond=whenDispatch("startAppl"))
+				}	 
+				state("stopApplication") { //this:State
+					action { //it:State
+						println("&&& robotmindapplication stopApplication ... ")
+						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+						forward("stopAppl", "stopAppl(user)" ,"onestepahead" ) 
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("startApplication") { //this:State
 					action { //it:State
@@ -47,8 +71,9 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
-					 transition(edgeName="t00",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
-					transition(edgeName="t01",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+					 transition(edgeName="t02",targetState="hadleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t03",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+					transition(edgeName="t04",targetState="stopApplication",cond=whenDispatch("stopAppl"))
 				}	 
 				state("hadleStepOk") { //this:State
 					action { //it:State

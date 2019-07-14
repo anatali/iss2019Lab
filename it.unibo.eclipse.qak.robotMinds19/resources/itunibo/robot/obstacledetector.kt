@@ -22,7 +22,7 @@ class obstacledetector (name : String, //val owner : ActorBasicFsm ,
   	}
 	
  	suspend fun detectObstacle( Distance : Int ){
-		if( Distance < LimitDistance && Math.abs(previusVal-Distance) >=  maxDelta ){
+		if( Distance < LimitDistance  ){ //&& Math.abs(previusVal-Distance) >=  maxDelta
 			previusVal = Distance
  			val m1 = MsgUtil.buildEvent(name, "obstacle", "obstacle($Distance)")
  			println("   $name |  detectObstacle emit m1= $m1 ")

@@ -49,10 +49,24 @@ var newDir = \"\"
 	State s0 initial {	  
 		solve( consult("sysRules.pl")	 )       
 		solve( consult("floorMap.pl")	 )
-		run itunibo.coap.observer.resourceObserverCoapClient.create()
+		solve( consult("basicRobotConfig.pl")	 )
+		solve( robot(R,_), R )
+["
+val robotType  = currentSolution.getVarValue(\"R\").toString()
+val isVirtual  = robotType.equals(\"virtual\")
+println(\"robotType = $robotType,  isVirtual = $isVirtual\")
+"] 
+		if "isVirtual" {
+				run itunibo.coap.observer.resourceObserverCoapClient.create(
+				"coap://localhost/resourcemodel")	
+		}else{
+			run itunibo.coap.observer.resourceObserverCoapClient.create(
+				"coap://192.168.1.8:5683/resourcemodel")	
+		}
  	}
-	Goto startApplication 
-/*  	 
+	//Goto startApplication 
+   	Goto waitCmd
+   	 
 	State waitCmd {		} 
 	Transition t0 whenMsg stopAppl  -> stopApplication 
 		          whenMsg startAppl -> startApplication 
@@ -60,10 +74,10 @@ var newDir = \"\"
 	State stopApplication{
 		println("&&& robotmindapplication stopApplication ... ")			
 		forward resourcemodel  -m modelChange : modelChange(robot,h)
- 		forward onestepahead -m stopAppl : stopAppl(user)
+ 		forward onestepahead   -m stopAppl    : stopAppl(user)
 	} 
 	Goto waitCmd
-*/	
+ 	
 	State startApplication{
 		solve( initMap(sud) )
 	} 
@@ -75,6 +89,7 @@ var newDir = \"\"
 	}//wait for the answer
 	Transition t0   whenMsg stepOk   -> hadleStepOk
 					whenMsg stepFail -> hadleStepFail 
+					whenMsg stopAppl -> stopApplication 
 						
 	State hadleStepOk{
 		//println("&&& robotmindapplication step ok")	  
@@ -82,7 +97,7 @@ var newDir = \"\"
 		delayVar PauseTimeL 	 
 	}
 	Goto doApplication  
-	  
+	   
 	State hadleStepFail{
 		printCurrentMessage		//stepFail(obstacle,T)
 		//println("&&& robotmindapplication step failed")

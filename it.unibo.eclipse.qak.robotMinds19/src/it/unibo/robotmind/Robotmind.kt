@@ -27,7 +27,8 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					action { //it:State
 					}
 					 transition(edgeName="t02",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t03",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
+					transition(edgeName="t03",targetState="handleSonarRobot",cond=whenEvent("sonarRobot"))
+					transition(edgeName="t04",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 				state("handleEnvCond") { //this:State
 					action { //it:State
@@ -50,6 +51,15 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
+				state("handleSonarRobot") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(D)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								forward("modelUpdate", "modelUpdate(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
+						}
+					}
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+				}	 
 				state("handeObstacle") { //this:State
 					action { //it:State
 						if(goingForward){ itunibo.robotMbot.globalTimer.stopTimer( "mind"  )
@@ -63,8 +73,8 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 				state("waitCmdAtObstacle") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t04",targetState="handleEnvCond",cond=whenEvent("envCond"))
-					transition(edgeName="t05",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
+					 transition(edgeName="t05",targetState="handleEnvCond",cond=whenEvent("envCond"))
+					transition(edgeName="t06",targetState="handleModelChanged",cond=whenEvent("local_modelChanged"))
 				}	 
 			}
 		}

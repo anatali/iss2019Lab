@@ -12,7 +12,7 @@ Event  obstacle       : obstacle( DISTANCE )
 Event  polar          : p( Distance, Angle )  
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
-Event  modelContent   : content( VALUE ) 
+//Event  modelContent   : content( VALUE ) 
 
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
@@ -65,9 +65,9 @@ QActor resourcemodel context ctxRobotMind{
 			emit local_modelChanged : modelChanged(  robot,  $payloadArg(1))  //for the robotmind
 		} 
 		//SONAR DATA  
-		onMsg( modelChange : modelChange( sonarRobot,V ) ) { // V= w | ...
-			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )
-		}
+//		onMsg( modelChange : modelChange( sonarRobot,V ) ) { // V= w | ...
+//			run itunibo.robot.resourceModelSupport.updateSonarRobotModel( myself, payloadArg(1) )
+//		}
 	}  
 	Goto  waitModelChange
 }
@@ -84,10 +84,10 @@ QActor robotmind context ctxRobotMind{
 	Goto waitCmd
 	 
 	State waitCmd {		} 
-	Transition t0 whenEvent envCond    -> handleEnvCond
-				  //whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
+	Transition t0 whenEvent envCond            -> handleEnvCond
+				  whenEvent sonarRobot         -> handleSonarRobot
 		          whenEvent local_modelChanged -> handleModelChanged
-
+				  //whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
 	State handleEnvCond{   
 		printCurrentMessage
  		onMsg( envCond : envCond(CMD) ) {
@@ -96,13 +96,20 @@ QActor robotmind context ctxRobotMind{
 		}
 	} 
 	Goto waitCmd 
- 
+  
  	State handleModelChanged{ //action to actuate
 //		printCurrentMessage
 		onMsg ( local_modelChanged : modelChanged(robot,CMD) ){ 
 			forward basicrobot -m robotCmd : robotCmd( $payloadArg(1) )
 		    ["goingForward= (payloadArg(1)==\"w\")"]
  		}
+	}
+	Goto waitCmd 
+	
+	State handleSonarRobot{
+		onMsg ( sonarRobot : sonar( D ) ){
+			forward resourcemodel -m modelUpdate : modelUpdate(sonarRobot,$payloadArg(0))
+		}		
 	}
 	Goto waitCmd 
 	
@@ -161,7 +168,8 @@ var Duration=0
 		["replyToCaller(\"stepOk\", \"stepOk(ok)\")"] 
 	}
 	Goto s0
-	  
+	
+ 	  
 	//Substitute with an ad-hoc actor for a real robot
 //	State handleSonarRobot{  //before than the step time
 //		println("onestepahead handleSonarRobot  ")
@@ -241,7 +249,8 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
 	//The low-level sonar-pipe is qak-independent. This state propagates events at application level
 	State emitEventForAppl{
 		//printCurrentMessage
-		onMsg( sonarData : sonarData(D) ) { emit polar :  p($payloadArg(0), 90) }
+		onMsg( sonarData : sonarData(D) ) { emit polar      :  p($payloadArg(0), 90)      }
+		onMsg( sonarData : sonarData(D) ) { emit sonarRobot :  sonar($payloadArg(0)) }		
 	}
 	Goto waitCmd 
 } 

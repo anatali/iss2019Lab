@@ -7,14 +7,16 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script>
        var socket  = io.connect();
-       socket.on('connect', function(){ console.log("socket connected");});
-       socket.on('message', function(v){ 
-       			if( v.indexOf("robot") >= 0 ){document.getElementById('robotDisplay').innerHTML=v; }
-       			if( v.indexOf("sonarRobot") >= 0 ){document.getElementById('sonarRobotDisplay').innerHTML=v; }
-       			}
-       	);
+       socket.on('connect', function(){ 
+        		console.log("socket connected");
+       });
+       socket.on( 'message', function(v){ 
+       		console.log("RECEIVED " + v);
+        	if( v.indexOf("robotState:") >= 0 ){document.getElementById('robotDisplay').innerHTML=v; }
+        	if( v.indexOf("sonarRobot:") >= 0 ){document.getElementById('sonarRobotDisplay').innerHTML=v; }
+       	});
 </script>
-<!-- <script type="text/javascript" src="QActorWebUI.js"></script> -->
+ 
 </head>
 
 <body>
@@ -36,7 +38,7 @@
 
 					<tr>
 						<td align="center">
-							<form action="/a" method="post">
+							<form action="/l" method="post">
 							  	<input type="submit" style="font-size:30px;"  value="left" >
 							</form>
 						</td>
@@ -49,7 +51,7 @@
 							</form>
 						</td>
 						<td align="center">
-							<form action="/d" method="post">
+							<form action="/r" method="post">
 							  	<input type="submit" style="font-size:30px;" value="right"  >
 							</form>
 						</td>
@@ -66,7 +68,22 @@
 				</table>
 </center>
  
- 
+<h2>Application console</h2>   
+<center>
+			<table >	
+					<tr>
+						<td align="center">
+							<form action="/startappl" method="post">
+							  	<input type="submit" style="font-size:30px;"  value="START" >
+							</form>
+						</td>
+						<td align="center">							
+							<form action="/stopappl" method="post">							    
+							  	<input type="submit" style="font-size:30px; color:red;"  value="STOP"  >							  	 
+							</form>
+						</td>
+				</table>
+</center> 
 </div>
 <div style="background-color: #FAF19C">
 	<div>

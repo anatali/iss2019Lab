@@ -2,9 +2,9 @@
 frontend/uniboSupports/coapClientToResourceModel
 */
 const coap             = require("node-coap-client").CoapClient; 
-var coapAddr         = "coap://192.168.1.8:5683"	//RESOURCE ON RASPBERRY PI
-//const coapAddr        = "coap://localhost:5683"
-const coapResourceAddr = coapAddr + "/resourcemodel"
+var coapAddr           = "coap://192.168.1.8:5683"	//RESOURCE ON RASPBERRY PI
+//const coapAddr       = "coap://localhost:5683"
+var coapResourceAddr   = coapAddr + "/resourcemodel"
 
 /*
 coap
@@ -16,8 +16,9 @@ coap
 */
 
 exports.setcoapAddr = function ( addr ){
-	console.log("coap setcoapAddr  " + addr);
 	coapAddr = "coap://"+ addr + ":5683";
+	coapResourceAddr   = coapAddr + "/resourcemodel"
+	console.log("coap coapResourceAddr  " + coapResourceAddr);
 }
 
 exports.coapGet = function (  ){
@@ -50,7 +51,7 @@ exports.coapPut = function (  cmd ){
 	    	console.log("coap put done> " + cmd);}
 	     )
 	    .catch(err => { // handle error  
-	    	console.log("coap put error> " + err );}
+	    	console.log("coap put error> " + err + " for cmd=" + cmd);}
 	    )
 	    ;
 	    

@@ -28,10 +28,10 @@ var createServer = function (  port ) {
 	    });
 	});
 	appl.setIoSocket( io );
-};
+  };
+  
 
-
-function tick(){
+function tick(){ 
 	var now = new Date().toString();
 	console.log("sending ... " + io);
 	io.sockets.send("HELLO FROM SERVER time=" + now);
@@ -42,6 +42,7 @@ main();
 
 function main() {
 	//readHostAddrFromArguments
+	console.log("coapAddress=" + String(process.argv[2]) );
     const coapAddr = String(process.argv[2])
     coap.setcoapAddr( coapAddr )
     createServer( 8080 );     
