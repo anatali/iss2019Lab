@@ -36,6 +36,7 @@ lateinit var resourcecoap : modelResourceCoap
 	fun updateRoomMapModel( actor: ActorBasic, content: String ){
 		println("			resourceModelSupport updateRoomMapModel content=$content")
 			actor.scope.launch{
+				actor.emit( "modelContent" , "content( roomMap( state( '$content' ) ) )" )
  				resourcecoap.updateState( "roomMap( '$content' )" )
  			}	
 	}

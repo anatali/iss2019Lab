@@ -14,6 +14,7 @@ var client   = mqtt.connect(mqttAddr);
 var io  ; 	//Upgrade for socketIo;
 var robotModel    = "none";
 var sonarModel    = "none";
+var roomMapModel  = "none";
 
 console.log("mqtt client= " + client );
 
@@ -38,13 +39,15 @@ client.on('message', function (topic, message){
   if(msgStr.indexOf("content")<0) return; 		//it is some other message sent via MQTT
   var spRobot         = msgStr.indexOf("robot");
   var spSonarRobot    = msgStr.indexOf("sonarRobot");
-  var sp1    = msgStr.indexOf("state");
-  var msgStr = msgStr.substr(sp1);
-  var sp2    = msgStr.indexOf("))");
-  var msg    = ""; 
-  var content =  message.toString().substr(sp1,sp2+1);
-	  if( spRobot > 0      ) { msg = msg + "robotState:"; robotModel = msg+content ;   };
-	  if( spSonarRobot > 0 ) { msg = msg + "sonarRobot:"; sonarModel = msg+content ; };
+  var spRoomMap       = msgStr.indexOf("roomMap");
+  var sp1             = msgStr.indexOf("state");
+  var msgStr          = msgStr.substr(sp1);
+  var sp2             = msgStr.indexOf("))");
+  var msg             = ""; 
+  var content         = message.toString().substr(sp1,sp2+1);
+	  if( spRobot > 0      ) { msg = msg + "robotState:"; robotModel   = msg+content ;   };
+	  if( spSonarRobot > 0 ) { msg = msg + "sonarRobot:"; sonarModel   = msg+content ; };
+	  if( spRoomMap > 0 )    { msg = msg + "roomMap:";    roomMapModel = msg+content ; };
 	  msg = msg + content  ;		 
 	  console.log("mqtt send on io.sockets| "+ msg  + " content=" + content);  
 	  io.sockets.send( msg );   

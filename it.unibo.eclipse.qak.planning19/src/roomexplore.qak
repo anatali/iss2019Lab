@@ -6,6 +6,7 @@ System roomexplore
 mqttBroker "localhost" : 1883  
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 
 Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
@@ -23,7 +24,7 @@ QActor roomexplorer context ctxRoomExplore{
 ["
 var mapEmpty    = true
 val inmapname   = \"roomBoundary\" // 	 
-val outmapname  = \"yyy\" //roomMapWithTable		 
+val outmapname  = \"roomMapWithTable\" //roomMapWithTable		 
 var Tback       = 0
  
 var Curmove     = \"\"
@@ -49,7 +50,11 @@ var PauseTimeL  = PauseTime.toLong()
 	    solve( consult("moves.pl")	 )   
  		run itunibo.planner.plannerUtil.initAI()
  		run itunibo.planner.moveUtils.loadRoomMap( myself,inmapname )	    
-["mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()"] 		
+["mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()	"]		
+ 		if "! mapEmpty" {
+	 		["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
+	 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
+ 		}
  	}
 	Goto  warning if "mapEmpty"  else findTable  
 	
@@ -93,8 +98,7 @@ var PauseTimeL  = PauseTime.toLong()
  		}
  		//Return in cell
   	 	//IMPORTANT: the virtual robot could not work without a back step 		  
- 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime)      
-		
+ 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime)      		 
 		run itunibo.planner.moveUtils.setObstacleOnCurrentDirection(myself)
  	}    
   	Goto prepareToExploreEdge
@@ -163,6 +167,11 @@ var PauseTimeL  = PauseTime.toLong()
  		println("ON THE TARGET CELL !!!") 
 		run itunibo.planner.plannerUtil.saveMap(outmapname)  
 		run itunibo.planner.moveUtils.showCurrentRobotState()
+["
+val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+//println( MapStr ) 
+"]		
+ 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
  	}
   	
  	//Execute the move if it is a rotation or halt

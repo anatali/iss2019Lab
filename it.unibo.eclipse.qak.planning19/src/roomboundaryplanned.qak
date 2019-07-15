@@ -76,7 +76,8 @@ val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()
  			println("stepFailed ${payloadArg(1).toString()}")
  		}
   		//Return in cell
-  	 	//IMPORTANT: the virtual robot could not work without a back step 		  
+  	 	//IMPORTANT: the virtual robot could not work without a back step 	
+  	 	//NOW INCLUDED in robotDataSource for robotVirtual
  		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime)      
  //--------------------------------------------------
  		run itunibo.planner.plannerUtil.wallFound()

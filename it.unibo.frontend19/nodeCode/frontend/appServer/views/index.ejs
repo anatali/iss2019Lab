@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script>
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
        var socket  = io.connect();
        socket.on('connect', function(){ 
         		console.log("socket connected");
@@ -14,6 +17,12 @@
        		console.log("RECEIVED " + v);
         	if( v.indexOf("robotState:") >= 0 ){document.getElementById('robotDisplay').innerHTML=v; }
         	if( v.indexOf("sonarRobot:") >= 0 ){document.getElementById('sonarRobotDisplay').innerHTML=v; }
+        	if( v.indexOf("roomMap:") >= 0 ){
+        		v1 = v.replace("roomMap:state('", "").replace("')", "");
+        		v2 = "<br/><pre>"+ v1.replace(/@/g, "<br/>")+"</pre>";
+          		console.log("v2= " + v2);
+        		document.getElementById('mapDisplay').innerHTML=v2; 
+        	}
        	});
 </script>
  
@@ -92,6 +101,10 @@
 	<div>
   		<b>SONAR STATE</b>: <span id="sonarRobotDisplay"></span>
 	</div>
+	<div>
+  		<b>ROOM MAP</b>: <span id="mapDisplay"></span>
+	</div>
+
 </div>
 <center></center>
 </body>

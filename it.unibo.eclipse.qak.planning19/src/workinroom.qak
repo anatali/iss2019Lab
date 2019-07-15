@@ -6,6 +6,7 @@ System workinroom
 mqttBroker "localhost" : 1883   
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 
 Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
@@ -42,6 +43,8 @@ var PauseTimeL  = PauseTime.toLong()
  		run itunibo.planner.plannerUtil.initAI()
   		run itunibo.planner.moveUtils.loadRoomMap( myself, mapname )	
   		run itunibo.planner.moveUtils.showCurrentRobotState()
+	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
+	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
  	}  
 	Goto  tableEast
 	 
@@ -67,6 +70,8 @@ var PauseTimeL  = PauseTime.toLong()
 
  	State goalOk{		  
  		run itunibo.planner.moveUtils.showCurrentRobotState()
+	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
+	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
  	}
   	
  	//Execute the move if it is a rotation or halt

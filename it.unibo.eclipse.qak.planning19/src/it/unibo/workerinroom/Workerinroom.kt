@@ -38,6 +38,8 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.loadRoomMap(myself ,mapname )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
+							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 					}
 					 transition( edgeName="goto",targetState="tableEast", cond=doswitch() )
 				}	 
@@ -64,6 +66,8 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("goalOk") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
+							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 					}
 				}	 
 				state("checkAndDoAction") { //this:State
