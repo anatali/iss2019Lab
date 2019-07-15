@@ -3500,3 +3500,12 @@
 ::1 - POST /h HTTP/1.1 - - - - ms
 ::1 - POST /s HTTP/1.1 - - - - ms
 ::1 - POST /h HTTP/1.1 - - - - ms
+::ffff:127.0.0.1 - GET / HTTP/1.1 304 - - 35.335 ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /w HTTP/1.1 - - - - ms
+::1 - POST /h HTTP/1.1 - - - - ms
+::1 - POST /s HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /stopappl HTTP/1.1 - - - - ms
+::1 - POST /stopappl HTTP/1.1 - - - - ms
