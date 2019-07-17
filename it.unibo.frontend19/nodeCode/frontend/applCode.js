@@ -83,6 +83,22 @@ app.get('/appl', function(req, res) {
   		delegateForAppl( "stopAppl",  req, res );
   		next();
  	});		
+	app.post("/explore", function(req, res,next) {
+  		publishMsgToRobotapplication( "explore" );
+  		next();
+ 	});		
+	app.post("/prepare", function(req, res,next) {
+  		publishMsgToRobotapplication( "prepare" );
+  		next();
+ 	});		
+	app.post("/clear", function(req, res,next) {
+  		publishMsgToRobotapplication( "clear" );
+  		next();
+ 	});		
+	app.post("/addFood", function(req, res,next) {
+  		publishMsgToRobotapplication( "addFood"  );
+  		next();
+ 	});		
 
 function handlePostMove( cmd, msg, req, res, next ){
 		result = "Web server done: " + cmd
@@ -105,7 +121,7 @@ function delegate( cmd, newState, req, res ){
 	//publishMsgToResourceModel("robot",cmd);	    //for hexagonal mind
 	changeResourceModelCoap(cmd);		            //for hexagonal mind RESTful m2m
  } 
-function delegateForAppl( cmd, req, res, next ){
+function delegateForAppl( cmd, req, res  ){
      console.log("app delegateForAppl cmd=" + cmd); 
      result = "Web server delegateForAppl: " + cmd;
  	 publishMsgToRobotapplication( cmd );		     
@@ -129,7 +145,7 @@ var publishMsgToResourceModel = function( target, cmd ){
 
 var changeResourceModelCoap = function( cmd ){  
     console.log("coap PUT> "+ cmd);
-	coap.coapPut(cmd);
+	coap.coapPut(cmd);	//see modelResourceCoap
 }
 
 var publishEmitUserCmd = function( cmd ){  

@@ -5,7 +5,7 @@ Context ctxPanex0    ip [host="localhost" port=8038]
 QActor planex0 context ctxPanex0{      
 ["  
 var Curmove     = \"\"  
-var IterCounter = 0
+var IterCounter = 0  
 "]	
 	State s0 initial {	 
 		println("&&&  planex0 STARTED")

@@ -6,7 +6,7 @@ mqttBroker "localhost" : 1883
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
-Dispatch onestep       : onestep(DURATION)
+Dispatch onestep       : onestep(DURATION) 
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  

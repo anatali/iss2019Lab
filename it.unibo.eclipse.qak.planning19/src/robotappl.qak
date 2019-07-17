@@ -1,0 +1,67 @@
+/*
+*/
+ System robotappl 
+ 
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+
+Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
+
+Dispatch modelChange  : modelChange( TARGET, VALUE )   
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )   
+ 
+Dispatch stopAppl      : stopAppl( CMD )
+Dispatch startAppl     : startAppl( CMD )
+Dispatch explore       : explore( CMD )
+
+Dispatch onestep       : onetstep( T )
+Dispatch stepOk        : stepOk  
+Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
+ 
+Context ctxRobotAppl      ip [host="localhost"    port=8038]   -mqtt 
+//Context ctxDummyForMind   ip [host="dontcarehost" port=8035]   -mqtt 
+
+//ExternalQActor basicrobot     context ctxDummyForMind 
+//ExternalQActor resourcemodel  context ctxDummyForMind
+//ExternalQActor onestepahead   context ctxDummyForMind 
+/* 
+ * APPLICATION
+ */
+QActor robotmindapplication context ctxRobotAppl{
+ 
+	State s0 initial {	  
+//		["
+//		val resorceModelAddr = \"coap://localhost:5683/resourcemodel\"
+//		//val resorceModelAddr = \"coap://192.168.1.8:5683/resourcemodel\" 
+//		println(\"resorceModelAddr = $resorceModelAddr \")
+//		"]  
+// 	    run itunibo.coap.observer.resourceObserverCoapClient.create( resorceModelAddr )
+  	}
+   	Goto waitCmd
+   	 
+	State waitCmd {	println("						&&& robotmindapplication waitCmd ... ")	} 
+	Transition t0  whenMsg explore   -> startExplore 
+	 
+	State stopApplication{
+		println("&&& robotmindapplication stopApplication ... ")			
+	} 
+	Goto waitCmd  
+ 	  
+	State startExplore{ 
+		printCurrentMessage
+//		["runBlocking { QakContext.createContexts(
+//	        \"localhost\",this, \"roomboundaryplanned.pl\", \"sysRules.pl\")}"]
+		["runBlocking { QakContext.createContexts(
+	        \"localhost\",this, \"roomexplore.pl\", \"sysRules.pl\")}"]    
+ 	} 
+ 	Goto waitCmd
+ 	
+	State endOfJob{
+		println("Exploration done")
+	}
+	
+	
+}
+
+ 

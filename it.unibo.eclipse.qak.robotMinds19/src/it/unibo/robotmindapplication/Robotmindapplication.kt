@@ -49,13 +49,14 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
+						println("&&& robotmindapplication waitCmd ... ")
 					}
 					 transition(edgeName="t00",targetState="stopApplication",cond=whenDispatch("stopAppl"))
 					transition(edgeName="t01",targetState="startApplication",cond=whenDispatch("startAppl"))
 				}	 
 				state("stopApplication") { //this:State
 					action { //it:State
-						println("&&& robotmindapplication stopApplication ... ")
+						println("&&& robotmindapplication stopApplication ")
 						forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 						forward("stopAppl", "stopAppl(user)" ,"onestepahead" ) 
 					}
@@ -69,6 +70,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				}	 
 				state("doApplication") { //this:State
 					action { //it:State
+						println("&&& robotmindapplication doApplication StepTime = $StepTime")
 						forward("onestep", "onestep($StepTime)" ,"onestepahead" ) 
 					}
 					 transition(edgeName="t02",targetState="hadleStepOk",cond=whenDispatch("stepOk"))

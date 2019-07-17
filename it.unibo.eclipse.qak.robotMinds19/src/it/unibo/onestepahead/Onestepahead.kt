@@ -22,6 +22,7 @@ class Onestepahead ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						println("onestepahead STARTED")
 						foundObstacle = false 
 					}
 					 transition(edgeName="t07",targetState="doMoveForward",cond=whenDispatch("onestep"))

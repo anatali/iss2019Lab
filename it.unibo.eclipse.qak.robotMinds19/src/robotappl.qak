@@ -13,7 +13,7 @@ Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
-Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )   
+Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )    
  
 Dispatch stopAppl      : stopAppl( CMD )
 Dispatch startAppl     : startAppl( CMD )
@@ -67,12 +67,12 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 	//Goto startApplication 
    	Goto waitCmd
    	 
-	State waitCmd {		} 
+	State waitCmd {	println("&&& robotmindapplication waitCmd ... ")	} 
 	Transition t0 whenMsg stopAppl  -> stopApplication 
 		          whenMsg startAppl -> startApplication 
 	
 	State stopApplication{
-		println("&&& robotmindapplication stopApplication ... ")			
+		println("&&& robotmindapplication stopApplication ")			
 		forward resourcemodel  -m modelChange : modelChange(robot,h)
  		forward onestepahead   -m stopAppl    : stopAppl(user)
 	} 
@@ -84,7 +84,7 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 	Goto doApplication
 	
 	State doApplication{ 
-		//println("&&& robotmindapplication doApplication")
+		println("&&& robotmindapplication doApplication StepTime = $StepTime")
 		forward onestepahead -m onestep : onestep($StepTime)		
 	}//wait for the answer
 	Transition t0   whenMsg stepOk   -> hadleStepOk

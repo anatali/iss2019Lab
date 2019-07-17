@@ -9,7 +9,7 @@ Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
 Event  sonarData      : sonarData( D )			 //filtered by the PIPE
 Event  obstacle       : obstacle( DISTANCE )
-Event  polar          : p( Distance, Angle )  
+Event  polar          : p( Distance, Angle )   
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
 //Event  modelContent   : content( VALUE ) 
@@ -98,8 +98,12 @@ QActor robotmind context ctxRobotMind{
 	Goto waitCmd 
   
  	State handleModelChanged{ //action to actuate
-//		printCurrentMessage
+		printCurrentMessage
 		onMsg ( local_modelChanged : modelChanged(robot,CMD) ){ 
+			forward basicrobot -m robotCmd : robotCmd( $payloadArg(1) )
+		    ["goingForward= (payloadArg(1)==\"w\")"]
+ 		}
+		onMsg ( local_modelChanged : modelChanged(prepare,CMD) ){ 
 			forward basicrobot -m robotCmd : robotCmd( $payloadArg(1) )
 		    ["goingForward= (payloadArg(1)==\"w\")"]
  		}
@@ -142,8 +146,9 @@ QActor onestepahead context ctxRobotMind {
 var foundObstacle = false; 
 var StepTime = 0L; 
 var Duration=0 
-"]  
-	State s0 initial {	   
+"]    
+	State s0 initial {	  
+		println("onestepahead STARTED")  
 		["foundObstacle = false "]
 	} 
 	Transition t0 whenMsg onestep -> doMoveForward

@@ -17,7 +17,7 @@ class Planex0 ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sco
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		  
 		var Curmove     = ""  
-		var IterCounter = 0
+		var IterCounter = 0  
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
