@@ -1,7 +1,7 @@
 /*
 * The robot plans a trip from home to the east part of the table
 * and executes it.
-*/
+*/ 
 System workinroom  
 mqttBroker "localhost" : 1883   
 

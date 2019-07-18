@@ -18,7 +18,7 @@ Dispatch explore       : explore( CMD )
 Dispatch onestep       : onetstep( T )
 Dispatch stepOk        : stepOk  
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
- 
+  
 Context ctxRobotAppl      ip [host="localhost"    port=8038]   -mqtt 
 //Context ctxDummyForMind   ip [host="dontcarehost" port=8035]   -mqtt 
 
@@ -50,12 +50,12 @@ QActor robotmindapplication context ctxRobotAppl{
  	  
 	State startExplore{ 
 		printCurrentMessage
-//		["runBlocking { QakContext.createContexts(
-//	        \"localhost\",this, \"roomboundaryplanned.pl\", \"sysRules.pl\")}"]
-		["runBlocking { QakContext.createContexts(
-	        \"localhost\",this, \"roomexplore.pl\", \"sysRules.pl\")}"]    
+ //		["runBlocking { QakContext.createContexts(
+ //	        \"localhost\",this, \"roomboundaryplanned.pl\", \"sysRules.pl\")}"]
+ 		["runBlocking { QakContext.createContexts(
+ 	        \"localhost\",this, \"roomexplore.pl\", \"sysRules.pl\")}"]    
  	} 
- 	Goto waitCmd
+ 	Goto waitCmd 
  	
 	State endOfJob{
 		println("Exploration done")

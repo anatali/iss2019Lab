@@ -18,7 +18,7 @@ class Roomexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 		
 		var mapEmpty    = true
 		val inmapname   = "roomBoundary" // 	 
-		val outmapname  = "roomMapWithTable" //roomMapWithTable		 
+		val outmapname  = "xxx" //roomMapWithTable		 
 		var Tback       = 0
 		 
 		var Curmove     = ""
