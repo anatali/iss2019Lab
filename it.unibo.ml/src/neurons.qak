@@ -1,0 +1,116 @@
+System neuurons
+
+Dispatch son  : son(INPUT)
+Dispatch soff : soff(INPUT)
+
+Context ctxNeurons ip [host="localhost" port=8022]
+
+QActor a context ctxNeurons{
+	State s0 initial {	 
+ 		solve( consult( "sysRules.pl" ) )
+		solve( consult( "neuronConnKb.pl" ) )
+		
+//		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a or b )
+// 		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
+
+		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a and b )
+		
+ 		solve( prepareConnectionsToSend  ) 		//creates a sequence of link(N,I) to be consumed by propagateOutput
+ 	}
+	Goto propagateOutput
+	
+	State propagateOutput{
+		solve( retract(link(N,I)) )
+		ifSolved{ 
+			["
+				val Dest  = currentSolution.getVarValue(\"N\").toString()
+				val Input = currentSolution.getVarValue(\"I\").toString()
+				//println(\" a propagateOutput dest = $Dest, input = $Input \")
+				forward(\"son\", \"son($Input)\" ,Dest ) 		 
+			"]
+			//forward c -m son : son($Input)		//Destination var not allowed at model level
+		}
+	}
+	Goto propagateOutput  if "currentSolution.isSuccess()" else end
+	
+	State end{ println("neuron a ends") }
+}
+
+QActor b context ctxNeurons{
+	State s0 initial {	 
+ 		solve( consult( "sysRules.pl" ) )
+		solve( consult( "neuronConnKb.pl" ) )
+
+//		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
+// 		solve( setConnection(c,3) )  			//NETWORK CONFIGURATION (a or b )
+
+		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a and b )
+
+		delay 1500
+
+  		solve( prepareConnectionsToSend  ) 		//creates a sequence of link(N,I) to be consumed by propagateOutput
+ 	}
+	Goto propagateOutput
+	
+	State propagateOutput{
+		solve( retract(link(N,I)) )
+		ifSolved{ 
+			["
+				val Dest  = currentSolution.getVarValue(\"N\").toString()
+				val Input = currentSolution.getVarValue(\"I\").toString()
+				//println(\" a propagateOutput dest = $Dest, input = $Input \")
+				forward(\"son\", \"son($Input)\" ,Dest ) 
+			"]
+			//forward c -m son : son($Input) //Destination var not allowed at model level
+		}
+	}
+	Goto propagateOutput  if "currentSolution.isSuccess()" else end
+
+	State end{ println("neuron b ends") }
+}  
+
+
+QActor c context ctxNeurons{
+	State s0 initial {	 
+		solve( consult( "sysRules.pl" ) )
+		solve( consult( "neuronConnKb.pl" ) )		
+	}
+	Goto active
+	
+	State active{
+		println("neuron c is active")
+	}
+	Transition t0 
+		whenMsg son   -> elabInputOn
+		whenMsg soff  -> elabInputOff
+		
+	State elabInputOn{
+		printCurrentMessage 
+		onMsg( son : son( INPUT )){
+			solve( update( $payloadArg(0), on)  )
+		}
+  	} 	
+	Goto elabOutput	
+
+	State elabInputOff{
+		printCurrentMessage
+		onMsg( soff : soff(INPUT) ){
+			solve( update( $payloadArg(0), off)  )
+		}
+	}
+	Goto elabOutput	
+
+	State elabOutput{
+		solve( firing  )
+		ifSolved{ 
+			println("c FIRING")
+			//solve( output( c,on ) )
+		} else{ 
+			println("c NOT FIRING")
+			//solve( output( c,off ) )
+		}		
+	}
+	Goto active	
+ }
+
+

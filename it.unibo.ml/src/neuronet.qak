@@ -1,0 +1,81 @@
+System neuronet 
+
+Dispatch s : s(INPUT, STATE)	//STATE = on | off
+
+Event fired : fired(V)	//V = ...
+ 
+Context ctxNeuronet ip [host="localhost" port=8022]
+
+QActor neuron context ctxNeuronet{
+	State s0 initial {	 
+		solve( consult( "sysRules.pl" ) )
+		solve( consult( "neuronkb.pl" ) )
+		println("neuron is idle")
+	}
+ 	Goto work
+ 	
+ 	State work{
+ 		
+ 	}
+	Transition t0  
+		whenMsg s -> handleStimulus  
+
+	State handleStimulus{
+ 		onMsg( s : s(INPUT,V) ) {
+			["
+				val input = payloadArg(0) 
+				val v     = payloadArg(1)
+			"]
+			println("neuron handleStimulus $input $v")		 
+			solve( update( "$input", "$v",  RESULT  ) ) 
+			[" val result = currentSolution.getVarValue(\"RESULT\").toString() "]
+			if "result.equals(\"firing\")" {println("FIRING")}
+			 
+		}
+	}
+	Goto work
+ 	
+}
+ 
+QActor edge1neuron context ctxNeuronet{
+	State s0 initial {	 
+		//println("edge1neuron idle")
+	}
+	Transition t0 
+		whenEvent fired -> work
+		
+	State work{
+		//println("edge1neuron work")
+		forward neuron -m s : s(i1)
+	}
+	Goto s0
+}
+
+QActor edge2neuron context ctxNeuronet{
+	State s0 initial {	 
+		//println("edge2neuron idle")
+	}
+	Transition t0 
+		whenEvent fired -> work
+		
+	State work{
+		//println("edge2neuron work")
+		forward neuron -m s : s(i2)
+	}
+	Goto s0
+}
+ 
+ 
+QActor simul context ctxNeuronet{
+	State s0 initial {	 
+		forward neuron -m s : s(i1, on)
+		delay 100
+		forward neuron -m s : s(i2, on)
+		delay 100
+		forward neuron -m s : s(i2, off)
+//		delay 100
+//		forward neuron -m s : s(i1, off)   
+		delay 100
+		forward neuron -m s : s(i2, on)
+	}
+}
