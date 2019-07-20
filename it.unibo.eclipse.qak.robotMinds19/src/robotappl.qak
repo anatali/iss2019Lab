@@ -3,7 +3,7 @@
  * and builds a map of the room.
  * The map is a grid of square cells of size D, 
  * where D is the diameter of a circle including the robot.
- */
+ */ 
  System robotappl 
  
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229

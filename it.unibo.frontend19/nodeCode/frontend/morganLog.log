@@ -3726,3 +3726,5 @@
 ::1 - POST /explore HTTP/1.1 - - - - ms
 ::1 - GET /explore HTTP/1.1 - - - - ms
 ::1 - GET / HTTP/1.1 304 - - 26.442 ms
+::1 - GET / HTTP/1.1 200 3186 - 17.201 ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms

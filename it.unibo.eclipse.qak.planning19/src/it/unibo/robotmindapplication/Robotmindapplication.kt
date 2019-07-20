@@ -37,7 +37,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 						runBlocking { QakContext.createContexts(
-							        "localhost",this, "roomexplore.pl", "sysRules.pl")}
+						 	        "localhost",this, "roomexplore.pl", "sysRules.pl")}
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
