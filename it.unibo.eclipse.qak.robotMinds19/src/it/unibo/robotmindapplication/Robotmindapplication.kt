@@ -37,15 +37,15 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 						solve("robot(R,_)","R") //set resVar	
 						
 						val robotType  = currentSolution.getVarValue("R").toString()
-						val isVirtual  = robotType.equals("virtual")
+						val isVirtual  = false //robotType.equals("virtual")
 						println("robotType = $robotType,  isVirtual = $isVirtual")
 						if(isVirtual){ itunibo.coap.observer.resourceObserverCoapClient.create( "coap://localhost/resourcemodel"  )
 						 }
 						else
-						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.8:5683/resourcemodel"  )
+						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.9:5683/resourcemodel"  )
 						  }
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="startApplication", cond=doswitch() )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State

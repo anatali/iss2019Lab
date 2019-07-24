@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<SCRIPT SRC='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></SCRIPT>
+<SCRIPT>MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}})</SCRIPT>
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>LabMLISS</title></head>
+    
+<body>
+
+<div class="body"> 
+
+<h1>72939 - LABGraphics | Graphics in HTML5</h1> 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">
+LabISS-lectures site</a></font> 
+ 
+ <h2>Overview</h2>
+ <svg width="100" height="100">
+  <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+</svg>
+ 
+<br/><br/> 
+ <svg width="400" height="100">
+  <rect width="400" height="100" style="fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)" />
+</svg>
+
+<br/><br/>
+<svg height="150" width="500">
+  <ellipse cx="240" cy="100" rx="220" ry="30" style="fill:purple" />
+  <ellipse cx="220" cy="70" rx="190" ry="20" style="fill:lime" />
+  <ellipse cx="210" cy="45" rx="170" ry="15" style="fill:yellow" />
+</svg>
+
+<br/><br/>
+<svg height="200" width="500">
+  <polyline points="20,20 40,25 60,40 80,120 120,140 200,180"
+  style="fill:none;stroke:black;stroke-width:3" />
+</svg>
+
+<br/><br/>
+The stroke property defines the color of a line, text or outline of an element <br/>
+The stroke-width property defines the thickness of a line, text or outline of an element <br/>
+The stroke-dasharray property is used to create dashed lines <br/>
+
+
+<br/><br/>
+<svg height="180" width="500">
+  <polyline points="0,40 40,40 40,80 80,80 80,120 120,120 120,160"
+  style="fill:white;stroke:red;stroke-width:4" />
+</svg>
+
+<br/><br/> 
+<svg width="300" height="200">
+  <polygon points="100,10 40,198 190,78 10,78 160,198"
+  style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+</svg>
+
+<br/><br/>
+<svg height="210" width="500">
+  <polygon points="200,10 250,190 160,210" style="fill:lime;stroke:purple;stroke-width:1" />
+</svg>
+
+<pre>
+The following commands are available for path data:
+
+M = moveto
+L = lineto
+H = horizontal lineto
+V = vertical lineto
+C = curveto
+S = smooth curveto
+Q = quadratic Bézier curve
+T = smooth quadratic Bézier curveto
+A = elliptical Arc
+Z = closepath
+
+&lt;path d="M150 0 L75 200 L225 200 Z" />
+</pre>
+
+<br/><br/>
+<svg height="210" width="400">
+  <path d="M150 0 L75 200 L225 200 Z" />
+</svg>
+
+<br/><br/>
+<svg height="400" width="450">
+  <path id="lineAB" d="M 100 350 l 150 -300" stroke="red" stroke-width="3" fill="none" />
+  <path id="lineBC" d="M 250 50 l 150 300" stroke="red" stroke-width="3" fill="none" />
+  <path d="M 175 200 l 150 0" stroke="green" stroke-width="3" fill="none" />
+  <path d="M 100 350 q 150 -300 300 0" stroke="blue" stroke-width="5" fill="none" />
+  <!-- Mark relevant points -->
+  <g stroke="black" stroke-width="3" fill="black">
+    <circle id="pointA" cx="100" cy="350" r="3" />
+    <circle id="pointB" cx="250" cy="50" r="3" />
+    <circle id="pointC" cx="400" cy="350" r="3" />
+  </g>
+  <!-- Label the points -->
+  <g font-size="30" font-family="sans-serif" fill="black" stroke="none"
+  text-anchor="middle">
+    <text x="100" y="350" dx="-30">A</text>
+    <text x="250" y="50" dy="-10">B</text>
+    <text x="400" y="350" dx="30">C</text>
+  </g>
+</svg>
+
+<br/><br/> 
+<svg height="30" width="250" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">
+    <text x="0" y="25" fill="blue">ClickMe: LabISS-lectures site</text>
+  </a>
+</svg>
+
+<br/><br/> 
+<svg height="90" width="200">
+  <text x="10" y="20" style="fill:red;">Several lines:
+    <tspan x="10" y="45">First line.</tspan>
+    <tspan x="10" y="70">Second line.</tspan>
+  </text>
+</svg>
+
+<br/><br/> 
+<svg height="60" width="200">
+  <text x="0" y="15" fill="red" transform="rotate(30 20,40)">I love Lab</text>
+</svg>
+
+<br/><br/> 
+<svg height="130" width="500">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <ellipse cx="100" cy="70" rx="85" ry="55" fill="url(#grad1)" />
+  <text fill="#ffffff" font-size="45" font-family="Verdana" x="50" y="86">Lab</text>
+  Sorry, your browser does not support inline SVG.
+</svg>
+
+<br/><br/> 
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+
+    <polygon points="60,30 90,90 30,90">
+        <animateTransform attributeName="transform"
+                          attributeType="XML"
+                          type="rotate"
+                          from="0 60 70"
+                          to="360 60 70"
+                          dur="10s"
+						  repeatDur="01:00"
+                          repeatCount="indefinite"/>
+    </polygon>
+</svg>
+
+
+
+
+</div>
+
+<div>
+<h2>Animate</h2>
+ <svg width="500" height="300">
+<circle id="orange-circle"   r="30"    cx="50" cy="50" fill="orange" />
+<rect   id="blue-rectangle" width="50" height="50" x="25" y="200" fill="#0099cc"></rect>
+
+<animate 
+    xlink:href="#orange-circle"
+    attributeName="cx"
+    from="50"
+    to="450" 
+    dur="5s"
+    begin="click"
+	repeatCount="2"
+    fill="freeze" 
+    id="circ-anim" 
+/>
+
+<animate 
+    xlink:href="#blue-rectangle"
+    attributeName="x" 
+    from="50"
+    to="425" 
+    dur="5s"
+    begin="circ-anim.begin + 1s"
+	repeatCount="indefinite"
+	repeatDur="01:00"
+    fill="freeze" 
+    id="rect-anim" 
+/>
+
+<animateMotion 
+    xlink:href="#circle"
+    dur="1s"
+    begin="click"
+    fill="freeze"
+    path="M0,0c3.2-3.4,18.4-0.6,23.4-0.6c5.7,0.1,10.8,0.9,16.3,2.3    c13.5,3.5,26.1,9.6,38.5,16.2c12.3,6.5,21.3,16.8,31.9,25.4c10.8,8.7,21,18.3,31.7,26.9c9.3,7.4,20.9,11.5,31.4,16.7
+    c13.7,6.8,26.8,9.7,41.8,9c21.4-1,40.8-3.7,61.3-10.4c10.9-3.5,18.9-11.3,28.5-17.8c5.4-3.7,10.4-6.7,14.8-11.5
+    c1.9-2.1,3.7-5.5,6.5-6.5" 
+/>
+	
+	
+</svg>
+<br/><br/> 
+SMIL does not include a way to go back and forth between the start and end values like CSS animations allow us to do.
+In SMIL to do that you would have to use JavaScript to explicitly change the values of the from and to attributes.
+See https://css-tricks.com/guide-svg-animations-smil/
+<br/><br/> 
+SMIL, SVG’s native animation specification, has been highly regarded because it offers so many bells and whistles for 
+performant SVG animation rendering. Unfortunately, support for SMIL is waning in WebKit, 
+and has never (nor will likely ever) exist for Microsoft’s IE or Edge browsers. 
+
+<br/><br/> 
+<svg width="500" height="350" viewBox="0 0 500 350">
+  <path id="motionPath" fill="none" stroke="#000000" stroke-miterlimit="10" d="M202.4,58.3c-13.8,0.1-33.3,0.4-44.8,9.2
+    c-14,10.7-26.2,29.2-31.9,45.6c-7.8,22.2-13.5,48-3.5,70.2c12.8,28.2,47.1,43.6,68.8,63.6c19.6,18.1,43.4,26.1,69.5,29.4
+    c21.7,2.7,43.6,3.3,65.4,4.7c19.4,1.3,33.9-7.7,51.2-15.3c24.4-10.7,38.2-44,40.9-68.9c1.8-16.7,3.4-34.9-10.3-46.5
+    c-9.5-8-22.6-8.1-33.2-14.1c-13.7-7.7-27.4-17.2-39.7-26.8c-5.4-4.2-10.4-8.8-15.8-12.9c-4.5-3.5-8.1-8.3-13.2-11
+    c-6.2-3.3-14.3-5.4-20.9-8.2c-5-2.1-9.5-5.2-14.3-7.6c-6.5-3.3-12.1-7.4-19.3-8.9c-6-1.2-12.4-1.3-18.6-1.5
+    C222.5,59,212.5,57.8,202.4,58.3"/>
+  
+  <circle id="circle" r="10" cx="0" cy="0" fill="tomato" />
+  
+  <animateMotion 
+           xlink:href="#circle"
+           dur="5s"
+           begin="0s"
+           fill="freeze"
+           repeatCount="3">
+    <mpath xlink:href="#motionPath" />
+  </animateMotion>
+  
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

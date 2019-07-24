@@ -53,7 +53,7 @@ var newDir = \"\"
 		solve( robot(R,_), R )
 ["
 val robotType  = currentSolution.getVarValue(\"R\").toString()
-val isVirtual  = robotType.equals(\"virtual\")
+val isVirtual  = false //robotType.equals(\"virtual\")
 println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 "] 
 		if "isVirtual" {
@@ -61,11 +61,11 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 				"coap://localhost/resourcemodel")	
 		}else{
 			run itunibo.coap.observer.resourceObserverCoapClient.create(
-				"coap://192.168.1.8:5683/resourcemodel")	
+				"coap://192.168.1.9:5683/resourcemodel")	
 		}
  	}
-	//Goto startApplication 
-   	Goto waitCmd
+	Goto startApplication 
+   	//Goto waitCmd 
    	 
 	State waitCmd {	println("&&& robotmindapplication waitCmd ... ")	} 
 	Transition t0 whenMsg stopAppl  -> stopApplication 

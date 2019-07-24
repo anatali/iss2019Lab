@@ -36,7 +36,7 @@ class sonaractorfilter (name : String, //val owner : ActorBasicFsm ,
 	override protected suspend fun elabData(data : String ){
 		val Distance = Integer.parseInt( data ) 
  		val delta    = Math.abs( Distance - LastDistance )
-		println("   $name |  elabSonarData delta = $delta isVirtualRobot = $isVirtualRobot")
+		//println("   $name |  elabSonarData delta = $delta isVirtualRobot = $isVirtualRobot")
 		//var testDelta = delta >= maxDelta //FOR REAL ROBOT only
 //		if( isVirtualRobot ){
 //			//virtual robot IMPACTS => Distance always = 5
