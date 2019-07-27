@@ -26,11 +26,12 @@ Dispatch stepFail      : stepFail(R,T) 		//R=obstacle, T = time
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
  
-Context ctxMindButler    ip [host="localhost" port=8038]    -mqtt 
-Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+Context ctxMindButler    ip [host="localhost" port=8038]   -mqtt 
+Context ctxDummy         ip [host="otherhost" port=8035]   -mqtt 
+ 
+ExternalQActor resourcemodel context ctxDummy
+ExternalQActor onestepahead  context ctxDummy
 
-ExternalQActor resourcemodel context ctxDummyForMind
-ExternalQActor onestepahead  context ctxDummyForMind
 /*
  * 
  */ 

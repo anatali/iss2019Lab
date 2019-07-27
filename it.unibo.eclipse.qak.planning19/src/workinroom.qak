@@ -12,18 +12,138 @@ Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
 
-Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Dispatch startAppl     : startAppl(ARG)
+Dispatch setTheGoal    : setTheGoal(X,Y)  
+Dispatch goalReached   : goalReached(V)  	//V=ok | ko
 
-Context ctxWorkInRoom     ip [host="localhost" port=8038]    -mqtt 
-Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+Dispatch startTask     : startTask(T)		//T = fridge, table, paintry, dishwasher
+Dispatch taskDone      : taskDone(V)  	    //V= ... 
+
+
+Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Event  stopAppl       : stopAppl( CMD )  
+Event  reactivateAppl : reactivateAppl( CMD )  
+ 
+ 
+ 
+Context ctxWorkInRoom     ip [host="localhost" port=8038]   -mqtt 
+Context ctxDummyForMind   ip [host="otherhost" port=8035]   -mqtt 
 
 ExternalQActor resourcemodel context ctxDummyForMind 
 ExternalQActor onestepahead  context ctxDummyForMind
 
+
+QActor butlermind context ctxWorkInRoom{     
+ 	
+	State s0 initial {	
+		println("&&&  butlermind STARTED. Waiting for startAppl")		
+  	}
+  	Transition t0  whenMsg startAppl -> prepare
+  	
+  	State prepare{
+  		println("&&&  butlermind PREPARING")	
+  	}
+  	Goto manageFridge
+  	
+  	State manageFridge{
+  		//test if fridge contains the food
+   		forward butlertask -m startTask : startTask( fridge ) 		
+  	}
+  	Transition t0 whenMsg taskDone -> managePaintry		//butler at home again
+  	
+  	State managePaintry{
+  		forward butlertask -m startTask : startTask( paintry )
+  	}
+  	Transition t0 whenMsg taskDone -> prepareDone		//butler at home again
+  	
+  	State prepareDone{
+  		
+  	}
+
+//	State reachTheFridge{
+//		delay 1000	
+//		println("&&&  butler going from HOME to FRIDGE")
+//		forward workerinroom -m setTheGoal : setTheGoal(6,0)	
+//	}
+//	Transition t0 whenMsg goalReached -> reachTheTable
+//	
+//	State reachTheTable{
+//		delay 1000	
+//		println("&&&  butler going from FRIDGE to TABLE")
+//		forward workerinroom -m setTheGoal : setTheGoal(5,3)				
+//	}
+//	Transition t0 whenMsg goalReached -> backToHome
+//	
+//	State backToHome{
+//		delay 1000	
+//		println("&&&  butler going to HOME")
+//		forward workerinroom -m setTheGoal : setTheGoal(0,0)						
+//	}
+//	Transition t0 whenMsg goalReached -> atHome
+//	
+//	State atHome{
+//		println("&&&  butler IS AT HOME")
+//	}
+}	
+
+QActor butlertask context ctxWorkInRoom{     
+	State s0 initial {	
+		//println("&&&  butlertask STARTED  ")		
+  	}
+  	Transition t0  whenMsg startTask   -> execTask
+  	
+  	State execTask{
+  		onMsg( startTask : startTask(fridge ) ) {
+			delay 1000	
+			println("&&&  butler going  to FRIDGE")
+			forward workerinroom -m setTheGoal : setTheGoal(6,0)	
+  		}  
+   		onMsg( startTask : startTask(paintry ) ) {
+			delay 1000	
+			println("&&&  butler going to PAINTRY")
+			forward workerinroom -m setTheGoal : setTheGoal(1,4)				
+  		}  
+    	onMsg( startTask : startTask(dishwasher ) ) {
+			delay 1000	
+			println("&&&  butler going to DISHWASHER")
+			forward workerinroom -m setTheGoal : setTheGoal(5,4)				
+  		}  
+  	}
+  	Transition t0 whenMsg goalReached -> reachTheTable
+  	
+  	State reachTheTable{
+  		//TODO: Set the proper direction
+		delay 1000	
+		println("&&&  butler going to TABLE")
+		//TODO: Oprimize the goal for the table according to the current target (fridge/paintry)
+		forward workerinroom -m setTheGoal : setTheGoal(5,3)				 		
+  	}
+  	Transition t0 whenMsg goalReached -> againToHome
+
+  	State againToHome{
+		delay 1000	
+		println("&&&  butler going to HOME")
+		forward workerinroom -m setTheGoal : setTheGoal(0,0)	
+		//TODO: Set the proper direction 			 		
+  	}
+  	Transition t0 whenMsg goalReached -> taskCompleted
+  	
+  	State taskCompleted{
+  		forward butlermind -m taskDone : taskDone(ok)  		
+  	} 	
+  	Goto s0
+  	
+  	
+}
+
+
+
+
+
 QActor workerinroom context ctxWorkInRoom{     
 ["
 var mapEmpty    = false
-val mapname     =\"roomMapWithTable\"
+val mapname     = \"yyy\" //\"roomMapWithTable\"
 
 var Curmove     = \"\" 
 var curmoveIsForward = false 
@@ -40,21 +160,35 @@ var PauseTimeL  = PauseTime.toLong()
 "]	 
 	State s0 initial {	    
 	    solve( consult("moves.pl")	 )
+		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
  		run itunibo.planner.plannerUtil.initAI()
   		run itunibo.planner.moveUtils.loadRoomMap( myself, mapname )	
   		run itunibo.planner.moveUtils.showCurrentRobotState()
 	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
 	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
+	 	println("&&&  workerinroom STARTED")		
+	 	//forward workerinroom -m setTheGoal : setTheGoal(5,3)
  	}  
-	Goto  tableEast
-	 
-	State tableEast{
- 		run itunibo.planner.plannerUtil.setGoal(5,3)
-  		run itunibo.planner.moveUtils.doPlan( myself )
- 		//solve( dialog(F) )
-   	} 
-	Goto executePlannedActions //doGoHomeActions 
+//	Goto  tableEast
+	Transition t0 whenMsg setTheGoal -> setGoalAndDo
+//	 
+//	State tableEast{
+// 		run itunibo.planner.plannerUtil.setGoal(5,3)
+//  		run itunibo.planner.moveUtils.doPlan( myself )
+// 		//solve( dialog(F) )
+//   	} 
+//	Goto executePlannedActions   
 		
+  
+  	State setGoalAndDo{
+  		onMsg( setTheGoal : setTheGoal(X,Y) ) {
+  			printCurrentMessage
+  			["storeCurrentMessageForReply()"]  	//TODO: introduce a qak operation
+  			run itunibo.planner.plannerUtil.setGoal(payloadArg(0),payloadArg(1))
+  			run itunibo.planner.moveUtils.doPlan( myself )
+  		}
+  	}
+  	Goto executePlannedActions   
   
 	State executePlannedActions{ 
 		//solve( showMoves ) 
@@ -72,7 +206,9 @@ var PauseTimeL  = PauseTime.toLong()
  		run itunibo.planner.moveUtils.showCurrentRobotState()
 	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
 	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
- 	}
+	 	["replyToCaller(\"goalReached\", \"goalReached(ok)\")"]  //TODO: introduce a qak operation
+	}
+	Transition t0 whenMsg setTheGoal -> setGoalAndDo
   	
  	//Execute the move if it is a rotation or halt
 	State checkAndDoAction{	 }
@@ -85,16 +221,29 @@ var PauseTimeL  = PauseTime.toLong()
 	
  	State doForwardMove{
  		delayVar PauseTimeL  //Otherwise is too fast, even with remote interaction
- 		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
+ 		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime) //forwards to onestepahead
 	} 
+	Transition t0   whenEvent stopAppl -> handleStopAppl
+					whenMsg stepOk     -> handleStepOk   
+					whenMsg stepFail   -> hadleStepFail 	
+    	
+    	
+   State handleStopAppl{
+    	println("APPLICATION STOPPED. Waiting for a reactivate")
+    } 
+    Transition t0  whenEvent reactivateAppl -> handleReactivateAppl
+    
+    State handleReactivateAppl{
+    	println("APPLICATION RESUMED")
+    } 
 	Transition t0   whenMsg stepOk   -> handleStepOk   
 					whenMsg stepFail -> hadleStepFail 	
-    	
+    
 	State handleStepOk{
  		run itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
 	}
 	Goto executePlannedActions
-	
+	 
  	State hadleStepFail{ 
 		println("NEVER HERE!!!")
 	}

@@ -80,7 +80,12 @@ app.get('/appl', function(req, res) {
   		next();
  	});		
 	app.post("/stopappl", function(req, res,next) {
-  		delegateForAppl( "stopAppl",  req, res );
+  		//delegateForAppl( "stopAppl",  req, res );
+  		publishEmitEvent( "stopAppl","stopAppl(go)");
+  		next();
+ 	});		
+	app.post("/reactivateappl", function(req, res,next) {
+  		publishEmitEvent( "reactivateAppl","reactivateAppl(go)");
   		next();
  	});		
 	app.post("/explore", function(req, res,next) {
@@ -149,16 +154,29 @@ var changeResourceModelCoap = function( cmd ){
 }
 
 var publishEmitUserCmd = function( cmd ){  
- 	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  
+ 	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  //TODO: replace 1 with counter
     console.log("emits> "+ eventstr);
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
 }
 
 var publishMsgToRobotapplication = function (cmd){
-   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmindapplication,"+ cmd +"(go),1)"  ;  
+   	var msgstr = "msg(" + cmd + ",dispatch,js,robotmindapplication,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
   	console.log("publishMsgToRobotapplication forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/robotmindapplication" );
+//Towards the butler application
+   	var msgstr = "msg(" + cmd + ",dispatch,js,butlermind,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
+  	console.log("publishMsgToRobotapplication forward> "+ msgstr);
+   	mqttUtils.publish( msgstr, "unibo/qak/butlermind" );
+
+
 }
+
+var publishEmitEvent = function( ev, evContent ){  
+ 	var eventstr = "msg("+ev+",event,js,none,"+evContent+",1)"  ;  	//TODO: replace 1 with counter
+    console.log("emits> "+ eventstr);
+ 	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
+}
+
 
 /*
 * ====================== REPRESENTATION ================

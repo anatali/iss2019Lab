@@ -17,7 +17,7 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     ="roomMapWithTable"
+		val mapname     = "yyy" //"roomMapWithTable"
 		
 		var Curmove     = "" 
 		var curmoveIsForward = false 
@@ -35,18 +35,25 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("s0") { //this:State
 					action { //it:State
 						solve("consult('moves.pl')","") //set resVar	
+						itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel"  )
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.loadRoomMap(myself ,mapname )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
 							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
+						println("&&&  workerinroom STARTED")
 					}
-					 transition( edgeName="goto",targetState="tableEast", cond=doswitch() )
+					 transition(edgeName="t07",targetState="setGoalAndDo",cond=whenDispatch("setTheGoal"))
 				}	 
-				state("tableEast") { //this:State
+				state("setGoalAndDo") { //this:State
 					action { //it:State
-						itunibo.planner.plannerUtil.setGoal( 5, 3  )
-						itunibo.planner.moveUtils.doPlan(myself)
+						if( checkMsgContent( Term.createTerm("setTheGoal(X,Y)"), Term.createTerm("setTheGoal(X,Y)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								println("$name in ${currentState.stateName} | $currentMsg")
+								storeCurrentMessageForReply()
+								itunibo.planner.plannerUtil.setGoal( payloadArg(0), payloadArg(1)  )
+								itunibo.planner.moveUtils.doPlan(myself)
+						}
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
@@ -68,7 +75,9 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
 							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
+						replyToCaller("goalReached", "goalReached(ok)")
 					}
+					 transition(edgeName="t08",targetState="setGoalAndDo",cond=whenDispatch("setTheGoal"))
 				}	 
 				state("checkAndDoAction") { //this:State
 					action { //it:State
@@ -87,8 +96,22 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						delay(PauseTimeL)
 						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime )
 					}
-					 transition(edgeName="t00",targetState="handleStepOk",cond=whenDispatch("stepOk"))
-					transition(edgeName="t01",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+					 transition(edgeName="t09",targetState="handleStopAppl",cond=whenEvent("stopAppl"))
+					transition(edgeName="t010",targetState="handleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t011",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+				}	 
+				state("handleStopAppl") { //this:State
+					action { //it:State
+						println("APPLICATION STOPPED. Waiting for a reactivate")
+					}
+					 transition(edgeName="t012",targetState="handleReactivateAppl",cond=whenEvent("reactivateAppl"))
+				}	 
+				state("handleReactivateAppl") { //this:State
+					action { //it:State
+						println("APPLICATION RESUMED")
+					}
+					 transition(edgeName="t013",targetState="handleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t014",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
 				}	 
 				state("handleStepOk") { //this:State
 					action { //it:State

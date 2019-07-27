@@ -9,13 +9,15 @@
 mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
 
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+Event  stopAppl       : stopAppl( CMD )  
+Event  reactivateAppl : reactivateAppl( CMD )  
 
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )    
  
-Dispatch stopAppl      : stopAppl( CMD )
+//Dispatch stopAppl      : stopAppl( CMD )
 Dispatch startAppl     : startAppl( CMD )
 
 Dispatch onestep       : onetstep( T )
@@ -33,7 +35,7 @@ ExternalQActor onestepahead   context ctxDummyForMind
  */
 QActor robotmindapplication context ctxRobotAppl{
 ["
-//REAL ROBOT
+//REAL ROBOT 
 //var StepTime   = 1000	 
 //var PauseTime  = 500L 
 
@@ -53,7 +55,7 @@ var newDir = \"\"
 		solve( robot(R,_), R )
 ["
 val robotType  = currentSolution.getVarValue(\"R\").toString()
-val isVirtual  = false //robotType.equals(\"virtual\")
+val isVirtual  = robotType.equals(\"virtual\")
 println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 "] 
 		if "isVirtual" {
@@ -64,20 +66,13 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 				"coap://192.168.1.9:5683/resourcemodel")	
 		}
  	}
-	Goto startApplication 
-   	//Goto waitCmd 
+	//Goto startApplication 
+   	Goto waitCmd 
    	 
 	State waitCmd {	println("&&& robotmindapplication waitCmd ... ")	} 
-	Transition t0 whenMsg stopAppl  -> stopApplication 
-		          whenMsg startAppl -> startApplication 
-	
-	State stopApplication{
-		println("&&& robotmindapplication stopApplication ")			
-		forward resourcemodel  -m modelChange : modelChange(robot,h)
- 		forward onestepahead   -m stopAppl    : stopAppl(user)
-	} 
-	Goto waitCmd
- 	
+	Transition t0  whenMsg startAppl   -> startApplication 
+
+  	
 	State startApplication{
 		solve( initMap(sud) )
 	} 
@@ -87,10 +82,22 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 		println("&&& robotmindapplication doApplication StepTime = $StepTime")
 		forward onestepahead -m onestep : onestep($StepTime)		
 	}//wait for the answer
-	Transition t0   whenMsg stepOk   -> hadleStepOk
-					whenMsg stepFail -> hadleStepFail 
-					whenMsg stopAppl -> stopApplication 
-						
+	Transition t0   whenMsg stepOk     -> hadleStepOk
+					whenMsg stepFail   -> hadleStepFail 
+					whenEvent stopAppl -> handleStopAppl 
+
+   State handleStopAppl{
+    	println("APPLICATION STOPPED. Waiting for a reactivate")
+    } 
+    Transition t0  whenEvent reactivateAppl -> handleReactivateAppl
+    
+    State handleReactivateAppl{
+    	println("APPLICATION RESUMED")
+    } 
+	Transition t0   whenMsg stepOk   -> hadleStepOk   
+					whenMsg stepFail -> hadleStepFail 	
+	
+ 						
 	State hadleStepOk{
 		//println("&&& robotmindapplication step ok")	  
 		solve( updateMapAfterStep )
@@ -111,6 +118,9 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 //		solve( dialog(F) )
 	}
 	Goto endOfJob  if "(newDir.equals( \"sud\" ) )" else doApplication
+ 	
+ 	
+ 	
  	
 	State endOfJob{
 		println("Exploration done")

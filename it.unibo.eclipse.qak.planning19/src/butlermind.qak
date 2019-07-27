@@ -1,0 +1,58 @@
+
+/*
+ */
+
+System butlermind
+mqttBroker "localhost" : 1883  
+
+Dispatch setTheGoal    : setTheGoal(X,Y)  
+Dispatch goalReached   : goalReached(V)  	//V=ok | ko
+ 
+Context ctxButlerMind    ip [host="localhost" port=8038]   -mqtt 
+Context ctxDummy         ip [host="otherhost" port=8035]   -mqtt 
+ 
+ExternalQActor workerinroom context ctxDummy
+ 
+
+/*
+ * 
+ */ 
+QActor butlermind context ctxButlerMind{     
+ 	
+	State s0 initial {	
+		println("&&&  butlermindSTARTED")		
+  	}
+  	Goto reachTheFridge
+	
+	
+	State reachTheFridge{
+		delay 1000	
+		println("&&&  butler going from HOME to FRIDGE")
+		forward workerinroom -m setTheGoal : setTheGoal(0,6)	
+	}
+	Transition t0 whenMsg goalReached -> reachTheTable
+	
+	State reachTheTable{
+		delay 1000	
+		println("&&&  butler going from FRIDGE to TABLE")
+		forward workerinroom -m setTheGoal : setTheGoal(5,3)				
+	}
+	Transition t0 whenMsg goalReached -> backToHome
+	
+	State backToHome{
+		delay 1000	
+		println("&&&  butler going to HOME")
+		forward workerinroom -m setTheGoal : setTheGoal(0,0)						
+	}
+	Transition t0 whenMsg goalReached -> atHome
+	
+	State atHome{
+		println("&&&  butler IS AT HOME")
+	}
+		
+ 	   
+}	
+
+
+ 
+ 

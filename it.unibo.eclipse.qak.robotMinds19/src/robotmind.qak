@@ -8,23 +8,25 @@ Event  envCond        : envCond( CONDTYPE )        //from the environment
 Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 Event  sonar          : sonar(SONAR, DISTANCE)	 //from sonar in the robot environment          
 Event  sonarData      : sonarData( D )			 //filtered by the PIPE
-Event  obstacle       : obstacle( DISTANCE )
+Event  obstacle       : obstacle( DISTANCE ) 
 Event  polar          : p( Distance, Angle )   
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
 //Event  modelContent   : content( VALUE ) 
+
+//Event  stopAppl       : stopAppl( CMD )  
+//Event  reactivateAppl : reactivateAppl( CMD )  
 
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )  //force a resource-model change
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )  //sent by the mind TARGET=robot|sonar|roomMap
 
-Dispatch onestep       : onestep(DURATION)
+Dispatch onestep       : onestep(DURATION) 
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  
-Dispatch stopAppl      : stopAppl( CMD )  
-Dispatch startAppl     : startAppl( CMD )  
+Dispatch startAppl     : startAppl( CMD )   
 
 Context ctxRobotMind     ip [host="localhost" port=8035]  -mqtt
 
@@ -88,6 +90,7 @@ QActor robotmind context ctxRobotMind{
 				  whenEvent sonarRobot         -> handleSonarRobot
 		          whenEvent local_modelChanged -> handleModelChanged
 				  //whenEvent obstacle   -> handeObstacle		//emitted by sonardatafilter (in OOP or PIPE)
+
 	State handleEnvCond{   
 		printCurrentMessage
  		onMsg( envCond : envCond(CMD) ) {
@@ -154,7 +157,7 @@ var Duration=0
 	Transition t0 whenMsg onestep -> doMoveForward
  
 	State doMoveForward{		
-		["storeCurrentMessageForReply()"]  
+		["storeCurrentMessageForReply()"]  	//TODO: introduce a qak operation
 		onMsg( onestep : onestep( TIME ) ) {
 			["StepTime = payloadArg(0).toLong()"]   
 			//println("onestepahead doMoveForward  StepTime=$StepTime") 
@@ -166,11 +169,11 @@ var Duration=0
  		          whenEvent obstacle    -> stepFail	 
 				  //whenMsg stopAppl      -> s0	//without any answer ???
  		          //whenEvent sonarRobot  -> stepFail  
- 		    
+ 		   
 	State endDoMoveForward{
 		//println("onestepahead endDoMoveForward  ")
 		forward resourcemodel -m modelChange : modelChange(robot,h)
-		["replyToCaller(\"stepOk\", \"stepOk(ok)\")"] 
+		["replyToCaller(\"stepOk\", \"stepOk(ok)\")"]  //TODO: introduce a qak operation
 	}
 	Goto s0
 	

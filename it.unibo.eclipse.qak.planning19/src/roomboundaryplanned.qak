@@ -42,7 +42,7 @@ var PauseTimeL  = PauseTime.toLong()
  	}
     Goto detectBoundary  
     
-    State detectBoundary{ 
+    State detectBoundary{  
     	["NumStep++"]
       	//NO GOAL : JUST ONE STEP ahead
   		run itunibo.planner.plannerUtil.showMap()  

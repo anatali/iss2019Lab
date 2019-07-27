@@ -23,8 +23,8 @@ ExternalQActor onestepahead   context ctxDummyForMind
 QActor roomexplorer context ctxRoomExplore{     
 ["
 var mapEmpty    = true
-val inmapname   = \"roomBoundary\" // 	 
-val outmapname  = \"xxx\" //roomMapWithTable		 
+val inmapname   = \"xxx\" //   \"roomBoundary\"	 
+val outmapname  = \"yyy\" //roomMapWithTable		 
 var Tback       = 0
  
 var Curmove     = \"\"
