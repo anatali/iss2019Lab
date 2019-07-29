@@ -1,0 +1,45 @@
+System test
+
+Dispatch near      : near 
+Dispatch inRH      : inRH
+
+Context ctxTest   ip [host="localhost" port=8036]
+
+QActor testguard context ctxTest{     
+["
+//val Task = \"preparing\"
+val Task = \"adding\"
+"] 	  
+	State s0 initial {	
+		println("&&&  testGuard STARTED")	
+		forward testguard -m near  : near 
+		forward testguard -m inRH  : inRH 
+	}  	 
+    Goto work
+    	
+  	State work{
+  		println("&&&  testGuard work")	
+  	}
+  	Transition t0  
+  		whenMsg near and "Task == \"preparing\"" -> handlePrepare 
+   		whenMsg near and "Task == \"adding\""    -> handleAdd
+   		whenMsg inRH -> handleInRH
+
+  	State handlePrepare{
+  		println("&&&  testGuard handlePrepare")	
+  		printCurrentMessage
+  	}
+  	Goto work
+  	
+  	State handleAdd{
+   		println("&&&  testGuard handleAdd")	
+  		printCurrentMessage
+  	}
+   	Goto work
+ 
+  	State handleInRH{
+    	println("&&&  testGuard handleInRH")	
+  		printCurrentMessage  		
+  	}
+ }
+  

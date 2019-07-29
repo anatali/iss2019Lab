@@ -3775,3 +3775,17 @@
 ::ffff:127.0.0.1 - GET / HTTP/1.1 304 - - 24.191 ms
 ::1 - GET /favicon.ico HTTP/1.1 - - - - ms
 ::ffff:127.0.0.1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - GET / HTTP/1.1 304 - - 9.052 ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
+::1 - POST /startappl HTTP/1.1 - - - - ms
