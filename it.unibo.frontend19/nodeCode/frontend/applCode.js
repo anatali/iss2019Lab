@@ -79,6 +79,18 @@ app.get('/appl', function(req, res) {
   		delegateForAppl( "startAppl", req, res );
   		next();
  	});		
+	app.post("/prepare", function(req, res,next) {
+  		publishMsgToButlerapplication(  "prepare" );
+  		next();
+ 	});		
+	app.post("/clear", function(req, res,next) {
+  		publishMsgToButlerapplication(  "clear"  );
+  		next();
+ 	});		
+	app.post("/add", function(req, res,next) {
+  		publishMsgToButlerapplication(  "add"  );
+  		next();
+ 	});		
 	app.post("/stopappl", function(req, res,next) {
   		//delegateForAppl( "stopAppl",  req, res );
   		publishEmitEvent( "stopAppl","stopAppl(go)");
@@ -163,12 +175,13 @@ var publishMsgToRobotapplication = function (cmd){
    	var msgstr = "msg(" + cmd + ",dispatch,js,robotmindapplication,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
   	console.log("publishMsgToRobotapplication forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/robotmindapplication" );
-//Towards the butler application
+}
+
+//Towards the butler application => send to butlermind
+var publishMsgToButlerapplication = function (cmd){
    	var msgstr = "msg(" + cmd + ",dispatch,js,butlermind,"+ cmd +"(go),1)"  ;  //TODO: replace 1 with counter
   	console.log("publishMsgToRobotapplication forward> "+ msgstr);
    	mqttUtils.publish( msgstr, "unibo/qak/butlermind" );
-
-
 }
 
 var publishEmitEvent = function( ev, evContent ){  

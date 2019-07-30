@@ -15,34 +15,41 @@ class Butlermind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		var ButlerStarted = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("&&&  butlermind STARTED. Waiting for startAppl")
+						println("&&&  butlermind STARTED ")
 					}
-					 transition(edgeName="t00",targetState="prepare",cond=whenDispatch("startAppl"))
+					 transition(edgeName="t00",targetState="doprepare",cond=whenDispatch("prepare"))
 				}	 
-				state("prepare") { //this:State
+				state("doprepare") { //this:State
 					action { //it:State
-						println("&&&  butlermind PREPARING")
+						println("&&&  butlermind doprepare")
+						forward("execButlerPlan", "execButlerPlan(prepare)" ,"butlerplanexecutor" ) 
 					}
-					 transition( edgeName="goto",targetState="manageFridge", cond=doswitch() )
+					 transition(edgeName="t01",targetState="afterPrepare",cond=whenDispatch("targetReached"))
 				}	 
-				state("manageFridge") { //this:State
+				state("afterPrepare") { //this:State
 					action { //it:State
-						forward("startTask", "startTask(fridge)" ,"butlertask" ) 
+						println("&&&  butlermind afterPrepare")
 					}
-					 transition(edgeName="t01",targetState="managePaintry",cond=whenDispatch("taskDone"))
+					 transition(edgeName="t02",targetState="doclear",cond=whenDispatch("clear"))
+					transition(edgeName="t03",targetState="doadd",cond=whenDispatch("add"))
 				}	 
-				state("managePaintry") { //this:State
+				state("doadd") { //this:State
 					action { //it:State
-						forward("startTask", "startTask(paintry)" ,"butlertask" ) 
+						println("&&&  butlermind doadd")
+						forward("execButlerPlan", "execButlerPlan(add)" ,"butlerplanexecutor" ) 
 					}
-					 transition(edgeName="t02",targetState="prepareDone",cond=whenDispatch("taskDone"))
+					 transition(edgeName="t04",targetState="afterPrepare",cond=whenDispatch("targetReached"))
 				}	 
-				state("prepareDone") { //this:State
+				state("doclear") { //this:State
 					action { //it:State
+						println("&&&  butlermind doclear")
+						forward("execButlerPlan", "execButlerPlan(clearnofood)" ,"butlerplanexecutor" ) 
 					}
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

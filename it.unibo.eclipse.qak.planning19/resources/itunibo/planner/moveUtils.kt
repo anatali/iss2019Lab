@@ -4,6 +4,8 @@ import aima.core.agent.Action
 import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.delay
 import itunibo.planner.model.RobotState.Direction
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 object moveUtils{
     private val actions : List<Action>? = null
@@ -17,8 +19,6 @@ object moveUtils{
 	
 	private var MaxX        = 0
 	private var MaxY        = 0
-	private var CurX        = 0
-	private var CurY        = 0
 	
 	
     private fun storeMovesInActor( actor : ActorBasic, actions : List<Action>?  ) {
@@ -47,8 +47,8 @@ object moveUtils{
 	
  	fun getMapDimX( ) 	: Int{ return mapDims.first }
 	fun getMapDimY( ) 	: Int{ return mapDims.second }
- 	fun getPosX(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.first }
-	fun getPosY(actor : ActorBasic)    	  : Int{ setPosition(actor);return curPos.second }
+ 	fun getPosX(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.first  }
+	fun getPosY(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.second }
 	fun getDirection(actor : ActorBasic)  : String{ setPosition(actor);return direction.toString() }
 	fun mapIsEmpty() : Boolean{return (getMapDimX( )==0 &&  getMapDimY( )==0 ) }
 	
@@ -56,7 +56,8 @@ object moveUtils{
 	fun showCurrentRobotState(){
 		println("===================================================")
 		plannerUtil.showMap()
-		println("RobotPos=($CurX,$CurY) in map($MaxX,$MaxY) direction=$direction")
+		direction = plannerUtil.getDirection()
+		println("RobotPos=(${curPos.first}, ${curPos.second}) in map($MaxX,$MaxY) direction=$direction")
 		println("===================================================")
 	}
  	fun setObstacleOnCurrentDirection( actor : ActorBasic ){
@@ -75,6 +76,7 @@ object moveUtils{
 		actor.solve("retract( direction(_) )")		//remove old data
 		actor.solve("assert( direction($direction) )")
  	}
+	
 	
 	fun setGoal( actor : ActorBasic, x: String, y: String) {
 		val xv = Integer.parseInt(x)
@@ -115,8 +117,8 @@ object moveUtils{
 	
 	suspend fun rotate(actor:ActorBasic,move:String,pauseTime:Int=PauseTime){
 		when( move ){
-			"a" -> rotateLeft(actor, pauseTime)
-			"d" -> rotateRight(actor, pauseTime)
+			"a", "l" -> rotateLeft(actor, pauseTime)
+			"d", "r" -> rotateRight(actor, pauseTime)
 			else -> println("rotate $move unknown")
 		}
  	}

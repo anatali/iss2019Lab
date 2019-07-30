@@ -43,11 +43,11 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 						println("&&&  workerinroom STARTED")
 					}
-					 transition(edgeName="t07",targetState="setGoalAndDo",cond=whenDispatch("setTheGoal"))
+					 transition(edgeName="t07",targetState="setGoalAndDo",cond=whenDispatch("moveButlerTo"))
 				}	 
 				state("setGoalAndDo") { //this:State
 					action { //it:State
-						if( checkMsgContent( Term.createTerm("setTheGoal(X,Y)"), Term.createTerm("setTheGoal(X,Y)"), 
+						if( checkMsgContent( Term.createTerm("moveButlerTo(X,Y,D)"), Term.createTerm("moveButlerTo(X,Y,D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								println("$name in ${currentState.stateName} | $currentMsg")
 								storeCurrentMessageForReply()
@@ -72,12 +72,11 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				}	 
 				state("goalOk") { //this:State
 					action { //it:State
-						itunibo.planner.moveUtils.showCurrentRobotState(  )
 							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 						replyToCaller("goalReached", "goalReached(ok)")
 					}
-					 transition(edgeName="t08",targetState="setGoalAndDo",cond=whenDispatch("setTheGoal"))
+					 transition(edgeName="t08",targetState="setGoalAndDo",cond=whenDispatch("moveButlerTo"))
 				}	 
 				state("checkAndDoAction") { //this:State
 					action { //it:State
@@ -122,7 +121,13 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 				state("hadleStepFail") { //this:State
 					action { //it:State
 						println("NEVER HERE!!!")
+						val ButlerDirection = itunibo.planner.moveUtils.getDirection(myself)
+						println("ButlerDirection = $ButlerDirection")
+						forward("robotCmd", "robotCmd(s)" ,"basicrobot" ) 
+						delay(50) 
+						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
 					}
+					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
 			}
 		}

@@ -19,7 +19,7 @@ class Butlertask ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				state("s0") { //this:State
 					action { //it:State
 					}
-					 transition(edgeName="t03",targetState="execTask",cond=whenDispatch("startTask"))
+					 transition(edgeName="t09",targetState="execTask",cond=whenDispatch("startTask"))
 				}	 
 				state("execTask") { //this:State
 					action { //it:State
@@ -42,7 +42,7 @@ class Butlertask ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 								forward("setTheGoal", "setTheGoal(5,4)" ,"workerinroom" ) 
 						}
 					}
-					 transition(edgeName="t04",targetState="reachTheTable",cond=whenDispatch("goalReached"))
+					 transition(edgeName="t010",targetState="reachTheTable",cond=whenDispatch("goalReached"))
 				}	 
 				state("reachTheTable") { //this:State
 					action { //it:State
@@ -50,7 +50,7 @@ class Butlertask ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						println("&&&  butler going to TABLE")
 						forward("setTheGoal", "setTheGoal(5,3)" ,"workerinroom" ) 
 					}
-					 transition(edgeName="t05",targetState="againToHome",cond=whenDispatch("goalReached"))
+					 transition(edgeName="t011",targetState="againToHome",cond=whenDispatch("goalReached"))
 				}	 
 				state("againToHome") { //this:State
 					action { //it:State
@@ -58,7 +58,7 @@ class Butlertask ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						println("&&&  butler going to HOME")
 						forward("setTheGoal", "setTheGoal(0,0)" ,"workerinroom" ) 
 					}
-					 transition(edgeName="t06",targetState="taskCompleted",cond=whenDispatch("goalReached"))
+					 transition(edgeName="t012",targetState="taskCompleted",cond=whenDispatch("goalReached"))
 				}	 
 				state("taskCompleted") { //this:State
 					action { //it:State
