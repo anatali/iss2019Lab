@@ -4,7 +4,7 @@
 */ 
 System workinroom  
 mqttBroker "localhost" : 1883   
-
+   
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 
@@ -130,7 +130,8 @@ val Target = \"Target=\" + CurTarget +  \" X=\" + getCurSol(\"X\") + \" Y=\" + g
   		run itunibo.applUtil.applUtil.changeDirection( myself, CurDirection )
   		forward  butlermind -m targetReached : targetReached(ok)  	
   		run itunibo.planner.moveUtils.showCurrentRobotState()
-  		solve( dialog(F) )		//wait after goalReached
+  		delay 2000
+  		//solve( dialog(F) )		//wait after goalReached
   	}
   	Goto execButlerPlan
   	

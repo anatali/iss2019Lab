@@ -33,11 +33,12 @@ class sonaractorfilter (name : String, //val owner : ActorBasicFsm ,
 		isVirtualRobot = this.resVar.equals("virtual")
 	}
 	
-	override protected suspend fun elabData(data : String ){
+	override protected suspend fun elabData( data : String ){
 		val Distance = Integer.parseInt( data ) 
  		val delta    = Math.abs( Distance - LastDistance )
 		//println("   $name |  elabSonarData delta = $delta isVirtualRobot = $isVirtualRobot")
-		//var testDelta = delta >= maxDelta //FOR REAL ROBOT only
+		var testDelta = delta >= maxDelta  //FOR REAL ROBOT only
+		if(  isVirtualRobot ) testDelta = true
 //		if( isVirtualRobot ){
 //			//virtual robot IMPACTS => Distance always = 5
 //			var m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($data)")
@@ -47,7 +48,7 @@ class sonaractorfilter (name : String, //val owner : ActorBasicFsm ,
 ////			emitLocalStreamEvent( m1 )
 //		}  
 // 		else
-		if( Distance > minDistance && Distance < maxDistance    ){ //&& delta >= maxDelta
+		if( Distance > minDistance && Distance < maxDistance  && testDelta  ){ 
  			//println("   $name |  elabSonarData Distance = $Distance ")
 			LastDistance = Distance
  			val m1 = MsgUtil.buildEvent(name, "sonarData", "sonarData($data)")

@@ -61,6 +61,7 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
+								forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
 								forward("modelUpdate", "modelUpdate(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
 						}
 					}

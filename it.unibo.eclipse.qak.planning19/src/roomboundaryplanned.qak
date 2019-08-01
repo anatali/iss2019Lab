@@ -10,8 +10,8 @@ Dispatch onestep       : onestep(DURATION)
 Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
  
-Context ctxBoundaryPlanned    ip [host="localhost" port=8068]  -mqtt
-Context ctxDummyForMind   ip [host="otherresourcelocalhost" port=8035]   -mqtt 
+Context ctxBoundaryPlanned    ip [host="localhost" port=8068]                -mqtt
+Context ctxDummyForMind       ip [host="otherresourcelocalhost" port=8035]   -mqtt 
 
 ExternalQActor resourcemodel context ctxDummyForMind
 ExternalQActor onestepahead  context ctxDummyForMind
@@ -19,17 +19,17 @@ ExternalQActor onestepahead  context ctxDummyForMind
 QActor roomboudaryexplorer context ctxBoundaryPlanned{      
 ["
 var mapEmpty    = false
-val mapname     = \"xxx\"  //\"roomBoundary\"		//
+val mapname     = \"roomMbot\"  //\"roomBoundary\"		//
 var Tback       = 0
 var NumStep     = 0
 
 //REAL ROBOT
-//var StepTime   = 1000	 
-//var PauseTime  = 500L 
+var StepTime   = 1000	 
+var PauseTime  = 500 
 
 //VIRTUAL ROBOT
-var StepTime   = 330	 
-var PauseTime  = 250
+//var StepTime   = 330	 
+//var PauseTime  = 250
 
 var PauseTimeL  = PauseTime.toLong()
 "]

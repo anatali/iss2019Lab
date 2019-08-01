@@ -17,17 +17,17 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     = "xxx"  //"roomBoundary"		//
+		val mapname     = "roomMbot"  //"roomBoundary"		//
 		var Tback       = 0
 		var NumStep     = 0
 		
 		//REAL ROBOT
-		//var StepTime   = 1000	 
-		//var PauseTime  = 500L 
+		var StepTime   = 1000	 
+		var PauseTime  = 500 
 		
 		//VIRTUAL ROBOT
-		var StepTime   = 330	 
-		var PauseTime  = 250
+		//var StepTime   = 330	 
+		//var PauseTime  = 250
 		
 		var PauseTimeL  = PauseTime.toLong()
 		return { //this:ActionBasciFsm

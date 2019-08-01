@@ -41,7 +41,8 @@ class TestRobotmindObstacle {
  			    println(" %%%%%%% TestRobotmindObstacle SIMULATES OBSTACLE")
 				resource!!.emit("sonarRobot", "sonar(8)")
  			}
-		moveRobotViaResource( resource!!, "w", time)			
+		moveRobotViaResource( resource!!, "w", time)
+		solveCheckGoal( resource!!, "model( sensor, sonarRobot, state(8) )" )		
 		solveCheckGoal( resource!!, "model( actuator, robot, state(stopped) )" )
 	}
 		
@@ -56,7 +57,7 @@ class TestRobotmindObstacle {
 	fun solveCheckGoal( actor : ActorBasic, goal : String ){
 		actor.solve( goal  )
 		var result =  actor.resVar
-		println(" %%%%%%%  actor={$actor.name} goal= $goal  result = $result")
+		println(" %%%%%%%  solveCheckGoal  $goal  result = $result")
 		assertTrue("", result == "success" )
 	}
 	fun delay( time : Long ){

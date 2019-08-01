@@ -75,7 +75,7 @@ class Butlerplanexecutor ( name: String, scope: CoroutineScope ) : ActorBasicFsm
 						itunibo.applUtil.applUtil.changeDirection(myself ,CurDirection )
 						forward("targetReached", "targetReached(ok)" ,"butlermind" ) 
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
-						solve("dialog(F)","") //set resVar	
+						delay(2000) 
 					}
 					 transition( edgeName="goto",targetState="execButlerPlan", cond=doswitch() )
 				}	 

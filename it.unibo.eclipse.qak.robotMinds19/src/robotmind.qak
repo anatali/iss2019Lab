@@ -115,6 +115,9 @@ QActor robotmind context ctxRobotMind{
 	
 	State handleSonarRobot{
 		onMsg ( sonarRobot : sonar( D ) ){
+			//Stop the robot	
+			forward resourcemodel -m modelChange : modelChange(robot,h)
+			//Update the model
 			forward resourcemodel -m modelUpdate : modelUpdate(sonarRobot,$payloadArg(0))
 		}		
 	}
