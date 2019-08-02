@@ -1,0 +1,44 @@
+System timetest
+
+mqttBroker "localhost" : 1883    //192.168.1.18  192.168.43.229
+
+Event  modelContent : content( STATE )
+
+Context ctxTimeTest  ip [host="localhost" port=8035]   -mqtt
+
+QActor timetester context ctxTimeTest{   
+	["	var StartTime = 0L
+		var EndTime   = 0L
+		var Delta     = 0L
+		var WaitTime  = 1000L
+		var Counter   = 0
+	"]	
+
+	State s0 initial {	  
+// 		run itunibo.console.outguiSupport.create( myself, "")
+//		run itunibo.console.outguiSupport.output("WELCOME to viewmodel")
+		println("timetester STARTS")
+	}
+	Goto takeTime
+	 
+	State takeTime {	
+	["StartTime = System.currentTimeMillis()"]	
+	} 
+	Transition t0 whenTimeVar WaitTime -> handleTimeElapsed
+	
+ 	State handleTimeElapsed{  
+		["EndTime = System.currentTimeMillis()
+		  Counter++
+		  Delta = EndTime - StartTime - WaitTime 
+	    "]
+		println("timetester $Counter interval = $Delta")    
+ 	}
+ 	Goto takeTime if "(Counter<=9)" else endOfJob
+	 
+	State endOfJob{
+		println("timetester ENDS")
+		
+	}
+   
+  
+ }

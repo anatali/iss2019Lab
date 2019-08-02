@@ -47,7 +47,7 @@ object moveUtils{
 	
  	fun getMapDimX( ) 	: Int{ return mapDims.first }
 	fun getMapDimY( ) 	: Int{ return mapDims.second }
- 	fun getPosX(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.first  }
+ 	fun getPosX(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.first  } 
 	fun getPosY(actor : ActorBasic)    	  : Int{ setPosition(actor); return curPos.second }
 	fun getDirection(actor : ActorBasic)  : String{ setPosition(actor);return direction.toString() }
 	fun mapIsEmpty() : Boolean{return (getMapDimX( )==0 &&  getMapDimY( )==0 ) }
@@ -117,21 +117,33 @@ object moveUtils{
 	
 	suspend fun rotate(actor:ActorBasic,move:String,pauseTime:Int=PauseTime){
 		when( move ){
-			"a", "l" -> rotateLeft(actor, pauseTime)
-			"d", "r" -> rotateRight(actor, pauseTime)
+			"a" -> rotateLeft90( actor ) //rotateLeft(actor, pauseTime)
+			"d" -> rotateRight90(actor ) //rotateRight(actor, pauseTime)
+			"l" -> rotateLeft90( actor )
+		    "r" -> rotateRight90(actor )
 			else -> println("rotate $move unknown")
 		}
- 	}
+  	}
  	suspend fun rotateRight(actor : ActorBasic, pauseTime : Int = PauseTime){
  		actor.forward("modelChange", "modelChange(robot,d)", "resourcemodel")
  		doPlannedMove(actor, "d" )	    //update map
 		delay( pauseTime.toLong() )
 	}
+ 	suspend fun rotateRight90(actor : ActorBasic ){
+ 		actor.forward("modelChange", "modelChange(robot,r)", "resourcemodel")
+		delay( 1000 )
+ 		doPlannedMove(actor, "r" )	    //update map
+ 	}
 	suspend fun rotateLeft(actor : ActorBasic, pauseTime : Int = PauseTime){
 		actor.forward("modelChange", "modelChange(robot,a)", "resourcemodel")
  		doPlannedMove(actor, "a" )	    //update map	
 		delay( pauseTime.toLong() )
 	}
+	suspend fun rotateLeft90( actor : ActorBasic ){
+		actor.forward("modelChange", "modelChange(robot,l)", "resourcemodel")
+		delay( 1000 )
+ 		doPlannedMove(actor, "l" )	    //update map	
+ 	}
  	suspend fun moveAhead(actor:ActorBasic, stepTime:Int, pauseTime:Int = PauseTime, dest:String ="resourcemodel"){
 		println("moveUtils moveAhead stepTime=$stepTime")
 		actor.forward("modelChange", "modelChange(robot,w)", dest)

@@ -47,6 +47,8 @@ var StepTimeL  = StepTime.toLong()
 var PauseTimeL = PauseTime.toLong()
 
 var newDir = \"\"
+
+var RotCount = 0
 "]
 	State s0 initial {	  
 		solve( consult("sysRules.pl")	 )       
@@ -63,11 +65,28 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 				"coap://localhost/resourcemodel")	
 		}else{
 			run itunibo.coap.observer.resourceObserverCoapClient.create(
-				"coap://192.168.1.9:5683/resourcemodel")	
+				"coap://192.168.1.67:5683/resourcemodel")	
 		}
  	}
 	//Goto startApplication 
-   	Goto waitCmd 
+   	//Goto waitCmd 
+   	Goto doRotation
+   	
+//---------------------------------------------------------------   	
+   	State doRotation{
+   		solve( dialog("REPEAT"))
+   		["RotCount = 0"]
+   	}
+   	Goto tuneRoation
+
+   	State tuneRoation{
+   		forward resourcemodel -m modelChange : modelChange(robot,l)
+   		["RotCount++"]
+   		delay 2000
+   	}
+   	Goto tuneRoation if "(RotCount<4)" else doRotation
+   	
+ //---------------------------------------------------------------   	
    	 
 	State waitCmd {	println("&&& robotmindapplication waitCmd ... ")	} 
 	Transition t0  whenMsg startAppl   -> startApplication 
@@ -123,7 +142,7 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
  	
  	
 	State endOfJob{
-		println("Exploration done")
+		println("Work done")
 	}
 	
 	

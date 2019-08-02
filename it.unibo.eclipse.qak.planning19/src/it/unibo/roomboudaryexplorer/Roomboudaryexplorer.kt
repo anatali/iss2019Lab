@@ -20,20 +20,21 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 		val mapname     = "roomMbot"  //"roomBoundary"		//
 		var Tback       = 0
 		var NumStep     = 0
-		
+		 
 		//REAL ROBOT
 		var StepTime   = 1000	 
-		var PauseTime  = 500 
+		//var PauseTime  = 500 
 		
 		//VIRTUAL ROBOT
 		//var StepTime   = 330	 
 		//var PauseTime  = 250
 		
-		var PauseTimeL  = PauseTime.toLong()
+		//var PauseTimeL  = PauseTime.toLong()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel"  )
+						solve("consult('moves.pl')","") //set resVar	
+						itunibo.coap.client.resourceObserverCoapClient.create( "coap://192.168.43.55:5683/resourcemodel"  )
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
@@ -57,7 +58,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				state("stepDone") { //this:State
 					action { //it:State
 						itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
-						delay(PauseTimeL)
+						delay(500) 
 					}
 					 transition( edgeName="goto",targetState="doAheadMove", cond=doswitch() )
 				}	 
@@ -70,12 +71,13 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
 						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(Obs,Time)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								Tback=payloadArg(1).toString().toInt() / 2
+								Tback=payloadArg(1).toString().toInt() / 4
 								println("stepFailed ${payloadArg(1).toString()}")
 						}
-						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, PauseTime )
+						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, Tback )
 						itunibo.planner.plannerUtil.wallFound(  )
-						itunibo.planner.moveUtils.rotateLeft(myself ,PauseTime )
+						itunibo.planner.moveUtils.rotateLeft90(myself)
+						solve("dialog(F)","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="detectBoundary", cond=doswitch() )
 				}	 

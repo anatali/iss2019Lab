@@ -26,7 +26,7 @@ double stopFollow = true;
 double sonarVal;
 void lineFollow();
 MeLineFollower linefollower_2(2);
-
+/*
 void sonarDetect()
 {
     sonarVal = ultrasonic_3.distanceCm();
@@ -37,6 +37,7 @@ void sonarDetect()
         //Serial.println("stopFollow line follow");
     }
 }
+*/
 void lineFollow()
 {
     if( stopFollow == true ) return;
@@ -67,7 +68,7 @@ void lookAtSonar()
     sonar = ultrasonic_3.distanceCm();
     //emit sonar data but with a reduced frequency
     if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
-    if((sonar) <= (4)){ //very near
+    if((sonar) <= (5)){ //very near
         if(((input)==(119))){
             move(1,0);  //Stop
             rgbled_7.setColor(0,60,0,0);
@@ -122,13 +123,13 @@ void remoteCmdExecutor()
 void rotateLeft90()
 {
   move(3,150);
-  _delay( 0.7 );
+  _delay( 0.60 );
   move(1,0);
 }
 void rotateRight90()
 { //Serial.println("rotateRight90");
   move(4,150);
-  _delay( 0.67 );
+  _delay( 0.57 );
   move(1,0);
 }
 

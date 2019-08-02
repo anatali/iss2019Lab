@@ -152,7 +152,7 @@ val Target = \"Target=\" + CurTarget +  \" X=\" + getCurSol(\"X\") + \" Y=\" + g
 QActor workerinroom context ctxWorkInRoom{     
 ["
 var mapEmpty    = false
-val mapname     = \"yyy\" //\"roomMapWithTable\"
+val mapname     = \"roomMbotWithTable\" //yyy \"roomMapWithTable\"
 
 var Curmove     = \"\" 
 var curmoveIsForward = false 

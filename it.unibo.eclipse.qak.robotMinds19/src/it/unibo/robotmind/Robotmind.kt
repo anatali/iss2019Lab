@@ -61,7 +61,10 @@ class Robotmind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, s
 					action { //it:State
 						if( checkMsgContent( Term.createTerm("sonar(DISTANCE)"), Term.createTerm("sonar(D)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
+								val Dist = Integer.parseInt( payloadArg(0)  )  
+								if(Dist<=6 && goingForward){ println("robotmind handleSonarRobot: OBSTACLE at $Dist")
 								forward("modelChange", "modelChange(robot,h)" ,"resourcemodel" ) 
+								 }
 								forward("modelUpdate", "modelUpdate(sonarRobot,${payloadArg(0)})" ,"resourcemodel" ) 
 						}
 					}

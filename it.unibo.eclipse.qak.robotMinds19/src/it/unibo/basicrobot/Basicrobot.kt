@@ -40,11 +40,10 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						else
 						{ println("no robot")
 						 }
-						itunibo.robot.robotSupport.move( "msg(a)"  )
-						delay(700) 
-						itunibo.robot.robotSupport.move( "msg(d)"  )
-						delay(700) 
-						itunibo.robot.robotSupport.move( "msg(h)"  )
+						delay(1000) 
+						forward("robotCmd", "robotCmd(r)" ,"basicrobot" ) 
+						delay(2000) 
+						forward("robotCmd", "robotCmd(l)" ,"basicrobot" ) 
 					}
 					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
@@ -56,6 +55,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 				}	 
 				state("handleRobotCmd") { //this:State
 					action { //it:State
+						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("robotCmd(CMD)"), Term.createTerm("robotCmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})"  )

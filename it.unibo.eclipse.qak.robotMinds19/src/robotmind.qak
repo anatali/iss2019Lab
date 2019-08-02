@@ -115,8 +115,12 @@ QActor robotmind context ctxRobotMind{
 	
 	State handleSonarRobot{
 		onMsg ( sonarRobot : sonar( D ) ){
-			//Stop the robot	
-			forward resourcemodel -m modelChange : modelChange(robot,h)
+			["val Dist = Integer.parseInt( payloadArg(0)  )  "]
+			if   "Dist<=6 && goingForward" { 
+				println("robotmind handleSonarRobot: OBSTACLE at $Dist")
+				//Stop the robot	
+				forward resourcemodel -m modelChange : modelChange(robot,h)
+			}
 			//Update the model
 			forward resourcemodel -m modelUpdate : modelUpdate(sonarRobot,$payloadArg(0))
 		}		
@@ -236,12 +240,17 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
   			run itunibo.robot.robotSupport.create( myself, @R, @PORT, sonaractorfilter )
   		} 
   		else{ println("no robot") }
-     		
-   		run itunibo.robot.robotSupport.move( "msg(a)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(d)" )
-   		delay 700
-   		run itunibo.robot.robotSupport.move( "msg(h)" )
+     	
+     	delay 1000
+     	
+     	forward basicrobot -m robotCmd : robotCmd( r )
+     	delay 2000
+     	forward basicrobot -m robotCmd : robotCmd( l )
+ //   		run itunibo.robot.robotSupport.move( "msg(a)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(d)" )
+//   		delay 700
+//   		run itunibo.robot.robotSupport.move( "msg(h)" )
  	}  
 	Goto waitCmd   
  	 
@@ -249,8 +258,8 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
 	Transition t0   whenMsg   robotCmd  -> handleRobotCmd
 					whenEvent sonarData -> emitEventForAppl		//July 2019
 	State handleRobotCmd{ //does not handle alarms 
-		//printCurrentMessage 
-		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h
+		printCurrentMessage 
+		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h | l | r
 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
 		}	
  	}   	

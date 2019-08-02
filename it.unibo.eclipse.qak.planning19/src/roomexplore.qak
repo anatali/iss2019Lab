@@ -23,8 +23,8 @@ ExternalQActor onestepahead   context ctxDummyForMind
 QActor roomexplorer context ctxRoomExplore{     
 ["
 var mapEmpty    = true
-val inmapname   = \"xxx\" //   \"roomBoundary\"	 
-val outmapname  = \"yyy\" //roomMapWithTable		 
+val inmapname   = \"roomMbot\" //   \"roomBoundary\"	 
+val outmapname  = \"roomMbotWithTable\" //roomMapWithTable		 
 var Tback       = 0
  
 var Curmove     = \"\"
@@ -37,22 +37,24 @@ var CurY        = 0
 var curmoveIsForward = false
 var stepRoundTable   = 0
 //REAL ROBOT
-//var StepTime   = 1000	 
-//var PauseTime  = 500L 
+var StepTime   = 1000	 
+var PauseTime  = 500
 
 //VIRTUAL ROBOT
-var StepTime   = 330	 
-var PauseTime  = 250
+//var StepTime   = 330	 
+//var PauseTime  = 250
 
 var PauseTimeL  = PauseTime.toLong()
 "]	
 	State s0 initial {	  
-	    solve( consult("moves.pl")	 )   
+	    solve( consult("moves.pl")	 )   //for dialog
  		run itunibo.planner.plannerUtil.initAI()
  		run itunibo.planner.moveUtils.loadRoomMap( myself,inmapname )	    
 ["mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()	"]		
  		if "! mapEmpty" {
-	 		["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
+	 		["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
+				println(MapStr)
+			"]
 	 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
  		}
  	}
@@ -69,17 +71,18 @@ var PauseTimeL  = PauseTime.toLong()
  * ===================================================================0
  */ 
  	State findTable{
- 		run itunibo.planner.moveUtils.rotateLeft(myself, PauseTime)
+ 		run itunibo.planner.moveUtils.rotateLeft90( myself )
  		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
   	}
-	Transition t0   whenMsg stepOk   -> stepDown   
+	Transition t0   whenMsg stepOk   -> stepDown     
 					whenMsg stepFail -> tableFound 
 
  	State stepDown{
    		run itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
-  		run itunibo.planner.moveUtils.rotateRight(myself, PauseTime)
+ 		delay 1000
+  		run itunibo.planner.moveUtils.rotateRight90( myself )
+  		solve( dialog(F) )	
 		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
- 		//solve( dialog(F) )	
  	}  
 	Transition t0   whenMsg stepOk   -> updateMapAfterStepDown   
 					whenMsg stepFail -> tableFound  
@@ -93,12 +96,12 @@ var PauseTimeL  = PauseTime.toLong()
  	State tableFound{
  		//printCurrentMessage
  		onMsg( stepFail : stepFail(Obs,Time) ) { 
- 			["Tback=payloadArg(1).toString().toInt() / 2 "]
+ 			["Tback=payloadArg(1).toString().toInt() / 4 "]
  			println("TABLE FOUND $Tback / ${payloadArg(1).toString()} ")
  		}
  		//Return in cell
   	 	//IMPORTANT: the virtual robot could not work without a back step 		  
- 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime)      		 
+ 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, Tback)      		 
 		run itunibo.planner.moveUtils.setObstacleOnCurrentDirection(myself)
  	}    
   	Goto prepareToExploreEdge
@@ -108,17 +111,17 @@ var PauseTimeL  = PauseTime.toLong()
 		if "Direction==\"downDir\""	{ 
 			if "stepRoundTable==0"{//d,w,a
 				println("Table found from north") 
-				run itunibo.planner.moveUtils.rotateRight(myself, PauseTime)
-				run itunibo.planner.moveUtils.moveAhead( myself, StepTime, PauseTime)
-				run itunibo.planner.moveUtils.rotateLeft(myself, PauseTime)
+				run itunibo.planner.moveUtils.rotateRight90( myself )
+ 				run itunibo.planner.moveUtils.moveAhead( myself, StepTime, PauseTime)
+				run itunibo.planner.moveUtils.rotateLeft90( myself ) 
 		    }else{
 				println("Following north border")
-				run itunibo.planner.moveUtils.rotateRight(myself, PauseTime)
+				run itunibo.planner.moveUtils.rotateRight90( myself )
 			}
 		}
 		else{ //d
 			println("Table found from east")
-			run itunibo.planner.moveUtils.rotateRight(myself, PauseTime)
+			run itunibo.planner.moveUtils.rotateRight90(myself)
 		}
  		run itunibo.planner.moveUtils.showCurrentRobotState()
 		//solve( dialog(F) )
@@ -129,9 +132,9 @@ var PauseTimeL  = PauseTime.toLong()
  	["stepRoundTable++"]
 		println("exploreEdge (waw) stepRoundTable=$stepRoundTable") 
 		run itunibo.planner.moveUtils.moveAhead( myself, StepTime, PauseTime)
-   		run itunibo.planner.moveUtils.rotateLeft( myself,PauseTime )
- 		//run itunibo.planner.plannerUtil.showMap()	 		
-		//solve( dialog(F) )
+   		run itunibo.planner.moveUtils.rotateLeft90( myself  )
+ 		run itunibo.planner.plannerUtil.showMap()	 		
+		solve( dialog(F) )
  		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
 	}
 	Transition t0   whenMsg stepOk   -> endOfEdge    
@@ -179,7 +182,7 @@ val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()
 	Goto doForwardMove if "curmoveIsForward" else doTheMove
 	
 	State doTheMove{
-  		run itunibo.planner.moveUtils.rotate(myself, Curmove, PauseTime)
+  		run itunibo.planner.moveUtils.rotate( myself, Curmove )
 	}
 	Goto executePlannedActions 
 	

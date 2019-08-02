@@ -17,7 +17,7 @@ class Workerinroom ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     = "yyy" //"roomMapWithTable"
+		val mapname     = "roomMbotWithTable" //yyy "roomMapWithTable"
 		
 		var Curmove     = "" 
 		var curmoveIsForward = false 

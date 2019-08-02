@@ -22,21 +22,22 @@ var mapEmpty    = false
 val mapname     = \"roomMbot\"  //\"roomBoundary\"		//
 var Tback       = 0
 var NumStep     = 0
-
+ 
 //REAL ROBOT
 var StepTime   = 1000	 
-var PauseTime  = 500 
+//var PauseTime  = 500 
 
 //VIRTUAL ROBOT
 //var StepTime   = 330	 
 //var PauseTime  = 250
 
-var PauseTimeL  = PauseTime.toLong()
+//var PauseTimeL  = PauseTime.toLong()
 "]
 	State s0 initial {	 
- 	    //solve( consult("moves.pl")	 ) 
+ 	    solve( consult("moves.pl")	 )  //for dialog
  	    //start CoAP observer 
-		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
+		//run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
+		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://192.168.43.55:5683/resourcemodel" )
  		run itunibo.planner.plannerUtil.initAI()
 		run itunibo.planner.moveUtils.showCurrentRobotState()
  	}
@@ -57,7 +58,7 @@ var PauseTimeL  = PauseTime.toLong()
 	 
  	State stepDone{  
  		run itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
-		delayVar PauseTimeL
+		delay 500
  	}
 	Goto doAheadMove
 
@@ -72,18 +73,18 @@ val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()
 		
 		//printCurrentMessage		        
  		onMsg( stepFail : stepFail(Obs,Time) ) { 
- 			["Tback=payloadArg(1).toString().toInt() / 2"]
+ 			["Tback=payloadArg(1).toString().toInt() / 4"] //back just a little ..
  			println("stepFailed ${payloadArg(1).toString()}")
  		}
   		//Return in cell
   	 	//IMPORTANT: the virtual robot could not work without a back step 	
   	 	//NOW INCLUDED in robotDataSource for robotVirtual
- 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, PauseTime)      
+ 		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, Tback)      
  //--------------------------------------------------
  		run itunibo.planner.plannerUtil.wallFound()
 //--------------------------------------------------
-		run itunibo.planner.moveUtils.rotateLeft(myself, PauseTime)
-		//solve( dialog(F) )  
+		run itunibo.planner.moveUtils.rotateLeft90( myself )
+		solve( dialog(F) )  
 	}   
     Goto detectBoundary
  

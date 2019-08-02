@@ -28,6 +28,8 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 		var PauseTimeL = PauseTime.toLong()
 		
 		var newDir = ""
+		
+		var RotCount = 0
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
@@ -42,10 +44,26 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 						if(isVirtual){ itunibo.coap.observer.resourceObserverCoapClient.create( "coap://localhost/resourcemodel"  )
 						 }
 						else
-						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.9:5683/resourcemodel"  )
+						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.67:5683/resourcemodel"  )
 						  }
 					}
-					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
+					 transition( edgeName="goto",targetState="doRotation", cond=doswitch() )
+				}	 
+				state("doRotation") { //this:State
+					action { //it:State
+						solve("dialog('REPEAT')","") //set resVar	
+						RotCount = 0
+					}
+					 transition( edgeName="goto",targetState="tuneRoation", cond=doswitch() )
+				}	 
+				state("tuneRoation") { //this:State
+					action { //it:State
+						forward("modelChange", "modelChange(robot,l)" ,"resourcemodel" ) 
+						RotCount++
+						delay(2000) 
+					}
+					 transition( edgeName="goto",targetState="tuneRoation", cond=doswitchGuarded({(RotCount<4)}) )
+					transition( edgeName="goto",targetState="doRotation", cond=doswitchGuarded({! (RotCount<4)}) )
 				}	 
 				state("waitCmd") { //this:State
 					action { //it:State
@@ -104,7 +122,7 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 				}	 
 				state("endOfJob") { //this:State
 					action { //it:State
-						println("Exploration done")
+						println("Work done")
 					}
 				}	 
 			}
