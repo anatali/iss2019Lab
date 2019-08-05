@@ -8,16 +8,15 @@ mqttBroker "localhost" : 1883
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
 Dispatch modelUpdate  : modelUpdate( TARGET, VALUE )
 
-Dispatch onestep       : onestep(DURATION)
-Dispatch stepOk        : stepOk(V)		//TODO eliminate  V
-Dispatch stepFail      : stepFail(R,T)  //R=ok | obstacle, T = time
+Dispatch stepOk          : stepOk(V)		//TODO eliminate  V
+Dispatch stepFail        : stepFail(R,T) //R=ok | obstacle, T = time
+Dispatch exploreStepOk   : exploreStepOk 
+Dispatch exploreStepFail : exploreStepFail 
 
-Dispatch moveButlerTo  : moveButlerTo(X,Y,D)  
-Dispatch goalReached   : goalReached(V)  	//V=ok | ko
+Dispatch moveButlerTo    : moveButlerTo(X,Y,D)  
+Dispatch robotCmd        : robotCmd( CMD )	
 
-Dispatch robotCmd      : robotCmd( CMD )	
-
-Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
+//Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot 
 
 Context ctxFindTheTable    ip [host="localhost" port=8038]                -mqtt 
 Context ctxDummyForMind    ip [host="otherresourcelocalhost" port=8035]   -mqtt 
@@ -26,56 +25,38 @@ ExternalQActor resourcemodel  context ctxDummyForMind
 //ExternalQActor onestepahead   context ctxDummyForMind
 ExternalQActor basicrobot    context ctxDummyForMind
 
-QActor tablefinder context ctxFindTheTable{     
+QActor tablefinder context ctxFindTheTable{      
 ["
 var mapEmpty    = true
-val inmapname   = \"roomMbot\" //   \"roomBoundary\"	 
-val outmapname  = \"roomMbotWithTable\" //roomMapWithTable		 
-var Tback       = 0
- 
-var Curmove     = \"\"
-var Direction   = \"\" 
-var MaxX        = 0
-var MaxY        = 0
-var CurX        = 0
-var CurY        = 0
- 
-var curmoveIsForward = false
-var stepRoundTable   = 0
-//REAL ROBOT
-var StepTime   = 1000	 
-var PauseTime  = 500
+val inmapname   = \"roomMbot2\"  //  xxx \"roomMbot\" \"roomBoundary\"	 
+val outmapname  = \"roomMbotWithTable2\"  // yyy  \"roomMbotWithTable\" roomMapWithTable		 
+  
+var StepCounter = 0
 
-//VIRTUAL ROBOT
-//var StepTime   = 330	 
-//var PauseTime  = 250
+var ButlerPosX  	= 0 
+var ButlerPosY  	= 0 
+var ButlerDirection	= \"\" 
+  
+var NextPosX 	= 0
+var NextPosY 	= 0
 
-var PauseTimeL  = PauseTime.toLong()
-
-
-var ButlerPosX  = 0 
-var ButlerPosY  = 0 
-var FoundWall   = false
-var DimMapX     = 0
-var DimMapY     = 0
-var CenterX     = 0   
-var CenterY     = 0
+var GoingDown  = false
+var GoingRight = false
 
 "]	
 	State s0 initial {	  
-	    solve( consult("moves.pl")	 )   //for dialog
+//	    solve( consult("moves.pl")	 )   //for dialog
  		run itunibo.planner.plannerUtil.initAI()
  		run itunibo.planner.moveUtils.loadRoomMap( myself,inmapname )	    
-["mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()	"]		
+		["mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()	"]		
  		if "! mapEmpty" {
 	 		["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 				println(MapStr)
 			"]
 	 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
-	 		
- 		}
+  		}
  	}
-	Goto  warning if "mapEmpty"  else findTable  
+	Goto  warning if "mapEmpty"  else exploreStep  
 	
 	State warning{
 		println("========================================")
@@ -83,39 +64,88 @@ var CenterY     = 0
 		println("Please run roomboundaryplanned")
 		println("========================================")
 	}
- 
- /*
- * ===================================================================0
- */ 
- 	State findTable{
- ["
-DimMapX     = itunibo.planner.moveUtils.getMapDimX()
-DimMapY     = itunibo.planner.moveUtils.getMapDimY()
-CenterX     = (DimMapX-1) / 2
-CenterY     = (DimMapY-1) / 2
-"]	 		
- 	
- 		println("%%% tablefinder: findind Table  goal=$CenterX, $CenterY")
-   		forward worker -m moveButlerTo : moveButlerTo($CenterX,$CenterY,eastDir)
-   	}
-	Transition t0   whenMsg stepOk   -> strange     
-					whenMsg stepFail -> tableAsObstacleFound 
- 	State strange{
-		println("%%% tablefinder: strange")
-  	}  
-  	
-  	
-  	State tableAsObstacleFound{
-		println("%%% tablefinder: tableAsObstacleFound")
-		
+
+ 	State exploreStep{
+		["StepCounter = StepCounter + 1"]
+		forward worker -m moveButlerTo : moveButlerTo($StepCounter,$StepCounter,AnyDir)
+	} 
+	Transition t0  whenMsg exploreStepOk   -> exploreStep
+				   whenMsg exploreStepFail -> tableFound
+				   
+	State  tableFound{
+		println("%%% findTable: TABLE FOUND")
+		["
+			ButlerPosX      = itunibo.planner.moveUtils.getPosX( myself )
+			ButlerPosY      = itunibo.planner.moveUtils.getPosY( myself )
+		    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+			GoingDown       = ButlerDirection.equals(\"downDir\")
+			GoingRight      = ButlerDirection.equals(\"rightDir\")
+			println(\"		tableFound Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection GoingDown=$GoingDown GoingRight=$GoingRight\")
+			if( GoingDown ){
+				NextPosX        = ButlerPosX-1
+				NextPosY        = ButlerPosY+1
+			}
+			if( GoingRight ){
+				NextPosX        = ButlerPosX+1
+				NextPosY        = ButlerPosY-1
+			}
+ 			println(\"		Butler goinPLEASE ENTER TO GO to ($NextPosX,$NextPosY) \"); readLine()
+
+		"]
+ 			run itunibo.planner.moveUtils.showCurrentRobotState() 			
+ 			forward worker -m moveButlerTo : moveButlerTo($NextPosX,$NextPosY,AnyDir)
+	} 
+	Transition t0  whenMsg exploreStepOk  and  "GoingRight"  -> upBorder
+				   whenMsg exploreStepOk  and  "GoingDown"  -> leftBorder
+				   whenMsg exploreStepFail -> tableFound
+	
+	State upBorder{
+		printCurrentMessage
+ 		["
+			ButlerPosX = itunibo.planner.moveUtils.getPosX( myself )
+			ButlerPosY = itunibo.planner.moveUtils.getPosY( myself )
+		    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+			println(\"		upBorder Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection\")
+			NextPosX   = ButlerPosX+1
+			NextPosY   = ButlerPosY+1
+ 			println(\"		PLEASE ENTER TO GO to ($NextPosX,$NextPosY) \");readLine()
+ 		"]
+ 		forward worker -m moveButlerTo : moveButlerTo($NextPosX,$NextPosY,AnyDir)
 	}
- 	
+	Transition t0  whenMsg exploreStepOk   -> leftBorder
+				   whenMsg exploreStepFail -> upBorder
 
+
+	State leftBorder{
+		printCurrentMessage
+ 		["
+			ButlerPosX = itunibo.planner.moveUtils.getPosX( myself )
+			ButlerPosY = itunibo.planner.moveUtils.getPosY( myself )
+		    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+			GoingDown       = ButlerDirection.equals(\"downDir\")
+			GoingRight      = ButlerDirection.equals(\"rightDir\")
+			println(\"		tableFound Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection GoingDown=$GoingDown GoingRight=$GoingRight\")
+			if( GoingDown ){
+				NextPosX        = ButlerPosX+1
+				NextPosY        = ButlerPosY+1
+			}
+			if( GoingRight ){
+				NextPosX        = ButlerPosX-1
+				NextPosY        = ButlerPosY+1
+			}
+  		"]
+ 		forward worker -m moveButlerTo : moveButlerTo($NextPosX,$NextPosY,AnyDir)
+	}
+	Transition t0  whenMsg exploreStepOk   -> endOfJob
+				   whenMsg exploreStepFail and  "GoingDown" -> leftBorder
+
+
+	State endOfJob{
+		println("%%% findTable: endOfJob")		
+		run itunibo.planner.plannerUtil.saveMap(outmapname)  
+		run itunibo.planner.moveUtils.showCurrentRobotState()		
+	}
 }	
-
-
-
-
 
 QActor worker  context ctxFindTheTable{     
 ["
@@ -134,20 +164,25 @@ var PauseTime  = 500
 
 var PauseTimeL  = PauseTime.toLong()
 
+var Tback       = 0
+
 "]	 
-	State s0 initial {	    
-	    solve( consult("moves.pl")	 )
+	State s0 initial {	     
+//	    solve( consult("moves.pl")	 )		//for dialog
 		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
  		run itunibo.planner.plannerUtil.initAI()
   		run itunibo.planner.moveUtils.loadRoomMap( myself, mapname )	
   		run itunibo.planner.moveUtils.showCurrentRobotState()
 	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
 	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
-	 	println("&&&  workerinroom STARTED")		
-	 	//forward workerinroom -m moveButlerTo : moveButlerTo(5,3)
- 	}  
+  	}  
+  	Goto doWork
+  	
+  	State doWork{
+ 	 	println("&&&  worker WAITS")		  		
+  	}
 	Transition t0 whenMsg moveButlerTo -> setGoalAndDo
-  
+
   	State setGoalAndDo{
   		onMsg( moveButlerTo : moveButlerTo(X,Y,D) ) {
   			printCurrentMessage
@@ -166,7 +201,7 @@ var PauseTimeL  = PauseTime.toLong()
               curmoveIsForward=(Curmove == \"w\")
 	        "]
 		} else { ["Curmove = \"\"; curmoveIsForward=false"]  }  
-		//println("executePlannedActions doing $Curmove")
+		//println("		worker executePlannedActions doing $Curmove")
  	}
 	Goto checkAndDoAction  if "(Curmove.length>0) " else goalOk 
 
@@ -174,17 +209,23 @@ var PauseTimeL  = PauseTime.toLong()
  		//run itunibo.planner.moveUtils.showCurrentRobotState()
 	 	["	val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  "]
 	 	forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
-	 	["replyToCaller(\"goalReached\", \"goalReached(ok)\")"]  //TODO: introduce a qak operation
+	 	["replyToCaller(\"exploreStepOk\", \"exploreStepOk\")"]  //TODO: introduce a qak operation
 	}
-	Transition t0 whenMsg moveButlerTo -> setGoalAndDo
+	Goto doWork  
   	
  	//Execute the move if it is a rotation or halt
 	State checkAndDoAction{	 }
 	Goto doForwardMove if "curmoveIsForward" else doTheMove
 	  
 	State doTheMove{
- 		run itunibo.planner.moveUtils.rotate( myself, Curmove ) //modifies also the planner state 	
- 		solve( dialog(F) )	 
+		if "Curmove.equals(\"a\")"{
+ 			run itunibo.planner.moveUtils.rotateLeft90( myself  ) //modifies also the planner state 				
+			[" println(\"		PLEASE TUNE THE ROTATION LEFT\" ); readLine() "]
+		}
+		if "Curmove.equals(\"d\")"{
+ 			run itunibo.planner.moveUtils.rotateRight90( myself  ) //modifies also the planner state 
+			[" println(\"		PLEASE TUNE THE ROTATION RIGHT\" ); readLine() "]
+		}
   	}
 	Goto executePlannedActions 
 	
@@ -194,172 +235,26 @@ var PauseTimeL  = PauseTime.toLong()
 	} 
 	Transition t0   whenMsg stepOk     -> handleStepOk   
 					whenMsg stepFail   -> hadleStepFail 	
- 	whenMsg stepFail -> hadleStepFail 	
     
 	State handleStepOk{
  		run itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
 	}
 	Goto executePlannedActions
 	 
-	/*We could reach this state since the robot moves are not precise enough */
- 	State hadleStepFail{ 
-		println("NEVER HERE!!!")
-		["val ButlerDirection = itunibo.planner.moveUtils.getDirection(myself)"]
-		println("ButlerDirection = $ButlerDirection")
-		//Move a little bit backward
-		forward basicrobot -m robotCmd : robotCmd( s )
-		delay 50
-		forward basicrobot -m robotCmd : robotCmd( h )
-	}
-	Goto executePlannedActions
-}	
- 
- 
- 
- 
- 
- 
- 
- 
- 	  
-/* 
- 	
- 	
- 	
- 	State checkPos{
-["  
-ButlerPosX  = itunibo.planner.moveUtils.getPosX(myself) 
-ButlerPosY  = itunibo.planner.moveUtils.getPosY(myself) 
-println(\"ButlerPosX = $ButlerPosX, ButlerPosY = $ButlerPosY\")
-FoundWall = ButlerPosX == DimMapX || ButlerPosY == DimMapY
-"]   	
- 		
- 	}
- 	Goto findTable if"(!FoundWall)" else turnAndGo
- 	
- 	State turnAndGo{
- 		if"ButlerPosY == DimMapY"{ //wall south
- 			run itunibo.planner.moveUtils.rotateLeft90( myself )
- 		}
-  		if"ButlerPosX == DimMapX"{ //wall east
- 			run itunibo.planner.moveUtils.rotateRight90( myself )
- 		}
- 		  
- 	}
- 	
- 	
- 	
- 	
- 	
- 	State tableFound{
-		println("%%% tablefinder: tableFound")
-  		onMsg( stepFail : stepFail(Obs,Time) ) { 
+  	State hadleStepFail{ 
+  		solve( retractall( move(M) ) ) 		//CLEAR THE MOVES!!!
+ 		onMsg( stepFail : stepFail(Obs,Time) ) { 
  			["Tback=payloadArg(1).toString().toInt() / 4 "]
- 			println("TABLE FOUND $Tback / ${payloadArg(1).toString()} ")
+ 			println("		worker OBSTACLE TABLE FOUND $Tback / ${payloadArg(1).toString()} ")
  		}
  		//Return in cell
   	 	//IMPORTANT: the virtual robot could not work without a back step 		  
  		run itunibo.planner.moveUtils.backToCompensate(myself, Tback, Tback)      		 
 		run itunibo.planner.moveUtils.setObstacleOnCurrentDirection(myself)
- 	}    
-  	Goto prepareToExploreEdge
- 	
- 	State prepareToExploreEdge{
-["  Direction  = itunibo.planner.moveUtils.getDirection(myself) "]   	
-		println("%%% tablefinder: prepareToExploreEdge")
 
-		if "Direction==\"downDir\""	{ 
-			if "stepRoundTable==0"{//r,w,a
-				println("Table found from north") 
-				run itunibo.planner.moveUtils.rotateRight90( myself )
- 				run itunibo.planner.moveUtils.moveAhead( myself, StepTime, PauseTime)
-				run itunibo.planner.moveUtils.rotateLeft90( myself ) 
-		    }else{
-				println("Following north border")
-				run itunibo.planner.moveUtils.rotateRight90( myself )
-			}
-		}
-		else{  
-			println("Table found from east")
-			run itunibo.planner.moveUtils.rotateRight90(myself)
-		}
- 		run itunibo.planner.moveUtils.showCurrentRobotState()
-		solve( dialog(F) )
- 	}  
- 	Goto exploreEdge
- 	 
- 	State exploreEdge{ //w,l,w
- 	["stepRoundTable++"]
-		println("exploreEdge (w,l,w) stepRoundTable=$stepRoundTable") 
-		run itunibo.planner.moveUtils.moveAhead( myself, StepTime, PauseTime)
-   		run itunibo.planner.moveUtils.rotateLeft90( myself  )
- 		run itunibo.planner.plannerUtil.showMap()	 		
-		solve( dialog(F) )
- 		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
+	 	["replyToCaller(\"exploreStepFail\", \"exploreStepFail\")"]  //TODO: introduce a qak operation
 	}
-	Transition t0   whenMsg stepOk   -> endOfEdge    
-					whenMsg stepFail -> tableFound  
- 	
- 	State endOfEdge{ 
-["  Direction  = itunibo.planner.moveUtils.getDirection(myself) "]  		
-		run itunibo.planner.moveUtils.updateMapAfterAheadOk(myself)
- 	}
- 	Goto  returnToHome if "(Direction == \"downDir\")" else exploreEdge
- 	
-	State returnToHome{
-		println("&&&  returnToHome")
- 		solve( retractall( move(_) ))		//clean the actor kb
- 		run itunibo.planner.plannerUtil.setGoal(0,0)
-  		run itunibo.planner.moveUtils.doPlan( myself )
-    	} 
-	Goto executePlannedActions //doGoHomeActions 
-
-
-	State executePlannedActions{ 
-		solve( retract( move(M) ) ) 
-		ifSolved {  
-			["Curmove = getCurSol(\"M\").toString() 
-              curmoveIsForward=(Curmove == \"w\")
-	        "]
-		} else { ["Curmove = \"\"; curmoveIsForward=false"]  }  
-		//println("executePlannedActions doing $Curmove")
- 	}
-	Goto checkAndDoAction  if "(Curmove.length>0) " else goalOk 
-
- 	State goalOk{		  
- 		println("ON THE TARGET CELL !!!") 
-		run itunibo.planner.plannerUtil.saveMap(outmapname)  
-		run itunibo.planner.moveUtils.showCurrentRobotState()
-["
-val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
-//println( MapStr ) 
-"]		
- 		forward resourcemodel -m modelUpdate : modelUpdate(roomMap,$MapStr)   
- 	}
-  	
- 	//Execute the move if it is a rotation or halt
-	State checkAndDoAction{	 }
-	Goto doForwardMove if "curmoveIsForward" else doTheMove
-	
-	State doTheMove{
-  		run itunibo.planner.moveUtils.rotate( myself, Curmove )
-	}
-	Goto executePlannedActions 
-	
-	State doForwardMove{
- 		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
-	}
-	Transition t0   whenMsg stepOk   -> handleStepOk   
-					whenMsg stepFail -> hadleStepFail 	
-    	
-	State handleStepOk{
-		run itunibo.planner.moveUtils.doPlannedMove(myself, "w")	
- 	}
-	Goto executePlannedActions
-	
- 	State hadleStepFail{ 
-		println("NEVER HERE (since we are going home in a room without people) !!!")
-	}	
- 	
-	*/
+	Goto doWork
+}	
+ 
  

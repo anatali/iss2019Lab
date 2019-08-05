@@ -17,42 +17,24 @@ class Tablefinder ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = true
-		val inmapname   = "roomMbot" //   "roomBoundary"	 
-		val outmapname  = "roomMbotWithTable" //roomMapWithTable		 
-		var Tback       = 0
-		 
-		var Curmove     = ""
-		var Direction   = "" 
-		var MaxX        = 0
-		var MaxY        = 0
-		var CurX        = 0
-		var CurY        = 0
-		 
-		var curmoveIsForward = false
-		var stepRoundTable   = 0
-		//REAL ROBOT
-		var StepTime   = 1000	 
-		var PauseTime  = 500
+		val inmapname   = "roomMbot2"  //  xxx "roomMbot" "roomBoundary"	 
+		val outmapname  = "roomMbotWithTable2"  // yyy  "roomMbotWithTable" roomMapWithTable		 
+		  
+		var StepCounter = 0
 		
-		//VIRTUAL ROBOT
-		//var StepTime   = 330	 
-		//var PauseTime  = 250
+		var ButlerPosX  	= 0 
+		var ButlerPosY  	= 0 
+		var ButlerDirection	= "" 
+		  
+		var NextPosX 	= 0
+		var NextPosY 	= 0
 		
-		var PauseTimeL  = PauseTime.toLong()
-		
-		
-		var ButlerPosX  = 0 
-		var ButlerPosY  = 0 
-		var FoundWall   = false
-		var DimMapX     = 0
-		var DimMapY     = 0
-		var CenterX     = 0   
-		var CenterY     = 0
+		var GoingDown  = false
+		var GoingRight = false
 		
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						solve("consult('moves.pl')","") //set resVar	
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.loadRoomMap(myself ,inmapname )
 						mapEmpty = itunibo.planner.moveUtils.mapIsEmpty()	
@@ -62,7 +44,7 @@ class Tablefinder ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 						 }
 					}
 					 transition( edgeName="goto",targetState="warning", cond=doswitchGuarded({mapEmpty}) )
-					transition( edgeName="goto",targetState="findTable", cond=doswitchGuarded({! mapEmpty}) )
+					transition( edgeName="goto",targetState="exploreStep", cond=doswitchGuarded({! mapEmpty}) )
 				}	 
 				state("warning") { //this:State
 					action { //it:State
@@ -72,27 +54,85 @@ class Tablefinder ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 						println("========================================")
 					}
 				}	 
-				state("findTable") { //this:State
+				state("exploreStep") { //this:State
 					action { //it:State
+						StepCounter = StepCounter + 1
+						forward("moveButlerTo", "moveButlerTo($StepCounter,$StepCounter,AnyDir)" ,"worker" ) 
+					}
+					 transition(edgeName="t00",targetState="exploreStep",cond=whenDispatch("exploreStepOk"))
+					transition(edgeName="t01",targetState="tableFound",cond=whenDispatch("exploreStepFail"))
+				}	 
+				state("tableFound") { //this:State
+					action { //it:State
+						println("%%% findTable: TABLE FOUND")
 						
-						DimMapX     = itunibo.planner.moveUtils.getMapDimX()
-						DimMapY     = itunibo.planner.moveUtils.getMapDimY()
-						CenterX     = (DimMapX-1) / 2
-						CenterY     = (DimMapY-1) / 2
-						println("%%% tablefinder: findind Table  goal=$CenterX, $CenterY")
-						forward("moveButlerTo", "moveButlerTo($CenterX,$CenterY,eastDir)" ,"worker" ) 
+									ButlerPosX      = itunibo.planner.moveUtils.getPosX( myself )
+									ButlerPosY      = itunibo.planner.moveUtils.getPosY( myself )
+								    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+									GoingDown       = ButlerDirection.equals("downDir")
+									GoingRight      = ButlerDirection.equals("rightDir")
+									println("		tableFound Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection GoingDown=$GoingDown GoingRight=$GoingRight")
+									if( GoingDown ){
+										NextPosX        = ButlerPosX-1
+										NextPosY        = ButlerPosY+1
+									}
+									if( GoingRight ){
+										NextPosX        = ButlerPosX+1
+										NextPosY        = ButlerPosY-1
+									}
+						 			println("		Butler goinPLEASE ENTER TO GO to ($NextPosX,$NextPosY) "); readLine()
+						
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
+						forward("moveButlerTo", "moveButlerTo($NextPosX,$NextPosY,AnyDir)" ,"worker" ) 
 					}
-					 transition(edgeName="t00",targetState="strange",cond=whenDispatch("stepOk"))
-					transition(edgeName="t01",targetState="tableAsObstacleFound",cond=whenDispatch("stepFail"))
+					 transition(edgeName="t02",targetState="upBorder",cond=whenDispatchGuarded("exploreStepOk",{GoingRight}))
+					transition(edgeName="t03",targetState="leftBorder",cond=whenDispatchGuarded("exploreStepOk",{GoingDown}))
+					transition(edgeName="t04",targetState="tableFound",cond=whenDispatch("exploreStepFail"))
 				}	 
-				state("strange") { //this:State
+				state("upBorder") { //this:State
 					action { //it:State
-						println("%%% tablefinder: strange")
+						println("$name in ${currentState.stateName} | $currentMsg")
+						
+									ButlerPosX = itunibo.planner.moveUtils.getPosX( myself )
+									ButlerPosY = itunibo.planner.moveUtils.getPosY( myself )
+								    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+									println("		upBorder Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection")
+									NextPosX   = ButlerPosX+1
+									NextPosY   = ButlerPosY+1
+						 			println("		PLEASE ENTER TO GO to ($NextPosX,$NextPosY) ");readLine()
+						forward("moveButlerTo", "moveButlerTo($NextPosX,$NextPosY,AnyDir)" ,"worker" ) 
 					}
+					 transition(edgeName="t05",targetState="leftBorder",cond=whenDispatch("exploreStepOk"))
+					transition(edgeName="t06",targetState="upBorder",cond=whenDispatch("exploreStepFail"))
 				}	 
-				state("tableAsObstacleFound") { //this:State
+				state("leftBorder") { //this:State
 					action { //it:State
-						println("%%% tablefinder: tableAsObstacleFound")
+						println("$name in ${currentState.stateName} | $currentMsg")
+						
+									ButlerPosX = itunibo.planner.moveUtils.getPosX( myself )
+									ButlerPosY = itunibo.planner.moveUtils.getPosY( myself )
+								    ButlerDirection = itunibo.planner.moveUtils.getDirection( myself )
+									GoingDown       = ButlerDirection.equals("downDir")
+									GoingRight      = ButlerDirection.equals("rightDir")
+									println("		tableFound Butler at ($ButlerPosX,$ButlerPosY) dir=$ButlerDirection GoingDown=$GoingDown GoingRight=$GoingRight")
+									if( GoingDown ){
+										NextPosX        = ButlerPosX+1
+										NextPosY        = ButlerPosY+1
+									}
+									if( GoingRight ){
+										NextPosX        = ButlerPosX-1
+										NextPosY        = ButlerPosY+1
+									}
+						forward("moveButlerTo", "moveButlerTo($NextPosX,$NextPosY,AnyDir)" ,"worker" ) 
+					}
+					 transition(edgeName="t07",targetState="endOfJob",cond=whenDispatch("exploreStepOk"))
+					transition(edgeName="t08",targetState="leftBorder",cond=whenDispatchGuarded("exploreStepFail",{GoingDown}))
+				}	 
+				state("endOfJob") { //this:State
+					action { //it:State
+						println("%%% findTable: endOfJob")
+						itunibo.planner.plannerUtil.saveMap( outmapname  )
+						itunibo.planner.moveUtils.showCurrentRobotState(  )
 					}
 				}	 
 			}
