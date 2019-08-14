@@ -123,13 +123,13 @@ void remoteCmdExecutor()
 void rotateLeft90()
 {
   move(3,150);
-  _delay( 0.60 );
+  _delay( 0.59 );
   move(1,0);
 }
 void rotateRight90()
 { //Serial.println("rotateRight90");
   move(4,150);
-  _delay( 0.57 );
+  _delay( 0.59 );
   move(1,0);
 }
 

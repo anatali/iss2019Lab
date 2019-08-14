@@ -19,7 +19,7 @@ ExternalQActor onestepahead  context ctxDummyForMind
 QActor roomboudaryexplorer context ctxBoundaryPlanned{      
 ["
 var mapEmpty    = false
-val mapname     = \"roomMbot\"  //\"roomBoundary\"		//
+val mapname     = \"roomMbot2\"  //\"roomBoundary\"		//
 var Tback       = 0
 var NumStep     = 0
  
@@ -34,7 +34,7 @@ var StepTime   = 1000
 //var PauseTimeL  = PauseTime.toLong()
 "]
 	State s0 initial {	 
- 	    solve( consult("moves.pl")	 )  //for dialog
+ 	    //solve( consult("moves.pl")	 )  //for dialog
  	    //start CoAP observer 
 		//run itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel" )
 		run itunibo.coap.client.resourceObserverCoapClient.create( "coap://192.168.43.55:5683/resourcemodel" )
@@ -84,7 +84,7 @@ val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()
  		run itunibo.planner.plannerUtil.wallFound()
 //--------------------------------------------------
 		run itunibo.planner.moveUtils.rotateLeft90( myself )
-		solve( dialog(F) )  
+		[" println(\"		PLEASE TUNE THE ROTATION LEFT\" ); readLine() "]
 	}   
     Goto detectBoundary
  

@@ -17,7 +17,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     = "roomMbot"  //"roomBoundary"		//
+		val mapname     = "roomMbot2"  //"roomBoundary"		//
 		var Tback       = 0
 		var NumStep     = 0
 		 
@@ -33,7 +33,6 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						solve("consult('moves.pl')","") //set resVar	
 						itunibo.coap.client.resourceObserverCoapClient.create( "coap://192.168.43.55:5683/resourcemodel"  )
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
@@ -77,7 +76,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, Tback )
 						itunibo.planner.plannerUtil.wallFound(  )
 						itunibo.planner.moveUtils.rotateLeft90(myself)
-						solve("dialog(F)","") //set resVar	
+						 println("		PLEASE TUNE THE ROTATION LEFT" ); readLine() 
 					}
 					 transition( edgeName="goto",targetState="detectBoundary", cond=doswitch() )
 				}	 

@@ -117,10 +117,10 @@ object moveUtils{
 	
 	suspend fun rotate(actor:ActorBasic,move:String,pauseTime:Int=PauseTime){
 		when( move ){
-			"a" -> rotateLeft90( actor ) //rotateLeft(actor, pauseTime)
-			"d" -> rotateRight90(actor ) //rotateRight(actor, pauseTime)
+			"a" -> rotateLeft(actor, pauseTime)
+			"d" -> rotateRight(actor, pauseTime)
 			"l" -> rotateLeft90( actor )
-		    "r" -> rotateRight90(actor )
+		    "r" -> rotateRight90( actor )
 			else -> println("rotate $move unknown")
 		}
   	}
@@ -131,7 +131,13 @@ object moveUtils{
 	}
  	suspend fun rotateRight90(actor : ActorBasic ){
  		actor.forward("modelChange", "modelChange(robot,r)", "resourcemodel")
-		delay( 1000 )
+		delay( 800 )
+ 		doPlannedMove(actor, "r" )	    //update map
+ 	}
+ 	suspend fun rotateRight90tuning(actor : ActorBasic ){
+ 		actor.forward("modelChange", "modelChange(robot,r)", "resourcemodel")
+		println("TUNING .... ")
+ 		readLine()
  		doPlannedMove(actor, "r" )	    //update map
  	}
 	suspend fun rotateLeft(actor : ActorBasic, pauseTime : Int = PauseTime){
@@ -141,7 +147,14 @@ object moveUtils{
 	}
 	suspend fun rotateLeft90( actor : ActorBasic ){
 		actor.forward("modelChange", "modelChange(robot,l)", "resourcemodel")
-		delay( 1000 )
+		delay( 800 )
+ 		doPlannedMove(actor, "l" )	    //update map	
+ 	}
+	suspend fun rotateLeft90tuning( actor : ActorBasic ){
+		actor.forward("modelChange", "modelChange(robot,l)", "resourcemodel")
+		println("TUNING .... ")
+ 		readLine()
+		//delay( 800 )
  		doPlannedMove(actor, "l" )	    //update map	
  	}
  	suspend fun moveAhead(actor:ActorBasic, stepTime:Int, pauseTime:Int = PauseTime, dest:String ="resourcemodel"){

@@ -31,19 +31,25 @@ class Worker ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 		
 		var PauseTimeL  = PauseTime.toLong()
 		
+		var Tback       = 0
+		
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						solve("consult('moves.pl')","") //set resVar	
 						itunibo.coap.client.resourceObserverCoapClient.create( "coap://localhost:5683/resourcemodel"  )
 						itunibo.planner.plannerUtil.initAI(  )
 						itunibo.planner.moveUtils.loadRoomMap(myself ,mapname )
 						itunibo.planner.moveUtils.showCurrentRobotState(  )
 							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
-						println("&&&  workerinroom STARTED")
 					}
-					 transition(edgeName="t02",targetState="setGoalAndDo",cond=whenDispatch("moveButlerTo"))
+					 transition( edgeName="goto",targetState="doWork", cond=doswitch() )
+				}	 
+				state("doWork") { //this:State
+					action { //it:State
+						println("&&&  worker WAITS")
+					}
+					 transition(edgeName="t09",targetState="setGoalAndDo",cond=whenDispatch("moveButlerTo"))
 				}	 
 				state("setGoalAndDo") { //this:State
 					action { //it:State
@@ -74,9 +80,9 @@ class Worker ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 					action { //it:State
 							val MapStr =  itunibo.planner.plannerUtil.getMapOneLine()  
 						forward("modelUpdate", "modelUpdate(roomMap,$MapStr)" ,"resourcemodel" ) 
-						replyToCaller("goalReached", "goalReached(ok)")
+						replyToCaller("exploreStepOk", "exploreStepOk")
 					}
-					 transition(edgeName="t03",targetState="setGoalAndDo",cond=whenDispatch("moveButlerTo"))
+					 transition( edgeName="goto",targetState="doWork", cond=doswitch() )
 				}	 
 				state("checkAndDoAction") { //this:State
 					action { //it:State
@@ -86,8 +92,12 @@ class Worker ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("doTheMove") { //this:State
 					action { //it:State
-						itunibo.planner.moveUtils.rotate(myself ,Curmove )
-						solve("dialog(F)","") //set resVar	
+						if(Curmove.equals("a")){ itunibo.planner.moveUtils.rotateLeft90(myself)
+						 println("		PLEASE TUNE THE ROTATION LEFT" ); readLine() 
+						 }
+						if(Curmove.equals("d")){ itunibo.planner.moveUtils.rotateRight90(myself)
+						 println("		PLEASE TUNE THE ROTATION RIGHT" ); readLine() 
+						 }
 					}
 					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
 				}	 
@@ -96,9 +106,8 @@ class Worker ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 						delay(PauseTimeL)
 						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime )
 					}
-					 transition(edgeName="t04",targetState="handleStepOk",cond=whenDispatch("stepOk"))
-					transition(edgeName="t05",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
-					transition(edgeName="t06",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
+					 transition(edgeName="t010",targetState="handleStepOk",cond=whenDispatch("stepOk"))
+					transition(edgeName="t011",targetState="hadleStepFail",cond=whenDispatch("stepFail"))
 				}	 
 				state("handleStepOk") { //this:State
 					action { //it:State
@@ -108,14 +117,17 @@ class Worker ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scop
 				}	 
 				state("hadleStepFail") { //this:State
 					action { //it:State
-						println("NEVER HERE!!!")
-						val ButlerDirection = itunibo.planner.moveUtils.getDirection(myself)
-						println("ButlerDirection = $ButlerDirection")
-						forward("robotCmd", "robotCmd(s)" ,"basicrobot" ) 
-						delay(50) 
-						forward("robotCmd", "robotCmd(h)" ,"basicrobot" ) 
+						solve("retractall(move(M))","") //set resVar	
+						if( checkMsgContent( Term.createTerm("stepFail(R,T)"), Term.createTerm("stepFail(Obs,Time)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								Tback=payloadArg(1).toString().toInt() / 4 
+								println("		worker OBSTACLE TABLE FOUND $Tback / ${payloadArg(1).toString()} ")
+						}
+						itunibo.planner.moveUtils.backToCompensate(myself ,Tback, Tback )
+						itunibo.planner.moveUtils.setObstacleOnCurrentDirection(myself)
+						replyToCaller("exploreStepFail", "exploreStepFail")
 					}
-					 transition( edgeName="goto",targetState="executePlannedActions", cond=doswitch() )
+					 transition( edgeName="goto",targetState="doWork", cond=doswitch() )
 				}	 
 			}
 		}
