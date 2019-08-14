@@ -142,7 +142,48 @@ table, th, td {
 
   -->
 </style>
-    
+
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: lightyellow;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: relative;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: relative;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+
 <head>
    
 <title>Labs BO1819</title>
@@ -153,7 +194,8 @@ table, th, td {
  
 <title>Labs BO1819</title></head><body>
     
- 
+
+
  <center>
  <table style="width:98%">
  
@@ -161,7 +203,10 @@ table, th, td {
 	<td style="width:30%">	 
 	<m><a href="./issStart2019/userDocs/Lab0.html" target="lab">LAB0 | Start-up</a></m>	
 	</td>
-	<td>Project <bc>issStart2019</bc><br/>
+	<td> 
+<div class="tooltip">Project <bc>issStart2019</bc> 
+  <span class="tooltiptext">See gitHub</span>
+</div>
 	</td>
 	</tr>
 	
