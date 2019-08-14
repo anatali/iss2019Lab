@@ -22,7 +22,7 @@ class Basicrobot ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 						//CREATE A PIPE for the sonar-data stream
 						
 						val sonaractorfilter = itunibo.robot.sonaractorfilter( "sonaractorfilter"  ) 
-						val obstacleDetector =  itunibo.robot.obstacledetector( "obstacledetector" )
+						val obstacleDetector = itunibo.robot.obstacledetector( "obstacledetector" )
 						val logger           = itunibo.robot.Logger("logFiltered")
 						
 						 sonaractorfilter.subscribe(obstacleDetector) 

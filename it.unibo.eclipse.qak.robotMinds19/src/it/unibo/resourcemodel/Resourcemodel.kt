@@ -26,6 +26,14 @@ class Resourcemodel ( name: String, scope: CoroutineScope ) : ActorBasicFsm( nam
 					}
 					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )
 				}	 
+				state("useGY521") { //this:State
+					action { //it:State
+						println("useGY521 starting ...  ")
+						itunibo.robotRaspOnly.gy521Support.create(myself)
+						forward("modelChange", "modelChange(robot,r)" ,"resourcemodel" ) 
+					}
+					 transition( edgeName="goto",targetState="waitModelChange", cond=doswitch() )
+				}	 
 				state("waitModelChange") { //this:State
 					action { //it:State
 					}

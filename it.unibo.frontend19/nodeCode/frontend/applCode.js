@@ -72,6 +72,7 @@ app.get('/appl', function(req, res) {
 	app.post("/l", function(req, res,next) { handlePostMove("l","moving left90",  req,res,next); });	
 	app.post("/d", function(req, res,next) { handlePostMove("d","moving right",   req,res,next); });
 	app.post("/r", function(req, res,next) { handlePostMove("r","moving right90", req,res,next); });
+	app.post("/x", function(req, res,next) { handlePostMove("R","moving rightc ", req,res,next); });  //continue
 	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",        req,res,next); });	
  
   	//APPLICATION
