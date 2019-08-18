@@ -1,0 +1,81 @@
+System receiver  
+mqttBroker "localhost" : 1883   
+
+Event androidSensor  : androidSensor(TYPE,X,Y,Z)	//TYPE = orientation | rotVector | gamerotation
+
+Context ctxReceiver ip [host="localhost" port=8018]   -mqtt 
+
+QActor receiver context ctxReceiver{     
+["
+var firstVal  = 0.0
+var rot       = 0.0
+var pythonJob : kotlinx.coroutines.Job? = null
+  
+fun setFirstVal( v : Double ){
+	firstVal  =  v
+	rot       = 0.0
+	println( \"firstVal= $firstVal\"  )
+}
+
+fun updateRot( v : Double, msg : String ){
+	rot    = Math.abs( v -  firstVal )
+	println(  \"$msg v=$v, rot=$rot, firstVal=$firstVal\"   ) 
+	if( rot > 85 && rot < 90 ) println( \"warning: we are reachieng the goal\" )
+    if( rot >= 90 && rot < 90.5 ){
+		 println( \"ROTATION DONE!!!\" )
+		 //if( pythonJob != null ) pythonJob.cancel( )
+	}
+ }
+
+fun showValue( sensorType : String, x : Double,  y : Double, z : Double){
+	println(  \"$sensorType: x=$x, y=$y, z=$z\"   )
+}
+"] 
+	State s0 initial {	
+		println("&&&  receiver started")	
+		/*   
+		["
+			try{
+			    //pythonJob = kotlinx.coroutines.GlobalScope.launch{
+				      Runtime.getRuntime().exec(\"python ./code/mqttPlotQakEvents.py \")
+				//}
+			}catch( e : Exception){
+				println(\"error $e\")
+			}
+		 
+		"]	
+ 		*/ 
+  	}  
+  	Transition t0 whenEvent androidSensor  -> discardFirst
+   	
+  	State discardFirst{  		
+  		printCurrentMessage
+  	}
+  	Transition t0 whenEvent androidSensor  -> startrotation
+  	
+  	State startrotation{ 
+  		printCurrentMessage
+   		onMsg( androidSensor : androidSensor(gamerotation,Y,P,R) ){
+  			[" setFirstVal(payloadArg(1).toDouble())			"]
+  		}
+  	}
+   	Goto continuerotation
+  	 
+  	State continuerotation{ 
+  		//printCurrentMessage
+    	onMsg( androidSensor : androidSensor(gamerotation,Y,P,R) ){
+  			[" updateRot(payloadArg(1).toDouble(), payloadArg(0))	"]
+  		}
+    	onMsg( androidSensor : androidSensor(T,Y,P,R) ){
+  			[" showValue(payloadArg(0),payloadArg(1).toDouble(), payloadArg(2).toDouble(),payloadArg(3).toDouble())	"]
+  		}
+  	}
+  	Transition t0 whenEvent androidSensor and  "rot < 90"  -> continuerotation
+  				  whenEvent androidSensor and  "rot >= 90" -> endOfJob
+
+	State endOfJob{
+		println("&&&  receiver ENDS")
+		delay 5000   
+		//["		 if( pythonJob != null ) pythonJob.cancel( ) "]
+	}
+}

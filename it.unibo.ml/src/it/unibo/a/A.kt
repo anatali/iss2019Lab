@@ -29,7 +29,7 @@ class A ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 					action { //it:State
 						solve("retract(link(N,I))","") //set resVar	
 						if(currentSolution.isSuccess()) { 
-										val Dest  = currentSolution.getVarValue("N").toString()
+						 				val Dest  = currentSolution.getVarValue("N").toString()
 										val Input = currentSolution.getVarValue("I").toString()
 										//println(" a propagateOutput dest = $Dest, input = $Input ")
 										forward("son", "son($Input)" ,Dest ) 		 

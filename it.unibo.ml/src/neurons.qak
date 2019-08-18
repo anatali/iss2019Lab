@@ -23,7 +23,7 @@ QActor a context ctxNeurons{
 		solve( retract(link(N,I)) )
 		ifSolved{ 
 			["
-				val Dest  = currentSolution.getVarValue(\"N\").toString()
+ 				val Dest  = currentSolution.getVarValue(\"N\").toString()
 				val Input = currentSolution.getVarValue(\"I\").toString()
 				//println(\" a propagateOutput dest = $Dest, input = $Input \")
 				forward(\"son\", \"son($Input)\" ,Dest ) 		 
