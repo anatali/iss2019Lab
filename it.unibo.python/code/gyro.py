@@ -10,14 +10,14 @@ import time
 import paho.mqtt.client as paho
 import matplotlib.pyplot as plt
 
-brokerAddr="192.168.1.6"
+brokerAddr="localhost"
 duration = 10
 x        = []
 y        = []
 z        = []
 r        = []
 counter  = 0 
-maxnum   = 10
+maxnum   = 30
 endOfJob = False
 dt       = 0
 startTime = 0

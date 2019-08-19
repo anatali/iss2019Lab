@@ -9,7 +9,7 @@ import paho.mqtt.client as paho
 import matplotlib.pyplot as plt
 
 #pip install playsound
-from playsound import playsound  
+#from playsound import playsound  
 
 brokerAddr="localhost"
 duration = 20
@@ -42,7 +42,7 @@ def on_message(client, userdata, message) :   #define callback
         	print("WARNING ... rot=", rot )
     else :
         print("first",firstVal, "rot", rot, "count",counter)
-        playsound('../audio/tada2.wav')
+        #playsound('../audio/tada2.wav')
         plt.plot(data)
         plt.show()   
     

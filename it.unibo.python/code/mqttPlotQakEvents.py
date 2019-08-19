@@ -2,13 +2,13 @@
 mqttPlotQakEvents.py
 ---------------------------------------------------
 C:\Didattica2018Work\iss2019Lab\it.unibo.python\code
-python mqttReceiverQakEvent.py
+python mqttPlotQakEvents.py
 """
 import time
 import paho.mqtt.client as paho
 import matplotlib.pyplot as plt
 
-brokerAddr="192.168.1.6"
+brokerAddr="localhost"
 duration = 20
 data     = []
 counter  = 0 
