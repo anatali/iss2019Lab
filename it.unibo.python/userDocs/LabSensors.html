@@ -4,8 +4,12 @@
 <link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
 <script type="text/javascript" src="../css/issStyle.js"></script>
 -->
+ 
 <SCRIPT SRC='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></SCRIPT>
 <SCRIPT>MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}})</SCRIPT>
+
+
+
 <style type="text/css">
 <!--
 
@@ -147,104 +151,45 @@ table, th, td {
     
 <head>
    
-<title>LabPythonISS</title></head>
+<title>LabSensorsISS</title></head>
     
 <body>
 
 <div class="body"> 
 
-<h1>72939 - LABPython | Using Python</h1> 
+<h1>72939 - LABPSensors | Using Gyroscope and Accelerometer</h1> 
 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/LectureBologna1819.html" target="isslm">
 LabISS-lectures site</a></font> 
  
- <h2>Overview</h2>
- <h2>Install Python on Pc</h2> 
- <ol>
- <li>Install python on Widnows10 (<tt>python-3.7.3-amd64.exe</tt>)</li>
-<li>Update pip3 (<tt>pip3 install --upgrade pip</tt>) </li>
-<li>Check pip3 version: 
-<pre>
-pip3 --version
-pip 19.1.1 from c:\users\anatali\appdata\local\programs\python\python37\lib\site-packages\pip (python 3.7)
-</pre> </li>
-<li>Install ml modules(<tt>pip install  --upgrade jupyter matplotlib numpy pandas scipy scikit-learn</tt>)</li>
-  </ol>
-
- <h3>Using JUPYTER</h3> 
- <ol>
-<li>Launch <bc>jupyter</bc> in your workspace: 
-<pre>
-cd C:\Didattica2018Work\iss2019Lab\it.unibo.python\userDocs
-jupyter notebook
-</pre>
-</li>
- <li>Open a browser on  <bc>http://localhost:8888</bc> </li>
-  <li></li>
- </ol>
-
+ <h2>Gyroscope</h2>
  
- <p>
-$$ f(x,y) = {x^2y+y+2}.$$
 
-$$ sum_{k=1}^N k^2.$$
+A gyroscope gives us the rate of change of the angular position over time (angular velocity) with a unit of [deg./s].
+To obtain the angular position, we can simply integrate the angular velocity:
+
+
+
+ <p>
+$$ f(x,y) = {x^2y+y+2} $$
+
+$$ sum_{k=1}^N k^2 $$
  </p>
   <p>
-$$  dot{x} & = \sigma(y-x).$$
+ 
  </p>
  
 <p>
-\\ dot{x} & = \sigma(y-x) \\
-</p>
- <pre>
-python
->>>
-	
-import sys
-sys.exit()
-
- </pre>
  
-<h2>Install Python on RaspberryPi</h2> 
+</p>
 
-Preinstalled:
-<pre>
-python --version	=> <bc>Python 2.7.13</bc>
-python3 --version	=> <bc>Python 3.5.3</bc>
-</pre>
-
-Install i2c supports for GY521
-<pre>
-sudo apt-get install i2c-tools python-smbus 
-</pre>
-
-<pre>
-Python 3 - pip 9.0.1
-
-apt-get install freetype
-sudo pip3 install --upgrade jupyter   (takes quite a long time ... )
-matplotlib numpy pandas scipy scikit-learn
-
-python3 -c "import jupyter"
-jupyter notebook
-VNC (windows) con indirizzo 192.168.1.11:1
-Open browser on Rasp
-http://localhost:8888/?token=efe088b5d75c65a1f3caec48de8d4f435881a5d1f2c48d3b
+Gyroscope data are prone to drift over time, since the gyroscope doesn't return back to zero when not moving.
 
 
-</pre>
+A complementary filter merges fast rotations from the gyroscope with the slower trends from the accelerometer.
 
+<h2>References</h2>
 
-<h2>Notes (TODO)</h2>
-
-<ul>
-<li>To ping from Rasp to PC, we must deactivate the Windows Firewall</li>
-<li>The new card by Pierfedrici seems to exclude samba. Test \\</li>
-<li>Execute <tt>sudo pip install paho-mqtt</tt> on Rasp</li>
-<li>Test <tt>gy521Support.py</tt> on Rasp with <tt>Runtime.getRuntime().exec("sudo python gyroSender.py")</tt></li>
-<li><tt>mqttReceiver.py</tt> with Nokia on Rasp returns 97: we must introduce a rotate command of 1 (?) degree:
-we will rotate to 85 and next step by step ...</li>
-</ul>
-
+$$ [Duck Duck Go](https://duckduckgo.com) $$
 
 <br/><br/> 
 </div>
