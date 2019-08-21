@@ -138,13 +138,13 @@ void rotateRight90()
 void rotateLeftStep()
 {
   move(3,150);
-  _delay( 0.2 );
+  _delay( 0.1 );
   move(1,0);
 }
 void rotateRightStep()
 { //Serial.println("rotateRight90");
   move(4,150);
-  _delay( 0.2 );
+  _delay( 0.1 );
   move(1,0);
 }
 

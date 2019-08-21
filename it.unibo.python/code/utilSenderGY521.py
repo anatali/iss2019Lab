@@ -8,13 +8,13 @@ import smbus
 import math
 import time
 import paho.mqtt.client as paho
-from mpu6050 import mpu6050
+#from mpu6050 import mpu6050
 
 brokerAddr ="192.168.1.7"
 maxnum     = 10
 count      = 0
 
-sensor = mpu6050(0x68)
+#sensor = mpu6050(0x68)
   
 def sendMsg( client,x,y,z, sensorType ) :
 	global count
@@ -36,12 +36,12 @@ def emitGyro(client) :
 def emitAccel(client) :	
 	global sensor
 	scale = 16384.0
-	accelerometer_data = sensor.get_accel_data()
-	#x = read_word_2c(0x3b) / scale
-	#y = read_word_2c(0x3d) / scale	
-	#z = read_word_2c(0x3f) / scale	
+	#accelerometer_data = sensor.get_accel_data()
+	x = read_word_2c(0x3b) / scale
+	y = read_word_2c(0x3d) / scale	
+	z = read_word_2c(0x3f) / scale	
 	print accelerometer_data 	 
- 	#sendMsg(client,x,y,z,"accel" )
+ 	sendMsg(client,x,y,z,"accel" )
 
 def doGyro() :
 	print "Gyroscope"
@@ -64,7 +64,7 @@ startTime     = time.time()
 #print( "startTime=" , time.localtime( startTime ) )
 print( "startTime=" , startTime )
 
-##doGyro()
-doAccel()
+doGyro()
+##oAccel()
 
  
