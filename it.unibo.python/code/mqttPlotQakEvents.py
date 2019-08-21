@@ -15,6 +15,7 @@ counter  = 0
 def on_message(client, userdata, message) :   #define callback
 	global counter,  data
 	#msg(androidSensor,event,android,none,androidSensor(TYPE,X,Y,Z),MSGNUM)
+	#msg(sensor,event,android,none,sensor(TYPE,X,Y,Z),MSGNUM)
 	evMsg = str( message.payload.decode("utf-8")  )
 	#print("evMsg=", evMsg )
 	msgitems = evMsg.split(",")

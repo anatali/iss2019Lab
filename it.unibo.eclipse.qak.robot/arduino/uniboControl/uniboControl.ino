@@ -110,6 +110,8 @@ void remoteCmdExecutor()
           case 119 : move(1,150); break;  //w
           case 115 : move(2,150); break;  //s
           case 97  : move(3,150); break;  //a
+          case 122 : rotateLeftStep();  break;  //z
+          case 120 : rotateRightStep();  break; //x
           case 100 : move(4,150); break;  //d
           case 104 : move(1,0); stopFollow = true;  break;  //h
           case 114 : rotateRight90();  break;  //r
@@ -130,6 +132,19 @@ void rotateRight90()
 { //Serial.println("rotateRight90");
   move(4,150);
   _delay( 0.59 );
+  move(1,0);
+}
+
+void rotateLeftStep()
+{
+  move(3,150);
+  _delay( 0.2 );
+  move(1,0);
+}
+void rotateRightStep()
+{ //Serial.println("rotateRight90");
+  move(4,150);
+  _delay( 0.2 );
   move(1,0);
 }
 

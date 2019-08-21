@@ -52,6 +52,8 @@ import alice.tuprolog.*
  				"d"  -> outS = "{'type': 'turnRight', 'arg': 400 }"
 				"l"  -> outS = "{'type': 'turnLeft', 'arg': 400 }"
  				"r"  -> outS = "{'type': 'turnRight', 'arg': 400 }"
+			"z" -> outS = "{'type': 'turnLeft', 'arg': 100 }"
+			"x" -> outS = "{'type': 'turnRight', 'arg': 100 }"
    			    "h"  -> outS = "{'type': 'alarm', 'arg': 0 }"
  			}
 			val jsonObject = JSONObject(outS)

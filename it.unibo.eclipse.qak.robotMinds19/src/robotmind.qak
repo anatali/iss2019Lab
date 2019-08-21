@@ -269,7 +269,7 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
 					whenEvent sonarData -> emitEventForAppl		//July 2019
 	State handleRobotCmd{ //does not handle alarms 
 		printCurrentMessage 
-		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h | l | r
+		onMsg( robotCmd : robotCmd( MOVE ) ) { //MOVE = w | a | s | d | h | l | r | z | x
 			run itunibo.robot.robotSupport.move( "msg(${payloadArg(0)})" ) 
 		}	
  	}   	

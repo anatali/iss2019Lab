@@ -66,14 +66,15 @@ app.get('/appl', function(req, res) {
 /*
  * ====================== COMMANDS ================
  */
-	app.post("/w", function(req, res,next) { handlePostMove("w","moving forward", req,res,next); });	
-	app.post("/s", function(req, res,next) { handlePostMove("s","moving backward",req,res,next); });
-	app.post("/a", function(req, res,next) { handlePostMove("a","moving left",    req,res,next); });	
-	app.post("/l", function(req, res,next) { handlePostMove("l","moving left90",  req,res,next); });	
-	app.post("/d", function(req, res,next) { handlePostMove("d","moving right",   req,res,next); });
-	app.post("/r", function(req, res,next) { handlePostMove("r","moving right90", req,res,next); });
-	app.post("/x", function(req, res,next) { handlePostMove("R","moving rightc ", req,res,next); });  //continue
-	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",        req,res,next); });	
+	app.post("/w", function(req, res,next) { handlePostMove("w","moving forward",   req,res,next); });	
+	app.post("/s", function(req, res,next) { handlePostMove("s","moving backward",  req,res,next); });
+	app.post("/a", function(req, res,next) { handlePostMove("a","moving left",      req,res,next); });	
+	app.post("/l", function(req, res,next) { handlePostMove("l","moving left90",    req,res,next); });	
+	app.post("/d", function(req, res,next) { handlePostMove("d","moving right",     req,res,next); });
+	app.post("/r", function(req, res,next) { handlePostMove("r","moving right90",   req,res,next); });
+	app.post("/z", function(req, res,next) { handlePostMove("z","moving leftstep",  req,res,next); });  //move small
+	app.post("/x", function(req, res,next) { handlePostMove("x","moving rightstep", req,res,next); });  //move small
+	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",          req,res,next); });	
  
   	//APPLICATION
 	app.post("/startappl", function(req, res,next) {
@@ -163,7 +164,7 @@ var publishMsgToResourceModel = function( target, cmd ){
 
 var changeResourceModelCoap = function( cmd ){  
     console.log("coap PUT> "+ cmd);
-	coap.coapPut(cmd);	//see modelResourceCoap
+	coap.coapPut(cmd);	//see coapClientToResourceModel
 }
 
 var publishEmitUserCmd = function( cmd ){  
