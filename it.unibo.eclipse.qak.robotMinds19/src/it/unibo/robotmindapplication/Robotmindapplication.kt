@@ -44,10 +44,10 @@ class Robotmindapplication ( name: String, scope: CoroutineScope ) : ActorBasicF
 						if(isVirtual){ itunibo.coap.observer.resourceObserverCoapClient.create( "coap://localhost/resourcemodel"  )
 						 }
 						else
-						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.67:5683/resourcemodel"  )
+						 { itunibo.coap.observer.resourceObserverCoapClient.create( "coap://192.168.1.2:5683/resourcemodel"  )
 						  }
 					}
-					 transition( edgeName="goto",targetState="doRotation", cond=doswitch() )
+					 transition( edgeName="goto",targetState="waitCmd", cond=doswitch() )
 				}	 
 				state("doRotation") { //this:State
 					action { //it:State

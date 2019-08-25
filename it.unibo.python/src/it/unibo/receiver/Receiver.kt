@@ -15,72 +15,18 @@ class Receiver ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, sc
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		
-		var firstVal  = 0.0
-		var rot       = 0.0
-		var pythonJob : kotlinx.coroutines.Job? = null
-		  
-		fun setFirstVal( v : Double ){
-			firstVal  =  v
-			rot       = 0.0
-			println( "firstVal= $firstVal"  )
-		}
-		
-		fun updateRot( v : Double, msg : String ){
-			rot    = Math.abs( v -  firstVal )
-			println(  "$msg v=$v, rot=$rot, firstVal=$firstVal"   ) 
-			if( rot > 85 && rot < 90 ) println( "warning: we are reachieng the goal" )
-		    if( rot >= 90 && rot < 90.5 ){
-				 println( "ROTATION DONE!!!" )
-				 //if( pythonJob != null ) pythonJob.cancel( )
-			}
-		 }
-		
-		fun showValue( sensorType : String, x : Double,  y : Double, z : Double){
-			println(  "$sensorType: x=$x, y=$y, z=$z"   )
-		}
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
 						println("&&&  receiver started")
 					}
-					 transition(edgeName="t00",targetState="discardFirst",cond=whenEvent("androidSensor"))
+					 transition(edgeName="t00",targetState="handlerot",cond=whenEvent("rotation"))
 				}	 
-				state("discardFirst") { //this:State
+				state("handlerot") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
 					}
-					 transition(edgeName="t01",targetState="startrotation",cond=whenEvent("androidSensor"))
-				}	 
-				state("startrotation") { //this:State
-					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
-						if( checkMsgContent( Term.createTerm("androidSensor(TYPE,X,Y,Z)"), Term.createTerm("androidSensor(gamerotation,Y,P,R)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 setFirstVal(payloadArg(1).toDouble())			
-						}
-					}
-					 transition( edgeName="goto",targetState="continuerotation", cond=doswitch() )
-				}	 
-				state("continuerotation") { //this:State
-					action { //it:State
-						if( checkMsgContent( Term.createTerm("androidSensor(TYPE,X,Y,Z)"), Term.createTerm("androidSensor(gamerotation,Y,P,R)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 updateRot(payloadArg(1).toDouble(), payloadArg(0))	
-						}
-						if( checkMsgContent( Term.createTerm("androidSensor(TYPE,X,Y,Z)"), Term.createTerm("androidSensor(T,Y,P,R)"), 
-						                        currentMsg.msgContent()) ) { //set msgArgList
-								 showValue(payloadArg(0),payloadArg(1).toDouble(), payloadArg(2).toDouble(),payloadArg(3).toDouble())	
-						}
-					}
-					 transition(edgeName="t02",targetState="continuerotation",cond=whenEventGuarded("androidSensor",{rot < 90}))
-					transition(edgeName="t03",targetState="endOfJob",cond=whenEventGuarded("androidSensor",{rot >= 90}))
-				}	 
-				state("endOfJob") { //this:State
-					action { //it:State
-						println("&&&  receiver ENDS")
-						delay(5000) 
-					}
+					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

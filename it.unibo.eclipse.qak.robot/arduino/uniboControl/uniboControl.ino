@@ -12,6 +12,11 @@ void move(int direction, int speed);
 double sonar;
 int input;
 int count;
+
+float rotLeftTime  = 0.5;
+float rotRightTime = 0.5;
+float rotStepTime  = 0.06;
+
 MeUltrasonicSensor ultrasonic_3(3);
 MeRGBLed rgbled_7(7, 7==7?2:4);
 void remoteCmdExecutor();
@@ -26,18 +31,7 @@ double stopFollow = true;
 double sonarVal;
 void lineFollow();
 MeLineFollower linefollower_2(2);
-/*
-void sonarDetect()
-{
-    sonarVal = ultrasonic_3.distanceCm();
-    Serial.println(sonarVal);
-    if((sonarVal) < (5)){
-        move(1,0);
-        stopFollow = true;
-        //Serial.println("stopFollow line follow");
-    }
-}
-*/
+
 void lineFollow()
 {
     if( stopFollow == true ) return;
@@ -67,7 +61,7 @@ void lookAtSonar()
 {
     sonar = ultrasonic_3.distanceCm();
     //emit sonar data but with a reduced frequency
-    if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
+    //if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
     if((sonar) <= (5)){ //very near
         if(((input)==(119))){
             move(1,0);  //Stop
@@ -101,12 +95,19 @@ void _delay(float seconds){
  * Interpreter
  * -----------------------------------
  */
-void remoteCmdExecutor()
-{
+void configureRotationTime(){
+  int dir  = Serial.read();
+  float v  = Serial.parseFloat();
+  if( dir == 'l' ) rotLeftTime  = v;
+  if( dir == 'r' ) rotRightTime = v;
+  //Serial.println( dir );
+}
+void remoteCmdExecutor(){
     if((Serial.available()) > (0  )){
         input = Serial.read();
         //Serial.println(input);
         switch( input ){
+          case 99  : configureRotationTime(); break;  //c... | cl0.59 or cr0.59
           case 119 : move(1,150); break;  //w
           case 115 : move(2,150); break;  //s
           case 97  : move(3,150); break;  //a
@@ -122,29 +123,27 @@ void remoteCmdExecutor()
     }
 }
 
-void rotateLeft90()
-{
+void rotateLeft90(){
   move(3,150);
-  _delay( 0.59 );
+  _delay( rotLeftTime );
   move(1,0);
 }
-void rotateRight90()
-{ //Serial.println("rotateRight90");
+void rotateRight90(){ 
+  //Serial.println("rotateRight90");
   move(4,150);
-  _delay( 0.59 );
+  _delay( rotRightTime );
   move(1,0);
 }
 
-void rotateLeftStep()
-{
+void rotateLeftStep(){
   move(3,150);
-  _delay( 0.1 );
+  _delay( rotStepTime );
   move(1,0);
 }
-void rotateRightStep()
-{ //Serial.println("rotateRight90");
+void rotateRightStep(){ 
+  //Serial.println("rotateRight90");
   move(4,150);
-  _delay( 0.1 );
+  _delay( rotStepTime );
   move(1,0);
 }
 

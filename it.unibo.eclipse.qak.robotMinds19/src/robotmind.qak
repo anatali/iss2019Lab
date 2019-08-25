@@ -11,7 +11,6 @@ Event  sonarData      : sonarData( D )			 //filtered by the PIPE
 Event  obstacle       : obstacle( DISTANCE ) 
 Event  polar          : p( Distance, Angle )   
 
-Event  g521           : g521(TYPE,X,Y,Z)
 
 Event  local_modelChanged   : modelChanged( TARGET, VALUE )
 //Event  modelContent   : content( VALUE ) 
@@ -276,30 +275,7 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
 	Goto waitCmd 
 } 
 
-QActor g521reader context ctxRobotMind{
- 	State init initial{
-		println("g521reader STARTS ... ")
-		//["Runtime.getRuntime().exec(\"./rotaccel > rotaccel.txt\")"]
-		//["scope.launch(){Runtime.getRuntime().exec(\"sudo python complementaryFiliter.py > gy521data.txt\")}"]
-	}         
-	Goto waitForEvents 
-	   
-	State waitForEvents{  }      
-   	Transition t0 whenEvent g521 ->  handleg521
 
-	State   handleg521{
-		printCurrentMessage
-	}	
-	Goto waitForEvents
-/* 	
-	State useGY521{  
- 		println("useGY521 starting ...  ") 
- 		run itunibo.robotRaspOnly.gy521Support.create(myself) 
-		forward resourcemodel -m modelChange : modelChange(robot,r)
-	}
-*/	 
-	
-}
  
 /* 
 // REMOVED: its job is done by the sonardatafilter

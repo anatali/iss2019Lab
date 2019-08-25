@@ -12,6 +12,10 @@ Event  sonarRobot     : sonar( DISTANCE )	     //from  sonar on robot
 Event  stopAppl       : stopAppl( CMD )  
 Event  reactivateAppl : reactivateAppl( CMD )  
 
+Event  g521           : g521(TYPE,X,Y,Z)
+Event  rotationCmd    : rotationCmd( CMD )
+
+
 Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
 
 Dispatch modelChange  : modelChange( TARGET, VALUE )   
@@ -23,6 +27,12 @@ Dispatch startAppl     : startAppl( CMD )
 Dispatch onestep       : onetstep( T )
 Dispatch stepOk        : stepOk  
 Dispatch stepFail      : stepFail(R,T) //R=ok | obstacle, T = time
+
+Dispatch robotCmd     : robotCmd( CMD )				  //sent by the mind to the basicrobot
+Dispatch tuneRotRight : tuneRotRight
+Dispatch tuneRotLeft  : tuneRotLeft
+Dispatch tuneRot      : tuneRot( DIR )
+
  
 Context ctxRobotAppl      ip [host="localhost"    port=8038]   -mqtt 
 Context ctxDummyForMind   ip [host="dontcarehost" port=8035]   -mqtt 
@@ -65,12 +75,12 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 				"coap://localhost/resourcemodel")	
 		}else{
 			run itunibo.coap.observer.resourceObserverCoapClient.create(
-				"coap://192.168.1.67:5683/resourcemodel")	
+				"coap://192.168.1.2:5683/resourcemodel")	
 		}
  	}
 	//Goto startApplication 
-   	//Goto waitCmd 
-   	Goto doRotation
+   	Goto waitCmd 
+   	//Goto doRotation
    	
 //---------------------------------------------------------------   	
    	State doRotation{
@@ -146,6 +156,57 @@ println(\"robotType = $robotType,  isVirtual = $isVirtual\")
 	}
 	
 	
+}
+
+QActor g521reader context ctxRobotAppl{
+ 	State init initial{
+		println("g521reader STARTS ... ")
+		delay 1000
+		println("SENDING r ")
+		emit rotationCmd : rotationCmd( r )
+		//["Runtime.getRuntime().exec(\"./rotaccel > rotaccel.txt\")"]
+		//["scope.launch(){Runtime.getRuntime().exec(\"sudo python complementaryFiliter.py > gy521data.txt\")}"]
+ 		//run itunibo.robotRaspOnly.gy521Support.create(myself) 
+		//forward resourcemodel -m modelChange : modelChange(robot,r)
+	}         
+	//Goto waitForEvents 
+	   
+	State waitForEvents{  }      
+   	Transition t0 whenEvent robotCmd -> tuneRotate //g521 ->  handleg521
+
+	State   tuneRotate{
+		onMsg( robotCmd : robotCmd( x ) ) { //MOVE = w | a | s | d | h | l | r | z | x
+			//run itunibo.robot.robotSupport.tuneRotation( "msg(${payloadArg(0)})" ) 
+			forward g521reader -m tuneRot  : tuneRot(r)  //automsg
+		}			
+		onMsg( robotCmd : robotCmd( z ) ) { //MOVE = w | a | s | d | h | l | r | z | x
+			//run itunibo.robot.robotSupport.tuneRotation( "msg(${payloadArg(0)})" ) 
+			forward g521reader -m tuneRot  : tuneRot(l)  //automsg
+		}			
+	}
+	Transition t0 whenMsg tuneRot -> tuneRotation
+	
+	State tuneRotation{
+		printCurrentMessage
+	}
+	Goto waitForEvents 
+	
+	State tuneRotationRight{
+		
+	}
+	State tuneRotLeft{
+		
+	}
+	
+	State   handleg521{
+		//msg(g521,event, gyroSender, none, g521(TYPE,X,Y,Z),MSGNUM)
+		//printCurrentMessage
+		onMsg( g521 : g521(gyro,X,Y,Z) ){
+			println( payloadArg(3) )	//Z
+		}
+	}	
+	Goto waitForEvents
+ 	
 }
 
 //Application move step
