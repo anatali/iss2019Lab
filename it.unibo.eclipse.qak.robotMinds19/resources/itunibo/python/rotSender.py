@@ -17,14 +17,22 @@ client.connect(brokerAddr)              #connect
 print("connected to broker ", brokerAddr)
 
 time.sleep(1)
-sendMsg( client, 'l') 
+sendMsg( client, 'r') 
 time.sleep(2)
+#sendMsg( client, 'showangle')
 sendMsg( client, 'r')
 time.sleep(2)
-sendMsg( client, 'l')
-time.sleep(2)
-sendMsg( client, 'r')
+#sendMsg( client, 'showangle')
 
+sendMsg( client, 'r')
+time.sleep(2)
+#sendMsg( client, 'showangle')
+sendMsg( client, 'r')
+time.sleep(2)
+#sendMsg( client, 'showangle')
+
+
+time.sleep(2)	#give time to elaborate before ending
 sendMsg( client, 'endofjob')
 
 """

@@ -84,3 +84,37 @@ while goon :
 client.disconnect()             #disconnect
 print("bye")
 client.loop_stop()              #stop loop      
+
+
+"""	
+	options = {
+		'r' : do_r(),
+		'l' : do_l(),
+		'x' : do_x(),
+		'z' : do_z()
+	}
+	options[CMD](  )
+
+	if CMD == 'r' :
+		ser.write('r\n') 
+		doGyro()  
+	if CMD == 'l' :
+		ser.write('l\n')           
+	if CMD == 'z' :
+		ser.write('z\n')           
+	if CMD == 'x' :
+		ser.write('x\n')           
+        		
+def do_r() :
+		ser.write('r\n') 
+		doGyro('r')  
+def do_l() :
+		ser.write('l\n') 
+		doGyro('l')  
+def do_x() :
+		ser.write('x\n') 
+		doGyro()  
+def do_z() :
+		ser.write('z\n') 
+		doGyro()  
+"""		

@@ -1,11 +1,11 @@
 #!/usr/bin/python
 """
-g521emitter.py
+gy521emitter.py
 
 GOAL: 			emit g521 qak-events for gyro or accel
 MSG-FORMAT:  	msg(g521,event,rasp,none,g521(gyro,X,Y,Z),39)  X,Y,Z float
 
-USAGE: 			python g521emitter.py
+USAGE: 			python gy521emitter.py
 """
 
 import smbus
@@ -281,11 +281,11 @@ def emitAccel(client) :
 def emitGyro(client) :	
 	global sensor
 	scale = 131.0
-	accelerometer_data = sensor.get_gyro_data()
-	x = accelerometer_data['x']
-	y = accelerometer_data['y']
-	z = accelerometer_data['z']
-	#print accelerometer_data 	 
+	gyro_data = sensor.get_gyro_data()
+	x = gyro_data['x']
+	y = gyro_data['y']
+	z = gyro_data['z']
+	#print gyro_data 	 
  	sendMsg(client,x,y,z,"gyro" )
 
 def doAccel() :
@@ -295,6 +295,7 @@ def doAccel() :
 		emitAccel(client) 
 		time.sleep(tsleep)
 def doGyro() :
+	maxnum = 30
 	print "Gyroscope"
 	print "--------"	
 	for i in range(1, maxnum) :
@@ -305,7 +306,7 @@ def doGyro() :
 print( __name__ )
 print sensor
 
-client= paho.Client("utilGY521")      
+client= paho.Client("g521emitter")      
 client.connect(brokerAddr)              #connect
 print("connected to broker ", brokerAddr)
 startTime     = time.time() 
