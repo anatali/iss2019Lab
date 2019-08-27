@@ -15,7 +15,7 @@ int count;
 
 float rotLeftTime  = 0.5;
 float rotRightTime = 0.5;
-float rotStepTime  = 0.06;
+float rotStepTime  = 0.05;
 
 MeUltrasonicSensor ultrasonic_3(3);
 MeRGBLed rgbled_7(7, 7==7?2:4);

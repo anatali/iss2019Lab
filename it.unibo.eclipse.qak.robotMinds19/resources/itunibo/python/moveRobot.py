@@ -8,7 +8,6 @@ MSG-FORMAT:  	msg(g521,event,rasp,none,g521(gyro,X,Y,Z),39)  X,Y,Z float
 USAGE: 			python g521emitter.py
 """
 
-#### import smbus
 import math
 import time
 import datetime
@@ -27,20 +26,28 @@ oldangle    = 0.0
 angle      = 0.0 
 duration   = 20
 
-lowAngle  = 88.0
-highAngle = 92.5        
+lowAngle  = 87.5
+highAngle = 92.5       
 
 sensor = mympu6050(0x68)
 
 open('dataRot.txt', 'w').close()	#clean the file
 dataFile  = open("dataRot.txt", "a")
 
+ser = serial.Serial(
+	port='/dev/ttyUSB0', 
+	baudrate=115200,             
+	parity=serial.PARITY_NONE,
+	stopbits=serial.STOPBITS_ONE,
+	bytesize=serial.EIGHTBITS,
+	timeout=10 )
+
 def storeData( msg ) :
 	dataFile.write( msg )
 	dataFile.flush()
 	
 def on_message(client, userdata, message) :  
-	global angle 
+	global angle, ser 
 	evMsg = str( message.payload.decode("utf-8")  )
 	#msg(rotationCmd,event, SENDER, none, rotationCmd(CMD),MSGNUM)
 	msgitems = evMsg.split(",")
@@ -49,23 +56,19 @@ def on_message(client, userdata, message) :
 	if msgitems[0] == "endofjob" :
 		sendMsg(client,'endofjob',0,0,0,0)
 		return
-	print "evMsg=", evMsg 
-	CMD      = msgitems[4].split('(')[1].split(')')[0] 
-	#print "CMD=", CMD 
+	#print "evMsg=", evMsg 
 	angle = 0.0
+	CMD  = msgitems[4].split('(')[1].split(')')[0] 
+	print "CMD=", CMD , (CMD == 'w')  
+	if (CMD == 'w') or (CMD == 's') or (CMD == 'h')  :
+		ser.write( CMD )		#EXECUTE THE COMMAND
+ 		return
 	if CMD == 'r' or CMD == 'l'  :
 		doGyro(CMD)
 	if  CMD == 'x' or CMD == 'z' :
 		doGyroStep(CMD)
 	
 
-ser = serial.Serial(
-	port='/dev/ttyUSB0', 
-	baudrate=115200,             
-	parity=serial.PARITY_NONE,
-	stopbits=serial.STOPBITS_ONE,
-	bytesize=serial.EIGHTBITS,
-	timeout=1 )
 
 def sendMsg( client,x,y,z,angle,sensorType ) :
 	global count 
@@ -78,20 +81,20 @@ def sendMsg( client,x,y,z,angle,sensorType ) :
 
 def doGyro(CMD) :	 
 	global angle , dataFile, lowAngle, highAngle
-	ser.write(CMD+'\n')		#EXECUTE THE COMMAND
+	ser.write( CMD )		#EXECUTE THE COMMAND
 	da = evalAngleDirect(CMD)
-	oldangle = angle
+	#oldangle = angle
 	da = evalAngleDirect(CMD)
 	#da = abs( angle - oldangle )
 	while da > 0.7 :
-		oldangle = angle
+		#oldangle = angle
 		da = evalAngleDirect(CMD)
 		#da = abs( angle - oldangle )	 
-	print "FIRST STEP CMD=", CMD , " DONE angle=" , angle	
+	print "FIRST STEP DONE CMD=", CMD , " DONE angle=" , angle	
 	template = "FIRST STEP DONE CMD={0} ANGLE={1} \n"
 	dataFile.write( template.format(CMD,angle) )
 	dataFile.flush()
-	if  abs(angle) < lowAngle or  abs(angle) > highAngle :
+	if   angle  < lowAngle or   angle  > highAngle :
 		compensate( CMD )
 	angle = 0.0
 	
@@ -100,9 +103,9 @@ def evalAngleDirect( CMD  ) :
 	data = sensor.get_gyro_data()
 	x  = data['x']
 	y  = data['y']
-	z  = data['z']  
-	if  z < 0 :
-		z = -z
+	z  = abs( data['z']  )
+	#if  z < 0 :
+	#	z = -z
 	sendMsg( client,x,y,z,angle, "gyro" ) 	#events arrive at this app too!!!
 	### ACCUMULATE ### 
 	da    = (z * tsleep)
@@ -114,21 +117,65 @@ def evalAngleDirect( CMD  ) :
 	time.sleep(tsleep) 
 	return da
  
+def compensate( CMD ) :
+	global angle, dataFile, lowAngle, highAngle
+ 	print " ----------------------------------- compensate START:" , CMD, " angle=" , angle
+	template = "COMPENSATE START CMD={0} ANGLE={1} \n"
+	dataFile.write( template.format(CMD, angle) )
+ 	dataFile.flush()
+ 	da = 0.0
+ 	if CMD == 'r' :	
+ 		if  angle  < lowAngle :
+ 			da = robotStep('x\n' )
+ 			angle = angle + da		
+ 		if  angle  > highAngle :
+ 			da = robotStep('z\n' )
+ 			angle = angle - da
+  	if CMD == 'l' :	
+ 		if angle < lowAngle :
+ 			da = robotStep('z\n'  )
+ 			angle = angle + da
+  		if angle > highAngle :
+ 			robotStep('x\n'  )
+ 			angle = angle - da
+ 	print " ----------------------------------- compensate END :" , CMD, " da=", da, " angle=" , angle
+	template = "COMPENSATE END CMD={0} ANGLE={1} \n"
+	dataFile.write( template.format(CMD, angle) )
+ 	dataFile.flush()
+	print "COMPENSATE	 angle=" , angle	
   
 def robotStep( CMD  ) :
-	ser.write( CMD )
+	global sensor, angle, tsleep, ser
+ 	ser.write( CMD )
 	time.sleep(tsleep)
 	data = sensor.get_gyro_data()
 	x  = data['x']
 	y  = data['y']
 	z  = abs( data['z'] )
 	da = (z * tsleep)  
-	angle = angle + da 
- 	print "robotStep:", angle , " z=" , z , " CMD=" , CMD, "da=" , da
-	template = "z={0} ANGLE={1} da={2}\n"
-	dataFile.write( template.format(z, angle, da) )
-	dataFile.flush()
+	time.sleep(tsleep)
+	return da
+
+def testAtStart() :
+	time.sleep(2)  # wait for ser to start
+	print("CONFIGURE ROTATE RIGHT" )
+	ser.write( "cr0.5"   )
+	time.sleep(2)
 	
+	print("MOVE INITIAL r" )
+	ser.write( "r"   )
+	time.sleep(1) 
+	
+	print("MOVE INITIAL l" )
+	ser.write( "l"  )
+	time.sleep(1)
+	 
+	print("MOVE INITIAL w" ) 
+	ser.write( "w" )
+	time.sleep(1)
+	print("MOVE INITIAL h" )
+	ser.write( 'h'  )
+	time.sleep(1)	
 
 client= paho.Client("moveRobot")  
 client.on_message=on_message            # Bind function to callback    
@@ -154,6 +201,7 @@ client.loop_stop()              #stop loop
 #doAccel()
 #doGyro()
 
+
 """
 def doGyroStep( CMD ) :
 	global angle 	
@@ -164,27 +212,6 @@ def doGyroStep( CMD ) :
 	print "doGyroStep angle=" , angle , " angle corrected= ", angle-startangle	
 
 	
-def compensate( CMD ) :
-	global angle, dataFile, lowAngle, highAngle
- 	print " ----------------------------------- compensate START:" , CMD, " angle=" , angle
-	template = "COMPENSATE START CMD={0} ANGLE={1} \n"
-	dataFile.write( template.format(CMD, angle) )
- 	dataFile.flush()
- 	if CMD == 'r' :	
- 		if  angle  < lowAngle :
- 			robotStep('x\n' )		
- 		if  angle  > highAngle :
- 			robotStep('z\n' )
-  	if CMD == 'l' :	
- 		if angle < lowAngle :
- 			robotStep('z\n'  )
-  		if angle > highAngle :
- 			robotStep('x\n'  )
- 	print " ----------------------------------- compensate END :" , CMD, " angle=" , angle
-	template = "COMPENSATE END CMD={0} ANGLE={1} \n"
-	dataFile.write( template.format(CMD, angle) )
- 	dataFile.flush()
-	print "COMPENSATE	 angle=" , angle	
 
 
  
