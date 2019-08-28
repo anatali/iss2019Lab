@@ -8,17 +8,17 @@ import it.unibo.kactor.ActorBasic
 import kotlinx.coroutines.delay
 
 object gy521Support {
-	lateinit var reader : BufferedReader
+	//lateinit var reader : BufferedReader
 	
 	//g++  rotaccel.c -l wiringPi -o  rotaccel
 	fun create( actor : ActorBasic, todo : String="" ){
-		//println("gy521Support CREATING")
+		println("CREATING gy521Support")
 		//val p  = Runtime.getRuntime().exec("sudo python complementaryFiliter.py")
-		val p  = Runtime.getRuntime().exec("sudo ./rotaccel")
-		reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
-		startRead( actor )
+		val p  = Runtime.getRuntime().exec("sudo ./robotCmdEntry")
+		//reader = BufferedReader(  InputStreamReader(p.getInputStream() ))
+		//startRead( actor )
 	}
-	
+/*	
 	fun startRead( actor: ActorBasic  ){
 		GlobalScope.launch{
 			println("gy521Support startRead reader=$reader")
@@ -33,5 +33,6 @@ object gy521Support {
 //				delay( 250 )
 			}
 		}
-	} 
+	}
+ */
 }

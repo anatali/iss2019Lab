@@ -61,7 +61,7 @@ void lookAtSonar()
 {
     sonar = ultrasonic_3.distanceCm();
     //emit sonar data but with a reduced frequency
-    //if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
+    if( count++ > 10 ){ Serial.println(sonar);  count = 0; }
     if((sonar) <= (5)){ //very near
         if(((input)==(119))){
             move(1,0);  //Stop
@@ -100,6 +100,8 @@ void configureRotationTime(){
   float v  = Serial.parseFloat();
   if( dir == 'l' ) rotLeftTime  = v;
   if( dir == 'r' ) rotRightTime = v;
+  if( dir == 'z' ) rotStepTime  = v;
+  if( dir == 'x' ) rotStepTime  = v;
   //Serial.println( dir );
 }
 void remoteCmdExecutor(){
@@ -107,7 +109,7 @@ void remoteCmdExecutor(){
         input = Serial.read();
         //Serial.println(input);
         switch( input ){
-          case 99  : configureRotationTime(); break;  //c... | cl0.59 or cr0.59
+          case 99  : configureRotationTime(); break;  //c... | cl0.59 or cr0.59  or cx0.005 or cz0.005
           case 119 : move(1,150); break;  //w
           case 115 : move(2,150); break;  //s
           case 97  : move(3,150); break;  //a

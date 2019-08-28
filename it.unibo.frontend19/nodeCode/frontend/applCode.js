@@ -75,6 +75,8 @@ app.get('/appl', function(req, res) {
 	app.post("/z", function(req, res,next) { handlePostMove("z","moving leftstep",  req,res,next); });  //move small
 	app.post("/x", function(req, res,next) { handlePostMove("x","moving rightstep", req,res,next); });  //move small
 	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",          req,res,next); });	
+	
+	app.post("/pythonend", function(req, res,next) { terminatePythonExec(); next(); });	
  
   	//APPLICATION
 	app.post("/startappl", function(req, res,next) {
@@ -170,6 +172,12 @@ var changeResourceModelCoap = function( cmd ){
 var publishEmitUserCmd = function( cmd ){  
  	var eventstr = "msg(userCmd,event,js,none,userCmd("+cmd +"),1)"  ;  //TODO: replace 1 with counter
     console.log("emits> "+ eventstr);
+ 	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
+}
+
+var terminatePythonExec = function( ){  
+ 	var eventstr = "msg(rotationCmd,event,js,none,rotationCmd(endofjob),1)"  ;  //TODO: replace 1 with counter
+    console.log("terminatePythonExec emits> "+ eventstr);
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
 }
 

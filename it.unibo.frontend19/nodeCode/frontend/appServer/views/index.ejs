@@ -29,12 +29,19 @@ function escapeRegExp(str) {
 </head>
 
 <body>
- 
+<!--
+===============================================================================
+Commands elaborated by frontend/uniboSupports/applCode
+that calls changeResourceModelCoap that exec a coap.put
+that emits modelChange
+===============================================================================
+--> 
 <div style="background-color: #D2B4DE">
 <h2>Robot Console</h2>   
 <center>
 			<table >
 					<tr>
+						<td></td>
 						<td></td>
 						<td align="center">
 							<form action="/w" method="post">
@@ -42,9 +49,8 @@ function escapeRegExp(str) {
 							</form>
 						</td>
 						<td></td>
+						<td></td>
 					</tr>
-					
-
 					<tr>
 						<td align="center">
 							<form action="/z" method="post">
@@ -76,15 +82,31 @@ function escapeRegExp(str) {
 					</tr>
 					<tr>
 						<td></td>
+						<td></td>
 						<td align="center">
 							<form action="/s" method="post">
 							  	<input type="submit" style="font-size:30px;"  value="backward"  >
 							</form>
 						</td>
 						<td></td>
+						<td></td>
 					</tr>
 				</table>
 </center>
+ 
+ <!--
+===============================================================================
+Commands elaborated by frontend/uniboSupports/applCode
+that calls terminatePythonExec
+that publis msg(rotationCmd,event,js,none,rotationCmd(endofjob),1
+The event is handled by robotCmdExec.py
+===============================================================================
+--> 
+ 
+ <h3>Stop robotCmdExec.py</h3>   
+	<form action="/pythonend" method="post">
+		<input type="submit" style="font-size:30px;"  value="pythonend">
+	</form>
  
 <h2>Application console</h2>   
 <center>

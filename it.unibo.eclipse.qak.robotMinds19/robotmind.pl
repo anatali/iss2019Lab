@@ -7,3 +7,4 @@ context(ctxrobotmind, "localhost",  "MQTT", "0" ).
   qactor( robotmind, ctxrobotmind, "it.unibo.robotmind.Robotmind").
   qactor( onestepahead, ctxrobotmind, "it.unibo.onestepahead.Onestepahead").
   qactor( basicrobot, ctxrobotmind, "it.unibo.basicrobot.Basicrobot").
+  qactor( g521support, ctxrobotmind, "it.unibo.g521support.G521support").

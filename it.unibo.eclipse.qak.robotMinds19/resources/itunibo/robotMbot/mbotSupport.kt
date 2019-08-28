@@ -38,22 +38,32 @@ object mbotSupport{
 		}		
 	}
 	
-	fun move( cmd : String ){
+	/*
+ 	 Aug 2019
+     The moves l, r, z, x are executed (at the moment)
+ 	  by the Python application robotCmdExec that exploits GY521
+    */
+	fun  move( cmd : String ){
 		//println("mbotSupport move cmd=$cmd conn=$conn")
 		when( cmd ){
 			"msg(w)" -> conn.sendALine("w")
 			"msg(s)" -> conn.sendALine("s")
 			"msg(a)" -> conn.sendALine("a")
 			"msg(d)" -> conn.sendALine("d")
-			"msg(l)" -> conn.sendALine("l")
-			"msg(r)" -> conn.sendALine("r")
-			"msg(z)" -> conn.sendALine("z")
-			"msg(x)" -> conn.sendALine("x")
+			"msg(l)" -> sendToPython("l")	//conn.sendALine("l")
+			"msg(r)" -> sendToPython("r")	//conn.sendALine("r")
+			"msg(z)" -> sendToPython("z")	//conn.sendALine("z")
+			"msg(x)" -> sendToPython("x")	//conn.sendALine("x")
 			"msg(h)" -> conn.sendALine("h")
 			else -> println("mbotSupport command unknown")
 		}
+		
 	}
 	
+	private fun sendToPython( msg : String ){
+		println("mbotSupport sendToPython $msg")
+		owner.scope.launch{ owner.emit("rotationCmd","rotationCmd($msg)") }
+	}
 	
 	/* MOVED INTO robotDataSourceArduino	
 	private fun emitDataAtModelLevel(dataSonar : Int ){
