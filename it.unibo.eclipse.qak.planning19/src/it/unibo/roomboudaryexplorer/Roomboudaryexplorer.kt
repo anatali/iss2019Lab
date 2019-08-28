@@ -17,7 +17,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
 		var mapEmpty    = false
-		val mapname     = "roomMbot2"  //"roomBoundary"		//
+		val mapname     = "roomMbot3"  //"roomBoundary"		// 
 		var Tback       = 0
 		var NumStep     = 0
 		 

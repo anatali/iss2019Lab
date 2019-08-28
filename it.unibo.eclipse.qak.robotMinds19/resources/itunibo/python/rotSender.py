@@ -40,8 +40,7 @@ def doRotate() :
 client= paho.Client("utilGY521")      
 client.connect(brokerAddr)              #connect
 print("connected to broker ", brokerAddr)
-
-#doRotate()
+doRotate()
 
 time.sleep(2)	 #give time to elaborate before ending
 sendMsg( client, 'endofjob')
