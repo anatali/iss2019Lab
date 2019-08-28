@@ -5395,3 +5395,7 @@
 ::1 - GET / HTTP/1.1 304 - - 41.580 ms
 ::1 - GET /favicon.ico HTTP/1.1 - - - - ms
 ::1 - POST /pythonend HTTP/1.1 - - - - ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
+::1 - POST /pythonend HTTP/1.1 - - - - ms
+::1 - GET / HTTP/1.1 200 5417 - 7.956 ms
+::1 - GET /favicon.ico HTTP/1.1 - - - - ms
