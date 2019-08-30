@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <SoftwareSerial.h>
 #include <MeMCore.h>
+ 
 
 MeDCMotor motor_9(9);
 MeDCMotor motor_10(10);
@@ -13,9 +14,9 @@ double sonar;
 int input;
 int count;
 
-float rotLeftTime  = 0.5;
-float rotRightTime = 0.5;
-float rotStepTime  = 0.05;
+float rotLeftTime  = 0.58;
+float rotRightTime = 0.58;
+float rotStepTime  = 0.058;
 
 MeUltrasonicSensor ultrasonic_3(3);
 MeRGBLed rgbled_7(7, 7==7?2:4);
@@ -95,14 +96,20 @@ void _delay(float seconds){
  * Interpreter
  * -----------------------------------
  */
+
+ /*
+  * WARNING: the modification is not permanent
+  * This is useful just for tuning
+  */
 void configureRotationTime(){
-  int dir  = Serial.read();
-  float v  = Serial.parseFloat();
+  char dir  = Serial.read();
+  float v   = Serial.parseFloat();  
+  Serial.println( dir == 'l' );
   if( dir == 'l' ) rotLeftTime  = v;
   if( dir == 'r' ) rotRightTime = v;
   if( dir == 'z' ) rotStepTime  = v;
   if( dir == 'x' ) rotStepTime  = v;
-  //Serial.println( dir );
+  Serial.println( rotLeftTime );
 }
 void remoteCmdExecutor(){
     if((Serial.available()) > (0  )){
@@ -125,7 +132,7 @@ void remoteCmdExecutor(){
     }
 }
 
-void rotateLeft90(){
+void rotateLeft90( ){
   move(3,150);
   _delay( rotLeftTime );
   move(1,0);

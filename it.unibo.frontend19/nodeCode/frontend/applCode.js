@@ -76,8 +76,9 @@ app.get('/appl', function(req, res) {
 	app.post("/x", function(req, res,next) { handlePostMove("x","moving rightstep", req,res,next); });  //move small
 	app.post("/h", function(req, res,next) { handlePostMove("h","stopped",          req,res,next); });	
 	
-	app.post("/pythonend", function(req, res,next) { terminatePythonExec(); next(); });	
- 
+	app.post("/pythonend", function(req, res,next) { pythonExec('pythonend'); next(); });	
+ 	app.post("/wstep", function(req, res,next) { pythonExec('wstep'); next(); });	
+ 	
   	//APPLICATION
 	app.post("/startappl", function(req, res,next) {
   		delegateForAppl( "startAppl", req, res );
@@ -175,8 +176,8 @@ var publishEmitUserCmd = function( cmd ){
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
 }
 
-var terminatePythonExec = function( ){  
- 	var eventstr = "msg(rotationCmd,event,js,none,rotationCmd(endofjob),1)"  ;  //TODO: replace 1 with counter
+var pythonExec = function( cmd ){  
+ 	var eventstr = "msg(rotationCmd,event,js,none,rotationCmd("+cmd +"),1)"  ;  //TODO: replace 1 with counter
     console.log("terminatePythonExec emits> "+ eventstr);
  	mqttUtils.publish( eventstr, "unibo/qak/events" );	 
 }

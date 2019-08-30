@@ -15,41 +15,41 @@ class Butlermind ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, 
 	}
 		
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
-		var ButlerStarted = false
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("&&&  butlermind STARTED ")
+						println("&&&  butlermindSTARTED")
 					}
-					 transition(edgeName="t00",targetState="doprepare",cond=whenDispatch("prepare"))
+					 transition( edgeName="goto",targetState="reachTheFridge", cond=doswitch() )
 				}	 
-				state("doprepare") { //this:State
+				state("reachTheFridge") { //this:State
 					action { //it:State
-						println("&&&  butlermind doprepare")
-						forward("execButlerPlan", "execButlerPlan(prepare)" ,"butlerplanexecutor" ) 
+						delay(1000) 
+						println("&&&  butler going from HOME to FRIDGE")
+						forward("setTheGoal", "setTheGoal(0,6)" ,"workerinroom" ) 
 					}
-					 transition(edgeName="t01",targetState="afterPrepare",cond=whenDispatch("targetReached"))
+					 transition(edgeName="t00",targetState="reachTheTable",cond=whenDispatch("goalReached"))
 				}	 
-				state("afterPrepare") { //this:State
+				state("reachTheTable") { //this:State
 					action { //it:State
-						println("&&&  butlermind afterPrepare")
+						delay(1000) 
+						println("&&&  butler going from FRIDGE to TABLE")
+						forward("setTheGoal", "setTheGoal(5,3)" ,"workerinroom" ) 
 					}
-					 transition(edgeName="t02",targetState="doclear",cond=whenDispatch("clear"))
-					transition(edgeName="t03",targetState="doadd",cond=whenDispatch("add"))
+					 transition(edgeName="t01",targetState="backToHome",cond=whenDispatch("goalReached"))
 				}	 
-				state("doadd") { //this:State
+				state("backToHome") { //this:State
 					action { //it:State
-						println("&&&  butlermind doadd")
-						forward("execButlerPlan", "execButlerPlan(add)" ,"butlerplanexecutor" ) 
+						delay(1000) 
+						println("&&&  butler going to HOME")
+						forward("setTheGoal", "setTheGoal(0,0)" ,"workerinroom" ) 
 					}
-					 transition(edgeName="t04",targetState="afterPrepare",cond=whenDispatch("targetReached"))
+					 transition(edgeName="t02",targetState="atHome",cond=whenDispatch("goalReached"))
 				}	 
-				state("doclear") { //this:State
+				state("atHome") { //this:State
 					action { //it:State
-						println("&&&  butlermind doclear")
-						forward("execButlerPlan", "execButlerPlan(clearnofood)" ,"butlerplanexecutor" ) 
+						println("&&&  butler IS AT HOME")
 					}
-					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
 		}

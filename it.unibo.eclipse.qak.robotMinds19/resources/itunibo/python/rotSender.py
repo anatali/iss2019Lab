@@ -32,7 +32,7 @@ def doPath() :
 
 def doRotate() :
 	sendMsg( client, 'l') 
-	time.sleep(2)
+	time.sleep(3)
 	#sendMsg( client, 'showangle')
 	sendMsg( client, 'r')
 	time.sleep(2)
@@ -43,5 +43,5 @@ print("connected to broker ", brokerAddr)
 doRotate()
 
 time.sleep(2)	 #give time to elaborate before ending
-sendMsg( client, 'endofjob')
+sendMsg( client, 'endofsender')
 print( "bye " )

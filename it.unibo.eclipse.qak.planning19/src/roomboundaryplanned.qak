@@ -51,6 +51,7 @@ var StepTime   = 1000
     Goto doAheadMove if "(NumStep<5)" else boundaryFound
 
  	State doAheadMove{
+ 		printCurrentMessage
    		run itunibo.planner.moveUtils.attemptTomoveAhead(myself, StepTime)
 	}
 	Transition t0   whenMsg stepOk   -> stepDone   

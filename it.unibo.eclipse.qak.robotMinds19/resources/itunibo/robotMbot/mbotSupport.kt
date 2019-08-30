@@ -31,7 +31,6 @@ object mbotSupport{
 //				if( istart ) break
 //			}
 
-			//			getDataFromArduino();
 			robotDataSourceArduino("robotDataSourceArduino", owner, filter, conn)
 		}catch(  e : Exception) {
 			println("mbotSupport ERROR ${e }"   );
@@ -67,42 +66,7 @@ object mbotSupport{
 	
 	/* MOVED INTO robotDataSourceArduino	
 	private fun emitDataAtModelLevel(dataSonar : Int ){
-		owner.scope.launch{ owner.emit("sonarRobot", "sonar( ${ dataSonar } )")  }//MODEL LEVEL
-	}
-	private fun emitDataAtStreamLevel(dataSonar : Int ){
- 		val event = MsgUtil.buildEvent(owner.name,"sonarRobot","sonar( $dataSonar )")
-		owner.scope.launch{ owner.emitLocalStreamEvent(event)		} //STREAM LEVEL
-	}
-	private fun emitDataAtOopLevel(dataSonar : Int ){
-		filter.elabSonarData("$dataSonar") 	 //OOP LEVEL
-	}
-
-	private fun getDataFromArduino(   ) {
-           GlobalScope.launch {
-                while (true) {
- 						try {
-							var curDataFromArduino = conn.receiveALine()
-							globalTimer.startTimer()  //TIMER ....
- 	 						//println("getDataFromArduino received: $curDataFromArduino"    )
- 							var v = curDataFromArduino.toDouble() 
-							//handle too fast change ?? NOT HERE
-  							dataSonar = v.toInt();
-							
-							//println("mbotSupport sonar: ${ dataSonar }"   );								
-// 							if( filter.modeReact =="pipe") emitDataAtStreamLevel(dataSonar)	 
-//							else if( filter.modeReact =="model") emitDataAtModelLevel(dataSonar)
-//							else  emitDataAtOopLevel(dataSonar)  //default
-							
-						    //JUNE 2019 (streaming)
-							val event = MsgUtil.buildEvent(owner.name,"sonarRobot","sonar( $dataSonar )")								
-							owner.scope.launch{ owner.emitLocalStreamEvent(event) }
-							
-						} catch ( e : Exception) {
- 							println("getDataFromArduino | ERROR $e   ")
- 							//System.exit(1)
-                    }
-				}
-			}
-	}
- */
+		...
+ 	private fun getDataFromArduino(   ) {
+  */
 }

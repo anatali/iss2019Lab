@@ -49,6 +49,7 @@ class Roomboudaryexplorer ( name: String, scope: CoroutineScope ) : ActorBasicFs
 				}	 
 				state("doAheadMove") { //this:State
 					action { //it:State
+						println("$name in ${currentState.stateName} | $currentMsg")
 						itunibo.planner.moveUtils.attemptTomoveAhead(myself ,StepTime )
 					}
 					 transition(edgeName="t00",targetState="stepDone",cond=whenDispatch("stepOk"))

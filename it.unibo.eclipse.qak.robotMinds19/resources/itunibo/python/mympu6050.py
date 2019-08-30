@@ -1,4 +1,7 @@
 """
+mympu6050.py
+
+pip install smbus
 """
 import smbus
 
