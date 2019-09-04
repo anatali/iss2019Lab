@@ -1,0 +1,9 @@
+Install Pandoc (2.7.3)
+
+Call jupyter notebook from soame directrory
+
+browser on localhost:8888
+
+
+execute 
+	File/Download as ...
