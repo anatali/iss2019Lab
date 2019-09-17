@@ -274,24 +274,22 @@ val logger           = itunibo.robot.Logger(\"logFiltered\")
 	}
 	Goto waitCmd 
 } 
-
+/* 
 QActor g521support context ctxRobotMind{
  	State init initial{
 		println("g521support actor STARTS ... ")
   		[" Runtime.getRuntime().exec(\"sudo python robotCmdExec.py > cmdExecOut.txt\") "]
-  		/*
-  		 * robotCmdExec TERMINATES when receives: msg(rotationCmd,event,source,none,rotationCmd(endofsender), 1)
-  		 * Afterwards, it generates: msg(pythonEnd,event,rasp,none,pythonEnd,1)
-  		 * 
-  		 */
- 	}         
+   		 //robotCmdExec TERMINATES when receives: msg(rotationCmd,event,source,none,rotationCmd(endofsender), 1)
+  		 //Afterwards, it generates: msg(pythonEnd,event,rasp,none,pythonEnd,1)
+  	}         
  	Transition t0 whenEvent pythonEnd -> end
  	
  	State end{
  		println("g521support actor ENDS ... ")
  	}
 }
- 
+*/ 
+
 /* 
 // REMOVED: its job is done by the sonardatafilter
    Arduino  --(sonarRobot)--> sonardatafilter ----> sonarData , obstacle 

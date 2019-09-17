@@ -18,11 +18,13 @@ class Simul ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						emit("input1on", "on" ) 
-						delay(500) 
-						emit("input2on", "on" ) 
-						delay(500) 
-						emit("input1off", "off" ) 
+						forward("s", "s(i1,on)" ,"neuron" ) 
+						delay(100) 
+						forward("s", "s(i2,on)" ,"neuron" ) 
+						delay(100) 
+						forward("s", "s(i2,off)" ,"neuron" ) 
+						delay(100) 
+						forward("s", "s(i2,on)" ,"neuron" ) 
 					}
 				}	 
 			}

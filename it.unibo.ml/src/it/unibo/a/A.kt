@@ -18,31 +18,30 @@ class A ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("a idel")
+						solve("consult('sysRules.pl')","") //set resVar	
+						solve("consult('neuronConnKb.pl')","") //set resVar	
+						solve("setConnection(c,1)","") //set resVar	
+						solve("prepareConnectionsToSend","") //set resVar	
 					}
-					 transition(edgeName="t00",targetState="inpu1On",cond=whenEvent("input1on"))
-					transition(edgeName="t01",targetState="inpu2On",cond=whenEvent("input2on"))
+					 transition( edgeName="goto",targetState="propagateOutput", cond=doswitch() )
 				}	 
-				state("inpu1On") { //this:State
+				state("propagateOutput") { //this:State
 					action { //it:State
-						println("a input1on")
+						solve("retract(link(N,I))","") //set resVar	
+						if(currentSolution.isSuccess()) { 
+						 				val Dest  = currentSolution.getVarValue("N").toString()
+										val Input = currentSolution.getVarValue("I").toString()
+										//println(" a propagateOutput dest = $Dest, input = $Input ")
+										forward("son", "son($Input)" ,Dest ) 		 
+						 }
 					}
-					 transition(edgeName="t02",targetState="s0",cond=whenEvent("input1off"))
-					transition(edgeName="t03",targetState="firing",cond=whenEvent("input2on"))
+					 transition( edgeName="goto",targetState="propagateOutput", cond=doswitchGuarded({currentSolution.isSuccess()}) )
+					transition( edgeName="goto",targetState="end", cond=doswitchGuarded({! currentSolution.isSuccess()}) )
 				}	 
-				state("inpu2On") { //this:State
+				state("end") { //this:State
 					action { //it:State
-						println("a input2on")
+						println("neuron a ends")
 					}
-					 transition(edgeName="t04",targetState="s0",cond=whenEvent("input2off"))
-					transition(edgeName="t05",targetState="firing",cond=whenEvent("input1on"))
-				}	 
-				state("firing") { //this:State
-					action { //it:State
-						println("a firing")
-					}
-					 transition(edgeName="t06",targetState="inpu2On",cond=whenEvent("input1off"))
-					transition(edgeName="t07",targetState="inpu1On",cond=whenEvent("input2off"))
 				}	 
 			}
 		}

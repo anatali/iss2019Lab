@@ -1,10 +1,16 @@
+"""
+ipy2html.py
+"""
 import nbformat
 import nbconvert
 import sys
-
+"""
 if len(sys.argv) < 2:
     print("Usage:", sys.argv[0], 'filename.ipynb', '[--slides]')
     exit(-1)
+"""
+fname  = "uniboMbot2019.ipynb"
+slides = False
 
 with open(sys.argv[1]) as nb_file:
     nb_contents = nb_file.read()

@@ -5914,3 +5914,5 @@
 ::1 - POST /x HTTP/1.1 - - - - ms
 ::1 - GET /favicon.ico HTTP/1.1 - - - - ms
 ::1 - POST /x HTTP/1.1 - - - - ms
+::ffff:192.168.1.4 - GET / HTTP/1.1 200 5595 - 60.497 ms
+::ffff:192.168.1.4 - GET /HNAP1/ HTTP/1.1 - - - - ms
