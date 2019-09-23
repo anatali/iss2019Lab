@@ -45,7 +45,7 @@ QActor edge1neuron context ctxNeuronet{
 		whenEvent fired -> work
 		
 	State work{
-		//println("edge1neuron work")
+		println("edge1neuron work")
 		forward neuron -m s : s(i1)
 	}
 	Goto s0
@@ -59,7 +59,7 @@ QActor edge2neuron context ctxNeuronet{
 		whenEvent fired -> work
 		
 	State work{
-		//println("edge2neuron work")
+		println("edge2neuron work")
 		forward neuron -m s : s(i2)
 	}
 	Goto s0

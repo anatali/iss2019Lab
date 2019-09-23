@@ -23,6 +23,7 @@ class Edge2neuron ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name,
 				}	 
 				state("work") { //this:State
 					action { //it:State
+						println("edge2neuron work")
 						forward("s", "s(i2)" ,"neuron" ) 
 					}
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )

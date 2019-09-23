@@ -10,12 +10,13 @@ QActor a context ctxNeurons{
  		solve( consult( "sysRules.pl" ) )
 		solve( consult( "neuronConnKb.pl" ) )
 		
-//		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a or b )
-// 		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
+		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a or b )
+ 		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
 
-		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a and b )
+//		solve( setConnection(c,1) )  			//NETWORK CONFIGURATION (a and b )
 		
- 		solve( prepareConnectionsToSend  ) 		//creates a sequence of link(N,I) to be consumed by propagateOutput
+		//create a sequence of link(N,I) to be consumed by propagateOutput
+ 		solve( prepareConnectionsToSend  ) 		 
  	}
 	Goto propagateOutput
 	
@@ -27,8 +28,11 @@ QActor a context ctxNeurons{
 				val Input = currentSolution.getVarValue(\"I\").toString()
 				//println(\" a propagateOutput dest = $Dest, input = $Input \")
 				forward(\"son\", \"son($Input)\" ,Dest ) 		 
+
+//				delay(1000)
+//				forward(\"soff\", \"soff($Input)\" , Dest ) 
 			"]
-			//forward c -m son : son($Input)		//Destination var not allowed at model level
+			//forward c -m son : son($Input)	//Destination var not allowed in model
 		}
 	}
 	Goto propagateOutput  if "currentSolution.isSuccess()" else end
@@ -41,14 +45,14 @@ QActor b context ctxNeurons{
  		solve( consult( "sysRules.pl" ) )
 		solve( consult( "neuronConnKb.pl" ) )
 
-//		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
-// 		solve( setConnection(c,3) )  			//NETWORK CONFIGURATION (a or b )
+		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a or b )
+ 		solve( setConnection(c,3) )  			//NETWORK CONFIGURATION (a or b )
 
-		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a and b )
+//		solve( setConnection(c,2) )  			//NETWORK CONFIGURATION (a and b )
 
-		delay 1500
-
-  		solve( prepareConnectionsToSend  ) 		//creates a sequence of link(N,I) to be consumed by propagateOutput
+		delay 500  //b fires after a
+		//create a sequence of link(N,I) to be consumed by propagateOutput
+  		solve( prepareConnectionsToSend  ) 		
  	}
 	Goto propagateOutput
 	
@@ -60,15 +64,19 @@ QActor b context ctxNeurons{
 				val Input = currentSolution.getVarValue(\"I\").toString()
 				//println(\" a propagateOutput dest = $Dest, input = $Input \")
 				forward(\"son\", \"son($Input)\" ,Dest ) 
+
+//				delay(2000)
+//				forward(\"soff\", \"soff($Input)\" , Dest ) 
+
 			"]
-			//forward c -m son : son($Input) //Destination var not allowed at model level
+			//forward c -m son : son($Input) //Destination var not allowed in model
 		}
 	}
 	Goto propagateOutput  if "currentSolution.isSuccess()" else end
 
 	State end{ println("neuron b ends") }
 }  
-
+  
 
 QActor c context ctxNeurons{
 	State s0 initial {	 
@@ -104,10 +112,8 @@ QActor c context ctxNeurons{
 		solve( firing  )
 		ifSolved{ 
 			println("c FIRING")
-			//solve( output( c,on ) )
 		} else{ 
 			println("c NOT FIRING")
-			//solve( output( c,off ) )
 		}		
 	}
 	Goto active	

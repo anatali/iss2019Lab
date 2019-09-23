@@ -646,7 +646,8 @@ PAtomString : val = STRING ;
 PAtomic     : val = ID ;
 PAtomNum    : val = INT ;
 PStructRef  : "$" struct = PStruct;   
-PStruct     : functor=ID "(" (msgArg += PHead)? ("," msgArg += PHead)* ")" ;
+PStruct     : functor=ID "(" (msgArg += PHead) //at least one arg required
+		("," msgArg += PHead)* ")" ; 
 Variable    : {Variable} varName= VARID ;
 //USING vars (from solve or from code)
 VarRef      : "$" varName= VARID ;	//=> $Curmove in msg payload   

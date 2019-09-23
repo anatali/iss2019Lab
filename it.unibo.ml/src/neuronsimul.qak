@@ -1,0 +1,72 @@
+System neuronsimul
+
+Dispatch signal : signal(INPUT, STATE)	//STATE = on | off INPUT=i1 | i2 ...
+
+Context ctxNeuronSimul ip [host="localhost" port=8042]
+
+QActor aneuron context ctxNeuronSimul{
+["
+	var i1 = false
+	var i2 = false
+	var i3 = false
+	var firing = false
+"]	
+	State s0 initial {	 
+		println("aneuron idle")
+	}
+ 	Goto work
+ 	
+ 	State work{
+ 		
+ 	}
+	Transition t0  
+		whenMsg signal -> handleSsignal
+	
+	
+	State handleSsignal{
+	[" var value = false "]
+		printCurrentMessage
+		onMsg ( signal : signal( _,V) ){ [" value=payloadArg(1).equals(\"on\")"]}
+		onMsg ( signal : signal( i1,V) ){ [" i1 = value"]}
+		onMsg ( signal : signal( i2,V) ){ [" i2 = value"]}
+		onMsg ( signal : signal( i3,V) ){ [" i3 = value"]}
+	}
+	Goto elab
+	
+	State elab{
+		println("i1=$i1 i2=$i2 i3=$i3")
+		if "(i1 and i2) or (i1 and i3) or (i2 and i3)" {   
+			if "! firing"{  
+				["firing = true"]
+				println("NEURON FIRE")
+			}else{ println("NEURON ALREADY FIRING") }
+		} 
+		else { 
+			["firing = false"]
+			println("NEURON IDLE")
+		} 
+	}Goto work
+}
+
+
+QActor stimulator context ctxNeuronSimul{
+	State s0 initial {	 
+	}
+ 	Goto work
+ 	
+ 	State work{
+		println("stimulator signal( i1, on )")
+ 		forward aneuron -m signal : signal( i1, on )
+ 		delay 500
+ 		forward aneuron -m signal : signal( i2, on )
+ 		delay 500
+ 		forward aneuron -m signal : signal( i3, on )
+ 		delay 500
+  		forward aneuron -m signal : signal( i1, off )
+ 		delay 500
+  		forward aneuron -m signal : signal( i2, off )
+ 		delay 500
+  		forward aneuron -m signal : signal( i3, off )
+ 	}
+	
+}

@@ -14,8 +14,14 @@ firing :-
 	inputName( 1,I1),
 	inputName( 2,I2),
  	inputName( 3,I3),
- 	atleastTwo(I1,I2,I3).
-
+ 	atleastTwo(I1,I2,I3),	%%could fail
+ 	( isOn, stdout <- println( " ...... NEURON ALREADY ACTIVE"),!,
+ 	  fail ;		%% does nothing and fails
+ 	  addRule( isOn ) 	%% success and remember
+ 	).
+firing:-		%% no firing possible : delete isOn (if it exists)
+	removeRule( isOn ), fail.
+	
 setConnection(N,I):-
 	%% stdout <- println(setConnection( N,I )),
 	addRule( connectedTo(N,I) ).
@@ -27,7 +33,7 @@ prepareConnectionsToSend :-
 
 setTempConnection( [] ).
 setTempConnection( [LINK|R] ):-
-	%% stdout <- println(setTempConnection( LINK )),
+	stdout <- println(setTempConnection( LINK )),
 	addRule( LINK ),
  	setTempConnection(R).
 

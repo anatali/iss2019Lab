@@ -21,6 +21,7 @@ class A ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 						solve("consult('sysRules.pl')","") //set resVar	
 						solve("consult('neuronConnKb.pl')","") //set resVar	
 						solve("setConnection(c,1)","") //set resVar	
+						solve("setConnection(c,2)","") //set resVar	
 						solve("prepareConnectionsToSend","") //set resVar	
 					}
 					 transition( edgeName="goto",targetState="propagateOutput", cond=doswitch() )
@@ -33,6 +34,9 @@ class A ( name: String, scope: CoroutineScope ) : ActorBasicFsm( name, scope){
 										val Input = currentSolution.getVarValue("I").toString()
 										//println(" a propagateOutput dest = $Dest, input = $Input ")
 										forward("son", "son($Input)" ,Dest ) 		 
+						
+						//				delay(1000)
+						//				forward("soff", "soff($Input)" , Dest ) 
 						 }
 					}
 					 transition( edgeName="goto",targetState="propagateOutput", cond=doswitchGuarded({currentSolution.isSuccess()}) )
