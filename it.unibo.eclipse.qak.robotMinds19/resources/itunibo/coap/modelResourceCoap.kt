@@ -72,7 +72,7 @@ class modelResourceCoap (name : String ) : CoapResource(name) {
 		try {
 			val value = exchange!!.getRequestText()//new String(payload, "UTF-8");
 			//println("%%%%%%%%%%%%%%%% handlePUT value= $value"  )
-			//itunibo.robot.resourceModelSupport.updateRobotModel( actor, value )//HAREMFUL SHERTCUT					
+			//itunibo.robot.resourceModelSupport.updateRobotModel( actor, value )//HARMFUL SHERTCUT					
 			val curState = curmodelval		
 			GlobalScope.launch{
 				MsgUtil.sendMsg( "modelChange", "modelChange( robot,$value )", actor )

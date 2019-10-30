@@ -1,5 +1,13 @@
+/*
+================================================================================
+ USAGE:	 
+	gradle build eclipse	  //to set the dependency on the library
+	gradle build distZip     //for executable jar and distribution
+ ================================================================================
+*/
 plugins {
     id 'java'
+    id 'eclipse'
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
     id 'application'
     //id 'jacoco'         //ADDED After BLSFramework
